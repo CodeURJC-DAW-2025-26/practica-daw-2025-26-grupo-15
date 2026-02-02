@@ -1,78 +1,83 @@
-# [Nombre de la Aplicación]
+# DSGram
 
 ## 👥 Miembros del Equipo
 | Nombre y Apellidos | Correo URJC | Usuario GitHub |
 |:--- |:--- |:--- |
-| [Nombre 1] | [email1]@alumnos.urjc.es | [User1] |
-| [Nombre 2] | [email2]@alumnos.urjc.es | [User2] |
-| [Nombre 3] | [email3]@alumnos.urjc.es | [User3] |
-| [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
+| Jaime Torroba Martínez | j.torroba.2023@alumnos.urjc.es | JaTorroba |
+| Isidoro Pérez Rivera | i.perezr.2023@alumnos.urjc.es | Isiperezz |
+| Pablo Ruiz Uroz | p.ruizu.2023@alumnos.urjc.es | pruizz |
+| Hugo Capa Mora | h.capa.2023@alumnos.urjc.es | huugooocm |
 
 ---
 
 ## 🎭 **Preparación 1: Definición del Proyecto**
 
 ### **Descripción del Tema**
-[Escribe aquí una descripción breve y concisa de qué trata tu aplicación, el sector al que pertenece y qué valor aporta al usuario].
+Red social de resolución de ejercicios de Estructuras de Datos donde los usuarios permiten interacturar y elegir la Estructura que consideren para resolver un ejercicio, creando la Estructura en tiempo real mediante un visualizador. 
+La aplicación se ubica en setor educativo y social. Permite a los usuarios aprender a utilizar estructuras de datos para la resolución de casos de uso, aportándole una herramienta para potenciar su capacidad de identificación de uso de estas en problemas reales propuestos por otros usuarios.
 
 ### **Entidades**
 Indicar las entidades principales que gestionará la aplicación y las relaciones entre ellas:
 
-1. **[Entidad 1]**: [Ej: Usuario]
-2. **[Entidad 2]**: [Ej: Producto]
-3. **[Entidad 3]**: [Ej: Pedido]
-4. **[Entidad 4]**: [Ej: Categoría]
+1. **Usuario**
+2. **Ejercicio**
+3. **Publicación**
+4. **Lista de ejercicios**
+5. **Comentario**
+6. **Solución**
+
 
 **Relaciones entre entidades:**
-- [Ej: Usuario - Pedido: Un usuario puede tener múltiples pedidos (1:N)]
-- [Ej: Pedido - Producto: Un pedido puede contener múltiples productos y un producto puede estar en múltiples pedidos (N:M)]
-- [Ej: Producto - Categoría: Un producto pertenece a una categoría (N:1)]
-- [Descripción de otras relaciones relevantes]
-
+- Usuario - Ejercicio: Un usuario puede resolver múltiples ejercicios (1:N).
+- Usuario - Lista de ejercicios: un usuario puede tener múltiples listas de ejercicios (1:N).
+- Lista de ejercicios - Ejercicio: una lista de ejercicios puede tener múltiples ejercicios (1:N).
+- Publicación - Lista de ejercicios: una publicación referencia una lista de ejercicios y una lista de ejercicios puede ser referenciada por varias publicaciones (N:1).
+- Ejercicio - Solución: un ejercicio puede tener múltiples soluciones de distintos usuarios (1:N).
+- Solución - Comentario: una solución a un ejercicio puede tener múltiples comentarios (1:N).
+- Usuario - Usuario: un usuario puede seguir a uno o muchos usuarios y puede ser seguido por uno o muchos usuarios (N:M).
+- Usuario - Comentario: un usuario puede hacer múltiples comentarios en una solución a un ejercicio (1:N).
+  
 ### **Permisos de los Usuarios**
 Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:
 
 * **Usuario Anónimo**: 
-  - Permisos: [Ej: Visualización de catálogo, búsqueda de productos, registro]
-  - No es dueño de ninguna entidad
+  - Permisos: Visualización de ejercicios.
+  - No es dueño de ninguna entidad.
 
 * **Usuario Registrado**: 
-  - Permisos: [Ej: Gestión de perfil, realizar pedidos, crear valoraciones]
-  - Es dueño de: [Ej: Sus propios Pedidos, su Perfil de Usuario, sus Valoraciones]
+  - Permisos: Gestión de su perfil, crear y editar listas de ejercicios suyas, resolver ejercicios, comentar en soluciones a ejercicios, seguir a otro usuario, crear un ejercicio.
+  - Es dueño de: Sus listas de ejercicios y ejercicios creados, comentarios realizados en otras soluciones y soluciones realizadas por él.
 
 * **Administrador**: 
-  - Permisos: [Ej: Gestión completa de productos (CRUD), visualización de estadísticas, moderación de contenido]
-  - Es dueño de: [Ej: Productos, Categorías, puede gestionar todos los Pedidos y Usuarios]
+  - Permisos: Gestión de todos los usuarios, listas de ejercicios, ejercicios, soluciones y comentarios de todo el sistema.
+  - Es dueño de: Cuentas de usuario, listas de ejercicios, ejercicios, soluciones y comentarios de todo el sistema; puede gestionar toda la información del sistema, a excepción de datos personales de los usuarios.
 
 ### **Imágenes**
 Indicar qué entidades tendrán asociadas una o varias imágenes:
 
-- **[Entidad con imágenes 1]**: [Ej: Usuario - Una imagen de avatar por usuario]
-- **[Entidad con imágenes 2]**: [Ej: Producto - Múltiples imágenes por producto (galería)]
-- **[Entidad con imágenes 3]**: [Ej: Categoría - Una imagen representativa por categoría]
+- **Usuario**: Una imagen de avatar por usuario.
+- **Solución**: Una imagen en la solución de la Estructura de Datos que ha sido construida por el usuario.
 
 ### **Gráficos**
 Indicar qué información se mostrará usando gráficos y de qué tipo serán:
 
-- **Gráfico 1**: [Ej: Ventas mensuales - Gráfico de barras]
-- **Gráfico 2**: [Ej: Productos más vendidos - Gráfico de tarta/circular]
-- **Gráfico 3**: [Ej: Evolución de usuarios registrados - Gráfico de líneas]
-- **Gráfico 4**: [Ej: Distribución de pedidos por categoría - Gráfico de barras horizontales]
+- **Gráfico 1**: gráfico de barras de comparación de número de seguidores con número de seguidos.
+- **Gráfico 2**: gráfico de progresión del número de seguidores a lo largo del tiempo.
+
 
 ### **Tecnología Complementaria**
-Indicar qué tecnología complementaria se empleará:
+Se podrá exportar un ejercicio a PDF y se utilizará una librería externa (CytoscapeJS) para el visualizador de artefactos. Se autentificará los permisos de los usuarios con OAuth2 o JWT.
 
-- [Ej: Envío de correos electrónicos automáticos mediante JavaMailSender]
-- [Ej: Generación de PDFs de facturas usando iText o similar]
-- [Ej: Sistema de autenticación OAuth2 o JWT]
-- [Otras tecnologías externas que se integrarán]
+- Exportación a PDFs de los ejercicios con iText o similar.
+- Visualización de artefactos para la creación de Estructuras de Datos con CytoscapeJS o similar.
+- Sistema de autenticación OAuth2 o JWT.
 
 ### **Algoritmo o Consulta Avanzada**
 Indicar cuál será el algoritmo o consulta avanzada que se implementará:
 
-- **Algoritmo/Consulta**: [Ej: Sistema de recomendaciones basado en el historial de compras del usuario]
-- **Descripción**: [Ej: Analiza los productos comprados previamente y sugiere productos similares o complementarios utilizando filtrado colaborativo]
-- **Alternativa**: [Ej: Consulta compleja que agrupe ventas por categoría, mes y región, con cálculo de tendencias]
+- **Algoritmo/Consulta**: Sistema de recomendaciones de seguimiento a otros usuarios en base a las personas que uno ya sigue.
+- **Descripción**: Buscar sugerencias de seguimiento a partir de seguidores de seguidores.
+- **Alternativa**: Priorizar el feed  de publicaciones por el contenido de los ejercicios de las listas que referencian en vez de orden cronológico.
 
 ---
 
