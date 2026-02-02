@@ -28,7 +28,7 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 
 
 **Relaciones entre entidades:**
-- Usuario - Ejercicio: Un usuario puede resolver múltiples ejercicios (1:N).
+- Usuario - Ejercicio: Un usuario puede resolver múltiples ejercicios. Un ejercicio puede ser solucionado por múltiples usuarios (N:M).
 - Usuario - Lista de ejercicios: un usuario puede tener múltiples listas de ejercicios (1:N).
 - Lista de ejercicios - Ejercicio: una lista de ejercicios puede tener múltiples ejercicios (1:N).
 - Publicación - Lista de ejercicios: una publicación referencia una lista de ejercicios y una lista de ejercicios puede ser referenciada por varias publicaciones (N:1).
