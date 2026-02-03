@@ -10,6 +10,7 @@
   --white: #ffffff;
   --bg-main: #f6f7fb;
   --bg-card: #ffffff;
+  --bg-card-sign-in: rgba(255,255,255, 0.5);
   --bg-soft: #f8f8fb;
   --text-muted: rgba(83, 69, 115, 0.6);
 
@@ -87,11 +88,26 @@ a {
 
 .hero-card {
   width: 100%;
-  max-width: 100%;
+  max-width: 70%;
   margin: var(--space-7) auto 0;
   padding: clamp(22px, 4vw, 48px);
   border-radius: var(--radius-xl);
   background: var(--bg-card);
+  box-shadow: var(--shadow-strong);
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: 1fr;
+  justify-items: center;
+  border: var(--stroke-light);
+}
+
+.hero-card-sign-in {
+  width: 100%;
+  max-width: 70%;
+  margin: var(--space-7) auto 0;
+  padding: clamp(22px, 4vw, 48px);
+  border-radius: var(--radius-xl);
+  background: var(--bg-card-sign-in);
   box-shadow: var(--shadow-strong);
   display: grid;
   gap: var(--space-6);
