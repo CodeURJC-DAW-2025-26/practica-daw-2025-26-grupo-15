@@ -1,39 +1,72 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DSGram | Profile</title>
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
+
 <body>
   <main class="page page--feed">
     <div class="brand">
       <span class="brand-mark"></span>
-      <span class="brand-title">DSGram</span>
+      <a href="home.html"><span class="brand-title">DSGram</span></a>
     </div>
 
     <section class="app-shell feed">
       <aside class="sidebar">
-        <div class="pill">Requests</div>
-        <div class="pill">Signed in</div>
+        <div class="pill">User</div>
+        <div class="pill">Bio</div>
+        <div class="pill">Speciality</div>
+        
         <div>
           <h3>Following requests</h3>
           <div class="list">
-            <div class="list-item"><span>User 1</span><span class="tag">Accept</span></div>
-            <div class="list-item"><span>User 2</span><span class="tag">Decline</span></div>
-            <div class="list-item"><span>User 3</span><span class="tag">Accept</span></div>
+            <div class="list-item">
+              <span>User 1</span>
+              <div class="actions">
+                <span class="tag tag-accept">✔</span>
+                <span class="tag tag-decline">X</span>
+              </div>
+            </div>
+            <div class="list-item">
+              <span>User 2</span>
+              <div class="actions">
+                <span class="tag tag-accept">✔</span>
+                <span class="tag tag-decline">X</span>
+              </div>
+            </div>
+            <div class="list-item">
+              <span>User 3</span>
+              <div class="actions">
+                <span class="tag tag-accept">✔</span>
+                <span class="tag tag-decline">X</span>
+              </div>
+            </div>
           </div>
         </div>
-        <a class="btn secondary" href="follow-requests.html">Ver todas</a>
+        <a class="btn secondary" href="follow-requests.html">See all</a>
       </aside>
+
       <div class="content">
         <div class="topbar">
-          <div>
-            <h2 class="section-title">User's profile</h2>
-            <p class="muted">N followers · N following</p>
+          <div class="topbar">
+            <div>
+              <h2 class="section-title">User's profile</h2>
+              <p class="muted">N followers · N following</p>
+            </div>
+
+            <div class="dropdown">
+              <div class="avatar">U</div>
+              <div class="dropdown-content">
+                <a href="edit-profile.html">Edit profile</a>
+                <div class="divider"></div>
+                <a href="sign-in.html" class="logout">Log out</a>
+              </div>
+            </div>
           </div>
-          <div class="avatar">U</div>
         </div>
 
         <div class="feed-stream">
@@ -41,43 +74,52 @@
             <header>
               <div>
                 <h3>List A</h3>
-                <p class="meta">Última actualización · hace 2 h</p>
+                <p class="meta">Last update · 2h ago</p>
               </div>
-              <button class="btn secondary" type="button">Abrir</button>
+              <div class="card-actions">
+                <button class="btn secondary" type="button">Open</button>
+                <button class="btn ghost sm" type="button" style="margin-top: 8px; width: 100%; color: #d9534f; border-color: rgba(217, 83, 79, 0.2);">Delete</button>
+              </div>
             </header>
-            <p class="muted">Ejercicios de árboles y colas.</p>
+            <p class="muted">Trees and Queues exercises.</p>
           </article>
 
           <article class="feed-card">
             <header>
               <div>
                 <h3>List B</h3>
-                <p class="meta">Última actualización · ayer</p>
+                <p class="meta">Last update · yesterday</p>
               </div>
-              <button class="btn secondary" type="button">Abrir</button>
+              <div class="card-actions">
+                <button class="btn secondary" type="button">Open</button>
+                <button class="btn ghost sm" type="button" style="margin-top: 8px; width: 100%; color: #d9534f; border-color: rgba(217, 83, 79, 0.2);">Delete</button>
+              </div>
             </header>
-            <p class="muted">Grafos, recorridos y búsquedas.</p>
+            <p class="muted">Graphs, traversals and searches.</p>
           </article>
 
           <article class="feed-card">
             <header>
               <div>
                 <h3>List N</h3>
-                <p class="meta">Última actualización · hace 3 días</p>
+                <p class="meta">Last update · 3 days ago</p>
               </div>
-              <button class="btn secondary" type="button">Abrir</button>
+              <div class="card-actions">
+                <button class="btn secondary" type="button">Open</button>
+                <button class="btn ghost sm" type="button" style="margin-top: 8px; width: 100%; color: #d9534f; border-color: rgba(217, 83, 79, 0.2);">Delete</button>
+              </div>
             </header>
-            <p class="muted">Colecciones y estructuras mixtas.</p>
+            <p class="muted">Collections and mixed structures.</p>
           </article>
         </div>
 
         <div class="footer-actions">
-          <a class="btn" href="edit-profile.html">Edit profile</a>
           <a class="btn secondary" href="new-list.html">Add new list</a>
-          <a class="btn ghost" href="index.html">Volver al mapa</a>
+          <a class="btn ghost" href="index.html">Back to map</a>
         </div>
       </div>
     </section>
   </main>
 </body>
+
 </html>
