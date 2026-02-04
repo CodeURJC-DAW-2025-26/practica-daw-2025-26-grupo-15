@@ -1,18 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap');
 
 :root {
-  --ink: #534573;
-  --ink-strong: #3f3159;
-  --paper: #F0F0F2;
-  --sky: #919CD9;
-  --powder: #AECCF2;
-  --mint: #B6F2E1;
+  --ink: #46365f;
+  --ink-strong: #2f2640;
+  --paper: #f2f2f6;
+  --sky: #8e9ce0;
+  --powder: #b8cdf2;
+  --mint: #b6f2e1;
   --white: #ffffff;
-  --bg-main: #f6f7fb;
+  --bg-main: #f5f6fb;
   --bg-card: #ffffff;
-  --bg-card-sign-in: rgba(255,255,255, 0.5);
   --bg-soft: #f8f8fb;
-  --text-muted: rgba(83, 69, 115, 0.6);
+  --text-muted: rgba(47, 38, 64, 0.6);
+  --sidebar-dark: #1f1f24;
+  --sidebar-dark-2: #2a2a33;
 
   --font-sans: "Space Grotesk", sans-serif;
   --font-serif: "Fraunces", serif;
@@ -31,11 +32,11 @@
   --radius-lg: 22px;
   --radius-xl: 28px;
 
-  --shadow-soft: 0 12px 28px rgba(83, 69, 115, 0.12);
-  --shadow-strong: 0 22px 44px rgba(83, 69, 115, 0.22);
+  --shadow-soft: 0 12px 28px rgba(47, 38, 64, 0.12);
+  --shadow-strong: 0 22px 44px rgba(47, 38, 64, 0.22);
 
-  --stroke: 1px solid rgba(83, 69, 115, 0.18);
-  --stroke-light: 1px solid rgba(83, 69, 115, 0.1);
+  --stroke: 1px solid rgba(47, 38, 64, 0.18);
+  --stroke-light: 1px solid rgba(47, 38, 64, 0.1);
 }
 
 * {
@@ -193,8 +194,8 @@ button,
   padding: 12px 18px;
   font-weight: 600;
   cursor: pointer;
-  background: var(--ink);
-  color: var(--white);
+  background: var(--mint);
+  color: var(--ink-strong);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: var(--shadow-soft);
   display: inline-flex;
@@ -220,7 +221,7 @@ select:focus-visible {
 
 .btn.secondary {
   background: var(--powder);
-  color: var(--ink);
+  color: var(--ink-strong);
   box-shadow: none;
 }
 
@@ -290,8 +291,8 @@ select:focus-visible {
 }
 
 .sidebar {
-  background: linear-gradient(180deg, var(--ink), #41345d 70%);
-  color: var(--white);
+  background: linear-gradient(180deg, var(--sidebar-dark), var(--sidebar-dark-2) 70%);
+  color: #f0f1f5;
   padding: var(--space-6) var(--space-5);
   display: grid;
   gap: var(--space-5);
