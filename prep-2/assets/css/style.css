@@ -488,3 +488,80 @@ select:focus-visible {
     width: 100%;
   }
 }
+
+/*styles for  solution.html*/
+
+
+.hero-card--full-width {
+  max-width: 100%;
+  justify-content: center;
+  margin-top: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+}
+
+.solution-form-block {
+  gap: var(--space-4) !important;
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.solution-topbar {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  margin-bottom: 0;
+  width: 90%;
+}
+
+.solution-topbar h2 {
+  margin-bottom: var(--space-2) !important;
+}
+
+.solution-topbar .page-subtitle {
+  margin-top: var(--space-1) !important;
+  margin-bottom: 0 !important;
+}
+
+.solution-card {
+  padding: var(--space-5) !important;
+  margin-bottom: 0;
+  width: 90%;
+}
+
+.solution-comments-section {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  margin-bottom: 0;
+  width: 90%;
+}
+
+.solution-comments-title {
+  margin-bottom: var(--space-3) !important;
+}
+
+.solution-comments-list {
+  padding: var(--space-2) 0;
+}
+
+.solution-comments-list .list-item-wide {
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.solution-comments-list .list-item-wide:last-child {
+  margin-bottom: 0;
+}
+
+.solution-footer-actions {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  margin-bottom: 0;
+  width: 90%;
+}
+
+.solution-back-button {
+  margin-top: var(--space-2);
+  width: 90%;
+}
