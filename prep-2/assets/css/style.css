@@ -373,6 +373,10 @@ select:focus-visible {
   font-size: 13px;
   font-weight: 600;
   color: var(--ink);
+  padding-bottom: 1.25vw;
+  padding-top: 1.25vw;
+  padding-right: 1.5vw ; 
+  padding-left: 1.5vw ;
 }
 
 .list-items {
@@ -712,3 +716,5 @@ textarea {
   padding: 6px 12px;
   font-size: 13px;
 }
+
+
