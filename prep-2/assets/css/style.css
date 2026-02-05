@@ -63,15 +63,6 @@ a {
   padding: clamp(20px, 3vw, 36px) clamp(18px, 4vw, 56px) clamp(32px, 6vw, 64px);
 }
 
-.page-sign-in{
-    background: url("../../../images/background.jpeg");
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    min-height: 100vh;
-    padding: clamp(20px, 3vw, 36px) clamp(18px, 4vw, 56px) clamp(32px, 6vw, 64px);
-}
 
 .page--feed {
   padding: clamp(16px, 2.5vw, 28px) clamp(12px, 2vw, 28px) clamp(24px, 5vw, 48px);
@@ -399,7 +390,7 @@ select:focus-visible {
 }
 
 .footer-actions {
-  display: block;
+  display: flex;
 }
 
 
@@ -711,4 +702,48 @@ textarea {
 .btn.sm {
   padding: 6px 12px;
   font-size: 13px;
+}
+
+
+.hero-card--exercise .form-block,
+.hero-card--list .form-block {
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-card--exercise .form-block > *,
+.hero-card--list .form-block > * {
+  width: 90%;
+}
+
+.hero-card--exercise h2,
+.hero-card--list h2 {
+  width: fit-content !important;
+}
+
+.hero-card--exercise .footer-actions,
+.hero-card--list .footer-actions {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  margin-bottom: 0;
+  width: 90%;
+}
+
+.hero-card--exercise .card,
+.hero-card--list .card {
+  width: 90%;
+}
+
+.hero-card--exercise .list-items,
+.hero-card--list .list-items {
+  width: 90%;
+}
+
+.hero-card--exercise .btn.ghost,
+.hero-card--list .btn.ghost {
+  width: 90%;
+  margin-top: var(--space-2);
 }
