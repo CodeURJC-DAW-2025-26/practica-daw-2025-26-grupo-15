@@ -828,11 +828,9 @@ textarea {
 
 .hero-card--exercise .form-block,
 .hero-card--list .form-block {
-  max-width: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: block; /* Quitamos flex column para dejar que bootstrap maneje el layout interno */
+  text-align: left; /* Alineamos etiquetas a la izquierda */
+  padding: 0 var(--space-2);
 }
 
 .hero-card--exercise .form-block > *,
@@ -865,8 +863,9 @@ textarea {
 
 .hero-card--exercise .btn.ghost,
 .hero-card--list .btn.ghost {
-  width: 90%;
-  margin-top: var(--space-2);
+  width: auto; /* Dejar que el botón tenga el ancho de su texto */
+  margin-top: 0; /* Quitamos márgenes extraños */
+  min-width: 120px;
 }
 
 .btn-delete {
@@ -1254,4 +1253,39 @@ textarea {
   font-weight: 600;
   color: var(--ink-strong);
   margin-bottom: var(--space-2);
+}
+
+
+.form-label {
+  display: block;
+  margin-bottom: var(--space-2); /* Espacio entre label e input */
+  color: var(--ink-strong);
+  font-weight: 700;
+  margin-left: 4px; /* Un pequeño ajuste visual */
+}
+
+/* Clase personalizada para inputs que respeta tu diseño pero ocupa el 100% del contenedor padre */
+.form-control-custom {
+  width: 100%;
+  background: var(--bg-soft);
+  border: var(--stroke);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px; /* Un poco más de padding interno */
+  font-family: inherit;
+  transition: all 0.2s ease;
+  display: block;
+}
+
+.form-control-custom:focus {
+  background: var(--white);
+  border-color: var(--sky);
+  box-shadow: 0 0 0 4px rgba(142, 156, 224, 0.15);
+  outline: none;
+}
+
+/* Arreglo visual para el input de tipo archivo (File) */
+input[type="file"].form-control-custom {
+  padding: 10px;
+  background: var(--bg-soft);
+  height: auto;
 }

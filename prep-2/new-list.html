@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DSGram | Add new list</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-<link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
   <main class="page">
@@ -16,26 +16,34 @@
 
     <div class="container">
       <div class="row justify-content-center">
-        <section class="hero-card hero-card--full-width hero-card--list col-12 col-lg-10">
-          <div class="form-block">
-            <h2>Add new list</h2>
-            <p class="page-subtitle">Las listas te ayudan a compartir contenido de forma clara.</p>
-            <div>
-              <label for="listname">Nombre de la lista</label>
-              <input id="listname" type="text" placeholder="Lista A" />
+        <section class="hero-card hero-card--full-width hero-card--list col-12 col-lg-8">
+          
+          <div class="form-block text-start">
+            
+            <div class="text-center mb-5">
+              <h2>Add new list</h2>
             </div>
-            <div>
-              <label for="topic">Tema principal</label>
-              <input id="topic" type="text" placeholder="Grafos, árboles..." />
+
+            <div class="mb-4 w-100">
+              <label for="listname" class="form-label">List name</label>
+              <input id="listname" type="text" class="form-control-custom" placeholder="List A" />
             </div>
-            <div>
-              <label for="desc">Descripción</label>
-              <textarea id="desc" rows="4" placeholder="Descripción breve"></textarea>
+
+            <div class="mb-4 w-100">
+              <label for="topic" class="form-label">Main topic</label>
+              <input id="topic" type="text" class="form-control-custom" placeholder="Graphs, trees..." />
             </div>
-            <div class="footer-actions row g-3">
-              <button type="button" class="btn col-12 col-sm-auto">Crear lista</button>
-              <a class="btn ghost col-12 col-sm-auto" href="profile.html">Volver</a>
+
+            <div class="mb-5 w-100">
+              <label for="desc" class="form-label">Description</label>
+              <textarea id="desc" rows="4" class="form-control-custom" placeholder="Brief description"></textarea>
             </div>
+
+            <div class="d-flex justify-content-end gap-3 w-100 mt-4">
+              <a class="btn ghost" href="profile.html">Back</a>
+              <button type="button" class="btn">Create list</button>
+            </div>
+
           </div>
         </section>
       </div>
