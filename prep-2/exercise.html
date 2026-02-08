@@ -11,37 +11,125 @@
   <main class="page">
     <div class="brand">
       <span class="brand-mark"></span>
-      <span class="brand-title">DSGram</span>
+      <a href= "home.html"><span class="brand-title">DSGram</span></a>
     </div>
 
     <div class="container">
       <div class="row justify-content-center">
-        <section class="hero-card hero-card--full-width hero-card--exercise col-12 col-lg-10">
-          <div class="form-block">
-            <div class = "row justify-content-start">
-              <h2>Exercise 1</h2>
+        <div class="col-12 col-lg-10">
+          <!-- Exercise Header -->
+          <section class="content-section mb-4">
+            <div class="content-section__header">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
+                <div>
+                  <h2 class="content-section__title mb-2">Exercise 1</h2>
+                  <p class="content-section__meta text-muted mb-0">From List A · Created by User 1</p>
+                </div>
+                <a class="btn" href="add-solution.html">Add Solution</a>
+              </div>
             </div>
-            <p class="page-subtitle">Consulta detalles del ejercicio y las soluciones disponibles.</p>
-            <p class="muted">List A · Autor user 1</p>
-            <div class="card">
-              <strong>Nombre</strong>
-              <p class="muted">Recorrido en profundidad</p>
-              <strong>Descripción</strong>
-              <p class="muted">Describe el algoritmo y sus pasos.</p>
-              <strong>PDF</strong>
-              <p class="muted">documento-ejercicio.pdf</p>
+
+            <!-- Exercise Details -->
+            <div class="row g-4 mt-2">
+              <div class="col-12">
+                <div class="detail-block">
+                  <h4 class="detail-block__label">Nombre</h4>
+                  <p class="detail-block__value">Recorrido en profundidad</p>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="detail-block">
+                  <h4 class="detail-block__label">Descripción</h4>
+                  <p class="detail-block__value">Implementa un algoritmo de recorrido en profundidad (DFS) para grafos no dirigidos. Describe cada paso del algoritmo y analiza su complejidad temporal y espacial.</p>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="detail-block">
+                  <h4 class="detail-block__label">PDF adjunto</h4>
+                  <a href="#" class="detail-block__link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                    </svg>
+                    documento-ejercicio.pdf
+                  </a>
+                </div>
+              </div>
             </div>
-            <div class="list-items">
-              <a href="solution.html"><div class="list-item-wide">Solución 1 · Autor user 1</div></a>
-              <a href="solution.html"><div class="list-item-wide">Solución N · Autor user M</div></a>
+          </section>
+
+          <!-- Solutions Section -->
+          <section class="content-section">
+            <h3 class="content-section__subtitle mb-4">Solutions</h3>
+            <div class="row g-4 mb-4">
+              <!-- Solution Card 1 -->
+              <div class="col-12 col-md-6">
+                <a href="solution.html" class="text-decoration-none">
+                  <div class="solution-card">
+                    <div class="solution-card__header">
+                      <span class="solution-card__badge">Solution 1</span>
+                      <span class="solution-card__date">2 days ago</span>
+                    </div>
+                    <div class="solution-card__author">
+                      <div class="avatar-sm">U1</div>
+                      <span>User 1</span>
+                    </div>
+                    <div class="solution-card__footer">
+                      <span class="solution-card__comments">3 comments</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              <!-- Solution Card N -->
+              <div class="col-12 col-md-6">
+                <a href="solution.html" class="text-decoration-none">
+                  <div class="solution-card">
+                    <div class="solution-card__header">
+                      <span class="solution-card__badge">Solution 2</span>
+                      <span class="solution-card__date">1 week ago</span>
+                    </div>
+                    <div class="solution-card__author">
+                      <div class="avatar-sm">UM</div>
+                      <span>User M</span>
+                    </div>
+                    <div class="solution-card__footer">
+                      <span class="solution-card__comments">7 comments</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
             </div>
-            <div class="footer-actions row">
-              <a class="btn col-12 col-sm-auto" href="add-solution.html">Add Solution</a>
+
+            <!-- Back Button -->
+            <div class="text-center mt-4">
+              <a class="btn ghost" href="list-view.html">Volver a la lista</a>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
     </div>
   </main>
+
+  <footer class="site-footer py-4 mt-auto">
+    <div class="container">
+      <div class="row align-items-center gy-3">
+        <div class="col-12 col-md-4">
+          <div class="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
+            <span class="brand-mark"></span>
+            <span class="fw-bold text-white">DSGram</span>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <ul class="nav justify-content-center gap-3 list-unstyled d-flex mb-0">
+            <li><a href="home.html" class="footer-link">Home</a></li>
+            <li><a href="profile.html" class="footer-link">Profile</a></li>
+          </ul>
+        </div>
+        <div class="col-12 col-md-4 text-center text-md-end">
+          <small class="text-secondary">&copy; 2026 DSGram</small>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

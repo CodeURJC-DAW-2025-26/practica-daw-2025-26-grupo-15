@@ -11,29 +11,129 @@
   <main class="page">
     <div class="brand">
       <span class="brand-mark"></span>
-      <span class="brand-title">DSGram</span>
+      <a href="home.html"><span class="brand-title">DSGram</span></a>
     </div>
 
     <div class="container">
       <div class="row justify-content-center">
-        <section class="hero-card hero-card--full-width hero-card--list col-12 col-lg-10">
-          <div class="form-block">
-            <h2>List A - Autor: User 1</h2>
-            <p class="page-subtitle">Visualización de lista. Revisa y gestiona los ejercicios asociados a esta lista.</p>
-            <div class="list-items">
-              <div class="list-item-wide">Ex 1</div>
-              <div class="list-item-wide">Ex 2</div>
-              <div class="list-item-wide">Ex N</div>
+        <div class="col-12 col-lg-10">
+          <section class="content-section mb-4">
+            <div class="content-section__header">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
+                <div>
+                  <h2 class="content-section__title mb-2">List A</h2>
+                  <p class="content-section__meta text-muted mb-0">Created by User 1 · Last update: 2h ago</p>
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn secondary">Delete list</button>
+                  <a class="btn" href="new-exercise.html">New exercise</a>
+                </div>
+              </div>
+              <p class="content-section__description">Trees and Queues exercises. This list contains fundamental data structure problems.</p>
             </div>
-            <div class="footer-actions row g-3">
-              <button type="button" class="btn secondary col-12 col-sm-auto">Delete list</button>
-              <a class="btn col-12 col-sm-auto" href="new-exercise.html">New ex</a>
+          </section>
+
+      
+          <section class="content-section">
+            <h3 class="content-section__subtitle mb-4">Exercises</h3>
+            <div class="row g-4 mb-4">
+
+              <div class="col-12 col-md-6">
+                <a href="exercise.html" class="text-decoration-none">
+                  <div class="exercise-card">
+                    <div class="exercise-card__header">
+                      <span class="exercise-card__badge">Exercise 1</span>
+                      <span class="exercise-card__author">User 1</span>
+                    </div>
+                    <h4 class="exercise-card__title">Recorrido en profundidad</h4>
+                    <p class="exercise-card__description">Implementa un algoritmo de recorrido en profundidad (DFS) para grafos no dirigidos.</p>
+                    <div class="exercise-card__footer">
+                      <span class="exercise-card__solutions">3 solutions</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <a href="exercise.html" class="text-decoration-none">
+                  <div class="exercise-card">
+                    <div class="exercise-card__header">
+                      <span class="exercise-card__badge">Exercise 2</span>
+                      <span class="exercise-card__author">User 1</span>
+                    </div>
+                    <h4 class="exercise-card__title">Árbol binario de búsqueda</h4>
+                    <p class="exercise-card__description">Crea e implementa operaciones básicas en un árbol binario de búsqueda (BST).</p>
+                    <div class="exercise-card__footer">
+                      <span class="exercise-card__solutions">5 solutions</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <a href="exercise.html" class="text-decoration-none">
+                  <div class="exercise-card">
+                    <div class="exercise-card__header">
+                      <span class="exercise-card__badge">Exercise 3</span>
+                      <span class="exercise-card__author">User 2</span>
+                    </div>
+                    <h4 class="exercise-card__title">Cola de prioridad</h4>
+                    <p class="exercise-card__description">Implementa una cola de prioridad usando un heap binario mínimo.</p>
+                    <div class="exercise-card__footer">
+                      <span class="exercise-card__solutions">2 solutions</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+
+              <div class="col-12 col-md-6">
+                <a href="exercise.html" class="text-decoration-none">
+                  <div class="exercise-card">
+                    <div class="exercise-card__header">
+                      <span class="exercise-card__badge">Exercise N</span>
+                      <span class="exercise-card__author">User 3</span>
+                    </div>
+                    <h4 class="exercise-card__title">Camino más corto</h4>
+                    <p class="exercise-card__description">Encuentra el camino más corto entre dos nodos usando el algoritmo de Dijkstra.</p>
+                    <div class="exercise-card__footer">
+                      <span class="exercise-card__solutions">7 solutions</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
             </div>
-            <a class="btn ghost col-12 col-sm-auto" href="index.html">Volver al mapa</a>
-          </div>
-        </section>
+
+            <!-- Back Button -->
+            <div class="text-center mt-4">
+              <a class="btn ghost" href="index.html">Volver al mapa</a>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   </main>
+
+  <footer class="site-footer py-4 mt-auto">
+    <div class="container">
+      <div class="row align-items-center gy-3">
+        <div class="col-12 col-md-4">
+          <div class="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
+            <span class="brand-mark"></span>
+            <span class="fw-bold text-white">DSGram</span>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <ul class="nav justify-content-center gap-3 list-unstyled d-flex mb-0">
+            <li><a href="home.html" class="footer-link">Home</a></li>
+            <li><a href="profile.html" class="footer-link">Profile</a></li>
+          </ul>
+        </div>
+        <div class="col-12 col-md-4 text-center text-md-end">
+          <small class="text-secondary">&copy; 2026 DSGram</small>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
