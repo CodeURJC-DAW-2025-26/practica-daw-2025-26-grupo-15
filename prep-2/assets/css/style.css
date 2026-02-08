@@ -240,6 +240,7 @@ select:focus-visible {
   background: transparent;
   box-shadow: none;
   border: none;
+  overflow: visible;
 }
 
 .feed-stream {
@@ -273,6 +274,7 @@ select:focus-visible {
   font-size: 13px;
   color: var(--text-muted);
 }
+
 
 .sidebar {
   background: var(--sidebar-dark);
