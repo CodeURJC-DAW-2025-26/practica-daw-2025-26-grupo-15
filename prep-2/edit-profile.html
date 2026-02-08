@@ -5,8 +5,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DSGram | Edit profile</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-<link rel="stylesheet" href="assets/css/style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
 <body>
@@ -18,51 +18,52 @@
 
     <div class="container">
       <div class="row justify-content-center">
-        <section class="hero-card col-12 col-lg-9">
-          <div class="form-block">
+        <section class="hero-card col-12 col-lg-10">
+          
+          <div class="form-block mb-5">
             <h2>Edit profile form</h2>
-            <p class="page-subtitle">Share your profile information</p>
+          </div>
 
-            <div class="layout-edit-profile row g-4">
+          <div class="layout-edit-profile row g-4">
 
-              <div class="photo-column col-12 col-lg-4">
-                <div class="profile-avatar-preview">DS</div>
-                <label>Profile photo</label>
-                <button type="button" class="btn ghost">Change</button>
-              </div>
-
-              <div class="info-column col-12 col-lg-8">
-                <div class="field-group">
-                  <label for="username">User</label>
-                  <div class="input-with-button">
-                    <input id="username" type="text" placeholder="User 1" />
-                    <button type="button" class="btn ghost">Edit</button>
-                  </div>
-                </div>
-
-                <div class="field-group">
-                  <label for="bio">Bio</label>
-                  <div class="input-with-button">
-                    <textarea id="bio" rows="4" placeholder="Describe your profile..."></textarea>
-                    <button type="button" class="btn ghost">Edit</button>
-                  </div>
-                </div>
-
-                <div class="field-group">
-                  <label for="skills">Speciality</label>
-                  <div class="input-with-button">
-                    <input id="skills" type="text" placeholder="Data structures" />
-                    <button type="button" class="btn ghost">Edit</button>
-                  </div>
-                </div>
-              </div>
+            <div class="photo-column col-12 col-md-4">
+              <div class="profile-avatar-preview">U</div>
+              <label>Profile photo</label>
+              <button type="button" class="btn ghost">Change</button>
             </div>
 
-            <div class="split row g-3">
-              <a class="btn col-12 col-sm-auto" type="button" href="profile.html">Save</a>
-              <a class="btn secondary col-12 col-sm-auto" href="profile.html">Cancel</a>
+            <div class="info-column col-12 col-md-8">
+              <div class="field-group">
+                <label for="username">User</label>
+                <div class="input-with-button">
+                  <input id="username" type="text" placeholder="User 1" />
+                  <button type="button" class="btn ghost">Edit</button>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="bio">Bio</label>
+                <div class="input-with-button">
+                  <textarea id="bio" rows="4" placeholder="Describe your profile..."></textarea>
+                  <button type="button" class="btn ghost">Edit</button>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="skills">Speciality</label>
+                <div class="input-with-button">
+                  <input id="skills" type="text" placeholder="Data structures" />
+                  <button type="button" class="btn ghost">Edit</button>
+                </div>
+              </div>
             </div>
           </div>
+
+          <div class="splitprof d-flex gap-3 mt-5">
+            <a class="btn" href="profile.html">Save</a>
+            <a class="btn secondary" href="profile.html">Cancel</a>
+          </div>
+
         </section>
       </div>
     </div>
