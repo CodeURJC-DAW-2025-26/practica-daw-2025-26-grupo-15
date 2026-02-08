@@ -253,6 +253,13 @@ select:focus-visible {
   padding: var(--space-5);
   border: var(--stroke-light);
   box-shadow: var(--shadow-soft);
+  transition: all 0.3s ease;
+}
+
+.feed-card:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-soft);
+  border-color: var(--powder);
 }
 
 .feed-card header {
@@ -861,14 +868,14 @@ textarea {
 }
 
 .btn-delete {
-  background: #d9534f !important; /* Rojo */
-  color: white !important;
+  background: var(--bg-card);
+  color: var(--ink);
   border: none;
   box-shadow: none;
 }
 
 .btn-delete:hover {
-  background: #c9302c !important;
+  box-shadow: none;
   transform: translateY(-2px);
 }
 
