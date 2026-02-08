@@ -499,10 +499,10 @@ select:focus-visible {
   margin-top: var(--space-2);
   width: 90%;
 }
-/* Contenedor principal del grid */
+/* Profile edit form wrapper block*/
 .layout-edit-profile {
       justify-content: center;
-      text-align: left; /* Para que las etiquetas de los inputs no se centren */
+      text-align: left; /* So labels do not center */
 }
 
 .splitprof {
@@ -879,12 +879,11 @@ textarea {
   transform: translateY(-2px);
 }
 
-/* Ajuste para que los botones de la tarjeta no se peguen */
 .card-actions {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  align-items: stretch; /* Para que ocupen el mismo ancho si quieres */
+  align-items: stretch;
 }
 
 
