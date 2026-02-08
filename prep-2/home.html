@@ -18,7 +18,7 @@
 
     <section class="app-shell feed">
       <div class="container-fluid px-0">
-        <div class="row g-4">
+        <div class="row g-0">
           <aside class="sidebar col-12 col-lg-3">
             <!--Search Bar-->
             <form class="sidebar-search" role="search" autocomplete="off">
@@ -52,44 +52,37 @@
               <a class="sidebar-search-results__item" href="#" role="listitem">
                 <span class="sidebar-search-results__avatar">A</span>
                 <span class="sidebar-search-results__name">Ana López</span>
-                <span class="sidebar-search-results__action">View</span>
               </a>
 
               <a class="sidebar-search-results__item" href="#" role="listitem">
                 <span class="sidebar-search-results__avatar">C</span>
                 <span class="sidebar-search-results__name">Carlos M.</span>
-                <span class="sidebar-search-results__action">View</span>
               </a>
 
               <a class="sidebar-search-results__item" href="#" role="listitem">
                 <span class="sidebar-search-results__avatar">M</span>
                 <span class="sidebar-search-results__name">María Ruiz</span>
-                <span class="sidebar-search-results__action">View</span>
               </a>
 
               <a class="sidebar-search-results__item" href="#" role="listitem">
                 <span class="sidebar-search-results__avatar">J</span>
                 <span class="sidebar-search-results__name">Jorge P.</span>
-                <span class="sidebar-search-results__action">View</span>
               </a>
 
               <a class="sidebar-search-results__item" href="#" role="listitem">
                 <span class="sidebar-search-results__avatar">L</span>
                 <span class="sidebar-search-results__name">Lucía N.</span>
-                <span class="sidebar-search-results__action">View</span>
               </a>
 
               <!-- extra for checking scroll -->
               <a class="sidebar-search-results__item" href="#" role="listitem">
                 <span class="sidebar-search-results__avatar">S</span>
                 <span class="sidebar-search-results__name">Sergio V.</span>
-                <span class="sidebar-search-results__action">View</span>
               </a>
 
               <a class="sidebar-search-results__item" href="#" role="listitem">
                 <span class="sidebar-search-results__avatar">E</span>
                 <span class="sidebar-search-results__name">Elena G.</span>
-                <span class="sidebar-search-results__action">View</span>
               </a>
             </div>
           </div>
@@ -99,65 +92,67 @@
             <div>
               <h3>Following:</h3>
               <div class="list">
-                <div class="list-item"><span>User 1</span><span class="tag">View</span></div>
-                <div class="list-item"><span>User 2</span><span class="tag">View</span></div>
-                <div class="list-item"><span>User 3</span><span class="tag">View</span></div>
-                <div class="list-item"><span>User N</span><span class="tag">View</span></div>
+                <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U1</span><span class="sidebar-search-results__name">User 1</span></div></a>
+                <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U2</span><span class="sidebar-search-results__name">User 2</span></div></a>
+                <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U3</span><span class="sidebar-search-results__name">User 3</span></div></a>
+                <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U4</span><span class="sidebar-search-results__name">User 4</span></div></a>
               </div>
             </div>
+            <a class="btn secondary" href="followers.html">See all</a>
           </aside>
-          <div class="content col-12 col-lg-9">
-            <div class="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
-              <div>
-                <h2 class="section-title">Home feed</h2>
-                <p class="muted">Recent changes of your interest</p>
-              </div>
-              <div class="profile-image d-flex align-items-center gap-3">
-                <p class="p greeting mt-3">Welcome user name!</p>
-                <a href="profile.html"><div class="avatar">U</div></a>
-              </div>
+          <!--Main content-->
+        <div class="content col-12 col-lg-9">
+          <div class="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+            <div>
+              <h2 class="section-title">Home feed</h2>
+              <p class="muted">Recent changes of your interest</p>
             </div>
-        <!--Lists feed-->      
-        <div class="feed-stream">
-          <article class="feed-card">
-            <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
-              <div>
-                <h3>List A · New exercise</h3>
-                <p class="meta">User N · 2 min ago</p>
-              </div>
-              <button class="btn secondary" type="button">Open</button>
-            </header>
-            <p class="muted">Added an exercise to this list.</p>
-          </article>
-
-          <article class="feed-card">
-            <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
-              <div>
-                <h3>List B · Excercise X · New solution</h3>
-                <p class="meta">User 2 · 12 min ago</p>
-              </div>
-              <button class="btn secondary" type="button">Open</button>
-            </header>
-            <p class="muted">User 2 added a solution to exercise X on your List B.</p>
-          </article>
-
-          <article class="feed-card">
-            <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
-              <div>
-                <h3>List A · Excercise Y · New comment</h3>
-                <p class="meta">User 3 · 1 h ago</p>
-              </div>
-              <button class="btn secondary" type="button">Open</button>
-            </header>
-            <p class="muted">User 3 commented on your solution to excercise Y on List A.</p>
-          </article>
-        </div>
-
-        <a class="btn ghost" href="index.html">Volver al mapa</a>
+            <div class="profile-image d-flex align-items-center gap-3">
+              <p class="p greeting mt-3">Welcome user name!</p>
+              <a href="profile.html"><div class="avatar">U</div></a>
+            </div>
           </div>
+          <!--Lists feed-->      
+          <div class="feed-stream">
+            <article class="feed-card">
+              <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                <div>
+                  <h3>List A · New exercise</h3>
+                  <p class="meta">User N · 2 min ago</p>
+                </div>
+                <button class="btn secondary" type="button">Open</button>
+              </header>
+              <p class="muted">Added an exercise to this list.</p>
+            </article>
+
+            <article class="feed-card">
+              <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                <div>
+                  <h3>List B · Excercise X · New solution</h3>
+                  <p class="meta">User 2 · 12 min ago</p>
+                </div>
+                <button class="btn secondary" type="button">Open</button>
+              </header>
+              <p class="muted">User 2 added a solution to exercise X on your List B.</p>
+            </article>
+
+            <article class="feed-card">
+              <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                <div>
+                  <h3>List A · Excercise Y · New comment</h3>
+                  <p class="meta">User 3 · 1 h ago</p>
+                </div>
+                <button class="btn secondary" type="button">Open</button>
+              </header>
+              <p class="muted">User 3 commented on your solution to excercise Y on List A.</p>
+            </article>
+          </div>
+
+          <a class="btn ghost" href="index.html">Volver al mapa</a>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+</main>
 </body>
 </html>

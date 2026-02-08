@@ -269,11 +269,12 @@ select:focus-visible {
 }
 
 .sidebar {
-  background: linear-gradient(180deg, var(--sidebar-dark), var(--sidebar-dark-2) 70%);
+  background: var(--sidebar-dark);
   color: #f0f1f5;
   padding: var(--space-6) var(--space-5);
   display: grid;
   gap: var(--space-5);
+
 }
 
 .app-shell.feed .sidebar {
@@ -853,3 +854,4 @@ textarea {
   width: 90%;
   margin-top: var(--space-2);
 }
+
