@@ -112,9 +112,19 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 ![List](images/list-view.png)
 ![Exercise](images/exercise.png)
 ![Solution](images/solution.png)
+
+#### **. 10 Página de creación de una nueva lista/ New-list**
 ![New List](images/new-list.png)
+> Página de creación de una nueva lista de ejercicios que serán publicadas por un usuario en la aplicación. Se podra añadir titulo, descripción, y tipo principal de ejercicios.
+
+#### **. 11 Página de creación de un nuevo ejercicio/ New-exercise**
 ![New Exercise](images/new-exercise.png)
+> Página de creación de una nuevo ejercicio que formara parte de una lista creada previamente.Cada ejercicicio podra contener nombre, descripción y un pdf adjunto con el enunciado detallado si existiera.
+
+#### **. 12 Página de creación de una nueva solución/ New-Solution**
 ![New Solution](images/new-solution.png)
+> Página de creación de una nueva solución creada para uno de los ejercicios publicados de una lista.Se podrá hacer uso del visualizador para crear la solución. 
+
 ![Admin Panel](images/admin.png)
 ![Edit Profile](images/edit-profile.png)
 
