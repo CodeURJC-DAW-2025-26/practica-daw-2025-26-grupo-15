@@ -90,11 +90,6 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 ![Diagrama de Navegación](images/navigation-diagram.jpg)
 
-> [Descripción opcional del flujo de navegación: Ej: "El usuario puede acceder desde la página principal a todas las secciones mediante el menú de navegación. Los usuarios anónimos solo tienen acceso a las páginas públicas, mientras que los registrados pueden acceder a su perfil y panel de usuario."]
-
-
-
-
 ### **Capturas de Pantalla y Descripción de Páginas**
 
 #### **1. Página Principal / Home**
@@ -104,23 +99,38 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 #### **2. Página de inicio de sesión / Log In**
 ![Log In](images/log-in.png)
 > Página que se muestra para acceder a la aplicación en la que el usuario podrá iniciar sesión o acceder de manera anónima.
+
 #### **3. Página de Registro de usuario / Sign up**
 ![Sign up](images/sign-up.png)
-#### **4. Página del perfil de usuario / Profile**
 > Página en la que un usuario no registrado podrá darse de alta con su correo, nombre de usuario y contraseña y podrá acceder a la aplicación tras hacerlo.
+
+#### **4. Página del perfil de usuario / Profile**
+
 ![Porfile](images/profile.png)
 > Página del perfil de usuario que muestra sus datos de la aplicación, sus solicitudes recientes, número de seguidos, seguidores y las listas que tiene subidas. Permite el acceso a editar perfil y cerrar sesión desde un menú que se despliega en la foto de perfil.
+
 #### **5. Página de seguidores / Followers**
 ![Followers](images/followers.png)
 > Página que muestra los seguidores de un usuario determinado, permite mostrar más para ver la totalidad de usuarios que le siguen.
+
 #### **6. Página de solicitudes de seguimiento  / Follow-requests**
 ![Follow requests](images/follow-requests.png)
 > Página para visualizar la totalidad de solicitudes de seguimiento que tiene un usuario para que pueda aceptarlas o rechazarlas.
-![List](images/list-view.png)
-![Exercise](images/exercise.png)
-![Solution](images/solution.png)
 
-#### **. 10 Página de creación de una nueva lista/ New-list**
+#### **7. Página de Lista  / List-view**
+![List](images/list-view.png)
+> Página en la que se podrán encontrar todos los ejercicios de la lista de un usuario
+
+#### **8. Página de ejercicio / Exercise**
+![Exercise](images/exercise.png)
+> Página en la que se encontrará el enunciado de un ejercicio y las soluciones de otros usuarios a este.
+
+#### **9. Página de solución / Solution**
+![Solution](images/solution.png)
+> Página en la que se encontrará la solución de un usuario a un ejercicio y los comentarios de otros usuarios a esta. Los usuarios registrados podrán añadir comentarios.
+
+
+#### **10. Página de creación de una nueva lista/ New-list**
 ![New List](images/new-list.png)
 > Página de creación de una nueva lista de ejercicios que serán publicadas por un usuario en la aplicación. Se podra añadir titulo, descripción, y tipo principal de ejercicios.
 
@@ -135,6 +145,7 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 #### **13. Página panel de administrador  / Admin panel**
 ![Admin Panel](images/admin.png)
 > Página para que el usuario administrador pueda visualizar el panel que tiene para poder ejecutar sus poderes especiales, como borrar usuarios, listas y ejercicios.
+
 #### **14. Página de editar perfil  / Edit profile**
 ![Edit Profile](images/edit-profile.png)
 > Página para que el usuario pueda editar sus datos de nombre, descripción, especialidad y foto de perfil.
