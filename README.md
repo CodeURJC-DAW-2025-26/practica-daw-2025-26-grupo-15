@@ -92,6 +92,9 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 > [Descripción opcional del flujo de navegación: Ej: "El usuario puede acceder desde la página principal a todas las secciones mediante el menú de navegación. Los usuarios anónimos solo tienen acceso a las páginas públicas, mientras que los registrados pueden acceder a su perfil y panel de usuario."]
 
+
+
+
 ### **Capturas de Pantalla y Descripción de Páginas**
 
 #### **1. Página Principal / Home**
@@ -100,6 +103,22 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 > [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
 
 #### **AQUÍ AÑADIR EL RESTO DE PÁGINAS**
+
+![Log In](images/log-in.png)
+![Sign up](images/sign-up.png)
+![Porfile](images/profile.png)
+![Followers](images/followers.png)
+![Follow requests](images/follow-requests.png)
+![List](images/list-view.png)
+![Exercise](images/exercise.png)
+![Solution](images/solution.png)
+![New List](images/new-list.png)
+![New Exercise](images/new-exercise.png)
+![New Solution](images/new-solution.png)
+![Admin Panel](images/admin.png)
+![Edit Profile](images/edit-profile.png)
+
+
 
 ---
 
