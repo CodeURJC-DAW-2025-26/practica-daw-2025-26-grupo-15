@@ -99,14 +99,15 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 #### **1. Página Principal / Home**
 ![Página Principal](images/home-page.png)
+> Página de inicio que muestra publicaciones recientes que refieren a contenido nuevo o modificado en listas de usuarios seguidos, ejercicios o soluciones suyas. También se mostrarán algunos de los usuarios seguidos, así como una barra de búsqueda para poder encontrar nuevos usuarios que seguir. 
 
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
-
-#### **AQUÍ AÑADIR EL RESTO DE PÁGINAS**
-
+#### **2. Página de inicio de sesión / Log In**
 ![Log In](images/log-in.png)
+> Página que se muestra para acceder a la aplicación en la que el usuario podrá iniciar sesión o acceder de manera anónima.
+#### **3. Página de Registro de usuario / Sign up**
 ![Sign up](images/sign-up.png)
 #### **4. Página del perfil de usuario / Profile**
+> Página en la que un usuario no registrado podrá darse de alta con su correo, nombre de usuario y contraseña y podrá acceder a la aplicación tras hacerlo.
 ![Porfile](images/profile.png)
 > Página del perfil de usuario que muestra sus datos de la aplicación, sus solicitudes recientes, número de seguidos, seguidores y las listas que tiene subidas. Permite el acceso a editar perfil y cerrar sesión desde un menú que se despliega en la foto de perfil.
 #### **5. Página de seguidores / Followers**
