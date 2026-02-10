@@ -201,6 +201,13 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
+.plus-btn {
+  background-color: var(--mint);
+  height: 48px;
+  width: 48px;
+  font-size: x-large;
+}
+
 .btn.secondary {
   background: var(--powder);
   color: var(--ink-strong);
