@@ -174,12 +174,5 @@
   text-overflow: ellipsis;
 }
 
-.sidebar-search-results__action {
-  font-size: 12px;
-  font-weight: 800;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(182, 242, 225, 0.9);
-  color: var(--ink-strong);
-}
+
 
