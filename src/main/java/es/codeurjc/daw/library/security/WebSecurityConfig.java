@@ -43,6 +43,10 @@ public class WebSecurityConfig {
 						.requestMatchers("/books/**").permitAll()
 						.requestMatchers("/assets/**").permitAll() // Allow access to static resources
 						.requestMatchers("/favicon.ico").permitAll()
+						.requestMatchers("/exercise").permitAll()
+						.requestMatchers("/list-view").permitAll()
+						.requestMatchers("/new-list").permitAll()
+						.requestMatchers("/new-exercise").permitAll()
 						// PRIVATE PAGES
 						.requestMatchers("/newbook").hasAnyRole("USER")
 						.requestMatchers("/editbook").hasAnyRole("USER")
