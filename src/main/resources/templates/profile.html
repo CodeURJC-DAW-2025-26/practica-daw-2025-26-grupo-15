@@ -23,32 +23,18 @@
         <div class="row g-0">
           <aside class="sidebar col-12 col-lg-3">
             <div class="profile-sidebar-header">
-              <div class="profile-avatar-preview">U</div>
+              <div class="profile-avatar-preview">{{user.photo}}</div>
             </div>
 
-            <div class="pill">User</div>
-            <div class="pill">Bio</div>
-            <div class="pill">Speciality</div>
+            <div class="pill">{{user.name}}</div>
+            <div class="pill">{{user.bio}}</div>
+            <div class="pill">{{user.speciality}}</div>
 
             <div>
               <h3>Following requests</h3>
-              <div class="list">
+              <div class="list"> 
                 <div class="list-item">
-                  <span>User 1</span>
-                  <div class="actions">
-                    <span class="tag tag-accept">✔</span>
-                    <span class="tag tag-decline">X</span>
-                  </div>
-                </div>
-                <div class="list-item">
-                  <span>User 2</span>
-                  <div class="actions">
-                    <span class="tag tag-accept">✔</span>
-                    <span class="tag tag-decline">X</span>
-                  </div>
-                </div>
-                <div class="list-item">
-                  <span>User 3</span>
+                  <span>Name</span>
                   <div class="actions">
                     <span class="tag tag-accept">✔</span>
                     <span class="tag tag-decline">X</span>
@@ -66,19 +52,19 @@
                 <h2 class="section-title">User's profile</h2>
                 <div class="followers-cta">
                   <a class="followers-cta-link" href="/following">
-                    <span class="followers-cta-value">N</span>
+                    <span class="followers-cta-value">{{user.followers}}</span>
                     <span class="followers-cta-label">Followers</span>
                   </a>
                   <div class="followers-cta-divider"></div>
                   <a class="followers-cta-link" href="/following">
-                    <span class="followers-cta-value">M</span>
+                    <span class="followers-cta-value">{{user.following}}</span>
                     <span class="followers-cta-label">Following</span>
                   </a>
                 </div>
               </div>
 
               <div class="dropdown">
-                <div class="avatar">U</div>
+                <div class="avatar">{{user.photo}}</div>
                 <div class="dropdown-content">
                   <a href="/edit-profile">Edit profile</a>
                   <div class="divider"></div>
@@ -89,12 +75,13 @@
 
             <!--User lists-->
             <div class="feed-stream">
+              {{#userLists}}
               <article class="mt-0 feed-card">
               <a href="/list-view">
                 <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
                   <div>
-                    <h3>List A</h3>
-                    <p class="meta">Last update · 2h ago</p>
+                    <h3>{{title}}</h3>
+                    <p class="meta">Last update · {{lastUpdate}}</p>
                   </div>
 
                   <div class="card-actions d-flex flex-column align-items-end g-1">
@@ -103,39 +90,15 @@
                   </div>
                   
                 </header>
-                <p class="muted">Lists and Queues exercises.</p>
+                <p class="muted">{{description}}</p>
               </a>
-              </article>
-
-              <article class="mt-0 feed-card">
-              <a href="list-view.html">
-                <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
-                  <div>
-                    <h3>List B</h3>
-                    <p class="meta">Last update · yesterday</p>
-                  </div>
-                  <div class="card-actions d-flex flex-column align-items-end">
-                    <button href="#" class="btn-icon" type="button"><i class="bi bi-trash"></i></button>
-                  </div>
-                </header>
-                <p class="muted">Graphs, traversals and searches.</p>
-              </a>
-              </article>
-
-              <article class="mt-0 feed-card">
-              <a href="list-view.html">
-                <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
-                  <div>
-                    <h3>List N</h3>
-                    <p class="meta">Last update · 3 days ago</p>
-                  </div>
-                  <div class="card-actions d-flex flex-column align-items-end">
-                    <button href="#" class="btn-icon" type="button"><i class="bi bi-trash"></i></button>
-                  </div>
-                </header>
-                <p class="muted">Collections and mixed structures.</p>
-              </a>
-              </article>
+              </article> 
+              {{/userLists}}
+              {{^userLists}}
+              <div class="text-center py-5">
+                <p class="muted">You haven't created any lists yet.</p>
+              </div>
+              {{/userLists}}           
             </div>
 
             <div class="footer-actions row g-3 justify-content-center">
