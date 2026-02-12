@@ -49,6 +49,10 @@ public class WebSecurityConfig {
 						.requestMatchers("/following").permitAll()
 						.requestMatchers("/admin").permitAll()
 						
+						.requestMatchers("/exercise").permitAll()
+						.requestMatchers("/list-view").permitAll()
+						.requestMatchers("/new-list").permitAll()
+						.requestMatchers("/new-exercise").permitAll()
 						// PRIVATE PAGES
 						.requestMatchers("/newbook").hasAnyRole("USER")
 						.requestMatchers("/editbook").hasAnyRole("USER")
