@@ -43,7 +43,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/solution/**").permitAll()
 						.requestMatchers("/newsolution/**").permitAll()
 						.requestMatchers("/editsolution/**").permitAll()
-						.requestMatchers("/books/**").permitAll()
+	
 						.requestMatchers("/assets/**").permitAll() // Allow access to static resources
 						.requestMatchers("/favicon.ico").permitAll()
 						.requestMatchers("/profile").permitAll()
@@ -57,10 +57,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/new-list").permitAll()
 						.requestMatchers("/new-exercise").permitAll()
 						// PRIVATE PAGES
-						.requestMatchers("/newbook").hasAnyRole("USER")
-						.requestMatchers("/editbook").hasAnyRole("USER")
-						.requestMatchers("/editbook/*").hasAnyRole("USER")
-						.requestMatchers("/removebook/*").hasAnyRole("ADMIN"))
+						.requestMatchers("/newbook").hasAnyRole("USER"))
 				.formLogin(formLogin -> formLogin
 						.loginPage("/login")
 						.failureUrl("/loginerror")
