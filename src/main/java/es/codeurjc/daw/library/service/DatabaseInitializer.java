@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import jakarta.annotation.PostConstruct;
 
@@ -14,9 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import es.codeurjc.daw.library.model.Book;
+import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.Image;
 import es.codeurjc.daw.library.model.Shop;
 import es.codeurjc.daw.library.model.User;
+import es.codeurjc.daw.library.repository.ExerciseListRepository;
 import es.codeurjc.daw.library.repository.UserRepository;
 
 @Service
@@ -35,7 +38,11 @@ public class DatabaseInitializer {
 	private UserRepository userRepository;
 
 	@Autowired
+	private ExerciseListRepository exerciseListRepository;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
+
 
 	@PostConstruct
 	public void init() throws IOException, URISyntaxException {
@@ -77,12 +84,12 @@ public class DatabaseInitializer {
 				"En el año 53 a. C. el cónsul Craso cruzó el Éufrates para conquistar Oriente, pero su ejército fue destrozado en Carrhae. Una legión entera cayó prisionera de los partos. Nadie sabe a ciencia cierta qué pasó con aquella legión perdida.150 años después, Trajano está a punto de volver a cruzar el Éufrates. ...",
 				new ArrayList<>(Arrays.asList(shop1, shop2))));
 
-		// Sample users
+		User u1 = new User("user", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user", "Especialidad de user", "img", 100, 150);
+        userRepository.save(u1); 
 
-		userRepository.save(new User("user", passwordEncoder.encode("pass"), "USER"));
-		userRepository.save(new User("admin", passwordEncoder.encode("adminpass"), "USER", "ADMIN"));
-	}
-
+        exerciseListRepository.save(new ExerciseList("Lista 1", "Desc 1", "12/02", u1));
+        exerciseListRepository.save(new ExerciseList("Lista 2", "Desc 2", "13/02", u1));
+    }
 	public void setBookImage(Book book, String classpathResource) throws IOException {
 		Resource image = new ClassPathResource(classpathResource);
 
