@@ -39,7 +39,10 @@ public class WebSecurityConfig {
 				.authorizeHttpRequests(authorize -> authorize
 						// PUBLIC PAGES
 						.requestMatchers("/").permitAll()
-						.requestMatchers("/images/**").permitAll()
+						.requestMatchers("/register").permitAll()
+						.requestMatchers("/solution/**").permitAll()
+						.requestMatchers("/newsolution/**").permitAll()
+						.requestMatchers("/editsolution/**").permitAll()
 						.requestMatchers("/books/**").permitAll()
 						.requestMatchers("/assets/**").permitAll() // Allow access to static resources
 						.requestMatchers("/favicon.ico").permitAll()
