@@ -11,20 +11,22 @@ import org.springframework.ui.Model;
 import java.util.List;
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
-import es.codeurjc.daw.library.repository.UserRepository;
+import es.codeurjc.daw.library.service.ExerciseListService;
+import es.codeurjc.daw.library.service.UserService;
 
 @Controller
 public class UserController {
     //esto inyecta los repos aquípara poder usarlos en los métodos
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+
     @Autowired
-    private ExerciseListRepository exerciseListRepository;
+    private ExerciseListService listService;
 
     @GetMapping("/profile")
     public String viewProfile(Model model) {
-        User user = userRepository.findByName("user").orElseThrow(); //cogemos user q de momento es el único q hay
-        List<ExerciseList> userLists = exerciseListRepository.findByOwner(user);
+        User user = userService.findByName("user").orElseThrow(); //cogemos user q de momento es el único q hay
+        List<ExerciseList> userLists = listService.findByOwner(user);
         model.addAttribute("user", user);
         model.addAttribute("userLists", userLists);
         //tb iría aquí las request
