@@ -2,6 +2,7 @@ package es.codeurjc.daw.library.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,8 @@ public class Comment {
     private Date lastUpdate;
     @OneToOne
     private User owner;
+    @ManyToOne
+    private Solution solution;
 
     public Comment() {
     }

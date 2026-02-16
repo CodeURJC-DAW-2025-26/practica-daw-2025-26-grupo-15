@@ -2,12 +2,14 @@ package es.codeurjc.daw.library.model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity(name = "UserTable")
 public class User {
@@ -25,12 +27,15 @@ public class User {
 	private int followers;
 	private int following;
 
-	public User() {
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<ExerciseList> excerciseLists;
 
-	}
+	
+
+	public User() {}
 
 	public User(String name, String encodedPassword, List<String> roles, String bio, String speciality,
-			String photo, int followers, int following) {
+				String photo, int followers, int following, List<ExerciseList> exerciseLists) {
 		this.name = name;
 		this.encodedPassword = encodedPassword;
 		this.roles = roles;
@@ -39,6 +44,7 @@ public class User {
 		this.photo = photo;
 		this.followers = followers;
 		this.following = following;
+		this.excerciseLists = exerciseLists;
 	}
 
 	public Long getId() {

@@ -27,6 +27,9 @@ public class Exercise {
     private List<Solution> solutions;
     @OneToOne
     private User owner;
+    @ManyToOne
+    private ExerciseList exerciseList;
+
 
     public Exercise() {
     }

@@ -3,6 +3,7 @@ package es.codeurjc.daw.library.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +27,8 @@ public class Solution {
     private List<Comment> comments;
     @OneToOne
     private User owner;
+    @ManyToOne
+    private Exercise exercise;
 
     public Solution() {
     }
