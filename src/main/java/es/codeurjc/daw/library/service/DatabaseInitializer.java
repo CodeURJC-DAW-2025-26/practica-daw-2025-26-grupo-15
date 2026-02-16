@@ -87,8 +87,10 @@ public class DatabaseInitializer {
 		User u1 = new User("user", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user", "Especialidad de user", "img", 100, 150);
         userRepository.save(u1); 
 
-        exerciseListRepository.save(new ExerciseList("Lista 1", "Desc 1", "12/02", u1));
-        exerciseListRepository.save(new ExerciseList("Lista 2", "Desc 2", "13/02", u1));
+        exerciseListRepository.save(new ExerciseList("Lista 1", "Desc 1", "12/02", u1, new ArrayList<>()));
+        exerciseListRepository.save(new ExerciseList("Lista 2", "Desc 2", "13/02", u1, new ArrayList<>()));
+		
+
     }
 	public void setBookImage(Book book, String classpathResource) throws IOException {
 		Resource image = new ClassPathResource(classpathResource);

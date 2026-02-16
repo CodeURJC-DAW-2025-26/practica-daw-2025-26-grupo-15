@@ -4,7 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Id;
+import java.util.List;
 
 @Entity(name = "ExerciseListTable")
 public class ExerciseList {
@@ -16,15 +18,18 @@ public class ExerciseList {
     private String lastUpdate;
     @ManyToOne
     private User owner;
+    @OneToMany
+    private List<Exercise> exercises;
 
     public ExerciseList() {
     }
 
-    public ExerciseList(String title, String description, String lastUpdate, User owner) {
+    public ExerciseList(String title, String description, String lastUpdate, User owner, List<Exercise> exercises) {
         this.title = title;
         this.description = description;
         this.lastUpdate = lastUpdate;
         this.owner = owner;
+        this.exercises = exercises;
     }
 
     public Long getId() {
@@ -43,5 +48,12 @@ public class ExerciseList {
         return lastUpdate;
     }
 
-    public User getOwner() { return owner; }
+    public User getOwner() { 
+        return owner; 
+    }
+
+    public List<Exercise> getExercises() {
+        return exercises;
+    }
+
 }
