@@ -54,6 +54,10 @@ public class User {
 		return id;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
 	public String getEncodedPassword() {
 		return encodedPassword;
 	}

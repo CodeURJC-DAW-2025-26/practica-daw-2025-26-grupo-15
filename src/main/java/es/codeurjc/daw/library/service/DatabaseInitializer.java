@@ -44,15 +44,12 @@ public class DatabaseInitializer {
 	public void init() throws IOException, URISyntaxException {
 		User u1 = new User("user","user@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user", "Especialidad de user", "img", 100, 150, null);
 		userRepository.save(u1);
-		// 1. Creamos los ejercicios
 		Exercise ex1 = new Exercise("Grafo", "hacer un bfs", 0, u1);
 		Exercise ex2 = new Exercise("Árbol", "hacer un recorrido in-order", 0, u1);
 
-		// 2. Guardamos los ejercicios para que tengan ID
 		exerciseRepository.save(ex1);
 		exerciseRepository.save(ex2);
 
-		// 3. Creamos la lista con ellos
 		List<Exercise> ejercicios = new ArrayList<>();
 		ejercicios.add(ex1);
 		ejercicios.add(ex2);
@@ -60,10 +57,9 @@ public class DatabaseInitializer {
 		ExerciseList lista = new ExerciseList("Lista de ejemplo", "Lista para ver", "16/02", u1, ejercicios);
 		exerciseListRepository.save(lista);
 
-		ex1.setExerciseList(lista); // Necesitas crear este setter en Exercise.java si no lo tienes
+		ex1.setExerciseList(lista); 
 		ex2.setExerciseList(lista);
 
-		// 5. Volver a guardar los ejercicios con la columna de la lista ya rellena
 		exerciseRepository.save(ex1);
 		exerciseRepository.save(ex2);
 	}
