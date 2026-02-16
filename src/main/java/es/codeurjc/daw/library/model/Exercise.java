@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
@@ -25,7 +24,7 @@ public class Exercise {
 
     @OneToMany
     private List<Solution> solutions;
-    @OneToOne
+    @ManyToOne
     private User owner;
     @ManyToOne
     private ExerciseList exerciseList;
@@ -68,6 +67,10 @@ public class Exercise {
 
     public Blob getPdfImage() {
         return pdfImage;
+    }
+
+    public void setExerciseList(ExerciseList exerciseList) {
+        this.exerciseList = exerciseList;
     }
 
     
