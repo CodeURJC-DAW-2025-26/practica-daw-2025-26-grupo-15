@@ -17,6 +17,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	private String email;
 	private String name;
 	private String encodedPassword;
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -34,9 +35,10 @@ public class User {
 
 	public User() {}
 
-	public User(String name, String encodedPassword, List<String> roles, String bio, String speciality,
+	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String speciality,
 				String photo, int followers, int following, List<ExerciseList> exerciseLists) {
 		this.name = name;
+		this.email = email;
 		this.encodedPassword = encodedPassword;
 		this.roles = roles;
 		this.bio = bio;
@@ -45,6 +47,7 @@ public class User {
 		this.followers = followers;
 		this.following = following;
 		this.excerciseLists = exerciseLists;
+		
 	}
 
 	public Long getId() {
