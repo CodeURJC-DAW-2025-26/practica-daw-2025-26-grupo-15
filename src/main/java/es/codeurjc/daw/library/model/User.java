@@ -29,7 +29,7 @@ public class User {
 	private int following;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<ExerciseList> excerciseLists;
+	private List<ExerciseList> exerciseLists;
 
 	
 
@@ -46,7 +46,7 @@ public class User {
 		this.photo = photo;
 		this.followers = followers;
 		this.following = following;
-		this.excerciseLists = exerciseLists;
+		this.exerciseLists = exerciseLists;
 		
 	}
 

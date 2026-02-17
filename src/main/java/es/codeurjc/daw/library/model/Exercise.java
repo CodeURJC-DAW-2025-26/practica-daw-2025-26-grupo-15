@@ -73,5 +73,19 @@ public class Exercise {
         this.exerciseList = exerciseList;
     }
 
-    
+    public ExerciseList getExerciseList() {
+        return exerciseList;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public List<Solution> getSolutions() {
+        return solutions;
+    }
+
+    public void setSolutions(List<Solution> solutions) {
+        this.solutions = solutions;
+    }
 }

@@ -33,7 +33,15 @@ public class ExerciseListController {
     }
 
     @GetMapping("/exercise")
-    public String getExercise() {
+    public String getExercise(Model model) {
+        User user = userService.findByName("user").orElseThrow(); 
+        List<ExerciseList> allLists = listService.findByOwner(user);
+        model.addAttribute("user", user);
+        if (!allLists.isEmpty()) {
+            model.addAttribute("list", allLists.get(0)); //esta de ejemplo
+            model.addAttribute("exercise", allLists.get(0).getExercises().get(0)); //este ejercicio de ejemplo
+        }
+
         return "exercise";
     }
 

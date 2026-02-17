@@ -28,8 +28,8 @@
             <div class="content-section__header">
               <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
                 <div>
-                  <h2 class="content-section__title mb-2">Exercise 1</h2>
-                  <p class="content-section__meta text-muted mb-0">From List A · Created by User 1</p>
+                  <h2 class="content-section__title mb-2">Exercise {{exercise.id}}</h2>
+                  <p class="content-section__meta text-muted mb-0">From {{list.title}} · Created by {{user.name}}</p>
                 </div>
                 <a class="btn" href="/add-solution">Add Solution</a>
               </div>
@@ -40,13 +40,13 @@
               <div class="col-12">
                 <div class="detail-block">
                   <h4 class="detail-block__label">Name</h4>
-                  <p class="detail-block__value">Title 1</p>
+                  <p class="detail-block__value">{{exercise.title}}</p>
                 </div>
               </div>
               <div class="col-12">
                 <div class="detail-block">
                   <h4 class="detail-block__label">Description</h4>
-                  <p class="detail-block__value">Represent a Depth First Search in the given graph. Study its time and space complexity providing an explanation supported by the given example graph</p>
+                  <p class="detail-block__value">{{exercise.description}}</p>
                 </div>
               </div>
               <div class="col-12">
@@ -56,7 +56,7 @@
                     <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                       <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
                     </svg>
-                    document-exercise.pdf
+                    document.pdf
                   </a>
                 </div>
               </div>
@@ -64,51 +64,39 @@
           </section>
 
           <!-- Solutions Section -->
+
           <section class="content-section">
             <h3 class="content-section__subtitle mb-4">Solutions</h3>
             <div class="row g-4 mb-4">
               <!-- Solution Card 1 -->
+               {{#exercise.solutions}}
               <div class="col-12 col-md-6">
                 <a href="/solution" class="text-decoration-none">
                   <div class="solution-card">
                     <div class="solution-card__header">
-                      <span class="solution-card__badge">Solution 1</span>
-                      <span class="solution-card__date">2 days ago</span>
+                      <span class="solution-card__badge">Solution {{id}}</span>
+                      <span class="solution-card__date">{{lastUpdate}}</span>
                     </div>
                     <div class="solution-card__author">
-                      <div class="avatar-sm">U1</div>
-                      <span>User 1</span>
+                      <div class="avatar-sm">{{owner.photo}}</div>
+                      <span>{{owner.name}}</span>
                     </div>
                     <div class="solution-card__footer">
-                      <span class="solution-card__comments">3 comments</span>
+                      <span class="solution-card__comments">{{numComments}} comments</span>
                     </div>
                   </div>
                 </a>
               </div>
-
-              <!-- Solution Card N -->
-              <div class="col-12 col-md-6">
-                <a href="/solution" class="text-decoration-none">
-                  <div class="solution-card">
-                    <div class="solution-card__header">
-                      <span class="solution-card__badge">Solution 2</span>
-                      <span class="solution-card__date">1 week ago</span>
-                    </div>
-                    <div class="solution-card__author">
-                      <div class="avatar-sm">UM</div>
-                      <span>User M</span>
-                    </div>
-                    <div class="solution-card__footer">
-                      <span class="solution-card__comments">7 comments</span>
-                    </div>
-                  </div>
-                </a>
+              {{/exercise.solutions}}
+              {{^exercise.solutions}}
+              <div class="col-12 text-center">
+                <p class="text-muted">No solutions for this exercise yet. Be the first to add one!</p>
               </div>
-            </div>
-
+              {{/exercise.solutions}}
+            
             <!-- Back Button -->
             <div class="text-center mt-4">
-              <a class="btn ghost" href="/list-view">Back to List A</a>
+              <a class="btn ghost" href="/list-view">Back to {{list.title}}</a>
             </div>
           </section>
         </div>
