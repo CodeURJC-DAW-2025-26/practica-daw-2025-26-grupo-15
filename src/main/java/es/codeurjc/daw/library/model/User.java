@@ -27,14 +27,15 @@ public class User {
 	private String speciality;
 	private String photo;
 	private int followers;
-	private int following;
+	private int following;	
 
     private String provider;    // "local", "google"
     private String providerId;
 	
 
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<ExerciseList> excerciseLists;
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+	private List<ExerciseList> exerciseLists;
+	
 
 	
 
@@ -51,7 +52,7 @@ public class User {
 		this.photo = photo;
 		this.followers = followers;
 		this.following = following;
-		this.excerciseLists = exerciseLists;
+		this.exerciseLists = exerciseLists;
 		this.provider = "local";
 		this.providerId = "";
 		
