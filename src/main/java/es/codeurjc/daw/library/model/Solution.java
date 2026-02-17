@@ -8,7 +8,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import java.util.Date;
 import java.sql.Blob;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class Solution {
     private String name;
     private String description;
     private int numComments;
-    private Date lastUpdate;
+    private String lastUpdate;
     @Lob
     private Blob pdfImage;
     @OneToMany
@@ -33,7 +32,7 @@ public class Solution {
     public Solution() {
     }
 
-    public Solution(String name, String description, int numComments, Date lastUpdate, User owner) {
+    public Solution(String name, String description, int numComments, String lastUpdate, User owner) {
         this.name = name;
         this.description = description;
         this.numComments = numComments;
@@ -41,7 +40,7 @@ public class Solution {
         this.owner = owner;
     }
 
-    public Solution(String name, String description, int numComments, Date lastUpdate, Blob pdfImage, User owner) {
+    public Solution(String name, String description, int numComments, String lastUpdate, Blob pdfImage, User owner) {
         this.name = name;
         this.description = description;
         this.numComments = numComments;
@@ -66,7 +65,7 @@ public class Solution {
         return numComments;
     }
 
-    public Date getLastUpdate() {
+    public String getLastUpdate() {
         return lastUpdate;
     }
 
@@ -80,6 +79,14 @@ public class Solution {
 
     public User getOwner() {
         return owner;
+    }
+
+    public Exercise getExercise() {
+        return exercise;
+    }
+
+    public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
     }
     
 

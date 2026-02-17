@@ -23,6 +23,8 @@ import es.codeurjc.daw.library.repository.ExerciseListRepository;
 import es.codeurjc.daw.library.repository.ExerciseRepository;
 import es.codeurjc.daw.library.repository.PostRepository;
 import es.codeurjc.daw.library.repository.UserRepository;
+import es.codeurjc.daw.library.model.Solution;
+import es.codeurjc.daw.library.repository.SolutionRepository;
 
 @Service
 public class DatabaseInitializer {
@@ -43,6 +45,9 @@ public class DatabaseInitializer {
 	private ExerciseRepository exerciseRepository;
 
 	@Autowired
+	private SolutionRepository solutionRepository;
+
+	@Autowired
 	private PostRepository postRepository; 
 
 	@PostConstruct
@@ -58,6 +63,13 @@ public class DatabaseInitializer {
 		List<Exercise> ejercicios = new ArrayList<>();
 		ejercicios.add(ex1);
 		ejercicios.add(ex2);
+
+		List<Solution> soluciones = new ArrayList<>();
+		Solution sol1 = new Solution("Solución al ejercicio de grafo", "Esta es la solución al ejercicio de grafo", 0, "13/2", u1);
+		solutionRepository.save(sol1);
+		sol1.setExercise(ex1);
+		soluciones.add(sol1);
+		ejercicios.get(0).setSolutions(soluciones);
 
 		ExerciseList lista = new ExerciseList("Lista de ejemplo", "Lista para ver", "16/02", u1, ejercicios);
 		exerciseListRepository.save(lista);
