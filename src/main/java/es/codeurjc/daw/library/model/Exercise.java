@@ -73,5 +73,6 @@ public class Exercise {
         this.exerciseList = exerciseList;
     }
 
+   
     
 }

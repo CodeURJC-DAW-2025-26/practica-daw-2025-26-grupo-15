@@ -113,36 +113,19 @@
             </div>
           </div>
           <!--Lists feed-->      
-          <div class="feed-stream">
+          <div class="feed-stream mt-0">{{#list}}
+            <a href={{contentLink}}>
             <article class="feed-card">
-              <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+              <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
                 <div>
-                  <h3>List A · New exercise</h3>
-                  <p class="meta">User N · 2 min ago</p>
+                  <h3>{{header}}{{actionType}}</h3>
+                  <p class="meta">{{ownerName}}</p>
                 </div>
               </header>
               <p class="muted">Added an exercise to this list.</p>
             </article>
-
-            <article class="feed-card">
-              <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
-                <div>
-                  <h3>List B · Excercise X · New solution</h3>
-                  <p class="meta">User 2 · 12 min ago</p>
-                </div>
-              </header>
-              <p class="muted">User 2 added a solution to exercise X on your List B.</p>
-            </article>
-
-            <article class="feed-card">
-              <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
-                <div>
-                  <h3>List A · Excercise Y · New comment</h3>
-                  <p class="meta">User 3 · 1 h ago</p>
-                </div>
-              </header>
-              <p class="muted">User 3 commented on your solution to excercise Y on List A.</p>
-            </article>
+            </a>
+            {{/list}}
           </div>
         </div>
       </div>

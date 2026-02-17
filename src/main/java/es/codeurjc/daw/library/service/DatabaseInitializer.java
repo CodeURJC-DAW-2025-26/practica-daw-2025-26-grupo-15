@@ -17,9 +17,11 @@ import es.codeurjc.daw.library.model.Book;
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.Image;
+import es.codeurjc.daw.library.model.Post;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.repository.ExerciseListRepository;
 import es.codeurjc.daw.library.repository.ExerciseRepository;
+import es.codeurjc.daw.library.repository.PostRepository;
 import es.codeurjc.daw.library.repository.UserRepository;
 
 @Service
@@ -39,6 +41,9 @@ public class DatabaseInitializer {
 
 	@Autowired
 	private ExerciseRepository exerciseRepository;
+
+	@Autowired
+	private PostRepository postRepository; 
 
 	@PostConstruct
 	public void init() throws IOException, URISyntaxException {
@@ -62,6 +67,12 @@ public class DatabaseInitializer {
 
 		exerciseRepository.save(ex1);
 		exerciseRepository.save(ex2);
+
+		Post p1 = new Post(u1, ex1.getTitle(),"/exercise", "New Excercise");
+		Post p2 = new Post(u1, ex2.getTitle(),"/exercise", "New Excercise");
+
+		postRepository.save(p1);
+		postRepository.save(p2);
 	}
 
 	public void setBookImage(Book book, String classpathResource) throws IOException {

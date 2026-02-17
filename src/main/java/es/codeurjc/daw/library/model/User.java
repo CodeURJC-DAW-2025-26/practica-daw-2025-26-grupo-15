@@ -28,7 +28,7 @@ public class User {
 	private int followers;
 	private int following;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
 	private List<ExerciseList> excerciseLists;
 
 	
