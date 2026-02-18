@@ -56,6 +56,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/list-view").permitAll()
 						.requestMatchers("/new-list").permitAll()
 						.requestMatchers("/new-exercise").permitAll()
+                        .requestMatchers("/error").permitAll()
 						// PRIVATE PAGES
 						.requestMatchers("/newbook").hasAnyRole("USER"))
 				.formLogin(formLogin -> formLogin
