@@ -2,6 +2,7 @@ package es.codeurjc.daw.library.service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +72,7 @@ public class DatabaseInitializer {
 		soluciones.add(sol1);
 		ejercicios.get(0).setSolutions(soluciones);
 
-		ExerciseList lista = new ExerciseList("Lista de ejemplo", "Lista para ver", "16/02", u1, ejercicios);
+		ExerciseList lista = new ExerciseList("Lista de ejemplo", "Lista para ver", "Algoritmos", new Date(System.currentTimeMillis()), u1, ejercicios);
 		exerciseListRepository.save(lista);
 
 		ex1.setExerciseList(lista); 

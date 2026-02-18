@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Id;
+
+import java.sql.Date;
 import java.util.List;
 
 @Entity(name = "ExerciseListTable")
@@ -15,7 +17,8 @@ public class ExerciseList  {
     private Long id;
     private String title;
     private String description;
-    private String lastUpdate;
+    private String topic;
+    private Date lastUpdate;
 
     @ManyToOne
     private User owner;
@@ -25,9 +28,10 @@ public class ExerciseList  {
     public ExerciseList() {
     }
 
-    public ExerciseList(String title, String description, String lastUpdate, User owner, List<Exercise> exercises) {
+    public ExerciseList(String title, String description, String topic, Date lastUpdate, User owner, List<Exercise> exercises) {
         this.title = title;
         this.description = description;
+        this.topic = topic;
         this.lastUpdate = lastUpdate;
         this.owner = owner;
         this.exercises = exercises;
@@ -45,7 +49,11 @@ public class ExerciseList  {
         return description;
     }
 
-    public String getLastUpdate() {
+    public String getTopic() {
+        return topic;
+    }
+
+    public Date getLastUpdate() {
         return lastUpdate;
     }
 
@@ -55,6 +63,30 @@ public class ExerciseList  {
 
     public List<Exercise> getExercises() {
         return exercises;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
     }
 
 }

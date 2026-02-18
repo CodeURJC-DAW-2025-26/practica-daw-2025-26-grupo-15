@@ -126,6 +126,7 @@ a {
 .form-block {
       justify-items: center;
       text-align: center;
+      display: grid !important;
 }
 
 .form-block h2 {

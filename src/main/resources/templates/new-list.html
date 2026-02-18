@@ -19,31 +19,32 @@
         <section class="hero-card hero-card--full-width hero-card--list col-12 col-lg-8">
           
           <div class="form-block text-start">
-            
+            <form method="post" action="/add-new-list">
+              <input type="hidden" name="_csrf" value="{{token}}"/>
             <div class="text-center mb-5">
               <h2>Add new list</h2>
             </div>
 
             <div class="mb-4 w-100">
-              <label for="listname" class="form-label">List name</label>
-              <input id="listname" type="text" class="form-control-custom" placeholder="List A" />
+              <label for="title" class="form-label">List name</label>
+              <input id="title" type="text" name="title" class="form-control-custom" placeholder="List A" />
             </div>
 
             <div class="mb-4 w-100">
               <label for="topic" class="form-label">Main topic</label>
-              <input id="topic" type="text" class="form-control-custom" placeholder="Graphs, trees..." />
+              <input id="topic" type="text" name="topic" class="form-control-custom" placeholder="Graphs, trees..." />
             </div>
 
             <div class="mb-5 w-100">
-              <label for="desc" class="form-label">Description</label>
-              <textarea id="desc" rows="4" class="form-control-custom" placeholder="Brief description"></textarea>
+              <label for="description" class="form-label">Description</label>
+              <textarea id="description" rows="4" name="description" class="form-control-custom" placeholder="Brief description"></textarea>
             </div>
 
             <div class="d-flex justify-content-end gap-3 w-100 mt-4">
               <a class="btn ghost" href="/profile">Back</a>
-              <button type="button" class="btn">Create list</button>
+              <button type="submit" class="btn">Create list</button>
             </div>
-
+            </form>
           </div>
         </section>
       </div>

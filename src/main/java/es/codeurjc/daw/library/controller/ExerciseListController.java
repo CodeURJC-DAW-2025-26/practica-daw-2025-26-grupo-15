@@ -13,6 +13,10 @@ import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.UserService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class ExerciseListController {
@@ -54,6 +58,21 @@ public class ExerciseListController {
     @GetMapping("/new-list")
     public String getNewList() {
         return "new-list";
+    }
+
+    @PostMapping("/add-new-list")
+    public String addNewList(Model model, ExerciseList newList, Principal principal) {
+
+        User user = resolveUser(principal);
+
+        try {
+            listService.createList(newList, user);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+
+        return "redirect:/profile";
     }
 
     @GetMapping("/new-exercise")
