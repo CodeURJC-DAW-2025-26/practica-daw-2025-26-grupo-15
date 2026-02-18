@@ -1,15 +1,18 @@
 package es.codeurjc.daw.library.controller;
 
+import java.security.Principal;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import es.codeurjc.daw.library.model.ExerciseList;
+import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.UserService;
-import org.springframework.ui.Model;
-import java.util.List;
-import es.codeurjc.daw.library.model.User;
 
 @Controller
 public class ExerciseListController {
@@ -21,19 +24,30 @@ public class ExerciseListController {
     private ExerciseListService listService;
 
     @GetMapping("/list-view")
-    public String getListView(Model model) {
-        User user = userService.findByName("user").orElseThrow(); // cogemos user q de momento es el único q hay
+    public String getListView(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        User user = resolveUser(principal);
         List<ExerciseList> allLists = listService.findByOwner(user);
 
         if (!allLists.isEmpty()) {
-            model.addAttribute("list", allLists.get(0)); //esta de ejemplo
+            model.addAttribute("list", allLists.get(0));
         }
         model.addAttribute("user", user);
         return "list-view";
     }
 
     @GetMapping("/exercise")
-    public String getExercise() {
+    public String getExercise(Model model) {
+        User user = userService.findByName("user").orElseThrow(); 
+        List<ExerciseList> allLists = listService.findByOwner(user);
+        model.addAttribute("user", user);
+        if (!allLists.isEmpty()) {
+            model.addAttribute("list", allLists.get(0)); //esta de ejemplo
+            model.addAttribute("exercise", allLists.get(0).getExercises().get(0)); //este ejercicio de ejemplo
+        }
+
         return "exercise";
     }
 
@@ -47,4 +61,15 @@ public class ExerciseListController {
         return "new-exercise";
     }
 
+    private User resolveUser(Principal principal) {
+        if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
+            String provider = oauth2Token.getAuthorizedClientRegistrationId();
+            String providerId = oauth2Token.getPrincipal().getAttribute("sub");
+            return userService.findByProviderAndProviderId(provider, providerId)
+                    .orElseThrow(() -> new RuntimeException("OAuth2 user not found in DB"));
+        } else {
+            return userService.findByName(principal.getName())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        }
+    }
 }

@@ -27,7 +27,7 @@ body {
 .body-register {
   background:
     linear-gradient(150deg, rgba(16, 14, 24, 0.78), rgba(38, 32, 52, 0.65)),
-    url("assets/images/background.jpeg") center/cover no-repeat fixed;
+    url("images/background.jpeg") center/cover no-repeat fixed;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -138,4 +138,70 @@ body {
 
 .p a:hover {
   text-decoration: underline;
+}
+.separator {
+  display: flex;
+  align-items: center;
+  margin: 20px 0 15px 0;
+}
+
+.separator hr {
+  flex: 1;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+.separator span {
+  padding: 0 10px;
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.oauth-providers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  text-decoration: none;
+  border: 2px solid;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.oauth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.oauth-btn:active {
+  transform: translateY(0);
+}
+
+.oauth-btn.google {
+  background-color: #fff;
+  color: #333;
+  border-color: #e0e0e0;
+}
+
+.oauth-btn.github {
+  background-color: #24292e;
+  color: #fff;
+  border-color: #24292e;
+}
+
+@media (max-width: 576px) {
+  .oauth-providers {
+    grid-template-columns: 1fr;
+  }
 }

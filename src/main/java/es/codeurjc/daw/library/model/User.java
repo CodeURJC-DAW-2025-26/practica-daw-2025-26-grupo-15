@@ -9,6 +9,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 import jakarta.persistence.OneToMany;
 
 @Entity(name = "UserTable")
@@ -26,10 +27,15 @@ public class User {
 	private String speciality;
 	private String photo;
 	private int followers;
-	private int following;
+	private int following;	
 
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<ExerciseList> excerciseLists;
+    private String provider;    // "local", "google"
+    private String providerId;
+	
+
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+	private List<ExerciseList> exerciseLists;
+	
 
 	
 
@@ -46,29 +52,70 @@ public class User {
 		this.photo = photo;
 		this.followers = followers;
 		this.following = following;
-		this.excerciseLists = exerciseLists;
+		this.exerciseLists = exerciseLists;
+		this.provider = "local";
+		this.providerId = "";
 		
 	}
-
-	public Long getId() {
-		return id;
+	public int getFollowers() {
+		return followers;
+	}
+	public int getFollowing() {
+		return following;
+	}
+	public void setFollowing(int following) {
+		this.following = following;
+	}
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+	public void setSpeciality(String speciality) {
+		this.speciality = speciality;
 	}
 
-	public String getEmail() {
-		return email;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getEncodedPassword() {
-		return encodedPassword;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public List<String> getRoles() {
-		return roles;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEncodedPassword() {
+        return encodedPassword;
+    }
+
+    public void setEncodedPassword(String encodedPassword) {
+        this.encodedPassword = encodedPassword;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }    
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }	
 
 	public String getBio() {
 		return bio;
@@ -81,13 +128,21 @@ public class User {
 	public String getPhoto() {
 		return photo;
 	}
-
-	public int getFollowers() {
-		return followers;
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
-	public int getFollowing() {
-		return following;
+	public String getProvider() { 
+		return provider; 
+	}
+    public void setProvider(String provider) {
+		 this.provider = provider; 
 	}
 
+    public String getProviderId() { 
+		return providerId; 
+	}
+    public void setProviderId(String providerId) { 
+		this.providerId = providerId; 
+	}
 }

@@ -238,6 +238,7 @@ select:focus-visible {
 .feed-stream {
   display: grid;
   gap: var(--space-5);
+  align-content: start;
 }
 
 .feed-card {
@@ -247,6 +248,12 @@ select:focus-visible {
   border: var(--stroke-light);
   box-shadow: var(--shadow-soft);
   transition: all 0.3s ease;
+  overflow: hidden;
+  height: 160px;
+}
+
+.feed-card p:last-child{
+  margin-bottom: 0;
 }
 
 .feed-card:hover{
@@ -307,6 +314,7 @@ select:focus-visible {
   padding: var(--space-6) clamp(18px, 3vw, 40px);
   display: grid;
   gap: var(--space-5);
+  align-content: start;
 }
 
 .app-shell.feed .content {
