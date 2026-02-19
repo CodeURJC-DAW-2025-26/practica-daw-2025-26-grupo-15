@@ -10,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.sql.Blob;
 import java.util.List;
+import jakarta.persistence.CascadeType;
+import java.util.ArrayList;
 
 @Entity(name = "SolutionTable")
 public class Solution {
@@ -18,12 +20,12 @@ public class Solution {
     private Long id;
     private String name;
     private String description;
-    private int numComments;
     private String lastUpdate;
     @Lob
     private Blob pdfImage;
-    @OneToMany
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "solution", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+    private int numComments;
     @OneToOne
     private User owner;
     @ManyToOne

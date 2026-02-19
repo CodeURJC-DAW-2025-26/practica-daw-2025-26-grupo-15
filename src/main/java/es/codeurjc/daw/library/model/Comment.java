@@ -3,10 +3,10 @@ package es.codeurjc.daw.library.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 @Entity(name = "CommentTable")
 public class Comment {
@@ -14,8 +14,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String text;
-    private Date lastUpdate;
-    @OneToOne
+    private LocalDateTime lastUpdate;
+    @ManyToOne
     private User owner;
     @ManyToOne
     private Solution solution;
@@ -23,7 +23,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(String text, Date lastUpdate, User owner) {
+    public Comment(String text, LocalDateTime lastUpdate, User owner) {
         this.text = text;
         this.lastUpdate = lastUpdate;
         this.owner = owner;
@@ -37,12 +37,32 @@ public class Comment {
         return text;
     }
 
-    public Date getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
 
     public User getOwner() {
         return owner;
+    }
+
+    public Solution getSolution() {
+        return solution;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setLastUpdate(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public void setSolution(Solution solution) {
+        this.solution = solution;
     }
 
 
