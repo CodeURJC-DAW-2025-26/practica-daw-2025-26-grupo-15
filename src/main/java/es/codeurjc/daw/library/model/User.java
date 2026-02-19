@@ -24,7 +24,7 @@ public class User {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> roles;
 	private String bio;
-	private String speciality;
+	private String specialty;
 	private String photo;
 	private int followers;
 	private int following;	
@@ -41,14 +41,14 @@ public class User {
 
 	public User() {}
 
-	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String speciality,
+	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String specialty,
 				String photo, int followers, int following, List<ExerciseList> exerciseLists) {
 		this.name = name;
 		this.email = email;
 		this.encodedPassword = encodedPassword;
 		this.roles = roles;
 		this.bio = bio;
-		this.speciality = speciality;
+		this.specialty = specialty;
 		this.photo = photo;
 		this.followers = followers;
 		this.following = following;
@@ -69,8 +69,8 @@ public class User {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
-	public void setSpeciality(String speciality) {
-		this.speciality = speciality;
+	public void setSpecialty(String specialty) {
+		this.specialty = specialty;
 	}
 
     public Long getId() {
@@ -121,8 +121,8 @@ public class User {
 		return bio;
 	}
 
-	public String getSpeciality() {
-		return speciality;
+	public String getSpecialty() {
+		return specialty;
 	}
 
 	public String getPhoto() {

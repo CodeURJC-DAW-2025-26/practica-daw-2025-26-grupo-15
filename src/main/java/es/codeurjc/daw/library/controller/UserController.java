@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
-
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
@@ -72,12 +71,37 @@ public class UserController {
     }
 
     @GetMapping("/edit-profile")
-    public String editProfile() {
+    public String editProfile(Model model, Principal principal) {
+        User user = resolveUser(principal);
+        model.addAttribute("user", user);
         return "edit-profile";
     }
 
     @GetMapping("/admin")
     public String adminPanel() {
         return "admin";
+    }
+
+    @GetMapping("/edit-profile-form")
+    public String editProfileForm(Model model, Principal principal) {
+        User user = resolveUser(principal);
+        model.addAttribute("user", user);
+        return "edit-profile-form";
+    }
+
+    @PostMapping("/edit-profile-save")
+    public String editProfileSave(Model model, User user , Principal principal) {
+
+        User oldUser = resolveUser(principal);
+        User newUser;
+        try {
+            newUser = userService.modify(user, oldUser);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+        
+        model.addAttribute("user", newUser);
+        return "profile";
     }
 }
