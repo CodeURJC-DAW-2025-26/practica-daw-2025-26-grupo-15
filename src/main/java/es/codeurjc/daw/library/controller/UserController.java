@@ -5,12 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
+
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
@@ -18,7 +19,7 @@ import es.codeurjc.daw.library.service.UserService;
 
 @Controller
 public class UserController {
-    //esto inyecta los repos aquípara poder usarlos en los métodos
+
     @Autowired
     private UserService userService;
 
@@ -26,16 +27,24 @@ public class UserController {
     private ExerciseListService listService;
 
     @GetMapping("/profile")
-    public String viewProfile(Model model, Principal principal) {
+    public String viewProfile(Model model, Principal principal, @RequestParam String userName) {    
         if (principal == null) {
             return "redirect:/login";
         }
         User user = resolveUser(principal);
+        if (!user.getName().equals(userName)){
+            Optional<User> otherUser = userService.findByName(userName);
+            if (otherUser.isPresent())
+                user = otherUser.get();
+            else 
+                throw new RuntimeException("Error finding user " + userName);
+        }
         List<ExerciseList> userLists = listService.findByOwner(user);
         model.addAttribute("user", user);
         model.addAttribute("userLists", userLists);
         return "profile";
     }
+
     private User resolveUser(Principal principal) {
         if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
             String provider = oauth2Token.getAuthorizedClientRegistrationId();
@@ -67,7 +76,13 @@ public class UserController {
     }
 
     @GetMapping("/following")
-    public String viewFollowing() {
+    public String viewFollowing(Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        //TODO: distinguish between principal user and other viewed profile
+        User user = resolveUser(principal);
+
         return "following";
     }
 

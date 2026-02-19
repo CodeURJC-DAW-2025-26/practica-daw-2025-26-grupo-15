@@ -2,6 +2,7 @@ package es.codeurjc.daw.library.service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,8 +81,8 @@ public class DatabaseInitializer {
 		exerciseRepository.save(ex1);
 		exerciseRepository.save(ex2);
 
-		Post p1 = new Post(u1, ex1.getTitle(),"/exercise", "New Excercise");
-		Post p2 = new Post(u1, ex2.getTitle(),"/exercise", "New Excercise");
+		Post p1 = new Post(u1, ex1.getTitle(),"/exercise", "New Excercise", Instant.now());
+		Post p2 = new Post(u1, ex2.getTitle(),"/exercise", "New Excercise", Instant.now());
 
 		postRepository.save(p1);
 		postRepository.save(p2);
