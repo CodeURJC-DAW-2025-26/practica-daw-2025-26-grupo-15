@@ -1,8 +1,10 @@
 package es.codeurjc.daw.library.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -24,14 +26,35 @@ public class WebController {
     private UserService userService;
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        User currentUser;
+        if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
+            String provider = oauth2Token.getAuthorizedClientRegistrationId();
+            String providerId;
+            if ("github".equals(provider)) {
+                Integer id = oauth2Token.getPrincipal().getAttribute("id");
+                providerId = id != null ? id.toString() : null;
+            } else {
+                providerId = oauth2Token.getPrincipal().getAttribute("sub");
+            }
+            currentUser = userService.findByProviderAndProviderId(provider, providerId)
+                    .orElseThrow(() -> new RuntimeException("OAuth2 user not found"));
+        } else {
+            currentUser = userService.findByName(principal.getName())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        }
+        model.addAttribute("name", currentUser.getName());
+
         List<Post> allPosts = postService.findAll();
-        
-         if (!allPosts.isEmpty()) {
-            for (Post p : allPosts){
+        if (!allPosts.isEmpty()) {
+            for (Post p : allPosts) {
                 p.calculateTime();
             }
-            model.addAttribute("list", allPosts); //esta de ejemplo
+            model.addAttribute("list", allPosts);
         }
 
         return "home";
