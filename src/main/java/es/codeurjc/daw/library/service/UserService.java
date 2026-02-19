@@ -20,6 +20,8 @@ public class UserService {
     public Optional<User> findByName(String name){
         return userRepo.findByName(name);
     }
+
+
     public Optional<User> findByEmail(String email){
         return userRepo.findByEmail(email);
     }
@@ -29,5 +31,26 @@ public class UserService {
 
     public List<User> searchUsersBySimilarName(String q, int page, int size) {
         return userRepo.searchUsersBySimilarName(q, PageRequest.of(page, size)).getContent(); // si es Slice/Page
+    }
+
+    public User modify(User user, User oldUser) {
+        if (user.getName() == null || user.getName().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be empty");
+        }
+
+        if (user.getBio() == null || user.getBio().isEmpty()) {
+            throw new IllegalArgumentException("Bio cannot be empty");
+        }
+
+        if (user.getSpecialty() == null || user.getSpecialty().isEmpty()) {
+            throw new IllegalArgumentException("Specialty cannot be empty");
+        }
+    
+        
+        oldUser.setName(user.getName());
+        oldUser.setBio(user.getBio());
+        oldUser.setSpecialty(user.getSpecialty());
+
+        return userRepo.save(oldUser);
     }
 }

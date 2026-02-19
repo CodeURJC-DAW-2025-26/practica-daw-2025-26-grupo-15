@@ -1,5 +1,6 @@
 package es.codeurjc.daw.library.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,4 +20,15 @@ public class ExerciseListService {
     public List<ExerciseList> findByOwner(User user){
         return listRepo.findByOwner(user);
     }
+
+    public ExerciseList createList(ExerciseList list, User owner){
+        list.setOwner(owner);
+        list.setLastUpdate(new Date(System.currentTimeMillis()));
+
+        if (list.getTitle() == null || list.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        }
+        return listRepo.save(list);
+    }
+
 }
