@@ -39,11 +39,8 @@ public class UserController {
     private User resolveUser(Principal principal) {
         if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
             String provider = oauth2Token.getAuthorizedClientRegistrationId();
-            
-            // Different providers use different attribute names
             String providerId;
             if ("github".equals(provider)) {
-                // GitHub uses 'id' instead of 'sub'
                 Integer id = oauth2Token.getPrincipal().getAttribute("id");
                 providerId = id != null ? id.toString() : null;
             } else {

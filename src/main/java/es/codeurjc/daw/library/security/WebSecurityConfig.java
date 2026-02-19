@@ -53,6 +53,7 @@ public class WebSecurityConfig {
 						// PUBLIC PAGES
 						.requestMatchers("/").permitAll()
 						.requestMatchers("/register").permitAll()
+						.requestMatchers("/form-register").permitAll()
 						.requestMatchers("/solution/**").permitAll()
 						.requestMatchers("/newsolution/**").permitAll()
 						.requestMatchers("/editsolution/**").permitAll()
@@ -77,7 +78,7 @@ public class WebSecurityConfig {
 				.formLogin(formLogin -> formLogin
 						.loginPage("/login")
 						.failureUrl("/loginerror")
-						.defaultSuccessUrl("/")
+						.defaultSuccessUrl("/", true)
 						.permitAll())
 				.oauth2Login(oauth2 -> oauth2
 						.loginPage("/login")
@@ -85,7 +86,7 @@ public class WebSecurityConfig {
 								.userService(customOAuth2UserService)   // plain OAuth2 providers
 								.oidcUserService(oidcUserService())      // OIDC providers (Google)
 						)
-						.defaultSuccessUrl("/")
+						.defaultSuccessUrl("/", true)
 						.failureUrl("/loginerror")
 						.permitAll())
 				.logout(logout -> logout

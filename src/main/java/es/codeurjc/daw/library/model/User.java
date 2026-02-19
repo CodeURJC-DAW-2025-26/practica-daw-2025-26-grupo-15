@@ -17,7 +17,6 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
 	private String email;
 	private String name;
 	private String encodedPassword;
@@ -35,11 +34,23 @@ public class User {
 
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
 	private List<ExerciseList> exerciseLists;
-	
-
-	
 
 	public User() {}
+
+	public User(String name, String email, String encodedPassword) {
+		this.name = name;
+		this.email = email;
+		this.encodedPassword = encodedPassword;
+		this.roles = List.of("USER");
+		this.bio = "";
+		this.speciality = "";
+		this.photo = "";
+		this.followers = 0;
+		this.following = 0;
+		this.exerciseLists = List.of();
+		this.provider = "local";
+		this.providerId = "";
+	}
 
 	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String speciality,
 				String photo, int followers, int following, List<ExerciseList> exerciseLists) {
@@ -144,5 +155,11 @@ public class User {
 	}
     public void setProviderId(String providerId) { 
 		this.providerId = providerId; 
+	}
+	public List<ExerciseList> getExerciseLists() {
+		return exerciseLists;
+	}
+	public void setExerciseLists(List<ExerciseList> exerciseLists) {
+		this.exerciseLists = exerciseLists;
 	}
 }
