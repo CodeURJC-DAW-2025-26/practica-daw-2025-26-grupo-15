@@ -21,15 +21,20 @@
         <div class="row g-0">
           <aside class="sidebar col-12 col-lg-3">
             <!--Search Bar-->
-            <form class="sidebar-search" role="search" autocomplete="off">
+
               <label class="visually-hidden" for="sidebarSearch">Search</label>
 
               <div class="sidebar-search__wrap">
                 
 
-                <input id="sidebarSearch" class="sidebar-search__input" type="search" placeholder="Search for users…" aria-label="Search"/>
+                <input id="sidebarSearch"
+                       name="searchName" 
+                       class="sidebar-search__input" 
+                       type="search" 
+                       placeholder="Search for users…" 
+                       aria-label="Search"/>
 
-                <button class="sidebar-search__btn" type="submit">
+                <button class="sidebar-search__btn" type="submit" onclick="searchUsers(25)">
                   <!-- search icon-->
                   <span class="sidebar-search__icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,53 +42,16 @@
                       <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
                   </span>
-              </button>
+                </button>
               </div>
-            </form>
 
-            <!-- Search results (snapshot) -->
+            <!-- Search results -->
           <div class="sidebar-search-results" aria-label="Search results">
             <div class="sidebar-search-results__header">
               <span class="sidebar-search-results__title">Search results</span>
-              <span class="sidebar-search-results__meta">5</span>
             </div>
 
-            <div class="sidebar-search-results__list" role="list">
-              <a class="sidebar-search-results__item" href="#" role="listitem">
-                <span class="sidebar-search-results__avatar">A</span>
-                <span class="sidebar-search-results__name">Ana López</span>
-              </a>
-
-              <a class="sidebar-search-results__item" href="#" role="listitem">
-                <span class="sidebar-search-results__avatar">C</span>
-                <span class="sidebar-search-results__name">Carlos M.</span>
-              </a>
-
-              <a class="sidebar-search-results__item" href="#" role="listitem">
-                <span class="sidebar-search-results__avatar">M</span>
-                <span class="sidebar-search-results__name">María Ruiz</span>
-              </a>
-
-              <a class="sidebar-search-results__item" href="#" role="listitem">
-                <span class="sidebar-search-results__avatar">J</span>
-                <span class="sidebar-search-results__name">Jorge P.</span>
-              </a>
-
-              <a class="sidebar-search-results__item" href="#" role="listitem">
-                <span class="sidebar-search-results__avatar">L</span>
-                <span class="sidebar-search-results__name">Lucía N.</span>
-              </a>
-
-              <!-- extra for checking scroll -->
-              <a class="sidebar-search-results__item" href="#" role="listitem">
-                <span class="sidebar-search-results__avatar">S</span>
-                <span class="sidebar-search-results__name">Sergio V.</span>
-              </a>
-
-              <a class="sidebar-search-results__item" href="#" role="listitem">
-                <span class="sidebar-search-results__avatar">E</span>
-                <span class="sidebar-search-results__name">Elena G.</span>
-              </a>
+            <div id="searchResults" class="sidebar-search-results__list" role="list">              
             </div>
           </div>
 
@@ -113,16 +81,17 @@
             </div>
           </div>
           <!--Lists feed-->      
-          <div class="feed-stream mt-0">{{#list}}
+          <div class="feed-stream mt-0">
+            {{#list}}
             <a href={{contentLink}}>
             <article class="feed-card">
               <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
                 <div>
-                  <h3>{{header}}{{actionType}}</h3>
-                  <p class="meta">{{ownerName}}</p>
+                  <h3>{{actionType}} · {{header}}</h3>
+                  <p class="meta">{{ownerName}} · {{timeAgo}}</p>
                 </div>
               </header>
-              <p class="muted">Added an exercise to this list.</p>
+              <p class="muted">Added new excercise</p>
             </article>
             </a>
             {{/list}}
@@ -154,5 +123,7 @@
       </div>
     </div>
   </footer>
+
+  <script src="/js/home.js"></script>
 </body>
 </html>

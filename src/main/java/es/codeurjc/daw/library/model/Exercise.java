@@ -7,7 +7,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
-
+import jakarta.persistence.CascadeType;
 import java.sql.Blob;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class Exercise {
     @Lob
     private Blob pdfImage;
 
-    @OneToMany
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     private List<Solution> solutions;
     @ManyToOne
     private User owner;

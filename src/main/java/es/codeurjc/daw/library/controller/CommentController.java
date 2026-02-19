@@ -1,5 +1,57 @@
 package es.codeurjc.daw.library.controller;
 
+import java.security.Principal;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import es.codeurjc.daw.library.model.Comment;
+import es.codeurjc.daw.library.model.User;
+import es.codeurjc.daw.library.service.UserService;
+import org.springframework.web.bind.annotation.PathVariable;
+import es.codeurjc.daw.library.model.Solution;
+import es.codeurjc.daw.library.service.SolutionService;
+import es.codeurjc.daw.library.service.CommentService;
+
+@Controller
 public class CommentController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SolutionService solutionService;
+
+    @Autowired
+    private CommentService commentService;
+
+    @PostMapping("/solution/{id}/comment")
+    public String addComment(Model model, @PathVariable Long id, Comment comment, Principal principal){
+        Solution solution = solutionService.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
+        User user = resolveUser(principal);
+
+        try {
+            commentService.createComment(comment, user, solution);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+
+        return "redirect:/solution";
+    }
+
+    private User resolveUser(Principal principal) {
+        if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
+            String provider = oauth2Token.getAuthorizedClientRegistrationId();
+            String providerId = oauth2Token.getPrincipal().getAttribute("sub");
+            return userService.findByProviderAndProviderId(provider, providerId)
+                    .orElseThrow(() -> new RuntimeException("OAuth2 user not found in DB"));
+        } else {
+            return userService.findByName(principal.getName())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        }
+    }
     
 }

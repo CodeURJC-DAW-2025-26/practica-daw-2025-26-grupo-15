@@ -17,13 +17,14 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
 	private String email;
 	private String name;
 	private String encodedPassword;
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> roles;
 	private String bio;
-	private String speciality;
+	private String specialty;
 	private String photo;
 	private int followers;
 	private int following;	
@@ -34,6 +35,9 @@ public class User {
 
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
 	private List<ExerciseList> exerciseLists;
+	
+
+	
 
 	public User() {}
 
@@ -43,7 +47,7 @@ public class User {
 		this.encodedPassword = encodedPassword;
 		this.roles = List.of("USER");
 		this.bio = "";
-		this.speciality = "";
+		this.specialty = "";
 		this.photo = "";
 		this.followers = 0;
 		this.following = 0;
@@ -52,14 +56,14 @@ public class User {
 		this.providerId = "";
 	}
 
-	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String speciality,
+	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String specialty,
 				String photo, int followers, int following, List<ExerciseList> exerciseLists) {
 		this.name = name;
 		this.email = email;
 		this.encodedPassword = encodedPassword;
 		this.roles = roles;
 		this.bio = bio;
-		this.speciality = speciality;
+		this.specialty = specialty;
 		this.photo = photo;
 		this.followers = followers;
 		this.following = following;
@@ -80,8 +84,8 @@ public class User {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
-	public void setSpeciality(String speciality) {
-		this.speciality = speciality;
+	public void setSpecialty(String specialty) {
+		this.specialty = specialty;
 	}
 
     public Long getId() {
@@ -132,8 +136,8 @@ public class User {
 		return bio;
 	}
 
-	public String getSpeciality() {
-		return speciality;
+	public String getSpecialty() {
+		return specialty;
 	}
 
 	public String getPhoto() {

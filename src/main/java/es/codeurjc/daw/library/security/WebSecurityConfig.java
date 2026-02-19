@@ -59,6 +59,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/editsolution/**").permitAll()
 
 						.requestMatchers("/assets/**").permitAll()
+						.requestMatchers("/js/**").permitAll()	
 						.requestMatchers("/favicon.ico").permitAll()
 						.requestMatchers("/error").permitAll()
 						.requestMatchers("/profile").permitAll()
@@ -72,6 +73,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/new-list").permitAll()
 						.requestMatchers("/new-exercise").permitAll()
                         .requestMatchers("/error").permitAll()
+						.requestMatchers("/searchUsers").permitAll()
 						// PRIVATE PAGES
 						.requestMatchers("/newbook").hasAnyRole("USER")
 						.anyRequest().authenticated())

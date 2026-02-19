@@ -23,9 +23,10 @@
           <div class="form-block mb-5">
             <h2>Edit profile form</h2>
           </div>
-
+          <form action="/edit-profile-save" method="post">
           <div class="layout-edit-profile row g-4">
             
+              <input type="hidden" name="_csrf" value="{{token}}" />
             <div class="photo-column col-12 col-md-4">
               <div class="profile-avatar-preview">U</div>
               <label>Profile photo</label>
@@ -35,30 +36,32 @@
               <div class="field-group">
                 <label for="username">User</label>
                 <div class="input-with-button">
-                  <p>{{user.name}}</p>
+                  <input id ="name" name="name" value="{{user.name}}" type="text"></input>
                 </div>
               </div>
 
               <div class="field-group">
                 <label for="bio">Bio</label>
                 <div class="input-with-button">
-                  <p>{{user.bio}}</p>
+                  <textarea id ="bio" name="bio" type="text">{{user.bio}}</textarea>
                 </div>
               </div>
 
               <div class="field-group">
                 <label for="skills">Speciality</label>
                 <div class="input-with-button">
-                  <p>{{user.specialty}}</p>
+                  <input id ="specialty" name="specialty" value="{{user.specialty}}" type="text"></input>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="splitprof d-flex gap-3 mt-5">
-            <button type="button" class="btn ghost"><a href="/edit-profile-form">Edit</a></button>
+            <button type="submit" class="btn ghost">Save</button>
             <a class="btn secondary" href="/profile">Cancel</a>
           </div>
+
+        </form>
 
         </section>
       </div>
