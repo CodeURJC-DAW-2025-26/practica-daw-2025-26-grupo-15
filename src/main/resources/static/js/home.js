@@ -1,4 +1,6 @@
 var currentPage = 0;
+var prevName = "";
+const resultsListContainer = document.getElementById("searchResults");
 
 async function searchUsers(size) {
     console.log("hola");
@@ -6,16 +8,18 @@ async function searchUsers(size) {
     const input = document.getElementById("sidebarSearch");
     const name = input.value.trim();
 
-    const resultsContainer = document.getElementById("searchResults");
+    const resultsMainContainer = document.getElementById("searchContainer");
 
-    if (!name) {
-        resultsContainer.innerHTML = "<p class='meta'>Type something to search</p>";
+    if (!name) { 
+        resultsMainContainer.classList.add("visually-hidden");
         return;
     }
 
+    resultsMainContainer.classList.remove("visually-hidden");
+
     try {
         const response = await fetch(
-            `/searchUsers?name=${encodeURIComponent(name)}&page=${currentPage++}&size=${size}`,
+            `/searchUsers?name=${encodeURIComponent(name)}&page=${currentPage}&size=${size}`,
             {
                 method: "GET",
             }
@@ -26,15 +30,32 @@ async function searchUsers(size) {
         }
 
         const html = await response.text();
-
-        if (currentPage === 0) {
-            resultsContainer.innerHTML = html;      
+        if (!html || html.trim().length === 0){
+            currentPage = 0;
+            prevName = "";
+            resultsListContainer.innerHTML = `<span class="sidebar-search-results__title">No users found for the name ${name}</span>` ; 
+        } else if (currentPage === 0 || name !== prevName) {
+            currentPage = 0;
+            prevName = name;
+            resultsListContainer.innerHTML = html;      
         } else {
-            resultsContainer.innerHTML += html; // scroll infinito
+            currentPage++;
+            resultsListContainer.innerHTML += html; // scroll infinito
         }
 
     } catch (error) {
         console.log(error);
-        resultsContainer.innerHTML = "<p class='meta'>Error loading users</p>";
+        resultsListContainer.innerHTML = "<p class='meta'>Error loading users</p>";
     }
+
+    resultsListContainer.addEventListener("scroll", () => {
+
+    const nearBottom =
+        resultsListContainer.scrollTop + resultsContainer.clientHeight >=
+        resultsListContainer.scrollHeight - 50;
+
+    if (nearBottom) {
+        searchUsers(25);
+    }
+    });
 }

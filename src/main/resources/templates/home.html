@@ -31,8 +31,9 @@
                        name="searchName" 
                        class="sidebar-search__input" 
                        type="search" 
-                       placeholder="Search for users…" 
-                       aria-label="Search"/>
+                       placeholder="Search for users to conect with…" 
+                       aria-label="Search"
+                       oninput="searchUsers(25)"/>
 
                 <button class="sidebar-search__btn" type="submit" onclick="searchUsers(25)">
                   <!-- search icon-->
@@ -46,13 +47,11 @@
               </div>
 
             <!-- Search results -->
-          <div class="sidebar-search-results" aria-label="Search results">
+          <div id="searchContainer" class="sidebar-search-results visually-hidden" aria-label="Search results">
             <div class="sidebar-search-results__header">
               <span class="sidebar-search-results__title">Search results</span>
             </div>
-
-            <div id="searchResults" class="sidebar-search-results__list" role="list">              
-            </div>
+            <div id="searchResults" class="sidebar-search-results__list" role="list"></div>
           </div>
 
 
