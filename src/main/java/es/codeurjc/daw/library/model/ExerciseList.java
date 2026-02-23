@@ -6,9 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Id;
+import java.util.List;
+import jakarta.persistence.CascadeType;
 
 import java.sql.Date;
-import java.util.List;
+
 
 @Entity(name = "ExerciseListTable")
 public class ExerciseList  {
@@ -22,7 +24,7 @@ public class ExerciseList  {
 
     @ManyToOne
     private User owner;
-    @OneToMany
+    @OneToMany(mappedBy = "exerciseList", cascade = CascadeType.ALL)
     private List<Exercise> exercises;
 
     public ExerciseList() {

@@ -9,13 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
-import es.codeurjc.daw.library.service.ExerciseService;
 
 @Controller
 public class ExerciseListController {
@@ -26,8 +24,6 @@ public class ExerciseListController {
     @Autowired
     private ExerciseListService listService;
 
-    @Autowired
-    private ExerciseService exerciseService;
 
     @GetMapping("/list-view/{id}")
     public String getListView(Model model, Principal principal, @PathVariable Long id) {
@@ -42,19 +38,6 @@ public class ExerciseListController {
         return "list-view";
     }
 
-    @GetMapping("/exercise/{id}")
-    public String getExercise(Model model, Principal principal, @PathVariable Long id) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
-        User user = resolveUser(principal);
-        Exercise exercise = exerciseService.findById(id);
-        model.addAttribute("user", user);
-        model.addAttribute("exercise", exercise);
-        model.addAttribute("list", exercise.getExerciseList());
-    
-        return "exercise";
-    }
 
     @GetMapping("/new-list")
     public String getNewList() {
@@ -73,12 +56,7 @@ public class ExerciseListController {
             return "error";
         }
 
-        return "redirect:/profile";
-    }
-
-    @GetMapping("/new-exercise")
-    public String getNewExercise() {
-        return "new-exercise";
+        return "redirect:/profile/" + user.getId();
     }
 
     private User resolveUser(Principal principal) {

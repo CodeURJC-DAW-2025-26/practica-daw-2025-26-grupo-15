@@ -55,7 +55,7 @@
                 <a href="/exercise/{{id}}" class="text-decoration-none">
                   <div class="exercise-card">
                     <div class="exercise-card__header">
-                      <span class="exercise-card__badge">Exercise {{id}}</span>
+                      <span class="exercise-card__badge">Exercise {{-index}}</span>
                       <div class="d-flex">
                         <button class="btn-icon btn-icon-edit mx-1" type="button">
                           <i class="bi bi-pencil icon-static"></i>
@@ -82,13 +82,13 @@
             </div>
 
             <div class="row g-3 justify-content-center">
-              <a class="btn plus-btn rounded-circle col-12 col-sm-auto" href="/new-exercise"><i
+              <a class="btn plus-btn rounded-circle col-12 col-sm-auto" href="/list-view/{{list.id}}/new-exercise"><i
                   class="bi bi-plus"></i></a>
             </div>
 
             <!-- Back Button -->
             <div class="text-center mt-4">
-              <a class="btn ghost" href="/profile/{{user.name}}">Back to {{user.name}}'s profile</a> <!--TODO: solve this redirection to profile with username instead of id-->
+              <a class="btn ghost" href="/profile/{{user.id}}">Back to {{user.name}}'s profile</a> <!--TODO: solve this redirection to profile with username instead of id-->
             </div>
           </section>
         </div>
@@ -108,7 +108,7 @@
         <div class="col-12 col-md-4">
           <ul class="nav justify-content-center gap-3 list-unstyled d-flex mb-0">
             <li><a href="/" class="footer-link">Home</a></li>
-            <li><a href="/profile" class="footer-link">Profile</a></li>
+            <li><a href="/profile/{{user.id}}" class="footer-link">Profile</a></li>
           </ul>
         </div>
         <div class="col-12 col-md-4 text-center text-md-end">
