@@ -71,7 +71,7 @@
               <!-- Solution Card 1 -->
                {{#exercise.solutions}}
               <div class="col-12 col-md-6">
-                <a href="/solution" class="text-decoration-none">
+                <a href="/solution/{{id}}" class="text-decoration-none">
                   <div class="solution-card">
                     <div class="solution-card__header">
                       <span class="solution-card__badge">Solution {{id}}</span>
@@ -96,7 +96,7 @@
             
             <!-- Back Button -->
             <div class="text-center mt-4">
-              <a class="btn ghost" href="/list-view">Back to {{list.title}}</a>
+              <a class="btn ghost" href="/list-view/{{list.id}}">Back to {{list.title}}</a>
             </div>
           </section>
         </div>

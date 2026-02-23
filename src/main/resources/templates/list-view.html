@@ -88,7 +88,7 @@
 
             <!-- Back Button -->
             <div class="text-center mt-4">
-              <a class="btn ghost" href="/profile">Back to User 1's profile</a>
+              <a class="btn ghost" href="/profile/{{user.name}}">Back to {{user.name}}'s profile</a> <!--TODO: solve this redirection to profile with username instead of id-->
             </div>
           </section>
         </div>
@@ -107,8 +107,8 @@
         </div>
         <div class="col-12 col-md-4">
           <ul class="nav justify-content-center gap-3 list-unstyled d-flex mb-0">
-            <li><a href="home.html" class="footer-link">Home</a></li>
-            <li><a href="profile.html" class="footer-link">Profile</a></li>
+            <li><a href="/" class="footer-link">Home</a></li>
+            <li><a href="/profile" class="footer-link">Profile</a></li>
           </ul>
         </div>
         <div class="col-12 col-md-4 text-center text-md-end">

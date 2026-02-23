@@ -29,7 +29,7 @@ public class CommentController {
 
     @PostMapping("/solution/{id}/comment")
     public String addComment(Model model, @PathVariable Long id, Comment comment, Principal principal){
-        Solution solution = solutionService.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
+        Solution solution = solutionService.findById(id);
         User user = resolveUser(principal);
 
         try {
@@ -39,7 +39,7 @@ public class CommentController {
             return "error";
         }
 
-        return "redirect:/solution";
+        return "redirect:/solution/" + id;
     }
 
     private User resolveUser(Principal principal) {

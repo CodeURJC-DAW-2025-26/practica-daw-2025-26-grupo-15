@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
@@ -42,10 +43,15 @@ public class ExerciseListController {
     }
 
     @GetMapping("/exercise/{id}")
-    public String getExercise(Model model, @PathVariable Long id) {
-        User user = userService.findByName("user").orElseThrow();
+    public String getExercise(Model model, Principal principal, @PathVariable Long id) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        User user = resolveUser(principal);
+        Exercise exercise = exerciseService.findById(id);
         model.addAttribute("user", user);
-        model.addAttribute("exercise", exerciseService.findById(id));
+        model.addAttribute("exercise", exercise);
+        model.addAttribute("list", exercise.getExerciseList());
     
         return "exercise";
     }
