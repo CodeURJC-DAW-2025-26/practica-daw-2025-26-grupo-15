@@ -1,20 +1,20 @@
 package es.codeurjc.daw.library.controller;
 
 import java.security.Principal;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import es.codeurjc.daw.library.service.ExerciseService;
 
 @Controller
 public class ExerciseListController {
@@ -25,31 +25,28 @@ public class ExerciseListController {
     @Autowired
     private ExerciseListService listService;
 
-    @GetMapping("/list-view")
-    public String getListView(Model model, Principal principal) {
+    @Autowired
+    private ExerciseService exerciseService;
+
+    @GetMapping("/list-view/{id}")
+    public String getListView(Model model, Principal principal, @PathVariable Long id) {
         if (principal == null) {
             return "redirect:/login";
         }
         User user = resolveUser(principal);
-        List<ExerciseList> allLists = listService.findByOwner(user);
+        ExerciseList list = listService.findById(id);
 
-        if (!allLists.isEmpty()) {
-            model.addAttribute("list", allLists.get(0));
-        }
+        model.addAttribute("list", list);
         model.addAttribute("user", user);
         return "list-view";
     }
 
-    @GetMapping("/exercise")
-    public String getExercise(Model model) {
-        User user = userService.findByName("user").orElseThrow(); 
-        List<ExerciseList> allLists = listService.findByOwner(user);
+    @GetMapping("/exercise/{id}")
+    public String getExercise(Model model, @PathVariable Long id) {
+        User user = userService.findByName("user").orElseThrow();
         model.addAttribute("user", user);
-        if (!allLists.isEmpty()) {
-            model.addAttribute("list", allLists.get(0)); //esta de ejemplo
-            model.addAttribute("exercise", allLists.get(0).getExercises().get(0)); //este ejercicio de ejemplo
-        }
-
+        model.addAttribute("exercise", exerciseService.findById(id));
+    
         return "exercise";
     }
 

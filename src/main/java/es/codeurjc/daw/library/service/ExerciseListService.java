@@ -31,4 +31,8 @@ public class ExerciseListService {
         return listRepo.save(list);
     }
 
+    public ExerciseList findById(Long id) {
+        return listRepo.findById(id).orElseThrow(() -> new RuntimeException("List not found"));
+    }
+
 }
