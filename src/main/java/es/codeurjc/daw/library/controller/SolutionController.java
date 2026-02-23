@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
-import java.util.List;
-import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
-import es.codeurjc.daw.library.service.ExerciseListService; 
+import es.codeurjc.daw.library.service.SolutionService; 
+import es.codeurjc.daw.library.model.Solution;
 
 
 @Controller
@@ -21,17 +21,20 @@ public class SolutionController {
     private UserService userService;
 
     @Autowired
-    private ExerciseListService listService;
+    private SolutionService solutionService;
 
-    @GetMapping("/solution")
-    public String solution(Model model, Principal principal) {
+    @GetMapping("/solution/{id}")
+    public String solution(Model model, Principal principal, @PathVariable Long id) {
+         if (principal == null) {
+            return "redirect:/login";
+        }       
+        
         User user = resolveUser(principal);
-        List<ExerciseList> allLists = listService.findByOwner(user);
-
-        if (!allLists.isEmpty()) {
-            model.addAttribute("solution", allLists.get(0).getExercises().get(0).getSolutions().get(0)); 
-            model.addAttribute("comments", allLists.get(0).getExercises().get(0).getSolutions().get(0).getComments());
-        }
+        Solution solution = solutionService.findById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("solution", solution);
+        model.addAttribute("exercise", solution.getExercise());
+        model.addAttribute("comments", solution.getComments());
 
         return "solution";
     }

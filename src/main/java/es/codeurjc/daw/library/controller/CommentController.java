@@ -40,7 +40,7 @@ public class CommentController {
             return "error";
         }
 
-        return "redirect:/solution";
+        return "redirect:/solution/" + id;
     }
 
     private User resolveUser(Principal principal) {
