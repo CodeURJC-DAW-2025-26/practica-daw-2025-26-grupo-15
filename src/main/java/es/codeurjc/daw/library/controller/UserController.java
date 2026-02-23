@@ -2,9 +2,12 @@ package es.codeurjc.daw.library.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class UserController {
@@ -27,46 +31,26 @@ public class UserController {
     @Autowired
     private ExerciseListService listService;
 
-    @GetMapping("/profile")
-    public String viewProfile(Model model, Principal principal, @RequestParam String userName) {    
-        if (principal == null) {
-            return "redirect:/login";
+    @ModelAttribute
+    public void addAttributes(Model model, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        boolean isAuthenticated = principal != null && !(principal instanceof AnonymousAuthenticationToken);
+        if (isAuthenticated) {
+            model.addAttribute("logged", true);
+			model.addAttribute("admin", request.isUserInRole("ADMIN"));
+        } else {
+            model.addAttribute("logged", false);
         }
+    }
+
+    @GetMapping("/profile/{id}")
+    public String viewProfile(Model model, Principal principal, @PathVariable Long id) {    
         User user = resolveUser(principal);
-        if (!user.getName().equals(userName)){
-            Optional<User> otherUser = userService.findByName(userName);
-            if (otherUser.isPresent())
-                user = otherUser.get();
-            else 
-                throw new RuntimeException("Error finding user " + userName);
-        }
         List<ExerciseList> userLists = listService.findByOwner(user);
         model.addAttribute("user", user);
         model.addAttribute("userLists", userLists);
         return "profile";
     }
-
-    private User resolveUser(Principal principal) {
-        if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
-            String provider = oauth2Token.getAuthorizedClientRegistrationId();
-            String providerId;
-            if ("github".equals(provider)) {
-                Integer id = oauth2Token.getPrincipal().getAttribute("id");
-                providerId = id != null ? id.toString() : null;
-            } else {
-                // Google and other OIDC providers use 'sub'
-                providerId = oauth2Token.getPrincipal().getAttribute("sub");
-            }
-            
-            return userService.findByProviderAndProviderId(provider, providerId)
-                    .orElseThrow(() -> new RuntimeException("OAuth2 user not found in DB"));
-        } else {
-            // Form login — principal.getName() is the username
-            return userService.findByName(principal.getName())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-        }
-    }
-
 
     @GetMapping("/follow-requests")
     public String viewFollowRequests() {
@@ -105,7 +89,6 @@ public class UserController {
 
     @PostMapping("/edit-profile-save")
     public String editProfileSave(Model model, User user , Principal principal) {
-
         User oldUser = resolveUser(principal);
         User newUser;
         try {
@@ -117,5 +100,24 @@ public class UserController {
         
         model.addAttribute("user", newUser);
         return "profile";
+    }
+
+    private User resolveUser(Principal principal) {
+        if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
+            String provider = oauth2Token.getAuthorizedClientRegistrationId();
+            String providerId;
+            if ("github".equals(provider)) {
+                Integer id = oauth2Token.getPrincipal().getAttribute("id");
+                providerId = id != null ? id.toString() : null;
+            } else {
+                providerId = oauth2Token.getPrincipal().getAttribute("sub");
+            }
+            
+            return userService.findByProviderAndProviderId(provider, providerId)
+                    .orElseThrow(() -> new RuntimeException("OAuth2 user not found in DB"));
+        } else {
+            return userService.findByEmail(principal.getName())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        }
     }
 }

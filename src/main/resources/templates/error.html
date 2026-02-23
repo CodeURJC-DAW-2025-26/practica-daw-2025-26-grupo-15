@@ -14,7 +14,7 @@
         <div class="col-12 col-lg-5 text-container text-center text-lg-start">
             <h1>Error</h1>
             <h2>Wow, this shouldn't be happening...</h2>
-                <p>{{errorMessage}}</p>
+                <p>{{#errorMessage}}{{errorMessage}}{{/errorMessage}}{{^errorMessage}}An unexpected error occurred.{{/errorMessage}}</p>
             <h6><a href="/">Back</a></h6>
         </div>
 

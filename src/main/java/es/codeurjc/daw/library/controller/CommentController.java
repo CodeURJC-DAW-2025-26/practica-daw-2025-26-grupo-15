@@ -29,9 +29,10 @@ public class CommentController {
 
     @PostMapping("/solution/{id}/comment")
     public String addComment(Model model, @PathVariable Long id, Comment comment, Principal principal){
-        Solution solution = solutionService.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
-        User user = resolveUser(principal);
 
+        User user = resolveUser(principal);
+        Solution solution = solutionService.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
+    
         try {
             commentService.createComment(comment, user, solution);
         } catch (Exception e) {
@@ -45,11 +46,18 @@ public class CommentController {
     private User resolveUser(Principal principal) {
         if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
             String provider = oauth2Token.getAuthorizedClientRegistrationId();
-            String providerId = oauth2Token.getPrincipal().getAttribute("sub");
+            String providerId;
+            if ("github".equals(provider)) {
+                Integer id = oauth2Token.getPrincipal().getAttribute("id");
+                providerId = id != null ? id.toString() : null;
+            } else {
+                providerId = oauth2Token.getPrincipal().getAttribute("sub");
+            }
+            
             return userService.findByProviderAndProviderId(provider, providerId)
                     .orElseThrow(() -> new RuntimeException("OAuth2 user not found in DB"));
         } else {
-            return userService.findByName(principal.getName())
+            return userService.findByEmail(principal.getName())
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
     }

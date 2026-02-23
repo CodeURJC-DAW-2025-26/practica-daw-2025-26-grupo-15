@@ -25,9 +25,6 @@ public class SolutionController {
 
     @GetMapping("/solution")
     public String solution(Model model, Principal principal) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
         User user = resolveUser(principal);
         List<ExerciseList> allLists = listService.findByOwner(user);
 
@@ -48,15 +45,21 @@ public class SolutionController {
     public String editSolution() {
         return "editSolution";
     }
-    
     private User resolveUser(Principal principal) {
         if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
             String provider = oauth2Token.getAuthorizedClientRegistrationId();
-            String providerId = oauth2Token.getPrincipal().getAttribute("sub");
+            String providerId;
+            if ("github".equals(provider)) {
+                Integer id = oauth2Token.getPrincipal().getAttribute("id");
+                providerId = id != null ? id.toString() : null;
+            } else {
+                providerId = oauth2Token.getPrincipal().getAttribute("sub");
+            }
+            
             return userService.findByProviderAndProviderId(provider, providerId)
                     .orElseThrow(() -> new RuntimeException("OAuth2 user not found in DB"));
         } else {
-            return userService.findByName(principal.getName())
+            return userService.findByEmail(principal.getName())
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
     }
