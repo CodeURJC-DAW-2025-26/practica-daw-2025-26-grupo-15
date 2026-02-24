@@ -37,6 +37,12 @@
 
                     <input type="hidden" name="_csrf" value="{{token}}" />
 
+                    {{#loginError}}
+                    <div class="alert alert-danger py-2" role="alert">
+                        Email o contraseña incorrectos.
+                    </div>
+                    {{/loginError}}
+
                     <button type="submit" class="button-submit">Log In</button>
 
                     <div class="separator">

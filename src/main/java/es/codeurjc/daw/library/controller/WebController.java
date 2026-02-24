@@ -43,13 +43,10 @@ public class WebController {
 
     @GetMapping("/")
     public String home(Model model, Principal principal) {
-        if (principal == null) {
-            return "redirect:/login";
+        if (principal != null) {
+            User user = resolveUser(principal);
+            model.addAttribute("name", user.getName());
         }
-        User user = resolveUser(principal);
-        model.addAttribute("id", user.getId());
-        model.addAttribute("name", user.getName());
-
         List<Post> allPosts = postService.findAll();
         if (!allPosts.isEmpty()) {
             for (Post p : allPosts) {
@@ -57,7 +54,6 @@ public class WebController {
             }
             model.addAttribute("list", allPosts);
         }
-
         return "home";
     }
     

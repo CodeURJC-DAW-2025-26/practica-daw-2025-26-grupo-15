@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
@@ -43,12 +41,38 @@ public class UserController {
         }
     }
 
-    @GetMapping("/profile/{id}")
-    public String viewProfile(Model model, Principal principal, @PathVariable Long id) {    
+    @GetMapping("/profile")
+    public String viewOwnProfile(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
         User user = resolveUser(principal);
         List<ExerciseList> userLists = listService.findByOwner(user);
         model.addAttribute("user", user);
         model.addAttribute("userLists", userLists);
+        model.addAttribute("isOwnProfile", true);
+        return "profile";
+    }
+
+    @GetMapping("/profile/{id}")
+    public String viewProfile(Model model, Principal principal, @PathVariable Long id) {
+        try {
+            User profileUser = userService.findById(id)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            List<ExerciseList> userLists = listService.findByOwner(profileUser);
+            model.addAttribute("user", profileUser);
+            model.addAttribute("userLists", userLists);
+
+            if (principal != null) {
+                User loggedUser = resolveUser(principal);
+                model.addAttribute("isOwnProfile", loggedUser.getId().equals(profileUser.getId()));
+            } else {
+                model.addAttribute("isOwnProfile", false);
+            }
+    } catch (Exception e) {
+        model.addAttribute("errorMessage", e.getMessage());
+        return "error";
+    }
         return "profile";
     }
 

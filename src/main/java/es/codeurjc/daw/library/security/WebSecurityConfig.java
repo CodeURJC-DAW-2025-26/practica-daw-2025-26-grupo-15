@@ -60,11 +60,13 @@ public class WebSecurityConfig {
 						.requestMatchers("/exercise").permitAll()
 						.requestMatchers("/list-view").permitAll()
 						.requestMatchers("/searchUsers").permitAll()
+						.requestMatchers("/loginerror").permitAll()
+						.requestMatchers("/error").permitAll()
+						.requestMatchers("/profile/{id}").permitAll()
 
 						// PRIVATE PAGES
-						.requestMatchers("/solution/**").hasAnyRole("USER", "ADMIN")
-						.requestMatchers("/error").hasAnyRole("USER")
 						.requestMatchers("/profile").hasAnyRole("USER", "ADMIN")
+						.requestMatchers("/solution/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/edit-profile").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/new-exercise").hasAnyRole("USER")
 						.requestMatchers("/newsolution/**").hasAnyRole("USER")		

@@ -31,7 +31,7 @@ public class CommentController {
     public String addComment(Model model, @PathVariable Long id, Comment comment, Principal principal){
 
         User user = resolveUser(principal);
-        Solution solution = solutionService.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
+        Solution solution = solutionService.findById(id);
     
         try {
             commentService.createComment(comment, user, solution);
