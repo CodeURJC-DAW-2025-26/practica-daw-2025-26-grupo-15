@@ -89,7 +89,14 @@
             {{#logged}}
             <div class="profile-image d-flex align-items-center gap-2">
               <p class="p greeting mt-3">Welcome {{name}}!</p>
-              <a href="/profile"><div class="avatar">U</div></a>
+              <a href="/profile">
+                {{#photoId}}
+                <div class="avatar avatar--img"><img src="/images/{{photoId}}" alt="Profile picture" /></div>
+                {{/photoId}}
+                {{^photoId}}
+                <div class="avatar">{{nameInitial}}</div>
+                {{/photoId}}
+              </a>
             </div>
             {{/logged}}
           </div>

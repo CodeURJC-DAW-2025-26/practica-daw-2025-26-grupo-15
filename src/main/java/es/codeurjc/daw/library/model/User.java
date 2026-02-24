@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity(name = "UserTable")
 public class User {
@@ -25,7 +26,10 @@ public class User {
 	private List<String> roles;
 	private String bio;
 	private String specialty;
-	private String photo;
+
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private Image photo;
+
 	private int followers;
 	private int following;	
 
@@ -48,7 +52,7 @@ public class User {
 		this.roles = List.of("USER");
 		this.bio = "";
 		this.specialty = "";
-		this.photo = "";
+		this.photo = null;
 		this.followers = 0;
 		this.following = 0;
 		this.exerciseLists = List.of();
@@ -57,7 +61,7 @@ public class User {
 	}
 
 	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String specialty,
-				String photo, int followers, int following, List<ExerciseList> exerciseLists) {
+				Image photo, int followers, int following, List<ExerciseList> exerciseLists) {
 		this.name = name;
 		this.email = email;
 		this.encodedPassword = encodedPassword;
@@ -140,10 +144,10 @@ public class User {
 		return specialty;
 	}
 
-	public String getPhoto() {
+	public Image getPhoto() {
 		return photo;
 	}
-	public void setPhoto(String photo) {
+	public void setPhoto(Image photo) {
 		this.photo = photo;
 	}
 

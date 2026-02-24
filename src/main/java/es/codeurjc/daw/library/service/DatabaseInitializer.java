@@ -55,7 +55,7 @@ public class DatabaseInitializer {
 	@PostConstruct
 	public void init() throws IOException, URISyntaxException {
 
-		User u1 = new User("user", "user@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user","Especialidad de user", "img", 100, 0, new ArrayList<>());
+		User u1 = new User("user", "user@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user","Especialidad de user", null, 100, 0, new ArrayList<>());
 		userRepository.save(u1);
 
 		

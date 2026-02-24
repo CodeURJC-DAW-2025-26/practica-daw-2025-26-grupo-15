@@ -27,7 +27,12 @@
           <div class="layout-edit-profile row g-4">
             
             <div class="photo-column col-12 col-md-4">
-              <div class="profile-avatar-preview">U</div>
+              <div class="profile-avatar-preview">
+                {{#user.photo}}
+                <img src="/images/{{user.photo.id}}" alt="Profile photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
+                {{/user.photo}}
+                {{^user.photo}}{{nameInitial}}{{/user.photo}}
+              </div>
               <label>Profile photo</label>
             </div>
 

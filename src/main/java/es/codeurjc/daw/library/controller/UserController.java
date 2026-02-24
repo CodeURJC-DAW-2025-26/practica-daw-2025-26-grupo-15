@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
@@ -96,6 +98,9 @@ public class UserController {
     public String editProfile(Model model, Principal principal) {
         User user = resolveUser(principal);
         model.addAttribute("user", user);
+        if (user.getName() != null && !user.getName().isEmpty()) {
+            model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
+        }
         return "edit-profile";
     }
 
@@ -108,22 +113,27 @@ public class UserController {
     public String editProfileForm(Model model, Principal principal) {
         User user = resolveUser(principal);
         model.addAttribute("user", user);
+        if (user.getName() != null && !user.getName().isEmpty()) {
+            model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
+        }
         return "edit-profile-form";
     }
 
     @PostMapping("/edit-profile-save")
-    public String editProfileSave(Model model, User user , Principal principal) {
+    public String editProfileSave(Model model, User user,
+            @RequestParam(value = "photoFile", required = false) MultipartFile photoFile,
+            Principal principal) {
         User oldUser = resolveUser(principal);
         User newUser;
         try {
-            newUser = userService.modify(user, oldUser);
+            newUser = userService.modify(user, oldUser, photoFile);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
         
         model.addAttribute("user", newUser);
-        return "profile";
+        return "redirect:/profile";
     }
 
     private User resolveUser(Principal principal) {

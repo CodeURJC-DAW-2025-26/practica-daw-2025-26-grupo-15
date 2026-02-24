@@ -30,7 +30,9 @@
           <aside class="sidebar col-12 col-lg-3">
             <div class="profile-sidebar-header">
               <div class="profile-avatar-preview">
-                {{#user.photo}}{{user.photo}}{{/user.photo}}
+                {{#user.photo}}
+                <img src="/images/{{user.photo.id}}" alt="Profile photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
+                {{/user.photo}}
                 {{^user.photo}}<i class="bi bi-person-circle"></i>{{/user.photo}}
               </div>
             </div>
@@ -76,8 +78,10 @@
 
               {{#isOwnProfile}}
               <div class="dropdown">
-                <div class="avatar">
-                  {{#user.photo}}{{user.photo}}{{/user.photo}}
+                <div class="avatar avatar--img">
+                  {{#user.photo}}
+                  <img src="/images/{{user.photo.id}}" alt="Profile photo" />
+                  {{/user.photo}}
                   {{^user.photo}}<i class="bi bi-person-circle"></i>{{/user.photo}}
                 </div>
                 <div class="dropdown-content">
