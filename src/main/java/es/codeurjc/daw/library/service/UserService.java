@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -90,8 +91,8 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public List<User> searchUsersBySimilarName(String q, int page, int size) {
-        return userRepo.searchUsersBySimilarName(q, PageRequest.of(page, size)).getContent(); // si es Slice/Page
+    public Slice<User> searchUsersBySimilarName(String q, int page, int size) {
+        return userRepo.searchUsersBySimilarName(q, PageRequest.of(page, size));
     }
 
     public User modify(User user, User oldUser) {

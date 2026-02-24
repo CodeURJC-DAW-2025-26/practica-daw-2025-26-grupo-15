@@ -59,11 +59,16 @@ public class WebSecurityConfig {
 						.requestMatchers("/favicon.ico").permitAll()
 						.requestMatchers("/exercise").permitAll()
 						.requestMatchers("/list-view").permitAll()
+						.requestMatchers("/new-list").permitAll()
+						.requestMatchers("/new-exercise").permitAll()
+                        .requestMatchers("/error").permitAll()
+						.requestMatchers("/searchUsers**").permitAll()
 						.requestMatchers("/searchUsers").permitAll()
 						.requestMatchers("/loginerror").permitAll()
 						.requestMatchers("/error").permitAll()
 						.requestMatchers("/profile/{id}").permitAll()
 
+						.requestMatchers("/edit-list/**").permitAll()
 						// PRIVATE PAGES
 						.requestMatchers("/profile").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/solution/**").hasAnyRole("USER", "ADMIN")

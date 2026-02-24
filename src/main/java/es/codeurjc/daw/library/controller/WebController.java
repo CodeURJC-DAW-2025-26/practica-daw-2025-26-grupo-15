@@ -17,6 +17,8 @@ import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.data.domain.Slice;
 
 
 
@@ -64,23 +66,32 @@ public class WebController {
     }
     
 
-    @GetMapping(value = "/searchUsers", produces = "text/html;charset=UTF-8")
-    public String ajaxSearchUsers(
-        @RequestParam String name,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "25") int size,
-        Model model) {
+
+    @GetMapping(value="/searchUsers", produces="text/html;charset=UTF-8")
+    public String searchUsers(@RequestParam String name,
+                              @RequestParam(required = false) int page,
+                              @RequestParam(required = false) int size,
+                                Model model,
+                                HttpServletResponse response) {
 
         String q = name == null ? "" : name.trim();
 
-        List<User> foundUsers = q.isEmpty()
-            ? List.of()
-            : userService.searchUsersBySimilarName(q, page, size);
+        if (q.isEmpty()) {
+            response.setHeader("X-Has-More", "false");
+            response.setHeader("X-Results-Count", "0");
+            model.addAttribute("foundUsers", List.of());
+            return "fragments/search-users";
+        }
 
-        model.addAttribute("foundUsers", foundUsers);
+        Slice<User> slice = userService.searchUsersBySimilarName(q, page, size);
 
-        return "fragments/search-users"; 
-    }
+        response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
+        response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
+
+        model.addAttribute("foundUsers", slice.getContent());
+
+            return "fragments/search-users";
+        }
 
     private User resolveUser(Principal principal) {
         if (principal instanceof OAuth2AuthenticationToken oauth2Token) {

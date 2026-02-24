@@ -14,33 +14,50 @@
   <main class="page">
     <div class="brand">
       <span class="brand-mark"></span>
-      <a href="home.html"><span class="brand-title">DSGram</span></a>
+      <a href="/"><span class="brand-title">DSGram</span></a>
     </div>
 
     <div class="container">
       <div class="row justify-content-center">
         <section class="hero-card hero-card--full-width hero-card--exercise col-12 col-lg-8">
-          <div class="form-block text-start">
+          <form action="/exercise/{{exerciseId}}/new-solution" method="post" enctype="multipart/form-data"
+            class="form-block text-start">
 
             <div class="text-center mb-5">
               <h2>Add solution</h2>
             </div>
 
+            <div class="mb-4 w-100">
+              <label for="solName" class="form-label">Solution Title</label>
+              <input id="solName" name="name" type="text" class="form-control-custom"
+                placeholder="Briefly name your solution" required />
+            </div>
+
+            <div class="mb-4 w-100">
+              <label for="solDesc" class="form-label">Description</label>
+              <textarea id="solDesc" name="description" rows="3" class="form-control-custom"
+                placeholder="Explain your approach..." required></textarea>
+            </div>
+
             <div class="mb-5 w-100">
-              <label class="form-label">Data Structure Creation Board</label>
-              <div class="card w-100 bg-soft border-0" style="min-height: 300px; display: grid; place-items: center;">
-                <div class="text-center text-muted">
-                  <p class="mb-0">Drawing area / visualization</p>
+              <label class="form-label">Upload your solution (PDF or Image)</label>
+              <div class="card w-100 bg-soft border-0 p-5"
+                style="min-height: 200px; display: grid; place-items: center; border: 2px dashed #ccc !important;">
+                <div class="text-center">
+                  <input type="file" name="imageFile" id="imageFile" class="form-control form-control-custom mb-3"
+                    required />
+                  <p class="text-muted small mb-0">Select the file containing your data structure visualization</p>
                 </div>
               </div>
             </div>
 
             <div class="d-flex justify-content-end gap-3 w-100 mt-4">
-              <a class="btn ghost" href="exercise.html">Back</a>
-              <button type="button" class="btn">Send</button>
+              <a class="btn ghost" href="/exercise/{{exerciseId}}">Back</a>
+              <button type="submit" class="btn">Send Solution</button>
             </div>
 
-          </div>
+            <input type="hidden" name="_csrf" value="{{token}}">
+          </form>
         </section>
       </div>
     </div>
