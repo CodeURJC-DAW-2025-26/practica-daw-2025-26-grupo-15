@@ -70,6 +70,9 @@ public class ExerciseController {
             model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
             model.addAttribute("exercise", exercise);
             model.addAttribute("list", exercise.getExerciseList());
+            boolean isOwner = exercise.getExerciseList().getOwner().getId().equals(user.getId());
+            model.addAttribute("isOwner", isOwner);
+            
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";

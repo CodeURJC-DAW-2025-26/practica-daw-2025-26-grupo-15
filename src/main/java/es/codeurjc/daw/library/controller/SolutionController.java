@@ -39,6 +39,8 @@ public class SolutionController {
         model.addAttribute("solution", solution);
         model.addAttribute("exercise", solution.getExercise());
         model.addAttribute("comments", solution.getComments());
+        boolean isOwner = solution.getOwner().getId().equals(user.getId());
+        model.addAttribute("isOwner", isOwner);
 
         return "solution";
     }
@@ -69,9 +71,18 @@ public class SolutionController {
         return "redirect:/exercise/" + exerciseId;
     }
 
-    @GetMapping("/editsolution")
-    public String editSolution() {
-        return "editSolution";
+
+    @PostMapping("/exercise/{exerciseId}/solution/{solutionId}/delete")
+    public String deleteSolution(Model model, @PathVariable Long exerciseId, @PathVariable Long solutionId, Principal principal) {
+        User user = resolveUser(principal);
+        
+        try {
+            solutionService.deleteSolution(solutionId, user);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+        return "redirect:/exercise/" + exerciseId;
     }
 
     private User resolveUser(Principal principal) {

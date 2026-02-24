@@ -15,6 +15,7 @@ import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.service.SolutionService;
 import es.codeurjc.daw.library.service.CommentService;
 
+
 @Controller
 public class CommentController {
 
@@ -42,6 +43,20 @@ public class CommentController {
 
         return "redirect:/solution/" + id;
     }
+
+    @PostMapping("/solution/{solutionId}/comment/{commentId}/delete")
+    public String deleteComment(Model model, @PathVariable Long solutionId, @PathVariable Long commentId, Principal principal) {
+        User user = resolveUser(principal);
+        try {
+            commentService.deleteComment(commentId, user);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+
+        return "redirect:/solution/" + solutionId;
+    }
+    
 
     private User resolveUser(Principal principal) {
         if (principal instanceof OAuth2AuthenticationToken oauth2Token) {

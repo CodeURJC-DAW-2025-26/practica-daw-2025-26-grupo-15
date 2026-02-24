@@ -44,7 +44,17 @@ public class SolutionService {
         Exercise exercise = exerciseService.findById(exerciseId);
         solution.setExercise(exercise);
         exercise.getSolutions().add(solution);
+        exercise.incrementNumSolutions();
         return solutionRepo.save(solution);
+    }
+
+
+    public void deleteSolution(Long id, User user){
+        Solution solution = solutionRepo.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
+        if (!solution.getOwner().getId().equals(user.getId())) {
+            throw new RuntimeException("You do not have permission to delete this solution");
+        }
+        solutionRepo.delete(solution);
     }
 
 

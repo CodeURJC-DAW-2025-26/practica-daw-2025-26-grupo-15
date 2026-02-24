@@ -15,7 +15,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import es.codeurjc.daw.library.model.Book;
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.Image;
@@ -62,10 +61,10 @@ public class DatabaseInitializer {
 		ExerciseList lista = new ExerciseList("Lista de ejemplo", "Lista para ver", "Algoritmos", new Date(System.currentTimeMillis()), u1, new ArrayList<>());
 		exerciseListRepository.save(lista);
 
-		Exercise ex1 = new Exercise("Grafo", "hacer un bfs", 0, u1);
+		Exercise ex1 = new Exercise("Grafo", "hacer un bfs", 1, u1);
 		ex1.setExerciseList(lista);
 
-		Exercise ex2 = new Exercise("Árbol", "hacer un recorrido in-order", 0, u1);
+		Exercise ex2 = new Exercise("Árbol", "hacer un recorrido in-order", 1, u1);
 		ex2.setExerciseList(lista);
 
 		exerciseRepository.save(ex1);
