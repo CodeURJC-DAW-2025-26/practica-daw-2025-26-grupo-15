@@ -21,11 +21,13 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public Optional<User> findById(Long id) {
+        return userRepo.findById(id);
+    }
+
     public Optional<User> findByName(String name){
         return userRepo.findByName(name);
     }
-
-
 
     public Optional<User> findByEmail(String email){
         return userRepo.findByEmail(email);

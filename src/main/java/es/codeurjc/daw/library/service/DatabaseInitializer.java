@@ -50,41 +50,33 @@ public class DatabaseInitializer {
 	private SolutionRepository solutionRepository;
 
 	@Autowired
-	private PostRepository postRepository; 
+	private PostRepository postRepository;
 
 	@PostConstruct
 	public void init() throws IOException, URISyntaxException {
-		User u1 = new User("user","user@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user", "Especialidad de user", "img", 100, 0, new ArrayList<>());
+
+		User u1 = new User("user", "user@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user","Especialidad de user", "img", 100, 0, new ArrayList<>());
 		userRepository.save(u1);
-		Exercise ex1 = new Exercise("Grafo", "hacer un bfs", 0, u1);
-		Exercise ex2 = new Exercise("Árbol", "hacer un recorrido in-order", 0, u1);
 
-		exerciseRepository.save(ex1);
-		exerciseRepository.save(ex2);
-
-		List<Exercise> ejercicios = new ArrayList<>();
-		ejercicios.add(ex1);
-		ejercicios.add(ex2);
-
-		List<Solution> soluciones = new ArrayList<>();
-		Solution sol1 = new Solution("Solución al ejercicio de grafo", "Esta es la solución al ejercicio de grafo", 0, "13/2", u1);
-		solutionRepository.save(sol1);
-		sol1.setExercise(ex1);
-		soluciones.add(sol1);
-		ejercicios.get(0).setSolutions(soluciones);
-
-		ExerciseList lista = new ExerciseList("Lista de ejemplo", "Lista para ver", "Algoritmos", new Date(System.currentTimeMillis()), u1, ejercicios);
+		
+		ExerciseList lista = new ExerciseList("Lista de ejemplo", "Lista para ver", "Algoritmos", new Date(System.currentTimeMillis()), u1, new ArrayList<>());
 		exerciseListRepository.save(lista);
 
-		ex1.setExerciseList(lista); 
+		Exercise ex1 = new Exercise("Grafo", "hacer un bfs", 0, u1);
+		ex1.setExerciseList(lista);
+
+		Exercise ex2 = new Exercise("Árbol", "hacer un recorrido in-order", 0, u1);
 		ex2.setExerciseList(lista);
 
 		exerciseRepository.save(ex1);
 		exerciseRepository.save(ex2);
 
-		Post p1 = new Post(u1, ex1.getTitle(),"/exercise", "New Excercise", Instant.now());
-		Post p2 = new Post(u1, ex2.getTitle(),"/exercise", "New Excercise", Instant.now());
+		Solution sol1 = new Solution("Solución al ejercicio de grafo", "Esta es la solución al ejercicio de grafo", 0,"13/2", u1);
+		sol1.setExercise(ex1);
+		solutionRepository.save(sol1);
 
+		Post p1 = new Post(u1, ex1.getTitle(), "/exercise", "New Excercise", Instant.now());
+		Post p2 = new Post(u1, ex2.getTitle(), "/exercise", "New Excercise", Instant.now());
 		postRepository.save(p1);
 		postRepository.save(p2);
 	}

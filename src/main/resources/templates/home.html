@@ -19,53 +19,65 @@
     <section class="app-shell feed">
       <div class="container-fluid px-0">
         <div class="row g-0">
+
           <aside class="sidebar col-12 col-lg-3">
             <!--Search Bar-->
-
-              <label class="visually-hidden" for="sidebarSearch">Search</label>
-
-              <div class="sidebar-search__wrap">
-                
-
-                <input id="sidebarSearch"
-                       name="searchName" 
-                       class="sidebar-search__input" 
-                       type="search" 
-                       placeholder="Search for users to conect with…" 
-                       aria-label="Search"
-                       oninput="searchUsers(25)"/>
-
-                <button class="sidebar-search__btn" type="submit" onclick="searchUsers(25)">
-                  <!-- search icon-->
-                  <span class="sidebar-search__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M10.5 18.5a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2"/>
-                      <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                  </span>
-                </button>
-              </div>
+            <label class="visually-hidden" for="sidebarSearch">Search</label>
+            <div class="sidebar-search__wrap">
+              <input id="sidebarSearch"
+                     name="searchName"
+                     class="sidebar-search__input"
+                     type="search"
+                     placeholder="Search for users to connect with…"
+                     aria-label="Search"
+                     oninput="searchUsers(25)"/>
+              <button class="sidebar-search__btn" type="submit" onclick="searchUsers(25)">
+                <span class="sidebar-search__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.5 18.5a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
+              </button>
+            </div>
 
             <!-- Search results -->
-          <div id="searchContainer" class="sidebar-search-results visually-hidden" aria-label="Search results">
-            <div class="sidebar-search-results__header">
-              <span class="sidebar-search-results__title">Search results</span>
+            <div id="searchContainer" class="sidebar-search-results visually-hidden" aria-label="Search results">
+              <div class="sidebar-search-results__header">
+                <span class="sidebar-search-results__title">Search results</span>
+              </div>
+              <div id="searchResults" class="sidebar-search-results__list" role="list"></div>
             </div>
-            <div id="searchResults" class="sidebar-search-results__list" role="list"></div>
-          </div>
 
-
-            <!--Following users-->
-            <div>
-              <h3>Following:</h3>
+            <!--Following users (logged in)-->
+            {{#logged}}
+            <div class="sidebar-section">
+              <h3 class="sidebar-section__title">Following</h3>
               <div class="list">
                 <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U1</span><span class="sidebar-search-results__name">User 1</span></div></a>
                 <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U2</span><span class="sidebar-search-results__name">User 2</span></div></a>
                 <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U3</span><span class="sidebar-search-results__name">User 3</span></div></a>
                 <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U4</span><span class="sidebar-search-results__name">User 4</span></div></a>
               </div>
+              <a class="btn secondary" href="/following">See all</a>
             </div>
-            <a class="btn secondary" href="/following">See all</a>
+            {{/logged}}
+
+            <!--Guest CTA (not logged in)-->
+            {{^logged}}
+            <div class="sidebar-cta">
+              <div class="sidebar-cta__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <p class="sidebar-cta__heading">Join DSGram</p>
+              <p class="sidebar-cta__sub">Follow users, share solutions and track your progress.</p>
+              <a class="sidebar-cta__btn sidebar-cta__btn--primary" href="/login">Log in</a>
+              <a class="sidebar-cta__btn sidebar-cta__btn--ghost" href="/register">Create account</a>
+            </div>
+            {{/logged}}
           </aside>
           <!--Main content-->
         <div class="content col-12 col-lg-9">
@@ -74,10 +86,12 @@
               <h2 class="section-title">Home feed</h2>
               <p class="muted">Recent changes of your interest</p>
             </div>
+            {{#logged}}
             <div class="profile-image d-flex align-items-center gap-2">
-              <p class="p greeting mt-3">Welcome user name!</p>
-              <a href="/profile?userName={{name}}"><div class="avatar">U</div></a>
+              <p class="p greeting mt-3">Welcome {{name}}!</p>
+              <a href="/profile"><div class="avatar">U</div></a>
             </div>
+            {{/logged}}
           </div>
           <!--Lists feed-->      
           <div class="feed-stream mt-0">
@@ -112,7 +126,7 @@
         </div>
         <div class="col-12 col-md-4">
           <ul class="nav justify-content-center gap-3 list-unstyled d-flex mb-0">
-            <li><a href="/home" class="footer-link">Home</a></li>
+            <li><a href="/" class="footer-link">Home</a></li>
             <li><a href="/profile" class="footer-link">Profile</a></li>
           </ul>
         </div>
