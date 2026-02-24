@@ -4,7 +4,6 @@ import es.codeurjc.daw.library.model.Image;
 import es.codeurjc.daw.library.model.User;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,7 @@ public class UserService {
 
     @Autowired
     private ImageService imageService;
+    
     @Autowired
     private PasswordEncoder passwordEncoder;
 

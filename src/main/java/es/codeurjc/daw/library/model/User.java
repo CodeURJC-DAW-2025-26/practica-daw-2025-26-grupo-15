@@ -147,6 +147,11 @@ public class User {
 	public Image getPhoto() {
 		return photo;
 	}
+
+	public String getNameInitial() {
+		return (name != null && !name.isEmpty()) ? String.valueOf(name.charAt(0)).toUpperCase() : "?";
+	}
+
 	public void setPhoto(Image photo) {
 		this.photo = photo;
 	}

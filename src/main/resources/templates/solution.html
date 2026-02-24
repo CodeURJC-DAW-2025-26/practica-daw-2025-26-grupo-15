@@ -39,7 +39,6 @@
                   </p>
                   <small class="text-secondary">Submitted: {{solution.lastUpdate}}</small>
                 </div>
-                <a href="/solution/{{solution.id}}/image" download="{{solution.name}}" class="btn secondary">Download File</a>
               </div>
               
               <div class="bg-light p-3 rounded border-start border-4 border-primary mt-3">
@@ -47,14 +46,16 @@
               </div>
             </div>
 
+            {{#solution.solImage}}
             <div class="solution-content mt-4">
               <div class="solution-viewer text-center p-2 bg-dark rounded overflow-hidden">
-                <img src="/solution/{{solution.id}}/image" 
-                     alt="Solution Visualization" 
+                <img src="/images/{{solution.solImage.id}}"
+                     alt="Solution Visualization"
                      class="img-fluid rounded shadow-sm"
                      style="max-height: 600px; width: auto;">
               </div>
             </div>
+            {{/solution.solImage}}
           </section>
 
           <section class="content-section">
@@ -64,9 +65,14 @@
               <div class="comment-item">
                 <div class="comment-item__header">
                   <div class="d-flex align-items-center gap-2">
-                    <div class="avatar-sm" style="background-color: #eee; border-radius: 50%; width: 32px; height: 32px; display: grid; place-items: center;">
-                      {{owner.name.0}}
-                    </div>
+                    {{#owner}}
+                    {{#photo}}
+                    <div class="avatar-sm avatar--img"><img src="/images/{{id}}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/></div>
+                    {{/photo}}
+                    {{^photo}}
+                    <div class="avatar-sm">{{nameInitial}}</div>
+                    {{/photo}}
+                    {{/owner}}
                     <div>
                       <strong class="comment-item__author">{{owner.name}}</strong>
                       <span class="comment-item__date">{{lastUpdate}}</span>

@@ -56,17 +56,14 @@ public class SolutionController {
     }
 
     @PostMapping("/exercise/{exerciseId}/new-solution")
-    public String newSolution(@PathVariable Long exerciseId, Solution solution, Principal principal, @RequestParam("imageFile") MultipartFile file) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
-
+    public String newSolution(Model model,@PathVariable Long exerciseId, Solution solution, Principal principal, @RequestParam("imageFile") MultipartFile file) {
+    
         User user = resolveUser(principal);
         try {
             solutionService.createSolution(exerciseId, solution, user, file);
         } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/add-solution/" + exerciseId + "?error";
+            model.addAttribute("errorMessage",e.getMessage());
+            return "error";
         }
         
         return "redirect:/exercise/" + exerciseId;
@@ -76,6 +73,7 @@ public class SolutionController {
     public String editSolution() {
         return "editSolution";
     }
+
     private User resolveUser(Principal principal) {
         if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
             String provider = oauth2Token.getAuthorizedClientRegistrationId();

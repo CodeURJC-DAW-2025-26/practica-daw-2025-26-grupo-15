@@ -2,12 +2,11 @@ package es.codeurjc.daw.library.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import java.sql.Blob;
 import java.util.List;
 import jakarta.persistence.CascadeType;
 import java.util.ArrayList;
@@ -21,8 +20,6 @@ public class Solution {
     private String name;
     private String description;
     private Date lastUpdate;
-    @Lob
-    private Blob pdfImage;
     @OneToMany(mappedBy = "solution", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
     private int numComments;
@@ -30,6 +27,9 @@ public class Solution {
     private User owner;
     @ManyToOne
     private Exercise exercise;
+    
+    @OneToOne(orphanRemoval = true)
+    private Image solImage;
 
     public Solution() {
     }
@@ -42,12 +42,12 @@ public class Solution {
         this.owner = owner;
     }
 
-    public Solution(String name, String description, int numComments, Date lastUpdate, Blob pdfImage, User owner) {
+    public Solution(String name, String description, int numComments, Date lastUpdate, Image solImage, User owner) {
         this.name = name;
         this.description = description;
         this.numComments = numComments;
         this.lastUpdate = lastUpdate;
-        this.pdfImage = pdfImage;
+        this.solImage = solImage;
         this.owner = owner;
     }
 
@@ -68,8 +68,8 @@ public class Solution {
         return lastUpdate;
     }
 
-    public Blob getPdfImage() {
-        return pdfImage;
+    public Image getSolImage() {
+        return solImage;
     }
 
     public List<Comment> getComments() {
@@ -108,8 +108,8 @@ public class Solution {
         this.lastUpdate = lastUpdate;
     }
 
-    public void setPdfImage(Blob pdfImage) {
-        this.pdfImage = pdfImage;
+    public void setSolImage(Image solImage) {
+        this.solImage = solImage;
     }
 
     public void setComments(List<Comment> comments) {

@@ -53,12 +53,17 @@ public class ExerciseController {
         if (principal == null) {
             return "redirect:/login";
         }
-        User user = resolveUser(principal);
-        Exercise exercise = exerciseService.findById(id);
-        model.addAttribute("user", user);
-        model.addAttribute("exercise", exercise);
-        model.addAttribute("list", exercise.getExerciseList());
-
+        try {
+            User user = resolveUser(principal);
+            Exercise exercise = exerciseService.findById(id);
+            model.addAttribute("user", user);
+            model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
+            model.addAttribute("exercise", exercise);
+            model.addAttribute("list", exercise.getExerciseList());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
         return "exercise";
     }
 
