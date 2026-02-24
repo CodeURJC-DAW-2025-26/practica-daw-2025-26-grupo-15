@@ -22,24 +22,30 @@
 
           <aside class="sidebar col-12 col-lg-3">
             <!--Search Bar-->
-            <label class="visually-hidden" for="sidebarSearch">Search</label>
-            <div class="sidebar-search__wrap">
-              <input id="sidebarSearch"
-                     name="searchName"
-                     class="sidebar-search__input"
-                     type="search"
-                     placeholder="Search for users to connect with…"
-                     aria-label="Search"
-                     oninput="searchUsers(25)"/>
-              <button class="sidebar-search__btn" type="submit" onclick="searchUsers(25)">
-                <span class="sidebar-search__icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.5 18.5a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2"/>
-                    <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                </span>
-              </button>
-            </div>
+
+              <label class="visually-hidden" for="sidebarSearch">Search</label>
+
+              <div class="sidebar-search__wrap">
+                
+
+                <input id="sidebarSearch"
+                       name="searchName" 
+                       class="sidebar-search__input" 
+                       type="search" 
+                       placeholder="Search for users to conect with…" 
+                       aria-label="Search"
+                       oninput="searchFirstPage(25)"/>
+
+                <button class="sidebar-search__btn" type="submit" onclick="searchUsers(25)">
+                  <!-- search icon-->
+                  <span class="sidebar-search__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M10.5 18.5a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2"/>
+                      <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                </button>
+              </div>
 
             <!-- Search results -->
             <div id="searchContainer" class="sidebar-search-results visually-hidden" aria-label="Search results">

@@ -206,6 +206,10 @@ button,
   gap: 8px;
 }
 
+.list-name{
+  width: 100%;
+}
+
 button:hover,
 .btn:hover {
   transform: translateY(-2px);
