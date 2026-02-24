@@ -48,6 +48,12 @@ public class WebController {
         if (principal != null) {
             User user = resolveUser(principal);
             model.addAttribute("name", user.getName());
+            if (user.getName() != null && !user.getName().isEmpty()) {
+                model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
+            }
+            if (user.getPhoto() != null) {
+                model.addAttribute("photoId", user.getPhoto().getId());
+            }
         }
         List<Post> allPosts = postService.findAll();
         if (!allPosts.isEmpty()) {

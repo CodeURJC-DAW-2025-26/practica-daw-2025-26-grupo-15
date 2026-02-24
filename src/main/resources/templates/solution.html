@@ -29,72 +29,69 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
-          <!-- Solution Header -->
           <section class="content-section mb-4">
             <div class="content-section__header">
-              <div
-                class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
                 <div>
-                  <h2 class="content-section__title mb-2">Solution by {{solution.owner.name}}</h2>
-                  <p class="content-section__meta text-muted mb-0">For Exercise: {{solution.exercise.title}} · Submitted
-                    {{solution.lastUpdate}}</p>
+                  <h2 class="content-section__title mb-2">{{solution.name}}</h2>
+                  <p class="content-section__meta text-muted mb-0">
+                    By {{solution.owner.name}} · For Exercise: {{solution.exercise.title}}
+                  </p>
+                  <small class="text-secondary">Submitted: {{solution.lastUpdate}}</small>
                 </div>
-                <button class="btn secondary" type="button">Download</button>
               </div>
-              <p class="content-section__description mt-3">Review {{solution.owner.name}}'s proposed solution and leave
-                your comments for improvement.</p>
+              
+              <div class="bg-light p-3 rounded border-start border-4 border-primary mt-3">
+                <p class="content-section__description mb-0">{{solution.description}}</p>
+              </div>
             </div>
 
-            <!-- Solution Content -->
-            <div class="solution-content">
-              <div class="solution-viewer">
-                <div class="solution-viewer__placeholder">
-                  <svg width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
-                    <path
-                      d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z" />
-                    <path
-                      d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
-                  </svg>
-                  <strong>Solution File</strong>
-                  <p class="text-muted mb-0">solution-user1.svg</p>
-                </div>
+            {{#solution.solImage}}
+            <div class="solution-content mt-4">
+              <div class="solution-viewer text-center p-2 bg-dark rounded overflow-hidden">
+                <img src="/images/{{solution.solImage.id}}"
+                     alt="Solution Visualization"
+                     class="img-fluid rounded shadow-sm"
+                     style="max-height: 600px; width: auto;">
               </div>
             </div>
+            {{/solution.solImage}}
           </section>
 
-          <!-- Comments Section -->
           <section class="content-section">
-            <h3 class="content-section__subtitle mb-4">Comments</h3>
-            <!-- Comment Items -->
+            <h3 class="content-section__subtitle mb-4">Comments ({{solution.numComments}})</h3>
             <div class="comment-list mb-4">
-              {{#comments}}
+              {{#solution.comments}}
               <div class="comment-item">
                 <div class="comment-item__header">
                   <div class="d-flex align-items-center gap-2">
-                    <div class="avatar-sm">{{owner.photo}}</div>
+                    {{#owner}}
+                    {{#photo}}
+                    <div class="avatar-sm avatar--img"><img src="/images/{{id}}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/></div>
+                    {{/photo}}
+                    {{^photo}}
+                    <div class="avatar-sm">{{nameInitial}}</div>
+                    {{/photo}}
+                    {{/owner}}
                     <div>
                       <strong class="comment-item__author">{{owner.name}}</strong>
                       <span class="comment-item__date">{{lastUpdate}}</span>
                     </div>
                   </div>
-                  <button class="btn-icon" type="button"><i class="bi bi-trash"></i></button>
                 </div>
-                <p class="comment-item__text">{{text}}</p>
+                <p class="comment-item__text mt-2">{{text}}</p>
               </div>
-              {{/comments}}
-              {{^comments}}
-              <p class="text-muted">No comments yet.</p>
-              {{/comments}}
-
+              {{/solution.comments}}
+              {{^solution.comments}}
+              <p class="text-muted">No comments yet. Be the first to help!</p>
+              {{/solution.comments}}
             </div>
 
-            <!-- Add Comment Form -->
             <form class="add-comment-form" action="/solution/{{solution.id}}/comment" method="post">
               <div class="row g-3 align-items-end">
                 <div class="col-12 col-md-9">
                   <label for="new-comment" class="form-label">Add your comment</label>
-                  <input id="new-comment" name="text" class="form-control" type="text"
-                    placeholder="Share your thoughts..." required />
+                  <input id="new-comment" name="text" class="form-control" type="text" placeholder="Share your thoughts..." required />
                 </div>
                 <div class="col-12 col-md-3">
                   <button class="btn w-100" type="submit">Comment</button>
@@ -103,37 +100,14 @@
               <input type="hidden" name="_csrf" value="{{token}}">
             </form>
 
-            <!-- Back Button -->
             <div class="text-center mt-5">
-              <a class="btn ghost" href="/exercise/{{exercise.id}}">Back to {{exercise.title}}</a>
+              <a class="btn ghost" href="/exercise/{{solution.exercise.id}}">Back to Exercise</a>
             </div>
           </section>
         </div>
       </div>
     </div>
   </main>
-
-  <footer class="site-footer py-4 mt-auto">
-    <div class="container">
-      <div class="row align-items-center gy-3">
-        <div class="col-12 col-md-4">
-          <div class="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
-            <span class="brand-mark"></span>
-            <span class="fw-bold text-white">DSGram</span>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <ul class="nav justify-content-center gap-3 list-unstyled d-flex mb-0">
-            <li><a href="/" class="footer-link">Home</a></li>
-            <li><a href="/profile" class="footer-link">Profile</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-md-4 text-center text-md-end">
-          <small class="text-secondary">&copy; 2026 DSGram</small>
-        </div>
-      </div>
-    </div>
-  </footer>
-</body>
+  </body>
 
 </html>

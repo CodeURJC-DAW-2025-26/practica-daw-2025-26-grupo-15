@@ -31,7 +31,7 @@ public class OAuthUserService {
             user.setName(name);
             user.setEmail(email);
             if (photo != null) {
-                user.setPhoto(photo);
+                user.setPhoto(null);
             }
             userRepository.save(user);
         } else {
@@ -40,9 +40,7 @@ public class OAuthUserService {
                 user = userByEmail.get();
                 user.setProvider(provider);
                 user.setProviderId(providerId);
-                if (user.getPhoto() == null || user.getPhoto().isEmpty()) {
-                    user.setPhoto(photo);
-                }
+                
                 userRepository.save(user);
             } else {
                 user = new User(
@@ -52,7 +50,7 @@ public class OAuthUserService {
                     List.of("USER"),
                     "",
                     "",
-                    photo != null ? photo : "default-profile.png",
+                    null,
                     100,
                     0,
                     new ArrayList<>()

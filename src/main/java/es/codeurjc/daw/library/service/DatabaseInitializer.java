@@ -55,7 +55,7 @@ public class DatabaseInitializer {
 	@PostConstruct
 	public void init() throws IOException, URISyntaxException {
 
-		User u1 = new User("user", "user@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user","Especialidad de user", "img", 100, 0, new ArrayList<>());
+		User u1 = new User("user", "user@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user","Especialidad de user", null, 100, 0, new ArrayList<>());
 		userRepository.save(u1);
 
 		
@@ -71,20 +71,29 @@ public class DatabaseInitializer {
 		exerciseRepository.save(ex1);
 		exerciseRepository.save(ex2);
 
-		Solution sol1 = new Solution("Solución al ejercicio de grafo", "Esta es la solución al ejercicio de grafo", 0,"13/2", u1);
+		Solution sol1 = new Solution("Solución al ejercicio de grafo", "Esta es la solución al ejercicio de grafo", 0, new Date(System.currentTimeMillis()), u1);
 		sol1.setExercise(ex1);
+		setSolutionImage(sol1, "sample_images/dijkstra.jpg");
 		solutionRepository.save(sol1);
+
+		Solution sol2 = new Solution("Solución al ejercicio de árbol", "Esta es la solución al ejercicio de árbol in-order", 0, new Date(System.currentTimeMillis()), u1);
+		sol2.setExercise(ex2);
+		setSolutionImage(sol2, "sample_images/aestrella.jpg");
+		solutionRepository.save(sol2);
 
 		Post p1 = new Post(u1, ex1.getTitle(), "/exercise", "New Excercise", Instant.now());
 		Post p2 = new Post(u1, ex2.getTitle(), "/exercise", "New Excercise", Instant.now());
 		postRepository.save(p1);
 		postRepository.save(p2);
 	}
-
-	public void setBookImage(Book book, String classpathResource) throws IOException {
+	
+	public void setSolutionImage(Solution solution, String classpathResource) {
 		Resource image = new ClassPathResource(classpathResource);
-
-		Image createdImage = imageService.createImage(image.getInputStream());
-		book.setImage(createdImage);
+		try {
+			Image createdImage = imageService.createImage(image.getInputStream());
+			solution.setSolImage(createdImage);
+		} catch (IOException e) {
+			System.err.println("[DatabaseInitializer] No se pudo cargar la imagen '" + classpathResource + "': " + e.getMessage());
+		}
 	}
 }

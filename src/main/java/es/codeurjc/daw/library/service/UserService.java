@@ -1,7 +1,9 @@
 package es.codeurjc.daw.library.service;
 
+import es.codeurjc.daw.library.model.Image;
 import es.codeurjc.daw.library.model.User;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.daw.library.repository.UserRepository;
 
@@ -18,6 +21,9 @@ public class UserService {
     @Autowired 
     private UserRepository userRepo;
 
+    @Autowired
+    private ImageService imageService;
+    
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -90,22 +96,31 @@ public class UserService {
     }
 
     public User modify(User user, User oldUser) {
+        return modify(user, oldUser, null);
+    }
+
+    public User modify(User user, User oldUser, MultipartFile photoFile) {
         if (user.getName() == null || user.getName().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be empty");
         }
-
-        if (user.getBio() == null || user.getBio().isEmpty()) {
-            throw new IllegalArgumentException("Bio cannot be empty");
-        }
-
-        if (user.getSpecialty() == null || user.getSpecialty().isEmpty()) {
-            throw new IllegalArgumentException("Specialty cannot be empty");
-        }
-    
         
         oldUser.setName(user.getName());
         oldUser.setBio(user.getBio());
         oldUser.setSpecialty(user.getSpecialty());
+
+        if (photoFile != null && !photoFile.isEmpty()) {
+            try {
+                if (oldUser.getPhoto() != null) {
+                    Image updated = imageService.replaceImageFile(oldUser.getPhoto().getId(), photoFile.getInputStream());
+                    oldUser.setPhoto(updated);
+                } else {
+                    Image newImage = imageService.createImage(photoFile.getInputStream());
+                    oldUser.setPhoto(newImage);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to save profile photo", e);
+            }
+        }
 
         return userRepo.save(oldUser);
     }
