@@ -51,7 +51,35 @@ public class ExerciseListController {
     }
 
     @GetMapping("/new-list")
-    public String getNewList() {
+    public String getNewList(Model model) {
+        model.addAttribute("action", "/add-new-list");
+        return "new-list";
+    }
+
+    @PostMapping("/edit-list-content/{id}")
+    public String editListContent(Model model, @PathVariable Long id, ExerciseList editedList, Principal principal) {
+        User user = resolveUser(principal);
+        ExerciseList originalList = listService.findById(id);
+        try {
+            listService.editList(editedList, originalList, user);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+
+        return "redirect:/profile?userName="+user.getName();
+    }
+
+    @GetMapping("/edit-list/{id}")
+    public String getEditList(Model model, @PathVariable Long id, Principal principal) {
+
+        User user = resolveUser(principal);
+        ExerciseList list = listService.findById(id);
+
+        model.addAttribute("list", list);
+        model.addAttribute("user", user);
+        model.addAttribute("action", "/edit-list-content/"+id);
+
         return "new-list";
     }
 
@@ -67,7 +95,7 @@ public class ExerciseListController {
             return "error";
         }
 
-        return "redirect:/profile?userName=\"+user.getName();";
+        return "redirect:/profile?userName="+user.getName();
     }
 
     @GetMapping("/new-exercise")

@@ -74,6 +74,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/new-exercise").permitAll()
                         .requestMatchers("/error").permitAll()
 						.requestMatchers("/searchUsers").permitAll()
+						.requestMatchers("/edit-list/**").permitAll()
 						// PRIVATE PAGES
 						.requestMatchers("/newbook").hasAnyRole("USER")
 						.anyRequest().authenticated())

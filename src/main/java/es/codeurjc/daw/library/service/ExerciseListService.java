@@ -21,6 +21,27 @@ public class ExerciseListService {
         return listRepo.findByOwner(user);
     }
 
+    public ExerciseList editList(ExerciseList editedList, ExerciseList originalList, User user) {
+        if (editedList.getTitle() == null || editedList.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        }
+
+        if (editedList.getTopic() == null || editedList.getTopic().isEmpty()) {
+            throw new IllegalArgumentException("Topic cannot be null or empty");
+        }
+
+        if (editedList.getDescription() == null || editedList.getDescription().isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be null or empty");
+        }
+
+        originalList.setTitle(editedList.getTitle());
+        originalList.setTopic(editedList.getTopic());
+        originalList.setDescription(editedList.getDescription());
+
+        return listRepo.save(originalList);
+
+    }
+
     public ExerciseList createList(ExerciseList list, User owner){
         list.setOwner(owner);
         list.setLastUpdate(new Date(System.currentTimeMillis()));
