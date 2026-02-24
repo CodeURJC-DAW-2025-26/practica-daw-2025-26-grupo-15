@@ -39,6 +39,16 @@ public class ExerciseList  {
         this.exercises = exercises;
     }
 
+    public void addExercise(Exercise ex){
+        this.exercises.add(ex);
+        ex.setExerciseList(this);
+    }
+
+    public void removeExercise(Exercise ex){
+        this.exercises.remove(ex);
+        ex.setExerciseList(null);
+    }
+
     public Long getId() {
         return id;
     }
