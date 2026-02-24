@@ -67,7 +67,7 @@ public class ExerciseListController {
             return "error";
         }
 
-        return "redirect:/profile";
+        return "redirect:/profile?userName=\"+user.getName();";
     }
 
     @GetMapping("/new-exercise")
