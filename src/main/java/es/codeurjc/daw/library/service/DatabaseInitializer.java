@@ -71,7 +71,7 @@ public class DatabaseInitializer {
 		exerciseRepository.save(ex1);
 		exerciseRepository.save(ex2);
 
-		Solution sol1 = new Solution("Solución al ejercicio de grafo", "Esta es la solución al ejercicio de grafo", 0,"13/2", u1);
+		Solution sol1 = new Solution("Solución al ejercicio de grafo", "Esta es la solución al ejercicio de grafo", 0, new Date(System.currentTimeMillis()), u1);
 		sol1.setExercise(ex1);
 		solutionRepository.save(sol1);
 

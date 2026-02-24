@@ -5,13 +5,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.sql.Blob;
 import java.util.List;
 import jakarta.persistence.CascadeType;
 import java.util.ArrayList;
+import java.sql.Date;
 
 @Entity(name = "SolutionTable")
 public class Solution {
@@ -20,13 +20,13 @@ public class Solution {
     private Long id;
     private String name;
     private String description;
-    private String lastUpdate;
+    private Date lastUpdate;
     @Lob
     private Blob pdfImage;
     @OneToMany(mappedBy = "solution", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
     private int numComments;
-    @OneToOne
+    @ManyToOne
     private User owner;
     @ManyToOne
     private Exercise exercise;
@@ -34,7 +34,7 @@ public class Solution {
     public Solution() {
     }
 
-    public Solution(String name, String description, int numComments, String lastUpdate, User owner) {
+    public Solution(String name, String description, int numComments, Date lastUpdate, User owner) {
         this.name = name;
         this.description = description;
         this.numComments = numComments;
@@ -42,7 +42,7 @@ public class Solution {
         this.owner = owner;
     }
 
-    public Solution(String name, String description, int numComments, String lastUpdate, Blob pdfImage, User owner) {
+    public Solution(String name, String description, int numComments, Date lastUpdate, Blob pdfImage, User owner) {
         this.name = name;
         this.description = description;
         this.numComments = numComments;
@@ -59,15 +59,12 @@ public class Solution {
         return name;
     }
 
-    public String getDescription() {
-        return description;
-    }
 
     public int getNumComments() {
         return numComments;
     }
 
-    public String getLastUpdate() {
+    public Date getLastUpdate() {
         return lastUpdate;
     }
 
@@ -89,6 +86,53 @@ public class Solution {
 
     public void setExercise(Exercise exercise) {
         this.exercise = exercise;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setNumComments(int numComments) {
+        this.numComments = numComments;
+    }   
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public void setPdfImage(Blob pdfImage) {
+        this.pdfImage = pdfImage;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.setSolution(this);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void incrementNumComments() {
+        this.numComments++;
+    }
+
+    public void decrementNumComments() {
+        if (this.numComments > 0) {
+            this.numComments--;
+        }
     }
     
 

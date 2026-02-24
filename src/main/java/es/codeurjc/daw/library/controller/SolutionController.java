@@ -7,11 +7,15 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
 import es.codeurjc.daw.library.service.SolutionService; 
 import es.codeurjc.daw.library.model.Solution;
+
 
 
 @Controller
@@ -39,9 +43,33 @@ public class SolutionController {
         return "solution";
     }
 
-    @GetMapping("/newsolution")
-    public String createSolution() {
-        return "createSolution";
+
+    @GetMapping("/add-solution/{exerciseId}")
+    public String createSolution(@PathVariable Long exerciseId, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        User user = resolveUser(principal);
+        model.addAttribute("user", user);
+        model.addAttribute("exerciseId", exerciseId);
+        return "add-solution";
+    }
+
+    @PostMapping("/exercise/{exerciseId}/new-solution")
+    public String newSolution(@PathVariable Long exerciseId, Solution solution, Principal principal, @RequestParam("imageFile") MultipartFile file) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        User user = resolveUser(principal);
+        try {
+            solutionService.createSolution(exerciseId, solution, user, file);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/add-solution/" + exerciseId + "?error";
+        }
+        
+        return "redirect:/exercise/" + exerciseId;
     }
 
     @GetMapping("/editsolution")
