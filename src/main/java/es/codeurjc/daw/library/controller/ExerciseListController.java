@@ -1,20 +1,19 @@
 package es.codeurjc.daw.library.controller;
 
 import java.security.Principal;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
-
 
 @Controller
 public class ExerciseListController {
@@ -25,36 +24,57 @@ public class ExerciseListController {
     @Autowired
     private ExerciseListService listService;
 
-    @GetMapping("/list-view")
-    public String getListView(Model model, Principal principal) {
+
+    @GetMapping("/list-view/{id}")
+    public String getListView(Model model, Principal principal, @PathVariable Long id) {
         if (principal == null) {
             return "redirect:/login";
         }
         User user = resolveUser(principal);
-        List<ExerciseList> allLists = listService.findByOwner(user);
+        ExerciseList list = listService.findById(id);
 
-        if (!allLists.isEmpty()) {
-            model.addAttribute("list", allLists.get(0));
-        }
+        model.addAttribute("list", list);
         model.addAttribute("user", user);
         return "list-view";
     }
 
-    @GetMapping("/exercise")
-    public String getExercise(Model model) {
-        User user = userService.findByName("user").orElseThrow(); 
-        List<ExerciseList> allLists = listService.findByOwner(user);
-        model.addAttribute("user", user);
-        if (!allLists.isEmpty()) {
-            model.addAttribute("list", allLists.get(0)); //esta de ejemplo
-            model.addAttribute("exercise", allLists.get(0).getExercises().get(0)); //este ejercicio de ejemplo
-        }
 
-        return "exercise";
-    }
+    
+
+    
+
+    
 
     @GetMapping("/new-list")
-    public String getNewList() {
+    public String getNewList(Model model) {
+        model.addAttribute("action", "/add-new-list");
+        return "new-list";
+    }
+
+    @PostMapping("/edit-list-content/{id}")
+    public String editListContent(Model model, @PathVariable Long id, ExerciseList editedList, Principal principal) {
+        User user = resolveUser(principal);
+        ExerciseList originalList = listService.findById(id);
+        try {
+            listService.editList(editedList, originalList, user);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+
+        return "redirect:/profile?userName="+user.getName();
+    }
+
+    @GetMapping("/edit-list/{id}")
+    public String getEditList(Model model, @PathVariable Long id, Principal principal) {
+
+        User user = resolveUser(principal);
+        ExerciseList list = listService.findById(id);
+
+        model.addAttribute("list", list);
+        model.addAttribute("user", user);
+        model.addAttribute("action", "/edit-list-content/"+id);
+
         return "new-list";
     }
 
@@ -63,6 +83,8 @@ public class ExerciseListController {
 
         User user = resolveUser(principal);
 
+
+        
         try {
             listService.createList(newList, user);
         } catch (Exception e) {
@@ -70,7 +92,23 @@ public class ExerciseListController {
             return "error";
         }
 
-        return "redirect:/profile";
+        return "redirect:/profile/" + user.getId();
+    }
+
+    @PostMapping("delete/list/{id}")
+    public String deleteList(Model model, @PathVariable Long id, Principal principal) {
+        User user = resolveUser(principal);
+
+        ExerciseList list = listService.findById(id);
+
+        try{
+            listService.deleteList(list, user);
+        } catch (SecurityException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+     
+        return "redirect:/profile/" + user.getId();
     }
 
     @GetMapping("/new-exercise")
@@ -81,11 +119,17 @@ public class ExerciseListController {
     private User resolveUser(Principal principal) {
         if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
             String provider = oauth2Token.getAuthorizedClientRegistrationId();
-            String providerId = oauth2Token.getPrincipal().getAttribute("sub");
+            String providerId;
+            if ("github".equals(provider)) {
+                Integer id = oauth2Token.getPrincipal().getAttribute("id");
+                providerId = id != null ? id.toString() : null;
+            } else {
+                providerId = oauth2Token.getPrincipal().getAttribute("sub");
+            }
             return userService.findByProviderAndProviderId(provider, providerId)
                     .orElseThrow(() -> new RuntimeException("OAuth2 user not found in DB"));
         } else {
-            return userService.findByName(principal.getName())
+            return userService.findByEmail(principal.getName())
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
     }

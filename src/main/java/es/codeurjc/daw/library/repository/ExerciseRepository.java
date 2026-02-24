@@ -5,5 +5,4 @@ import es.codeurjc.daw.library.model.Exercise;
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
     
-
 }

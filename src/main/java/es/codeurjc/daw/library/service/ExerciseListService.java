@@ -21,6 +21,34 @@ public class ExerciseListService {
         return listRepo.findByOwner(user);
     }
 
+    public ExerciseList editList(ExerciseList editedList, ExerciseList originalList, User user) {
+        if (editedList.getTitle() == null || editedList.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        }
+
+        if (editedList.getTopic() == null || editedList.getTopic().isEmpty()) {
+            throw new IllegalArgumentException("Topic cannot be null or empty");
+        }
+
+        if (editedList.getDescription() == null || editedList.getDescription().isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be null or empty");
+        }
+
+        originalList.setTitle(editedList.getTitle());
+        originalList.setTopic(editedList.getTopic());
+        originalList.setDescription(editedList.getDescription());
+
+        return listRepo.save(originalList);
+
+    }
+
+    public void deleteList (ExerciseList list, User user){
+        if (!list.getOwner().getId().equals(user.getId())) {
+            throw new SecurityException("User is not the owner of the list");
+        }
+        listRepo.deleteById(list.getId());
+    }
+
     public ExerciseList createList(ExerciseList list, User owner){
         list.setOwner(owner);
         list.setLastUpdate(new Date(System.currentTimeMillis()));
@@ -29,6 +57,10 @@ public class ExerciseListService {
             throw new IllegalArgumentException("Title cannot be null or empty");
         }
         return listRepo.save(list);
+    }
+
+    public ExerciseList findById(Long id) {
+        return listRepo.findById(id).orElseThrow(() -> new RuntimeException("List not found"));
     }
 
 }
