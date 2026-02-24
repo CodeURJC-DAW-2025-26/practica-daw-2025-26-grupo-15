@@ -42,6 +42,13 @@ public class ExerciseListService {
 
     }
 
+    public void deleteList (ExerciseList list, User user){
+        if (!list.getOwner().getId().equals(user.getId())) {
+            throw new SecurityException("User is not the owner of the list");
+        }
+        listRepo.deleteById(list.getId());
+    }
+
     public ExerciseList createList(ExerciseList list, User owner){
         list.setOwner(owner);
         list.setLastUpdate(new Date(System.currentTimeMillis()));

@@ -83,6 +83,8 @@ public class ExerciseListController {
 
         User user = resolveUser(principal);
 
+
+        
         try {
             listService.createList(newList, user);
         } catch (Exception e) {
@@ -90,6 +92,22 @@ public class ExerciseListController {
             return "error";
         }
 
+        return "redirect:/profile/" + user.getId();
+    }
+
+    @PostMapping("delete/list/{id}")
+    public String deleteList(Model model, @PathVariable Long id, Principal principal) {
+        User user = resolveUser(principal);
+
+        ExerciseList list = listService.findById(id);
+
+        try{
+            listService.deleteList(list, user);
+        } catch (SecurityException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+     
         return "redirect:/profile/" + user.getId();
     }
 
