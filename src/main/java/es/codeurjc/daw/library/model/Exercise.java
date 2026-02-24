@@ -88,4 +88,35 @@ public class Exercise {
     public void setSolutions(List<Solution> solutions) {
         this.solutions = solutions;
     }
+
+    public void setPdfImage(Blob pdfImage) {
+        this.pdfImage = pdfImage;
+    }
+
+    public void setNumSolutions(int numSolutions) {
+        this.numSolutions = numSolutions;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public void incrementNumSolutions() {
+        this.numSolutions++;
+    }
+
+    public void decrementNumSolutions() {
+        if (this.numSolutions > 0) {
+            this.numSolutions--;
+        }
+    }
+
 }
