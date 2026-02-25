@@ -101,8 +101,6 @@ public class User {
 
 
 
-	public int getFollowers() {
-		return followers;
 	public int getSizeFollowers() {
 		return followers.size();
 	}
