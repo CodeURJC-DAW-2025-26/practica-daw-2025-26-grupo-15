@@ -29,8 +29,6 @@ public class User {
 	private String name;
 	private String bio;
 	private String specialty;
-	private int followersNumber;
-	private int followingNumber;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> roles;
@@ -39,15 +37,14 @@ public class User {
 	private Image photo;
 	
 	@ManyToMany
-	@JoinTable(
-		name = "user_following",
-		joinColumns = @JoinColumn(name = "follower_id"),
-		inverseJoinColumns = @JoinColumn(name = "followed_id")
-	)
-	private Set<User> following = new HashSet<>();
+	private List<User> following = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "following")
+	private List<User> followers = new ArrayList<>();
 
 	@ManyToMany
 	private List<User> requestedFriends;
+
 	@ManyToMany(mappedBy = "requestedFriends")
 	private List<User> requestReceived;
 
@@ -73,13 +70,14 @@ public class User {
 		this.bio = "";
 		this.specialty = "";
 		this.photo = null;
-		this.followersNumber = 0;
-		this.followingNumber = 0;
 		this.exerciseLists = List.of();
 		this.provider = "local";
 		this.providerId = "";
 		this.posts = List.of();
-		this.following = Set.of();
+		this.followers = new ArrayList<>();
+		this.following = new ArrayList<>();
+		this.requestedFriends = new ArrayList<>();
+		this.requestReceived = new ArrayList<>();
 	}
 
 	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String specialty,
@@ -91,13 +89,14 @@ public class User {
 		this.bio = bio;
 		this.specialty = specialty;
 		this.photo = photo;
-		this.followersNumber = followers;
-		this.followingNumber = following;
 		this.exerciseLists = exerciseLists;
 		this.provider = "local";
 		this.providerId = "";
 		this.posts = List.of();
-		this.following = Set.of();
+		this.followers = new ArrayList<>();
+		this.following = new ArrayList<>();
+		this.requestedFriends = new ArrayList<>();
+		this.requestReceived = new ArrayList<>();
 	}
 
 	public void addPost(Post p){
@@ -105,17 +104,6 @@ public class User {
 		p.setOwner(this);
 	}
 
-
-
-	public int getFollowersNumber() {
-		return followersNumber;
-	}
-	public int getFollowingNumber() {
-		return followingNumber;
-	}
-	public void setFollowingNumber(int following) {
-		this.followingNumber = following;
-	}
 
 	public void setRequestReceived(List<User> requestReceived) {
 		this.requestReceived = requestReceived;
@@ -182,9 +170,6 @@ public class User {
         this.roles = roles;
     }    
 
-    public void setFollowersNumber(int followers) {
-        this.followersNumber = followers;
-    }	
 
 	public String getBio() {
 		return bio;
@@ -226,7 +211,11 @@ public class User {
 		this.exerciseLists = exerciseLists;
 	}
 
-	public Set<User> getFollowing(){
+	public List<User> getFollowing(){
 		return this.following;
+	}
+
+	public List<User> getFollowers(){
+		return this.followers;
 	}
 }

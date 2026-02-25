@@ -66,10 +66,11 @@ public class WebSecurityConfig {
 						.requestMatchers("/loginerror").permitAll()
 						.requestMatchers("/error").permitAll()
 						.requestMatchers("/profile/{id}").permitAll()
+						.requestMatchers("/requestToFollow").permitAll() //CAMBIAR A PRIVATE TRAS ARREGLAR LOS ROLES
+						.requestMatchers("/profile").permitAll() //CAMBIAR A PRIVATE TRAS ARREGLAR LOS ROLES
 
 						.requestMatchers("/edit-list/**").permitAll()
 						// PRIVATE PAGES
-						.requestMatchers("/profile").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/solution/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/edit-profile").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/new-exercise").hasAnyRole("USER")

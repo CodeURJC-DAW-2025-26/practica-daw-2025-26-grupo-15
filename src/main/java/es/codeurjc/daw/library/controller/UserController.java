@@ -50,7 +50,12 @@ public class UserController {
         }
         User user = resolveUser(principal);
         List<ExerciseList> userLists = listService.findByOwner(user);
+
+        List<User> requests = user.getRequestReceived();
+        model.addAttribute("firstTreeRequests", requests.size() > 3 ? requests.subList(0, 3) : requests);
         model.addAttribute("user", user);
+        model.addAttribute("followersNumber", user.getFollowers().size());
+        model.addAttribute("followingNumber", user.getFollowing().size());
         model.addAttribute("userLists", userLists);
         model.addAttribute("isOwnProfile", true);
         return "profile";
@@ -63,14 +68,20 @@ public class UserController {
                     .orElseThrow(() -> new RuntimeException("User not found"));
             List<ExerciseList> userLists = listService.findByOwner(profileUser);
             model.addAttribute("user", profileUser);
+            model.addAttribute("followersNumber", profileUser.getFollowers().size());
+            model.addAttribute("followingNumber", profileUser.getFollowing().size());
             model.addAttribute("userLists", userLists);
 
             if (principal != null) {
                 User loggedUser = resolveUser(principal);
-                model.addAttribute("isOwnProfile", loggedUser.getId().equals(profileUser.getId()));
+                Boolean isOwnProfile = loggedUser.getId().equals(profileUser.getId());
+                model.addAttribute("isOwnProfile", isOwnProfile);
                 model.addAttribute("loggedUserId", loggedUser.getId());
-                model.addAttribute("hasRequested", userService.hasRequestedToFollow(loggedUser, user));
+                if (!isOwnProfile){
+                    User targetUser = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+                     model.addAttribute("hasRequested", userService.hasRequestedToFollow(loggedUser, targetUser));
             } else {
+                }
                 model.addAttribute("isOwnProfile", false);
             }
     } catch (Exception e) {
@@ -80,10 +91,30 @@ public class UserController {
         return "profile";
     }
 
+    @PostMapping("/requestToFollow")
+    public String requestToFollow(@RequestParam Long requesterId, @RequestParam Long targetId, Model model){
+        try{
+            User requesterUser = userService.findById(requesterId).orElseThrow(() -> new RuntimeException("User not found"));
+            User targetUser = userService.findById(targetId).orElseThrow(() -> new RuntimeException("User not found"));
+
+            userService.requestToFollow(requesterUser, targetUser);
+            return "redirect:/profile/" + targetId;
+        } catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+    }
+
     @GetMapping("/follow-requests")
     public String viewFollowRequests(Model model, Principal principal) {
         User user = resolveUser(principal);
+        List<User> requests = user.getRequestReceived();
+        model.addAttribute("followRequests", requests);
+        model.addAttribute("pendingCount", requests.size());
         model.addAttribute("user", user);
+        model.addAttribute("followersNumber", user.getFollowers().size());
+        model.addAttribute("followingNumber", user.getFollowing().size());
         model.addAttribute("isOwnProfile", true);
         model.addAttribute("pendingCount", 0);
 

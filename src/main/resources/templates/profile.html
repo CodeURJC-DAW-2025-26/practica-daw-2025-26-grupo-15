@@ -42,18 +42,22 @@
             <div class="pill">{{#user.specialty}}{{user.specialty}}{{/user.specialty}}{{^user.specialty}}No specialty set.{{/user.specialty}}</div>
 
             {{#isOwnProfile}}
+
             <div>
               <h3>Following requests</h3>
+              {{#firstTreeRequests}}
               <div class="list"> 
                 <div class="list-item">
-                  <span>Name</span>
+                  <span>{{name}}</span>
                   <div class="actions">
                     <span class="tag tag-accept">✔</span>
                     <span class="tag tag-decline">X</span>
                   </div>
                 </div>
               </div>
+              {{/firstTreeRequests}}
             </div>
+  
             <a class="btn secondary" href="/follow-requests">See all</a>
             {{/isOwnProfile}}
           </aside>
@@ -65,12 +69,12 @@
                 <h2 class="section-title">User's profile</h2>
                 <div class="followers-cta">
                   <a class="followers-cta-link" href="/following">
-                    <span class="followers-cta-value">{{user.followers}}</span>
+                    <span class="followers-cta-value">{{followersNumber}}</span>
                     <span class="followers-cta-label">Followers</span>
                   </a>
                   <div class="followers-cta-divider"></div>
                   <a class="followers-cta-link" href="/following">
-                    <span class="followers-cta-value">{{user.following}}</span>
+                    <span class="followers-cta-value">{{followingNumber}}</span>
                     <span class="followers-cta-label">Following</span>
                   </a>
                 </div>
@@ -91,7 +95,17 @@
               {{/isOwnProfile}}
               {{^isOwnProfile}}
               {{#logged}}
-              <button class="btn secondary" type="button">Follow</button>
+              {{#hasRequested}}
+              <button class="btn secondary" type="button" disabled>Requested</button>
+                {{/hasRequested}}
+                {{^hasRequested}}
+              <form method="post" action="/requestToFollow">
+                  <input type="hidden" name="requesterId" value="{{loggedUserId}}"/>
+                  <input type="hidden" name="targetId" value="{{user.id}}"/>
+                  <input type="hidden" name="_csrf" value="{{token}}"/>
+                  <button class="btn secondary" type="submit">Follow</button>
+                </form>
+                {{/hasRequested}}
               {{/logged}}
               {{/isOwnProfile}}
             </div>

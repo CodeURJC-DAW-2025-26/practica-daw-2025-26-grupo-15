@@ -65,7 +65,7 @@ public class UserService {
         }
 
         requester.getRequestedFriends().add(target);
-        target.getRequestRecieved().add(requester);
+        target.getRequestReceived().add(requester);
         userRepo.save(requester);
         userRepo.save(target);
     }
