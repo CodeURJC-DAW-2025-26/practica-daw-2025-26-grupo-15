@@ -54,7 +54,8 @@ public class DatabaseInitializer {
 	@PostConstruct
 	public void init() throws IOException, URISyntaxException {
 
-		User u1 = new User("user", "user@example.com", passwordEncoder.encode("pass"), List.of("USER","ADMIN"), "Bio de user","Especialidad de user", null, 100, 0, new ArrayList<>());
+		User u1 = new User("user", "user@example.com", passwordEncoder.encode("pass"), List.of("USER","ADMIN"), "Bio de user","Especialidad de user", null, new ArrayList<>());
+		userImage(u1, "sample_images/u1.png");
 		userRepository.save(u1);
 	
 
@@ -85,6 +86,17 @@ public class DatabaseInitializer {
 		Post p2 = new Post(u1, ex2.getTitle(), "/exercise", "New Excercise");
 		postRepository.save(p1);
 		postRepository.save(p2);
+	}
+
+	public void userImage(User user, String classpathResource) {
+		Resource image = new ClassPathResource(classpathResource);
+		try {
+			Image createdImage = imageService.createImage(image.getInputStream());
+			user.setPhoto(createdImage);
+
+		} catch (IOException e) {
+			System.err.println("[DatabaseInitializer] No se pudo cargar la imagen '" + classpathResource + "': " + e.getMessage());
+		}
 	}
 	
 	public void setSolutionImage(Solution solution, String classpathResource) {

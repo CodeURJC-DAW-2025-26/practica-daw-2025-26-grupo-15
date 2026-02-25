@@ -29,6 +29,10 @@ async function loadMoreFeed(size = 10) {
     if (count === 0) {
       feedHasMore = false;
       observer.disconnect();
+      if (feedPage === 0) {
+        const empty = document.getElementById('feedEmpty');
+        if (empty) empty.classList.remove('visually-hidden');
+      }
       return;
     }
 

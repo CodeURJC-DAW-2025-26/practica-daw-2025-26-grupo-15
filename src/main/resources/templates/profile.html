@@ -14,8 +14,10 @@
 <body>
   <main class="page page--feed">
     <div class="brand brand--full">
-      <span class="brand-mark"></span>
-      <a href="/"><span class="brand-title">DSGram</span></a>
+      <div class="brand-left">
+        <span class="brand-mark"></span>
+        <a href="/"><span class="brand-title">DSGram</span></a>
+      </div>
       {{#isOwnProfile}}
       <form action="/logout" method="post" class="brand-logout">
         <button type="submit" class="btn-logout"><i class="bi bi-box-arrow-right"></i> Log out</button>
@@ -79,8 +81,6 @@
                 <i class="bi bi-arrow-right-short"></i> See all requests
               </a>
             </div>
-  
-            <a class="btn secondary" href="/follow-requests">See all</a>
             {{/isOwnProfile}}
           </aside>
 

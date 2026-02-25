@@ -81,7 +81,7 @@ public class User {
 	}
 
 	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String specialty,
-				Image photo, int followers, int following, List<ExerciseList> exerciseLists) {
+				Image photo, List<ExerciseList> exerciseLists) {
 		this.name = name;
 		this.email = email;
 		this.encodedPassword = encodedPassword;

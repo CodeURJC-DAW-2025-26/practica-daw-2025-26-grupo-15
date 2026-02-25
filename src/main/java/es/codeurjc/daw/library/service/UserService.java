@@ -114,7 +114,7 @@ public class UserService {
             throw new RuntimeException("Email '" + user.getEmail() + "' is already registered.");
         }
         user.setEncodedPassword(passwordEncoder.encode(user.getEncodedPassword()));
-        
+        user.setRoles(java.util.List.of("USER"));
         return userRepo.save(user);
     }
 

@@ -82,6 +82,13 @@ a {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
+}
+
+.brand-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .brand-mark {
@@ -285,6 +292,34 @@ select:focus-visible {
   padding-right: 6px; /* opcional: espacio para scrollbar */
 }
 
+.feed-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-5);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.feed-empty svg {
+  opacity: 0.35;
+}
+
+.feed-empty__title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--ink);
+}
+
+.feed-empty__sub {
+  font-size: 13px;
+  margin: 0;
+  color: var(--text-muted);
+}
+
 .feed-card {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
@@ -322,18 +357,22 @@ select:focus-visible {
 .sidebar {
   background: var(--sidebar-dark);
   color: #f0f1f5;
-  padding: var(--space-6) var(--space-5);
+  padding: var(--space-5) var(--space-5);
   display: grid;
-  gap: var(--space-5);
-  min-height: 100vh;
-  height: 100vh;
-  align-items: start
-
+  gap: var(--space-3);
+  align-content: start;
+  position: sticky;
+  top: 0;
+  height: fit-content;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .app-shell.feed .sidebar {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
+  top: clamp(16px, 2.5vw, 28px);
+  max-height: calc(100vh - clamp(32px, 5vw, 56px));
 }
 
 .sidebar .pill {
