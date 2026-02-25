@@ -19,5 +19,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     ORDER BY p.date DESC
     """)
     Slice<Post> findFeedForUser(@Param("userId") Long userId, Pageable pageable);
+
 }
 
