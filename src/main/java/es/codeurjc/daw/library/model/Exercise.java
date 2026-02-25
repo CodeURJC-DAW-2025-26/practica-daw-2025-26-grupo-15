@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+
 import java.sql.Blob;
 import java.util.List;
 
@@ -19,7 +21,9 @@ public class Exercise {
     private String title;
     private String description;
     private int numSolutions;
+
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private Blob pdfImage;
 
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)

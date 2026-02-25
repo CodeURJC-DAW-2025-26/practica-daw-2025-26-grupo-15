@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity(name = "UserTable")
 public class User {
@@ -26,7 +27,10 @@ public class User {
 	private List<String> roles;
 	private String bio;
 	private String specialty;
-	private String photo;	
+
+	@OneToOne(orphanRemoval = true)
+	private Image photo;	
+
 
 	@ManyToMany(mappedBy = "followers")
 	private List<User> following;
@@ -47,6 +51,8 @@ public class User {
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
 	private List<ExerciseList> exerciseLists;
 	
+	@OneToMany(mappedBy = "owner")
+	private List<Post> posts;
 
 	
 
@@ -59,7 +65,7 @@ public class User {
 		this.roles = List.of("USER");
 		this.bio = "";
 		this.specialty = "";
-		this.photo = "";
+		this.photo = null;
 		this.followers = new ArrayList<>();
 		this.following = new ArrayList<>();
 		this.requestRecieved = new ArrayList<>();
@@ -67,10 +73,11 @@ public class User {
 		this.exerciseLists = new ArrayList<>();
 		this.provider = "local";
 		this.providerId = "";
+		this.posts = List.of();
 	}
 
 	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String specialty,
-				String photo, List<User> followers, List<User> following, List<ExerciseList> exerciseLists) {
+				Image photo, List<User> followers, List<User> following, List<ExerciseList> exerciseLists) {
 		this.name = name;
 		this.email = email;
 		this.encodedPassword = encodedPassword;
@@ -83,8 +90,19 @@ public class User {
 		this.exerciseLists = exerciseLists;
 		this.provider = "local";
 		this.providerId = "";
+		this.posts = List.of();
 		
 	}
+
+	public void addPost(Post p){
+		this.posts.add(p);
+		p.setOwner(this);
+	}
+
+
+
+	public int getFollowers() {
+		return followers;
 	public int getSizeFollowers() {
 		return followers.size();
 	}
@@ -179,10 +197,15 @@ public class User {
 		return specialty;
 	}
 
-	public String getPhoto() {
+	public Image getPhoto() {
 		return photo;
 	}
-	public void setPhoto(String photo) {
+
+	public String getNameInitial() {
+		return (name != null && !name.isEmpty()) ? String.valueOf(name.charAt(0)).toUpperCase() : "?";
+	}
+
+	public void setPhoto(Image photo) {
 		this.photo = photo;
 	}
 

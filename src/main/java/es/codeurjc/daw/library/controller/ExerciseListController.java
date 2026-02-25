@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import es.codeurjc.daw.library.model.ExerciseList;
+import es.codeurjc.daw.library.model.Post;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
+import es.codeurjc.daw.library.service.PostService;
 import es.codeurjc.daw.library.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -23,6 +25,9 @@ public class ExerciseListController {
 
     @Autowired
     private ExerciseListService listService;
+
+    @Autowired 
+    private PostService postService;
 
 
     @GetMapping("/list-view/{id}")
@@ -57,12 +62,18 @@ public class ExerciseListController {
         ExerciseList originalList = listService.findById(id);
         try {
             listService.editList(editedList, originalList, user);
+            postService.createPost(new Post(
+                user,
+                editedList.getTitle(),
+                "/list-view/"+ editedList.getId(),
+            "Edited List"  
+            ));
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
 
-        return "redirect:/profile?userName="+user.getName();
+        return "redirect:/profile/"+user.getId();
     }
 
     @GetMapping("/edit-list/{id}")
@@ -82,11 +93,15 @@ public class ExerciseListController {
     public String addNewList(Model model, ExerciseList newList, Principal principal) {
 
         User user = resolveUser(principal);
-
-
-        
+  
         try {
             listService.createList(newList, user);
+            postService.createPost(new Post(
+                user,
+                newList.getTitle(),
+                "/list-view/"+ newList.getId(),
+            "New List"  
+            ));
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
@@ -109,11 +124,6 @@ public class ExerciseListController {
         }
      
         return "redirect:/profile/" + user.getId();
-    }
-
-    @GetMapping("/new-exercise")
-    public String getNewExercise() {
-        return "new-exercise";
     }
 
     private User resolveUser(Principal principal) {

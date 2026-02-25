@@ -15,7 +15,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import es.codeurjc.daw.library.model.Book;
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.Image;
@@ -55,36 +54,58 @@ public class DatabaseInitializer {
 	@PostConstruct
 	public void init() throws IOException, URISyntaxException {
 
-		User u1 = new User("user", "user@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user","Especialidad de user", "img", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+		User u1 = new User("user", "user@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user","Especialidad de user", null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+		userImage(u1, "sample_images/u1.png");
 		userRepository.save(u1);
+		
+		
 
 		
 		ExerciseList lista = new ExerciseList("Lista de ejemplo", "Lista para ver", "Algoritmos", new Date(System.currentTimeMillis()), u1, new ArrayList<>());
 		exerciseListRepository.save(lista);
 
-		Exercise ex1 = new Exercise("Grafo", "hacer un bfs", 0, u1);
+		Exercise ex1 = new Exercise("Grafo", "hacer un bfs", 1, u1);
 		ex1.setExerciseList(lista);
 
-		Exercise ex2 = new Exercise("Árbol", "hacer un recorrido in-order", 0, u1);
+		Exercise ex2 = new Exercise("Árbol", "hacer un recorrido in-order", 1, u1);
 		ex2.setExerciseList(lista);
 
 		exerciseRepository.save(ex1);
 		exerciseRepository.save(ex2);
 
-		Solution sol1 = new Solution("Solución al ejercicio de grafo", "Esta es la solución al ejercicio de grafo", 0,"13/2", u1);
+		Solution sol1 = new Solution("Solución al ejercicio de grafo", "Esta es la solución al ejercicio de grafo", 0, new Date(System.currentTimeMillis()), u1);
 		sol1.setExercise(ex1);
+		setSolutionImage(sol1, "sample_images/dijkstra.jpg");
 		solutionRepository.save(sol1);
 
-		Post p1 = new Post(u1, ex1.getTitle(), "/exercise", "New Excercise", Instant.now());
-		Post p2 = new Post(u1, ex2.getTitle(), "/exercise", "New Excercise", Instant.now());
+		Solution sol2 = new Solution("Solución al ejercicio de árbol", "Esta es la solución al ejercicio de árbol in-order", 0, new Date(System.currentTimeMillis()), u1);
+		sol2.setExercise(ex2);
+		setSolutionImage(sol2, "sample_images/aestrella.jpg");
+		solutionRepository.save(sol2);
+
+		Post p1 = new Post(u1, ex1.getTitle(), "/exercise", "New Excercise");
+		Post p2 = new Post(u1, ex2.getTitle(), "/exercise", "New Excercise");
 		postRepository.save(p1);
 		postRepository.save(p2);
 	}
-
-	public void setBookImage(Book book, String classpathResource) throws IOException {
+	public void userImage(User user, String classpathResource) {
 		Resource image = new ClassPathResource(classpathResource);
+		try {
+			Image createdImage = imageService.createImage(image.getInputStream());
+			user.setPhoto(createdImage);
 
-		Image createdImage = imageService.createImage(image.getInputStream());
-		book.setImage(createdImage);
+		} catch (IOException e) {
+			System.err.println("[DatabaseInitializer] No se pudo cargar la imagen '" + classpathResource + "': " + e.getMessage());
+		}
+	}
+
+	public void setSolutionImage(Solution solution, String classpathResource) {
+		Resource image = new ClassPathResource(classpathResource);
+		try {
+			Image createdImage = imageService.createImage(image.getInputStream());
+			solution.setSolImage(createdImage);
+		} catch (IOException e) {
+			System.err.println("[DatabaseInitializer] No se pudo cargar la imagen '" + classpathResource + "': " + e.getMessage());
+		}
 	}
 }
