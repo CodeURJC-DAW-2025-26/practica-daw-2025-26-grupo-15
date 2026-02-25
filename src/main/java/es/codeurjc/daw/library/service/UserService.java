@@ -51,6 +51,10 @@ public class UserService {
         return userRepo.findByEmail(email).isPresent();
     }
 
+    public java.util.List<User> findAll() {
+        return userRepo.findAll();
+    }
+
     public void requestToFollow(User requester, User target){
         if (requester.getId().equals(target.getId())) {
             throw new IllegalArgumentException("User cannot follow themselves");

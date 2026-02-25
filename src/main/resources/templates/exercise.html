@@ -21,7 +21,10 @@
       </div>
       <div class="profile-image d-flex align-items-center gap-2">
         <a href="/profile">
-          <div class="avatar">U</div>
+          <div class="avatar avatar--img">
+            {{#user.photo}}<img src="/images/{{user.photo.id}}" alt="Profile photo" />{{/user.photo}}
+            {{^user.photo}}<span>{{user.nameInitial}}</span>{{/user.photo}}
+          </div>
         </a>
       </div>
     </div>
@@ -148,7 +151,6 @@
     </div>
   </main>
 
-  <footer class="site-footer py-4 mt-auto">
-    </footer>
+  {{>footer}}
 </body>
 </html>

@@ -63,6 +63,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/new-exercise").permitAll()
                         .requestMatchers("/error").permitAll()
 						.requestMatchers("/searchUsers**").permitAll()
+						.requestMatchers("/searchPosts**").permitAll()
 						.requestMatchers("/loginerror").permitAll()
 						.requestMatchers("/error").permitAll()
 						.requestMatchers("/profile/{id}").permitAll()

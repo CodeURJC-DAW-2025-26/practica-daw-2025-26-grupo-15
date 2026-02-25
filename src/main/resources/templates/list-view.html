@@ -9,7 +9,6 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
   <link rel="stylesheet" href="/assets/style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
 </head>
 
 <body>
@@ -21,7 +20,10 @@
       </div>
       <div class="profile-image d-flex align-items-center gap-2">
         <a href="/profile">
-          <div class="avatar">U</div>
+          <div class="avatar avatar--img">
+            {{#user.photo}}<img src="/images/{{user.photo.id}}" alt="Profile photo" />{{/user.photo}}
+            {{^user.photo}}<span>{{user.nameInitial}}</span>{{/user.photo}}
+          </div>
         </a>
       </div>
     </div>
@@ -31,95 +33,128 @@
         <div class="col-12 col-lg-10">
           <section class="content-section mb-4">
             <div class="content-section__header">
-              <div
-                class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
                 <div>
                   <h2 class="content-section__title mb-2">{{list.title}}</h2>
-                  <p class="content-section__meta text-muted mb-0">Created by {{list.owner.name}} · Last update:
-                    {{list.lastUpdate}}</p>
+                  <p class="content-section__meta text-muted mb-0">Created by {{list.owner.name}} · Last update: {{list.lastUpdate}}</p>
                 </div>
+                
+                {{#isOwner}}
                 <div class="d-flex gap-2">
-                  <button type="button" class="btn secondary">Delete list</button>
+                  <button type="button" class="btn secondary" data-bs-toggle="modal" data-bs-target="#deleteListModal">Delete list</button>
                 </div>
+
+                <div class="modal fade" id="deleteListModal" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="background: var(--bg-card); border: var(--stroke-light);">
+                      <div class="modal-header border-0">
+                        <h5 class="modal-title">Confirm Delete List</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure you want to delete the list "<strong>{{list.title}}</strong>"?</p>
+                        <p class="text-muted mt-2 mb-0">This will delete all exercises and solutions within it. This action cannot be undone.</p>
+                      </div>
+                      <div class="modal-footer border-0">
+                        <button type="button" class="btn secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form method="post" action="/list/{{list.id}}/delete" style="display: inline;">
+                          <input type="hidden" name="_csrf" value="{{token}}"/>
+                          <button type="submit" class="btn" style="background-color: var(--danger, #dc3545);">Delete everything</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {{/isOwner}}
               </div>
               <p class="content-section__description">{{list.description}}</p>
             </div>
           </section>
-
 
           <section class="content-section">
             <h3 class="content-section__subtitle mb-4">Exercises</h3>
             <div class="row g-4 mb-4">
               {{#list.exercises}}
               <div class="col-12 col-md-6">
-                <a href="/exercise/{{id}}" class="text-decoration-none">
-                  <div class="exercise-card">
-                    <div class="exercise-card__header">
-                      <span class="exercise-card__badge">Exercise {{-index}}</span>
-                      <div class="d-flex">
-                        <button class="btn-icon btn-icon-edit mx-1" type="button">
-                          <a href="/edit-exercise/{{id}}">
-                            <i class="bi bi-pencil icon-static"></i>
-                            <img src="/assets/pencilanimated.gif" alt="Editar" class="icon-gif">
-                          </a>
-                        </button>
-                        <button class="btn-icon" type="button"><i class="bi bi-trash"></i></button>
+                <div class="exercise-card position-relative">
+                  <div class="exercise-card__header">
+                    <span class="exercise-card__badge">Exercise {{-index}}</span>
+                    
+                    {{#isOwner}}
+                    <div class="d-flex position-relative z-3">
+                      <a href="/edit-exercise/{{id}}" class="btn-icon btn-icon-edit mx-1">
+                        <i class="bi bi-pencil icon-static"></i>
+                        <img src="/assets/pencilanimated.gif" alt="Editar" class="icon-gif">
+                      </a>
+                      <button class="btn-icon" type="button" data-bs-toggle="modal" data-bs-target="#deleteExerciseModal{{id}}">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                    {{/isOwner}}
+                  </div>
+                  
+                  <h4 class="exercise-card__title">
+                    <a href="/exercise/{{id}}" class="text-decoration-none text-reset stretched-link">{{title}}</a>
+                  </h4>
+                  <p class="exercise-card__description">{{description}}</p>
+                  <div class="exercise-card__footer">
+                    <span class="exercise-card__solutions">{{numSolutions}} solutions</span>
+                  </div>
+                </div>
+
+                {{#isOwner}}
+                <div class="modal fade" id="deleteExerciseModal{{id}}" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="background: var(--bg-card); border: var(--stroke-light);">
+                      <div class="modal-header border-0">
+                        <h5 class="modal-title">Delete Exercise</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Delete "<strong>{{title}}</strong>"?</p>
+                      </div>
+                      <div class="modal-footer border-0">
+                        <button type="button" class="btn secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form method="post" action="/list/{{list.id}}/exercise/{{id}}/delete">
+                          <input type="hidden" name="_csrf" value="{{token}}"/>
+                          <button type="submit" class="btn" style="background-color: var(--danger, #dc3545);">Delete</button>
+                        </form>
                       </div>
                     </div>
-                    <h4 class="exercise-card__title">{{title}}</h4>
-                    <p class="exercise-card__description">{{description}}</p>
-                    <div class="exercise-card__footer">
-                      <span class="exercise-card__solutions">{{numSolutions}} solutions</span>
-                    </div>
                   </div>
-                </a>
+                </div>
+                {{/isOwner}}
               </div>
               {{/list.exercises}}
 
               {{^list.exercises}}
               <div class="col-12 text-center">
-                <p class="text-muted">No exercises in this list yet. Click the + button to add one!</p>
+                <p class="text-muted">No exercises in this list yet. {{#isOwner}}Click the + button to add one!{{/isOwner}}</p>
               </div>
               {{/list.exercises}}
             </div>
 
+            {{#isOwner}}
             <div class="row g-3 justify-content-center">
-              <a class="btn plus-btn rounded-circle col-12 col-sm-auto" href="/list-view/{{list.id}}/new-exercise"><i
-                  class="bi bi-plus"></i></a>
+              <a class="btn plus-btn rounded-circle col-12 col-sm-auto" href="/list-view/{{list.id}}/new-exercise">
+                <i class="bi bi-plus"></i>
+              </a>
             </div>
+            {{/isOwner}}
 
-            <!-- Back Button -->
             <div class="text-center mt-4">
-              <a class="btn ghost" href="/profile/{{user.id}}">Back to {{user.name}}'s profile</a> <!--TODO: solve this redirection to profile with username instead of id-->
+              <a class="btn ghost" href="/profile/{{user.id}}">Back to {{user.name}}'s profile</a>
             </div>
-
           </section>
         </div>
       </div>
     </div>
   </main>
 
-  <footer class="site-footer py-4 mt-auto">
-    <div class="container">
-      <div class="row align-items-center gy-3">
-        <div class="col-12 col-md-4">
-          <div class="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
-            <span class="brand-mark"></span>
-            <span class="fw-bold text-white">DSGram</span>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <ul class="nav justify-content-center gap-3 list-unstyled d-flex mb-0">
-            <li><a href="/" class="footer-link">Home</a></li>
-            <li><a href="/profile/{{user.id}}" class="footer-link">Profile</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-md-4 text-center text-md-end">
-          <small class="text-secondary">&copy; 2026 DSGram</small>
-        </div>
-      </div>
-    </div>
-  </footer>
+  {{>footer}}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>

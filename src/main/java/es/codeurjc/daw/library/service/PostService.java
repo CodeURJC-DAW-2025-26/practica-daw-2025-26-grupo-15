@@ -33,5 +33,9 @@ public class PostService {
         return postRepo.findFeedForUser(user.getId(), PageRequest.of(page, size));
     }
 
+    public Slice<Post> findAll(int page, int size){
+        return postRepo.findAll(PageRequest.of(page, size));
+    }
+
 
 }

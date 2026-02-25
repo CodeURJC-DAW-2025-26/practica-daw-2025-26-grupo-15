@@ -33,9 +33,6 @@ public class ImageService {
         } catch (Exception e) {
             throw new IOException("Failed to create image", e);
         }
-
-        imageRepository.save(image);
-
         return image;
     }
 

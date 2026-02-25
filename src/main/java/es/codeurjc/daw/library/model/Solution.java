@@ -28,7 +28,7 @@ public class Solution {
     @ManyToOne
     private Exercise exercise;
     
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Image solImage;
 
     public Solution() {
