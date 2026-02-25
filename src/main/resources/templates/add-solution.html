@@ -12,9 +12,17 @@
 
 <body>
   <main class="page">
-    <div class="brand">
-      <span class="brand-mark"></span>
-      <a href="/"><span class="brand-title">DSGram</span></a>
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <a href="/"><span class="brand-title">DSGram</span></a>
+      </div>
+      <a href="/profile">
+        <div class="avatar avatar--img">
+          {{#user.photo}}<img src="/images/{{user.photo.id}}" alt="Profile photo" />{{/user.photo}}
+          {{^user.photo}}<span>{{user.nameInitial}}</span>{{/user.photo}}
+        </div>
+      </a>
     </div>
 
     <div class="container">

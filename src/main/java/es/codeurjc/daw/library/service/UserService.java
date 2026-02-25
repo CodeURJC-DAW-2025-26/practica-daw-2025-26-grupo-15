@@ -51,6 +51,10 @@ public class UserService {
         return userRepo.findByEmail(email).isPresent();
     }
 
+    public java.util.List<User> findAll() {
+        return userRepo.findAll();
+    }
+
     public User register(User user) {
         if (user.getName() == null || user.getName().trim().isEmpty()) {
             throw new RuntimeException("Username cannot be null or empty.");

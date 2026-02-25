@@ -42,19 +42,42 @@
             <div class="pill">{{#user.specialty}}{{user.specialty}}{{/user.specialty}}{{^user.specialty}}No specialty set.{{/user.specialty}}</div>
 
             {{#isOwnProfile}}
-            <div>
-              <h3>Following requests</h3>
-              <div class="list"> 
+            <div class="sidebar-requests-section">
+              <div class="sidebar-requests-header">
+                <span class="sidebar-requests-title">
+                  <i class="bi bi-person-plus-fill"></i> Follow Requests
+                </span>
+                {{#hasPendingRequests}}
+                <span class="sidebar-requests-badge">{{pendingCount}}</span>
+                {{/hasPendingRequests}}
+              </div>
+
+              <div class="list">
+                {{#pendingRequests}}
                 <div class="list-item">
-                  <span>Name</span>
+                  <div class="req-identity">
+                    <div class="req-avatar">
+                      {{#photo}}<img src="/images/{{photo.id}}" alt="{{name}}" />{{/photo}}
+                      {{^photo}}<span>{{nameInitial}}</span>{{/photo}}
+                    </div>
+                    <span class="req-name">{{name}}</span>
+                  </div>
                   <div class="actions">
-                    <span class="tag tag-accept">✔</span>
-                    <span class="tag tag-decline">X</span>
+                    <span class="tag tag-accept" title="Accept"><i class="bi bi-check-lg"></i></span>
+                    <span class="tag tag-decline" title="Decline"><i class="bi bi-x-lg"></i></span>
                   </div>
                 </div>
+                {{/pendingRequests}}
+
+                {{^pendingRequests}}
+                <p class="sidebar-requests-empty">No pending requests.</p>
+                {{/pendingRequests}}
               </div>
+
+              <a class="btn secondary sidebar-requests-see-all" href="/follow-requests">
+                <i class="bi bi-arrow-right-short"></i> See all requests
+              </a>
             </div>
-            <a class="btn secondary" href="/follow-requests">See all</a>
             {{/isOwnProfile}}
           </aside>
 
@@ -64,7 +87,7 @@
               <div class="profile-title-block">
                 <h2 class="section-title">User's profile</h2>
                 <div class="followers-cta">
-                  <a class="followers-cta-link" href="/following">
+                  <a class="followers-cta-link" href="/followers">
                     <span class="followers-cta-value">{{user.followers}}</span>
                     <span class="followers-cta-label">Followers</span>
                   </a>
@@ -125,7 +148,6 @@
                 <p class="muted">{{description}}</p>
               
               </article> 
-              <!-- Modal de confirmación -->
               <div class="modal fade" id="deleteModal{{id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{id}}" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content" style="background: var(--bg-card); border: var(--stroke-light);">

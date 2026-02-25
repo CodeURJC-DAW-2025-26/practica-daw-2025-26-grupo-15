@@ -50,9 +50,13 @@ public class UserController {
         }
         User user = resolveUser(principal);
         List<ExerciseList> userLists = listService.findByOwner(user);
+        List<User> pending = user.getRequestRecieved();
         model.addAttribute("user", user);
         model.addAttribute("userLists", userLists);
         model.addAttribute("isOwnProfile", true);
+        model.addAttribute("pendingRequests", pending);
+        model.addAttribute("hasPendingRequests", !pending.isEmpty());
+        model.addAttribute("pendingCount", pending.size());
         return "profile";
     }
 
@@ -110,7 +114,14 @@ public class UserController {
     }
 
     @GetMapping("/admin")
-    public String adminPanel() {
+    public String adminPanel(Model model, Principal principal) {
+        if (principal != null) {
+            User current = resolveUser(principal);
+            model.addAttribute("currentUser", current);
+        }
+        java.util.List<User> all = userService.findAll();
+        model.addAttribute("allUsers", all);
+        model.addAttribute("userCount", all.size());
         return "admin";
     }
 
