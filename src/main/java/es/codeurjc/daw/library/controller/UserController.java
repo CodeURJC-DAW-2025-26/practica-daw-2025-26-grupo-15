@@ -72,6 +72,8 @@ public class UserController {
             if (principal != null) {
                 User loggedUser = resolveUser(principal);
                 model.addAttribute("isOwnProfile", loggedUser.getId().equals(profileUser.getId()));
+                model.addAttribute("loggedUserId", loggedUser.getId());
+                model.addAttribute("hasRequested", userService.hasRequestedToFollow(loggedUser, user));
             } else {
                 model.addAttribute("isOwnProfile", false);
             }

@@ -71,7 +71,7 @@
 
             <!--Guest CTA (not logged in)-->
             {{^logged}}
-            <div class="sidebar-cta">
+            <div class="sidebar-cta mt-0">
               <div class="sidebar-cta__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/>
@@ -107,20 +107,8 @@
             {{/logged}}
           </div>
           <!--Lists feed-->      
-          <div class="feed-stream mt-0">
-            {{#list}}
-            <a href={{contentLink}}>
-            <article class="feed-card">
-              <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
-                <div>
-                  <h3>{{actionType}} · {{header}}</h3>
-                  <p class="meta">{{ownerName}} · {{timeAgo}}</p>
-                </div>
-              </header>
-              <p class="muted">See more details</p>
-            </article>
-            </a>
-            {{/list}}
+          <div id="feedStream" class="feed-stream mt-0">
+            <div id="feedSentinel"></div>
           </div>
         </div>
       </div>
@@ -128,28 +116,10 @@
   </section>
 </main>
 
-  <footer class="site-footer py-4 mt-auto">
-    <div class="container">
-      <div class="row align-items-center gy-3">
-        <div class="col-12 col-md-4">
-          <div class="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
-            <span class="brand-mark"></span>
-            <span class="fw-bold text-white">DSGram</span>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <ul class="nav justify-content-center gap-3 list-unstyled d-flex mb-0">
-            <li><a href="/" class="footer-link">Home</a></li>
-            <li><a href="/profile" class="footer-link">Profile</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-md-4 text-center text-md-end">
-          <small class="text-secondary">&copy; 2026 DSGram</small>
-        </div>
-      </div>
-    </div>
-  </footer>
+  {{>footer}}
 
   <script src="/js/home.js"></script>
+  <script src="/js/feed.js"></script>
+
 </body>
 </html>

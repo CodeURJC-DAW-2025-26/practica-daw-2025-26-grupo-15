@@ -55,6 +55,29 @@ public class UserService {
         return userRepo.findAll();
     }
 
+    public void requestToFollow(User requester, User target){
+        if (requester.getId().equals(target.getId())) {
+            throw new IllegalArgumentException("User cannot follow themselves");
+        }
+        
+        if (requester.getRequestedFriends().contains(target)){
+            throw new IllegalArgumentException("Follow request already sent");
+        }
+
+        if (requester.getFollowing().contains(target)){
+            throw new IllegalArgumentException("Already following this user");
+        }
+
+        requester.getRequestedFriends().add(target);
+        target.getRequestRecieved().add(requester);
+        userRepo.save(requester);
+        userRepo.save(target);
+    }
+
+    public boolean hasRequestedToFollow(User requester, User target){
+        return requester.getRequestedFriends().contains(target);
+    }
+
     public User register(User user) {
         if (user.getName() == null || user.getName().trim().isEmpty()) {
             throw new RuntimeException("Username cannot be null or empty.");

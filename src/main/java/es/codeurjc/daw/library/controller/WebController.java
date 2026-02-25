@@ -55,13 +55,6 @@ public class WebController {
                 model.addAttribute("photoId", user.getPhoto().getId());
             }
         }
-        List<Post> allPosts = postService.findAll();
-        if (!allPosts.isEmpty()) {
-            for (Post p : allPosts) {
-                p.calculateTime();
-            }
-            model.addAttribute("list", allPosts);
-        }
         return "home";
     }
     
@@ -90,8 +83,33 @@ public class WebController {
 
         model.addAttribute("foundUsers", slice.getContent());
 
-            return "fragments/search-users";
+        return "fragments/search-users";
+    }
+
+    @GetMapping("/searchPosts")
+    public String searchPostsForUser(@RequestParam int page, 
+                                     @RequestParam int size, 
+                                     Principal principal, 
+                                     Model model, 
+                                     HttpServletResponse response){
+        Slice<Post> slice;
+        if (principal != null){
+            User user = resolveUser(principal);
+
+            slice = postService.findFeedForUser(user, page, size);
+        } else {
+            slice = postService.findAll(page, size);
         }
+        if (slice == null) throw new RuntimeException("Error on posts search");
+
+        response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
+        response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
+
+        model.addAttribute("list", slice.getContent());
+        
+        return "fragments/search-posts";
+    }
+
 
     private User resolveUser(Principal principal) {
         if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
