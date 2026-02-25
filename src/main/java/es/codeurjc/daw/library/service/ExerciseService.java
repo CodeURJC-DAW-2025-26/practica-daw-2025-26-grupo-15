@@ -67,6 +67,15 @@ public class ExerciseService {
         return existing;
     }
 
+    public void deleteExercise(Long exerciseId, User user) {
+        Exercise existing = exerciseRepo.findById(exerciseId)
+            .orElseThrow(() -> new IllegalArgumentException("Exercise not found"));
+
+        if (!existing.getOwner().equals(user)) throw new IllegalArgumentException("Not allowed");
+
+        exerciseRepo.delete(existing);
+    }
+
     private void validateExerciseFields(Exercise ex) {
         if (ex == null) {
             throw new IllegalArgumentException("Exercise data is missing");

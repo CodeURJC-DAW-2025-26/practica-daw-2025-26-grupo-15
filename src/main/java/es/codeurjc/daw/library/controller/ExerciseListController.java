@@ -40,6 +40,7 @@ public class ExerciseListController {
 
         model.addAttribute("list", list);
         model.addAttribute("user", user);
+        model.addAttribute("isOwner", list.getOwner().getId().equals(user.getId()));
         return "list-view";
     }
 

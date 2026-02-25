@@ -131,6 +131,8 @@ public class User {
 		this.specialty = specialty;
 	}
 
+
+	
     public List<User> getRequestReceived() {
         return requestReceived;
     }
