@@ -40,6 +40,8 @@ public class User {
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
 	private List<ExerciseList> exerciseLists;
 	
+	@OneToMany(mappedBy = "owner")
+	private List<Post> posts;
 
 	
 
@@ -58,6 +60,7 @@ public class User {
 		this.exerciseLists = List.of();
 		this.provider = "local";
 		this.providerId = "";
+		this.posts = List.of();
 	}
 
 	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String specialty,
@@ -74,8 +77,17 @@ public class User {
 		this.exerciseLists = exerciseLists;
 		this.provider = "local";
 		this.providerId = "";
+		this.posts = List.of();
 		
 	}
+
+	public void addPost(Post p){
+		this.posts.add(p);
+		p.setOwner(this);
+	}
+
+
+
 	public int getFollowers() {
 		return followers;
 	}

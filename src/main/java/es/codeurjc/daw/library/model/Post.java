@@ -26,13 +26,13 @@ public class Post {
 
     public Post(){}
 
-    public Post(User owner, String header, String contentLink, String actionType, Instant date){
+    public Post(User owner, String header, String contentLink, String actionType){
         this.owner = owner;
         this.actionType = actionType;
         this.header = header;
         this.ownerName = owner.getName();
         this.contentLink = contentLink;
-        this.date = date;
+        this.date = Instant.now();
         this.timeAgo = "";
     }
 
@@ -85,5 +85,9 @@ public class Post {
 
     public String getTimeAgo(){
         return this.timeAgo;
+    }
+
+    public void setOwner(User owner){
+        this.owner = owner;
     }
 }
