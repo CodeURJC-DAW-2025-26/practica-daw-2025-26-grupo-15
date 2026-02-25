@@ -53,8 +53,8 @@ public class OAuthUserService {
                     "",
                     "",
                     photo != null ? photo : "default-profile.png",
-                    100,
-                    0,
+                    new ArrayList<>(),
+                    new ArrayList<>(),
                     new ArrayList<>()
                 );
                 user.setProvider(provider);

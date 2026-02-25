@@ -1,5 +1,6 @@
 package es.codeurjc.daw.library.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -9,7 +10,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity(name = "UserTable")
@@ -25,9 +26,19 @@ public class User {
 	private List<String> roles;
 	private String bio;
 	private String specialty;
-	private String photo;
-	private int followers;
-	private int following;	
+	private String photo;	
+
+	@ManyToMany(mappedBy = "followers")
+	private List<User> following;
+ 
+	@ManyToMany
+	private List<User> followers;
+
+	@ManyToMany(mappedBy = "requestedFriends")
+	private List<User> requestRecieved;
+
+	@ManyToMany
+	private List<User> requestedFriends;
 
     private String provider;    // "local", "google"
     private String providerId;
@@ -49,15 +60,17 @@ public class User {
 		this.bio = "";
 		this.specialty = "";
 		this.photo = "";
-		this.followers = 0;
-		this.following = 0;
-		this.exerciseLists = List.of();
+		this.followers = new ArrayList<>();
+		this.following = new ArrayList<>();
+		this.requestRecieved = new ArrayList<>();
+		this.requestedFriends = new ArrayList<>();
+		this.exerciseLists = new ArrayList<>();
 		this.provider = "local";
 		this.providerId = "";
 	}
 
 	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String specialty,
-				String photo, int followers, int following, List<ExerciseList> exerciseLists) {
+				String photo, List<User> followers, List<User> following, List<ExerciseList> exerciseLists) {
 		this.name = name;
 		this.email = email;
 		this.encodedPassword = encodedPassword;
@@ -72,14 +85,26 @@ public class User {
 		this.providerId = "";
 		
 	}
-	public int getFollowers() {
-		return followers;
+	public int getSizeFollowers() {
+		return followers.size();
 	}
-	public int getFollowing() {
-		return following;
+	public int getSizeFollowing() {
+		return following.size();
 	}
-	public void setFollowing(int following) {
+	public void setFollowing(List<User> following) {
 		this.following = following;
+	}
+
+	public void setFollowers(List<User> followers) {
+		this.followers = followers;
+	}
+
+	public void setRequestRecieved(List<User> requestRecieved) {
+		this.requestRecieved = requestRecieved;
+	}
+
+	public void setRequestedFriends(List<User> requestedFriends) {
+		this.requestedFriends = requestedFriends;
 	}
 	public void setBio(String bio) {
 		this.bio = bio;
@@ -87,6 +112,23 @@ public class User {
 	public void setSpecialty(String specialty) {
 		this.specialty = specialty;
 	}
+
+	public List<User> getFollowers() {
+        return followers;
+    }
+
+    public List<User> getFollowing() {
+        return following;
+    }
+
+    public List<User> getRequestRecieved() {
+        return requestRecieved;
+    }
+
+    public List<User> getRequestedFriends() {
+        return requestedFriends;
+    }
+
 
     public Long getId() {
         return id;
@@ -127,10 +169,7 @@ public class User {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }    
-
-    public void setFollowers(int followers) {
-        this.followers = followers;
-    }	
+	
 
 	public String getBio() {
 		return bio;
