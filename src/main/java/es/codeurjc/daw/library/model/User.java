@@ -27,7 +27,7 @@ public class User {
 	private String bio;
 	private String specialty;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(orphanRemoval = true)
 	private Image photo;
 
 	private int followers;

@@ -79,7 +79,12 @@ public class UserController {
     }
 
     @GetMapping("/follow-requests")
-    public String viewFollowRequests() {
+    public String viewFollowRequests(Model model, Principal principal) {
+        User user = resolveUser(principal);
+        model.addAttribute("user", user);
+        model.addAttribute("isOwnProfile", true);
+        model.addAttribute("pendingCount", 0);
+
         return "follow-requests";
     }
 
