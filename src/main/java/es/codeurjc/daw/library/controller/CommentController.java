@@ -8,12 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import es.codeurjc.daw.library.model.Comment;
+import es.codeurjc.daw.library.model.Post;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
 import org.springframework.web.bind.annotation.PathVariable;
 import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.service.SolutionService;
 import es.codeurjc.daw.library.service.CommentService;
+import es.codeurjc.daw.library.service.PostService;
 
 @Controller
 public class CommentController {
@@ -27,6 +29,9 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private PostService postService;
+
     @PostMapping("/solution/{id}/comment")
     public String addComment(Model model, @PathVariable Long id, Comment comment, Principal principal){
 
@@ -35,6 +40,12 @@ public class CommentController {
     
         try {
             commentService.createComment(comment, user, solution);
+            postService.createPost(new Post(
+                user,
+                user.getName(),
+                "/solution/"+ id,
+                "Commented on solution to  "+solution.getExercise().getTitle()  
+            ));
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";

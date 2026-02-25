@@ -81,8 +81,8 @@ public class DatabaseInitializer {
 		setSolutionImage(sol2, "sample_images/aestrella.jpg");
 		solutionRepository.save(sol2);
 
-		Post p1 = new Post(u1, ex1.getTitle(), "/exercise", "New Excercise", Instant.now());
-		Post p2 = new Post(u1, ex2.getTitle(), "/exercise", "New Excercise", Instant.now());
+		Post p1 = new Post(u1, ex1.getTitle(), "/exercise", "New Excercise");
+		Post p2 = new Post(u1, ex2.getTitle(), "/exercise", "New Excercise");
 		postRepository.save(p1);
 		postRepository.save(p2);
 	}

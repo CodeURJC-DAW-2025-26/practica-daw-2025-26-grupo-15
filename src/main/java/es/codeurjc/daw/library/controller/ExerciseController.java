@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import es.codeurjc.daw.library.model.Exercise;
+import es.codeurjc.daw.library.model.Post;
 import es.codeurjc.daw.library.service.ExerciseService;
+import es.codeurjc.daw.library.service.PostService;
 import es.codeurjc.daw.library.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,9 @@ public class ExerciseController {
     @Autowired
     private ExerciseService exerciseService;
 
+    @Autowired
+    private PostService postService;
+
     @GetMapping("/list-view/{listId}/new-exercise")
     public String showNewExerciseForm(Model model, @PathVariable Long listId) {
         model.addAttribute("listId", listId);
@@ -50,6 +55,12 @@ public class ExerciseController {
 
         try {
             exerciseService.createExercise(newExercise, user, pdfFile, listId);
+            postService.createPost(new Post(
+                user,
+                newExercise.getTitle(),
+                "/exercise/"+ newExercise.getId(),
+                "Added Exercise to list "+newExercise.getExerciseList().getTitle() 
+            ));
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
@@ -104,6 +115,12 @@ public class ExerciseController {
 
         try {
             exerciseService.updateExercise(exerciseId, editedExercise, user, pdfFile);
+            postService.createPost(new Post(
+                user,
+                editedExercise.getTitle(),
+                "/exercise/"+ editedExercise.getId(),
+            "Edited Exercise in list "+editedExercise.getExerciseList().getTitle()  
+            ));
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
