@@ -54,6 +54,7 @@ public class SolutionService {
         if (!solution.getOwner().getId().equals(user.getId())) {
             throw new RuntimeException("You do not have permission to delete this solution");
         }
+        solution.getExercise().decrementNumSolutions();
         solutionRepo.delete(solution);
     }
 

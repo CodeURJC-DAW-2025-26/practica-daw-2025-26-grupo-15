@@ -40,27 +40,26 @@ public class ExerciseController {
     @GetMapping("/list-view/{listId}/new-exercise")
     public String showNewExerciseForm(Model model, @PathVariable Long listId) {
         model.addAttribute("listId", listId);
-        model.addAttribute("action","/list-view/"+listId+"/new-exercise");
+        model.addAttribute("action", "/list-view/" + listId + "/new-exercise");
         return "new-exercise";
     }
 
     @PostMapping("/list-view/{listId}/new-exercise")
-    public String addNewExercise(Model model, 
-                                 Exercise newExercise, 
-                                 @RequestParam(required = false, name="pdfFile") MultipartFile pdfFile, 
-                                 Principal principal,
-                                 @PathVariable Long listId) {
+    public String addNewExercise(Model model,
+            Exercise newExercise,
+            @RequestParam(required = false, name = "pdfFile") MultipartFile pdfFile,
+            Principal principal,
+            @PathVariable Long listId) {
 
         User user = resolveUser(principal);
 
         try {
             exerciseService.createExercise(newExercise, user, pdfFile, listId);
             postService.createPost(new Post(
-                user,
-                newExercise.getTitle(),
-                "/exercise/"+ newExercise.getId(),
-                "Added Exercise to list "+newExercise.getExerciseList().getTitle() 
-            ));
+                    user,
+                    newExercise.getTitle(),
+                    "/exercise/" + newExercise.getId(),
+                    "Added Exercise to list " + newExercise.getExerciseList().getTitle()));
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
@@ -83,7 +82,7 @@ public class ExerciseController {
             model.addAttribute("list", exercise.getExerciseList());
             boolean isOwner = exercise.getExerciseList().getOwner().getId().equals(user.getId());
             model.addAttribute("isOwner", isOwner);
-            
+
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
@@ -107,22 +106,22 @@ public class ExerciseController {
         return "new-exercise";
     }
 
-    @PostMapping("/edit-exercise/{exerciseId}")   
+    @PostMapping("/edit-exercise/{exerciseId}")
     public String editExercise(Model model,
-                               Exercise editedExercise,
-                               @RequestParam(required = false, name = "pdfFile") MultipartFile pdfFile,
-                               Principal principal,
-                               @PathVariable Long exerciseId) {
+            Exercise editedExercise,
+            @RequestParam(required = false, name = "pdfFile") MultipartFile pdfFile,
+            Principal principal,
+            @PathVariable Long exerciseId) {
 
         User user = resolveUser(principal);
 
         try {
-            exerciseService.updateExercise(exerciseId, editedExercise, user, pdfFile);
+            Exercise savedExercise = exerciseService.updateExercise(exerciseId, editedExercise, user, pdfFile);
             postService.createPost(new Post(
-                user,
-                editedExercise.getTitle(),
-                "/exercise/"+ editedExercise.getId(),
-            "Edited Exercise in list "+editedExercise.getExerciseList().getTitle()  
+                    user,
+                    savedExercise.getTitle(),
+                    "/exercise/" + savedExercise.getId(),
+                    "Edited Exercise in list " + savedExercise.getExerciseList().getTitle() 
             ));
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -157,6 +156,19 @@ public class ExerciseController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @PostMapping("/list/{listId}/exercise/{exerciseId}/delete")
+    public String deleteExercise(Model model, @PathVariable Long listId, @PathVariable Long exerciseId, Principal principal) {
+        User user = resolveUser(principal);
+        try{
+            exerciseService.deleteExercise(exerciseId, user);
+        }catch(Exception e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+
+        return "redirect:/list-view/" + listId;
     }
     
 
