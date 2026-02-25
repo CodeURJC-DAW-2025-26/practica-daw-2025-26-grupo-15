@@ -1,6 +1,7 @@
 package es.codeurjc.daw.library.model;
 
 import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +45,11 @@ public class User {
 		inverseJoinColumns = @JoinColumn(name = "followed_id")
 	)
 	private Set<User> following = new HashSet<>();
+
+	@ManyToMany
+	private List<User> requestedFriends;
+	@ManyToMany(mappedBy = "requestedFriends")
+	private List<User> requestReceived;
 
     private String provider;    // "local", "google"
     private String providerId;
@@ -110,12 +116,29 @@ public class User {
 	public void setFollowingNumber(int following) {
 		this.followingNumber = following;
 	}
+
+	public void setRequestReceived(List<User> requestReceived) {
+		this.requestReceived = requestReceived;
+	}
+
+	public void setRequestedFriends(List<User> requestedFriends) {
+		this.requestedFriends = requestedFriends;
+	}
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
 	public void setSpecialty(String specialty) {
 		this.specialty = specialty;
 	}
+
+    public List<User> getRequestReceived() {
+        return requestReceived;
+    }
+
+    public List<User> getRequestedFriends() {
+        return requestedFriends;
+    }
+
 
     public Long getId() {
         return id;
