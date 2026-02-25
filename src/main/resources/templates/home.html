@@ -107,20 +107,8 @@
             {{/logged}}
           </div>
           <!--Lists feed-->      
-          <div class="feed-stream mt-0">
-            {{#list}}
-            <a href={{contentLink}}>
-            <article class="feed-card">
-              <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
-                <div>
-                  <h3>{{actionType}} · {{header}}</h3>
-                  <p class="meta">{{ownerName}} · {{timeAgo}}</p>
-                </div>
-              </header>
-              <p class="muted">See more details</p>
-            </article>
-            </a>
-            {{/list}}
+          <div id="feedStream" class="feed-stream mt-0">
+            <div id="feedSentinel"></div>
           </div>
         </div>
       </div>
@@ -151,5 +139,7 @@
   </footer>
 
   <script src="/js/home.js"></script>
+  <script src="/js/feed.js"></script>
+
 </body>
 </html>

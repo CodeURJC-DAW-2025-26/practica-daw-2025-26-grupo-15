@@ -1,7 +1,9 @@
 package es.codeurjc.daw.library.model;
 
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
@@ -10,6 +12,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -21,28 +25,31 @@ public class User {
 	private Long id;
 
 	private String email;
-	private String name;
 	private String encodedPassword;
-	@ElementCollection(fetch = FetchType.EAGER)
-	private List<String> roles;
+	private String name;
 	private String bio;
 	private String specialty;
+	private int followersNumber;
+	private int followingNumber;
 
-	@OneToOne(orphanRemoval = true)
-	private Image photo;	
-
-
-	@ManyToMany(mappedBy = "followers")
-	private List<User> following;
- 
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> roles;
+	
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private Image photo;
+	
 	@ManyToMany
-	private List<User> followers;
-
-	@ManyToMany(mappedBy = "requestedFriends")
-	private List<User> requestRecieved;
+	@JoinTable(
+		name = "user_following",
+		joinColumns = @JoinColumn(name = "follower_id"),
+		inverseJoinColumns = @JoinColumn(name = "followed_id")
+	)
+	private Set<User> following = new HashSet<>();
 
 	@ManyToMany
 	private List<User> requestedFriends;
+	@ManyToMany(mappedBy = "requestedFriends")
+	private List<User> requestReceived;
 
     private String provider;    // "local", "google"
     private String providerId;
@@ -66,18 +73,17 @@ public class User {
 		this.bio = "";
 		this.specialty = "";
 		this.photo = null;
-		this.followers = new ArrayList<>();
-		this.following = new ArrayList<>();
-		this.requestRecieved = new ArrayList<>();
-		this.requestedFriends = new ArrayList<>();
-		this.exerciseLists = new ArrayList<>();
+		this.followersNumber = 0;
+		this.followingNumber = 0;
+		this.exerciseLists = List.of();
 		this.provider = "local";
 		this.providerId = "";
 		this.posts = List.of();
+		this.following = Set.of();
 	}
 
 	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String specialty,
-				Image photo, List<User> followers, List<User> following, List<ExerciseList> exerciseLists) {
+				Image photo, int followers, int following, List<ExerciseList> exerciseLists) {
 		this.name = name;
 		this.email = email;
 		this.encodedPassword = encodedPassword;
@@ -85,13 +91,13 @@ public class User {
 		this.bio = bio;
 		this.specialty = specialty;
 		this.photo = photo;
-		this.followers = followers;
-		this.following = following;
+		this.followersNumber = followers;
+		this.followingNumber = following;
 		this.exerciseLists = exerciseLists;
 		this.provider = "local";
 		this.providerId = "";
 		this.posts = List.of();
-		
+		this.following = Set.of();
 	}
 
 	public void addPost(Post p){
@@ -101,22 +107,18 @@ public class User {
 
 
 
-	public int getSizeFollowers() {
-		return followers.size();
+	public int getFollowersNumber() {
+		return followersNumber;
 	}
-	public int getSizeFollowing() {
-		return following.size();
+	public int getFollowingNumber() {
+		return followingNumber;
 	}
-	public void setFollowing(List<User> following) {
-		this.following = following;
-	}
-
-	public void setFollowers(List<User> followers) {
-		this.followers = followers;
+	public void setFollowingNumber(int following) {
+		this.followingNumber = following;
 	}
 
-	public void setRequestRecieved(List<User> requestRecieved) {
-		this.requestRecieved = requestRecieved;
+	public void setRequestReceived(List<User> requestReceived) {
+		this.requestReceived = requestReceived;
 	}
 
 	public void setRequestedFriends(List<User> requestedFriends) {
@@ -130,16 +132,9 @@ public class User {
 	}
 
 
-	public List<User> getFollowers() {
-        return followers;
-    }
-
-    public List<User> getFollowing() {
-        return following;
-    }
-
-    public List<User> getRequestRecieved() {
-        return requestRecieved;
+	
+    public List<User> getRequestReceived() {
+        return requestReceived;
     }
 
     public List<User> getRequestedFriends() {
@@ -186,7 +181,10 @@ public class User {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }    
-	
+
+    public void setFollowersNumber(int followers) {
+        this.followersNumber = followers;
+    }	
 
 	public String getBio() {
 		return bio;
@@ -226,5 +224,9 @@ public class User {
 	}
 	public void setExerciseLists(List<ExerciseList> exerciseLists) {
 		this.exerciseLists = exerciseLists;
+	}
+
+	public Set<User> getFollowing(){
+		return this.following;
 	}
 }
