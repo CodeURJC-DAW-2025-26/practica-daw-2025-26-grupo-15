@@ -58,9 +58,8 @@ public class UserController {
         model.addAttribute("followingNumber", user.getFollowing().size());
         model.addAttribute("userLists", userLists);
         model.addAttribute("isOwnProfile", true);
-        model.addAttribute("pendingRequests", pending);
-        model.addAttribute("hasPendingRequests", !pending.isEmpty());
-        model.addAttribute("pendingCount", pending.size());
+        model.addAttribute("hasPendingRequests", !requests.isEmpty());
+        model.addAttribute("pendingCount", requests.size());
         return "profile";
     }
 

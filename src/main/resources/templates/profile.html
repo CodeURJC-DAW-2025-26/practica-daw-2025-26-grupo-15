@@ -53,9 +53,8 @@
                 {{/hasPendingRequests}}
               </div>
 
-              {{#firstTreeRequests}}
               <div class="list">
-                {{#pendingRequests}}
+                {{#firstTreeRequests}}
                 <div class="list-item">
                   <div class="req-identity">
                     <div class="req-avatar">
@@ -69,13 +68,12 @@
                     <span class="tag tag-decline" title="Decline"><i class="bi bi-x-lg"></i></span>
                   </div>
                 </div>
-                {{/pendingRequests}}
-
-                {{^pendingRequests}}
+                {{/firstTreeRequests}}
+                {{^firstTreeRequests}}
                 <p class="sidebar-requests-empty">No pending requests.</p>
-                {{/pendingRequests}}
+                    {{/firstTreeRequests}}
               </div>
-              {{/firstTreeRequests}}
+              
 
               <a class="btn secondary sidebar-requests-see-all" href="/follow-requests">
                 <i class="bi bi-arrow-right-short"></i> See all requests
