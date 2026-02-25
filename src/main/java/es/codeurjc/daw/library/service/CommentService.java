@@ -7,6 +7,7 @@ import es.codeurjc.daw.library.repository.CommentRepository;
 import es.codeurjc.daw.library.model.Comment;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.model.Solution;
+import java.sql.Date;
 
 @Service
 public class CommentService {
@@ -19,8 +20,18 @@ public class CommentService {
         }
         comment.setOwner(user);
         comment.setSolution(solution);
-        comment.setLastUpdate(java.time.LocalDateTime.now());
+        comment.getSolution().incrementNumComments();
+        comment.setLastUpdate(new Date(System.currentTimeMillis()));
         solution.getComments().add(comment);
         commentRepo.save(comment);
+    }
+
+    public void deleteComment(Long commentId, User user) {
+        Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
+        if (!comment.getOwner().getId().equals(user.getId())) {
+            throw new RuntimeException("You do not have permission to delete this comment");
+        }
+        comment.getSolution().decrementNumComments();
+        commentRepo.delete(comment);
     }
 }

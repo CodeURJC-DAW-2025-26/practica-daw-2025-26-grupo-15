@@ -5,8 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 @Entity(name = "CommentTable")
 public class Comment {
@@ -14,7 +13,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String text;
-    private LocalDateTime lastUpdate;
+    private Date lastUpdate;
     @ManyToOne
     private User owner;
     @ManyToOne
@@ -23,7 +22,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(String text, LocalDateTime lastUpdate, User owner) {
+    public Comment(String text, Date lastUpdate, User owner) {
         this.text = text;
         this.lastUpdate = lastUpdate;
         this.owner = owner;
@@ -37,7 +36,7 @@ public class Comment {
         return text;
     }
 
-    public LocalDateTime getLastUpdate() {
+    public Date getLastUpdate() {
         return lastUpdate;
     }
 
@@ -53,7 +52,7 @@ public class Comment {
         this.text = text;
     }
 
-    public void setLastUpdate(LocalDateTime lastUpdate) {
+    public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
