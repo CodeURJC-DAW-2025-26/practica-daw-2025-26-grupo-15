@@ -1,0 +1,62 @@
+let feedPage = 0;
+let feedLoading = false;
+let feedHasMore = true;
+
+const feedStream = document.getElementById("feedStream");
+const sentinel = document.getElementById("feedSentinel");
+
+async function loadMoreFeed(size = 10) {
+  if (feedLoading || !feedHasMore) return;
+
+  feedLoading = true;
+
+  try {
+    const response = await fetch(`/searchPosts?page=${feedPage}&size=${size}`);
+
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const hasMoreHeader = response.headers.get("X-Has-More");
+    if (hasMoreHeader !== null) {
+      feedHasMore = hasMoreHeader === "true";
+    }
+
+    const html = await response.text();
+
+    const countHeader = response.headers.get("X-Results-Count");
+    const count = countHeader ? parseInt(countHeader, 10) : 0;
+
+    // Stop if no results
+    if (count === 0) {
+      feedHasMore = false;
+      observer.disconnect();
+      return;
+    }
+
+    // HTML inserted before sentinel, which has to be last element on feedStream
+    sentinel.insertAdjacentHTML("beforebegin", html);
+
+    feedPage++;
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    feedLoading = false;
+  }
+}
+
+const observer = new IntersectionObserver(
+  (entries) => {
+    if (entries[0].isIntersecting) {
+      loadMoreFeed(10);
+    }
+  },
+  {
+    root: feedStream,
+    rootMargin: "150px" // starts prior to feed end
+  }
+);
+
+observer.observe(sentinel);
+
+// first load
+loadMoreFeed(10);

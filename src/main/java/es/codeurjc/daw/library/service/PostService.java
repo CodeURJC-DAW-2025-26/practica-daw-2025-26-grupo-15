@@ -3,9 +3,12 @@ package es.codeurjc.daw.library.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import es.codeurjc.daw.library.model.Post;
+import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.repository.PostRepository;
 import jakarta.transaction.Transactional;
 
@@ -24,6 +27,10 @@ public class PostService {
         newPost.getOwner().addPost(newPost);
         postRepo.save(newPost);
         return newPost;
+    }
+
+    public Slice<Post> findFeedForUser(User user, int page, int size){
+        return postRepo.findFeedForUser(user.getId(), PageRequest.of(page, size));
     }
 
 

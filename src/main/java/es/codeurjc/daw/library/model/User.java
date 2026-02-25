@@ -1,6 +1,8 @@
 package es.codeurjc.daw.library.model;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
@@ -9,7 +11,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
@@ -20,18 +24,26 @@ public class User {
 	private Long id;
 
 	private String email;
-	private String name;
 	private String encodedPassword;
-	@ElementCollection(fetch = FetchType.EAGER)
-	private List<String> roles;
+	private String name;
 	private String bio;
 	private String specialty;
+	private int followersNumber;
+	private int followingNumber;
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> roles;
+	
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Image photo;
-
-	private int followers;
-	private int following;	
+	
+	@ManyToMany
+	@JoinTable(
+		name = "user_following",
+		joinColumns = @JoinColumn(name = "follower_id"),
+		inverseJoinColumns = @JoinColumn(name = "followed_id")
+	)
+	private Set<User> following = new HashSet<>();
 
     private String provider;    // "local", "google"
     private String providerId;
@@ -55,12 +67,13 @@ public class User {
 		this.bio = "";
 		this.specialty = "";
 		this.photo = null;
-		this.followers = 0;
-		this.following = 0;
+		this.followersNumber = 0;
+		this.followingNumber = 0;
 		this.exerciseLists = List.of();
 		this.provider = "local";
 		this.providerId = "";
 		this.posts = List.of();
+		this.following = Set.of();
 	}
 
 	public User(String name, String email, String encodedPassword, List<String> roles, String bio, String specialty,
@@ -72,13 +85,13 @@ public class User {
 		this.bio = bio;
 		this.specialty = specialty;
 		this.photo = photo;
-		this.followers = followers;
-		this.following = following;
+		this.followersNumber = followers;
+		this.followingNumber = following;
 		this.exerciseLists = exerciseLists;
 		this.provider = "local";
 		this.providerId = "";
 		this.posts = List.of();
-		
+		this.following = Set.of();
 	}
 
 	public void addPost(Post p){
@@ -88,14 +101,14 @@ public class User {
 
 
 
-	public int getFollowers() {
-		return followers;
+	public int getFollowersNumber() {
+		return followersNumber;
 	}
-	public int getFollowing() {
-		return following;
+	public int getFollowingNumber() {
+		return followingNumber;
 	}
-	public void setFollowing(int following) {
-		this.following = following;
+	public void setFollowingNumber(int following) {
+		this.followingNumber = following;
 	}
 	public void setBio(String bio) {
 		this.bio = bio;
@@ -144,8 +157,8 @@ public class User {
         this.roles = roles;
     }    
 
-    public void setFollowers(int followers) {
-        this.followers = followers;
+    public void setFollowersNumber(int followers) {
+        this.followersNumber = followers;
     }	
 
 	public String getBio() {
@@ -186,5 +199,9 @@ public class User {
 	}
 	public void setExerciseLists(List<ExerciseList> exerciseLists) {
 		this.exerciseLists = exerciseLists;
+	}
+
+	public Set<User> getFollowing(){
+		return this.following;
 	}
 }

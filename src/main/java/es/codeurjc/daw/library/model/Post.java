@@ -9,7 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-@Entity(name="FeedPostTable")
+@Entity(name = "PostTable")
 public class Post {
 
     @Id
