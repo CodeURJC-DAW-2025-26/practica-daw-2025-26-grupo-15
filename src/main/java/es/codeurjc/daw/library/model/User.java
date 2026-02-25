@@ -129,6 +129,7 @@ public class User {
 		this.specialty = specialty;
 	}
 
+
 	public List<User> getFollowers() {
         return followers;
     }
