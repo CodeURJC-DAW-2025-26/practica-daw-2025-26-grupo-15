@@ -51,8 +51,8 @@ public class OAuthUserService {
                     "",
                     "",
                     null,
-                    new ArrayList<>(),
-                    new ArrayList<>(),
+                    100,
+                    0,
                     new ArrayList<>()
                 );
                 user.setProvider(provider);
