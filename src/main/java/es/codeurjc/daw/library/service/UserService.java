@@ -151,4 +151,8 @@ public class UserService {
 
         return userRepo.save(oldUser);
     }
+
+    public void deleteUser(Long id){
+        
+    }
 }

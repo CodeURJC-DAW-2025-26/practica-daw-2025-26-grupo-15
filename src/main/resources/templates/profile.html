@@ -81,6 +81,7 @@
                 <i class="bi bi-arrow-right-short"></i> See all requests
               </a>
             </div>
+
             {{/isOwnProfile}}
           </aside>
 
@@ -120,6 +121,10 @@
                 </div>
                 <div class="dropdown-content">
                   <a href="/edit-profile">Edit profile</a>
+                  <div class="divider"></div>
+                  <a href="#" class="dropdown-action-danger" data-bs-toggle="modal" data-bs-target="#deleteProfileModal">
+                    Delete profile
+                  </a>
                 </div>
               </div>
               {{/isOwnProfile}}
@@ -182,7 +187,7 @@
                     </div>
                     <div class="modal-footer border-0">
                       <button type="button" class="btn secondary" data-bs-dismiss="modal">Cancel</button>
-                      <form method="post" action="/delete/list/{{id}}" style="display: inline;">
+                      <form method="post" action="/delete/list/{{user.id}}" style="display: inline;">
                         <input type="hidden" name="_csrf" value="{{token}}"/>
                         <button type="submit" class="btn" style="background-color: var(--danger, #dc3545);">Delete list</button>
                       </form>
@@ -203,6 +208,30 @@
       </div>
     </section>
   </main>
+
+  {{#isOwnProfile}}
+  <div class="modal fade" id="deleteProfileModal" tabindex="-1" aria-labelledby="deleteProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="background: var(--bg-card); border: var(--stroke-light);">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="deleteProfileModalLabel">Delete profile</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0">Are you sure you want to delete your profile?</p>
+          <p class="text-muted mt-2 mb-0">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn secondary" data-bs-dismiss="modal">Cancel</button>
+          <form method="post" action="/delete-profile/{{id}}" style="display: inline;">
+            <input type="hidden" name="_csrf" value="{{token}}" />
+            <button type="submit" class="btn" style="background-color: var(--danger, #dc3545);">Delete profile</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/isOwnProfile}}
 
   {{>footer}}
 
