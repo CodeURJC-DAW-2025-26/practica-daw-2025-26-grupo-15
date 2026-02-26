@@ -223,7 +223,7 @@
         </div>
         <div class="modal-footer border-0">
           <button type="button" class="btn secondary" data-bs-dismiss="modal">Cancel</button>
-          <form method="post" action="/delete-profile/{{id}}" style="display: inline;">
+          <form method="post" action="/delete-profile/{{user.id}}" style="display: inline;">
             <input type="hidden" name="_csrf" value="{{token}}" />
             <button type="submit" class="btn" style="background-color: var(--danger, #dc3545);">Delete profile</button>
           </form>

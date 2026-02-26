@@ -6,6 +6,8 @@ import es.codeurjc.daw.library.model.User;
 import java.io.IOException;
 import java.util.Optional;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.PageRequest;
@@ -152,7 +154,42 @@ public class UserService {
         return userRepo.save(oldUser);
     }
 
-    public void deleteUser(Long id){
-        
+    public void deleteUser(User user,long id,boolean isAdmin){
+        if(user.getId() != id  && !isAdmin)
+            throw new RuntimeException("You don't have permission to delete this profile.");
+
+        User deletedUser = null;
+        if(user.getId() == id)
+            deletedUser = user;
+        else
+            deletedUser = this.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            
+        for(User follower : deletedUser.getFollowers()){
+            follower.getFollowing().remove(deletedUser);
+            userRepo.save(follower);
+        }
+        deletedUser.getFollowers().clear();
+
+        for(User following: deletedUser.getFollowing()){
+            following.getFollowers().remove(deletedUser);
+            userRepo.save(following);
+        }
+        deletedUser.getFollowing().clear();
+
+        for(User sender: deletedUser.getRequestReceived()){
+            sender.getRequestedFriends().remove(deletedUser);
+            userRepo.save(sender);
+        }
+        deletedUser.getRequestReceived().clear();
+
+        for(User reciver: deletedUser.getRequestedFriends()){
+            reciver.getRequestReceived().remove(deletedUser);
+            userRepo.save(reciver);
+        }
+        deletedUser.getRequestedFriends().clear();
+
+        userRepo.save(deletedUser);
+        userRepo.delete(deletedUser);
+
     }
 }

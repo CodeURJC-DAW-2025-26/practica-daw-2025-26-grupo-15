@@ -3,6 +3,7 @@ package es.codeurjc.daw.library.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import javax.management.RuntimeErrorException;
+
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
@@ -28,11 +31,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class UserController {
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserService userService;
 
     @Autowired
     private ExerciseListService listService;
+
+    UserController(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -189,17 +198,25 @@ public class UserController {
     @PostMapping("/delete-profile/{id}")    
     public String removeUser(Model model, HttpServletRequest request,@PathVariable long id){ 
         try {
-            User user = resolveUser(request.getUserPrincipal());
-            
-            
+            User requester = resolveUser(request.getUserPrincipal());
+            boolean isAdmin = request.isUserInRole("ADMIN");
+
+
+            userService.deleteUser(requester, id, isAdmin);
+
+            if (requester.getId() == id) {
+                request.getSession().invalidate();
+            }
+            if(isAdmin)
+                return "redirect:/admin";
+            else
+                return "redirect:/login";
+
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
-        
-
-
-        return "redirect:/login";
+       
     }
 
     private User resolveUser(Principal principal) {

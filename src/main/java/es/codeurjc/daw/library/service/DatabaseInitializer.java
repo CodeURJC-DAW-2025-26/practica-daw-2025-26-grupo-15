@@ -56,12 +56,15 @@ public class DatabaseInitializer {
 
 		User u1 = null;
 		for(int i = 1; i <= 20; i++) {
-			if(i == 1)
+			User user;
+			if(i == 1) {
 				u1 = new User("user " + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER","ADMIN"), "Bio de user " + i,"Especialidad de user " + i, null, new ArrayList<>());
-			else
-				u1 =  new User("user " + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user " + i,"Especialidad de user " + i, null, new ArrayList<>());
-			userImage(u1, "sample_images/u1.png");
-			userRepository.save(u1);
+				user = u1;
+			} else {
+				user = new User("user " + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user " + i,"Especialidad de user " + i, null, new ArrayList<>());
+			}
+			userImage(user, "sample_images/u1.png");
+			userRepository.save(user);
 		}
 	
 

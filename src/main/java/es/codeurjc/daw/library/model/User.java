@@ -36,13 +36,13 @@ public class User {
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Image photo;
 	
-	@ManyToMany
+	@ManyToMany()
 	private List<User> following = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "following")
 	private List<User> followers = new ArrayList<>();
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<User> requestedFriends;
 
 	@ManyToMany(mappedBy = "requestedFriends")
@@ -52,10 +52,10 @@ public class User {
     private String providerId;
 	
 
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ExerciseList> exerciseLists;
 	
-	@OneToMany(mappedBy = "owner")
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Post> posts;
 
 	
