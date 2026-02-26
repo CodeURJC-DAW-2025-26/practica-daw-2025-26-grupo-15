@@ -218,4 +218,16 @@ public class User {
 	public List<User> getFollowers(){
 		return this.followers;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof User)) return false;
+		User other = (User) o;
+		return id != null && id.equals(other.id) && email != null && email.equals(other.email);
+	}
+	@Override
+	public int hashCode(){
+		return 13 * this.email.hashCode() + this.id.hashCode();
+	}
 }
