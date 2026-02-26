@@ -217,4 +217,8 @@ public class UserService {
         Collections.shuffle(suggestions);
         return suggestions;
     }
+
+    public void deleteUser(Long id){
+        
+    }
 }

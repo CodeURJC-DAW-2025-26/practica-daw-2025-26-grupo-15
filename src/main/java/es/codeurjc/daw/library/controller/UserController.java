@@ -15,12 +15,15 @@ import org.springframework.ui.Model;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 public class UserController {
@@ -181,6 +184,22 @@ public class UserController {
         
         model.addAttribute("user", newUser);
         return "redirect:/profile";
+    }
+
+    @PostMapping("/delete-profile/{id}")    
+    public String removeUser(Model model, HttpServletRequest request,@PathVariable long id){ 
+        try {
+            User user = resolveUser(request.getUserPrincipal());
+            
+            
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+        
+
+
+        return "redirect:/login";
     }
 
     private User resolveUser(Principal principal) {

@@ -54,9 +54,15 @@ public class DatabaseInitializer {
 	@PostConstruct
 	public void init() throws IOException, URISyntaxException {
 
-		User u1 = new User("user", "user@example.com", passwordEncoder.encode("pass"), List.of("USER","ADMIN"), "Bio de user","Especialidad de user", null, new ArrayList<>());
-		userImage(u1, "sample_images/u1.png");
-		userRepository.save(u1);
+		User u1 = null;
+		for(int i = 1; i <= 20; i++) {
+			if(i == 1)
+				u1 = new User("user " + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER","ADMIN"), "Bio de user " + i,"Especialidad de user " + i, null, new ArrayList<>());
+			else
+				u1 =  new User("user " + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user " + i,"Especialidad de user " + i, null, new ArrayList<>());
+			userImage(u1, "sample_images/u1.png");
+			userRepository.save(u1);
+		}
 	
 
 		

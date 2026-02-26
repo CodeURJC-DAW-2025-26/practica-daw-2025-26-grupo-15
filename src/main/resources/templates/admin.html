@@ -69,9 +69,6 @@
     </div>
   </aside>
 
-  <!-- ╔══════════════════════════╗
-       ║      MAIN CONTENT        ║
-       ╚══════════════════════════╝ -->
   <main class="adm-main">
 
     <!-- Page header -->
@@ -82,7 +79,6 @@
       </div>
     </div>
 
-    <!-- Stats strip -->
     <div class="adm-stats-row">
       <div class="adm-stat">
         <div class="adm-stat-icon adm-stat-icon--sky"><i class="bi bi-people-fill"></i></div>
@@ -118,7 +114,6 @@
             type="search"
             class="adm-search-input"
             placeholder="Search by name or email…"
-            oninput="filterUsers(this.value)"
             autocomplete="off"
           />
         </div>
@@ -184,9 +179,6 @@
   </main>
 </div>
 
-<!-- ╔══════════════════════════╗
-     ║    DELETE MODALS         ║
-     ╚══════════════════════════╝ -->
 {{#allUsers}}
 <div class="modal fade" id="delModal{{id}}" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -211,25 +203,5 @@
   </div>
 </div>
 {{/allUsers}}
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-  crossorigin="anonymous"></script>
-<script>
-  function filterUsers(q) {
-    const term = q.toLowerCase().trim();
-    const rows = document.querySelectorAll('#userTableBody .adm-user-row');
-    let visible = 0;
-    rows.forEach(row => {
-      const match = !term
-        || (row.dataset.name  || '').toLowerCase().includes(term)
-        || (row.dataset.email || '').toLowerCase().includes(term);
-      row.style.display = match ? '' : 'none';
-      if (match) visible++;
-    });
-    document.getElementById('noResults').style.display =
-      (visible === 0 && rows.length > 0) ? 'flex' : 'none';
-  }
-</script>
 </body>
 </html>
