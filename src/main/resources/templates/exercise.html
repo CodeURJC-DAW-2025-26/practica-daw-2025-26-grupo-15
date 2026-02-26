@@ -39,7 +39,7 @@
                   <h2 class="content-section__title mb-2">Exercise {{exercise.id}}</h2>
                   <p class="content-section__meta text-muted mb-0">From {{list.title}} · Created by {{user.name}}</p>
                 </div>
-                </div>
+              </div>
             </div>
 
             <div class="row g-4 mt-2">
@@ -76,35 +76,40 @@
             <div class="row g-4 mb-4">
               {{#exercise.solutions}}
               <div class="col-12 col-md-6">
-                <a href="/solution/{{id}}" class="text-decoration-none">
-                  <div class="solution-card">
-                    <div class="solution-card__header d-flex justify-content-between align-items-start gap-2">
-                      <div>
-                        <span class="solution-card__badge">Solution {{-index}}</span>
-                        <span class="solution-card__date">{{lastUpdate}}</span>
-                      </div>
-                      <button type="button" class="btn-icon" data-bs-toggle="modal" data-bs-target="#deleteSolutionModal{{id}}" onclick="event.preventDefault();">
-                        <i class="bi bi-trash"></i>
-                      </button>
+                <div class="solution-card position-relative">
+                  <div class="solution-card__header d-flex justify-content-between align-items-start gap-2">
+                    <div>
+                      <span class="solution-card__badge">Solution {{-index}}</span>
+                      <span class="solution-card__date">{{lastUpdate}}</span>
                     </div>
-
-                    <div class="solution-card__author">
-                      {{#owner}}
-                        {{#photo}}
-                        <div class="avatar-sm avatar--img"><img src="/images/{{id}}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/></div>
-                        {{/photo}}
-                        {{^photo}}
-                        <div class="avatar-sm">{{nameInitial}}</div>
-                        {{/photo}}
-                      {{/owner}}
-                      <span>{{owner.name}}</span>
-                    </div>
-                    <div class="solution-card__footer">
-                      <span class="solution-card__comments">{{numComments}} comments</span>
-                    </div>
+                    
+                    {{#isOwner}}
+                    <button type="button" class="btn-icon position-relative z-3" data-bs-toggle="modal" data-bs-target="#deleteSolutionModal{{id}}">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                    {{/isOwner}}
                   </div>
-                </a>
 
+                  <div class="solution-card__author">
+                    {{#owner}}
+                      {{#photo}}
+                      <div class="avatar-sm avatar--img"><img src="/images/{{id}}" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/></div>
+                      {{/photo}}
+                      {{^photo}}
+                      <div class="avatar-sm">{{nameInitial}}</div>
+                      {{/photo}}
+                    {{/owner}}
+                    <span>{{owner.name}}</span>
+                  </div>
+                  
+                  <div class="solution-card__footer">
+                    <span class="solution-card__comments">{{numComments}} comments</span>
+                  </div>
+
+                  <a href="/solution/{{id}}" class="stretched-link"></a>
+                </div>
+
+                {{#isOwner}}
                 <div class="modal fade" id="deleteSolutionModal{{id}}" tabindex="-1" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content" style="background: var(--bg-card); border: var(--stroke-light);">
@@ -126,6 +131,7 @@
                     </div>
                   </div>
                 </div>
+                {{/isOwner}}
               </div>
               {{/exercise.solutions}}
               

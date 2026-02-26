@@ -219,6 +219,14 @@ public class User {
 		return this.followers;
 	}
 
+	public int getSizeFollowers() {
+		return this.followers != null ? this.followers.size() : 0;
+	}
+
+	public int getSizeFollowing() {
+		return this.following != null ? this.following.size() : 0;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -226,6 +234,7 @@ public class User {
 		User other = (User) o;
 		return id != null && id.equals(other.id) && email != null && email.equals(other.email);
 	}
+	
 	@Override
 	public int hashCode(){
 		return 13 * this.email.hashCode() + this.id.hashCode();
