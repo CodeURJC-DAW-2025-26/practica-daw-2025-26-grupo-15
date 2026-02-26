@@ -1,17 +1,36 @@
 let feedPage = 0;
 let feedLoading = false;
 let feedHasMore = true;
+let currentPetition;
 
+let observer;
 const feedStream = document.getElementById("feedStream");
 const sentinel = document.getElementById("feedSentinel");
 
-async function loadMoreFeed(size = 10) {
+const defaultPageSize = 10;
+
+const operations = new Map([
+  ["l", ({ page, size, profileId }) => `/searchLists?page=${page}&size=${size}&userId=${encodeURIComponent(profileId ?? "")}`],
+  ["p", ({ page, size }) => `/searchPosts?page=${page}&size=${size}`],
+]);
+
+async function loadMoreFeed(size = defaultPageSize) {
+  currentPetition = feedStream?.dataset?.petition ?? "";  
+  const profileId = feedStream?.dataset?.profileId ?? null;
+
+  console.log(profileId)
+
+  if (currentPetition === null || !operations.has(currentPetition)) return;  
+  if (profileId === null && currentPetition === "l") return;
   if (feedLoading || !feedHasMore) return;
+    
 
   feedLoading = true;
 
   try {
-    const response = await fetch(`/searchPosts?page=${feedPage}&size=${size}`);
+    const buildUrl = operations.get(currentPetition);
+    const query = buildUrl({ page: feedPage, size, profileId });
+    const response = await fetch(query);
 
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
@@ -39,7 +58,7 @@ async function loadMoreFeed(size = 10) {
 
     // HTML inserted before sentinel, which has to be last element on feedStream
     sentinel.insertAdjacentHTML("beforebegin", html);
-    empty.classList.add("visually-hidden");
+    if (empty) empty.classList.add("visually-hidden");
 
     feedPage++;
 
@@ -50,19 +69,21 @@ async function loadMoreFeed(size = 10) {
   }
 }
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    if (entries[0].isIntersecting) {
-      loadMoreFeed(10);
+
+if (feedStream && sentinel) {
+    observer = new IntersectionObserver(
+    (entries) => {
+        if (entries[0].isIntersecting) {
+        loadMoreFeed(defaultPageSize);
+        }
+    },
+    {
+        root: feedStream,
+        rootMargin: "150px" // starts prior to feed end
     }
-  },
-  {
-    root: feedStream,
-    rootMargin: "150px" // starts prior to feed end
-  }
-);
+    );
 
-observer.observe(sentinel);
+    observer.observe(sentinel);
+    loadMoreFeed(defaultPageSize);
+}
 
-// first load
-loadMoreFeed(10);

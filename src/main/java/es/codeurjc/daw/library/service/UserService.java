@@ -6,7 +6,6 @@ import es.codeurjc.daw.library.model.User;
 import java.io.IOException;
 import java.util.Optional;
 
-import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

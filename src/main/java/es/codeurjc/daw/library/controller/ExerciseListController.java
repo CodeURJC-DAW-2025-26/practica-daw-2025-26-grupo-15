@@ -74,7 +74,7 @@ public class ExerciseListController {
             return "error";
         }
 
-        return "redirect:/profile/"+user.getId();
+        return "redirect:/profile";
     }
 
 
@@ -112,7 +112,7 @@ public class ExerciseListController {
             return "error";
         }
 
-        return "redirect:/profile/" + user.getId();
+        return "redirect:/profile";
     }
 
 

@@ -1,55 +1,49 @@
 {{#userLists}}
-    <article class="mt-0 feed-card">
-    <a href="/list-view/{{id}}" class="list-name">
-    <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
-        <div>
-        <h3>{{title}}</h3>
-        <p class="meta">Last update · {{lastUpdate}}</p>
-        </div>
+<article class="mt-0 feed-card">
+<a href="/list-view/{{id}}" class="list-name">
+<header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
+    <div>
+    <h3>{{title}}</h3>
+    <p class="meta">Last update · {{lastUpdate}}</p>
+    </div>
 
-        {{#isOwnProfile}}
-        <div class="card-actions d-flex flex-column align-items-end g-1">
-        <button class="btn-icon btn-icon-edit" type="button">
-            <a href="/edit-list/{{id}}">
-            <i class="bi bi-pencil icon-static"></i>
-            <img src="/assets/pencilanimated.gif" alt="Editar" class="icon-gif">
-            </a>
-        </button>
-        <button type="button" class="btn-icon" data-bs-toggle="modal" data-bs-target="#deleteModal{{id}}">
-            <i class="bi bi-trash"></i>
-        </button>
-        </div>
-        {{/isOwnProfile}}
-        
-    </header>
-    <p class="muted">{{description}}</p>
-    </a>
-    </article> 
-    <div class="modal fade" id="deleteModal{{id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{id}}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background: var(--bg-card); border: var(--stroke-light);">
-        <div class="modal-header border-0">
-            <h5 class="modal-title" id="deleteModalLabel{{id}}">Confirm deletion</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <p class="mb-0">Are you sure you want to delete the list "<strong>{{title}}</strong>"?</p>
-            <p class="text-muted mt-2 mb-0">This action cannot be undone.</p>
-        </div>
-        <div class="modal-footer border-0">
-            <button type="button" class="btn secondary" data-bs-dismiss="modal">Cancel</button>
-            <form method="post" action="/delete/list/{{id}}" style="display: inline;">
-            <input type="hidden" name="_csrf" value="{{token}}"/>
-            <button type="submit" class="btn" style="background-color: var(--danger, #dc3545);">Delete list</button>
-            </form>
-        </div>
-        </div>
+    {{#isOwnProfile}}
+    <div class="card-actions d-flex flex-column align-items-end g-1">
+    <button class="btn-icon btn-icon-edit" type="button">
+        <a href="/edit-list/{{id}}">
+        <i class="bi bi-pencil icon-static"></i>
+        <img src="/assets/pencilanimated.gif" alt="Editar" class="icon-gif">
+        </a>
+    </button>
+    <button type="button" class="btn-icon" data-bs-toggle="modal" data-bs-target="#deleteModal{{id}}">
+        <i class="bi bi-trash"></i>
+    </button>
+    </div>
+    {{/isOwnProfile}}
+    
+</header>
+<p class="muted">{{description}}</p>
+</a>
+</article> 
+<div class="modal fade" id="deleteModal{{id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{id}}" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background: var(--bg-card); border: var(--stroke-light);">
+    <div class="modal-header border-0">
+        <h5 class="modal-title" id="deleteModalLabel{{id}}">Confirm deletion</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <p class="mb-0">Are you sure you want to delete the list "<strong>{{title}}</strong>"?</p>
+        <p class="text-muted mt-2 mb-0">This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer border-0">
+        <button type="button" class="btn secondary" data-bs-dismiss="modal">Cancel</button>
+        <form method="post" action="/delete/list/{{id}}" style="display: inline;">
+        <input type="hidden" name="_csrf" value="{{token}}"/>
+        <button type="submit" class="btn" style="background-color: var(--danger, #dc3545);">Delete list</button>
+        </form>
     </div>
     </div>
-{{/userLists}}
-{{^userLists}}
-    <div class="text-center py-5">
-    {{#isOwnProfile}}<p class="muted">You haven't created any lists yet.</p>{{/isOwnProfile}}
-    {{^isOwnProfile}}<p class="muted">This user hasn't created any lists yet.</p>{{/isOwnProfile}}
-    </div>
+</div>
+</div>
 {{/userLists}}

@@ -16,16 +16,13 @@ import org.springframework.ui.Model;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
-import javax.management.RuntimeErrorException;
 
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
