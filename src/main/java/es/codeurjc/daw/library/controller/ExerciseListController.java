@@ -1,8 +1,10 @@
 package es.codeurjc.daw.library.controller;
 
 import java.security.Principal;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +17,10 @@ import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.PostService;
 import es.codeurjc.daw.library.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ExerciseListController {
@@ -43,12 +48,6 @@ public class ExerciseListController {
         model.addAttribute("isOwner", list.getOwner().getId().equals(user.getId()));
         return "list-view";
     }
-
-
-    
-
-    
-
     
 
     @GetMapping("/new-list")
@@ -56,6 +55,7 @@ public class ExerciseListController {
         model.addAttribute("action", "/add-new-list");
         return "new-list";
     }
+
 
     @PostMapping("/edit-list-content/{id}")
     public String editListContent(Model model, @PathVariable Long id, ExerciseList editedList, Principal principal) {
@@ -77,6 +77,8 @@ public class ExerciseListController {
         return "redirect:/profile/"+user.getId();
     }
 
+
+
     @GetMapping("/edit-list/{id}")
     public String getEditList(Model model, @PathVariable Long id, Principal principal) {
 
@@ -89,6 +91,8 @@ public class ExerciseListController {
 
         return "new-list";
     }
+
+
 
     @PostMapping("/add-new-list")
     public String addNewList(Model model, ExerciseList newList, Principal principal) {
@@ -111,6 +115,8 @@ public class ExerciseListController {
         return "redirect:/profile/" + user.getId();
     }
 
+
+
     @PostMapping("delete/list/{id}")
     public String deleteList(Model model, @PathVariable Long id, Principal principal) {
         User user = resolveUser(principal);
@@ -126,6 +132,32 @@ public class ExerciseListController {
      
         return "redirect:/profile/" + user.getId();
     }
+
+
+
+    @GetMapping("/searchLists")
+    public String searchLists(@RequestParam int page,
+                              @RequestParam int size,
+                              @RequestParam Long userId,
+                              Model model,
+                              Principal principal,
+                              HttpServletResponse response) {;
+        Optional<User> opt = userService.findById(userId);
+        if (opt.isEmpty()){
+            throw new RuntimeException("User not found");
+        }
+        User user = opt.get();
+        Slice<ExerciseList> slice = listService.findByOwner(user, page, size);
+
+        response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
+        response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
+
+        model.addAttribute("userLists", slice.getContent());
+        model.addAttribute("isOwnProfile", user.equals(resolveUser(principal)));
+        
+        return "fragments/search-lists";
+    }
+    
 
     private User resolveUser(Principal principal) {
         if (principal instanceof OAuth2AuthenticationToken oauth2Token) {

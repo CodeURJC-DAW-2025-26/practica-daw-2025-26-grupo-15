@@ -11,7 +11,8 @@ async function loadMoreFeed(size = 10) {
   feedLoading = true;
 
   try {
-    const response = await fetch(`/searchPosts?page=${feedPage}&size=${size}`);
+    const profileId = feedStream.dataset.profileId || null;
+    const response = await fetch(`/searchLists?page=${feedPage}&size=${size}&id=${profileId}`);
 
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
