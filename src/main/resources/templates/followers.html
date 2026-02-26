@@ -29,38 +29,19 @@
             <div class="followers-card">
               <h3>Followers</h3>
               <div class="followers-list">
+                {{#followers}}
                 <div class="followers-item">
                   <div class="followers-left">
-                    <div class="followers-avatar">U1</div>
-                    <span>User 1</span>
+                    <div class="followers-avatar">{{#photo}}<img src="/images/{{photo.id}}" alt="{{name}}" />{{/photo}}
+                      {{^photo}}<span>{{nameInitial}}</span>{{/photo}}</div>
+                    <span>{{name}}</span>
                   </div>
-                  <button class="btn secondary followers-action" type="button">View</button>
+                  <button class="btn secondary followers-action" type="button"><a href="profile/{{id}}">View</a></button>
                 </div>
-                <div class="followers-item">
-                  <div class="followers-left">
-                    <div class="followers-avatar">U2</div>
-                    <span>User 2</span>
-                  </div>
-                  <button class="btn secondary followers-action" type="button">View</button>
-                </div>
-                <div class="followers-item">
-                  <div class="followers-left">
-                    <div class="followers-avatar">U3</div>
-                    <span>User 3</span>
-                  </div>
-                  <button class="btn secondary followers-action" type="button">View</button>
-                </div>
-                <div class="followers-item">
-                  <div class="followers-left">
-                    <div class="followers-avatar">UN</div>
-                    <span>User N</span>
-                  </div>
-                  <button class="btn secondary followers-action" type="button">View</button>
-                </div>
-              </div>
-
-              <div class="footer-actions row g-3 mt-4">
-                <button class="btn followers-action col-12 col-sm-auto" type="button">More Followers</button>
+                {{/followers}}
+                {{^followers}}
+                <p class="muted">You don't have any followers yet.</p>
+                {{/followers}}
               </div>
             </div>
           </div>

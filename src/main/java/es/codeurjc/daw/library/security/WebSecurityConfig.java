@@ -73,6 +73,8 @@ public class WebSecurityConfig {
 						.requestMatchers("/edit-list/**").permitAll()
 						// PRIVATE PAGES
 						.requestMatchers("/solution/**").hasAnyRole("USER", "ADMIN")
+						.requestMatchers("/acceptRequest/**").hasAnyRole("USER", "ADMIN")
+						.requestMatchers("/declineRequest/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/edit-profile").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/new-exercise").hasAnyRole("USER")
 						.requestMatchers("/edit-exercise/**").hasAnyRole("USER")

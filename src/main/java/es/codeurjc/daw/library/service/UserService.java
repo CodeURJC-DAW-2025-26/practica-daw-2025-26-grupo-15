@@ -78,6 +78,37 @@ public class UserService {
         return requester.getRequestedFriends().contains(target);
     }
 
+    public void acceptFollowRequest(User requested, Long fromUser){
+        User requester = userRepo.findById(fromUser).orElseThrow(() -> new RuntimeException("User not found"));
+
+         if (!requested.getRequestReceived().contains(requester)){
+            throw new IllegalArgumentException("No follow request from this user");
+        }
+
+        requested.getRequestReceived().remove(requester);
+        requester.getRequestedFriends().remove(requested);
+
+        requested.getFollowers().add(requester);
+        requester.getFollowing().add(requested);
+
+        userRepo.save(requester);
+        userRepo.save(requested);
+    }
+
+    public void declineFollowRequest(User requested, Long fromUser){
+        User requester = userRepo.findById(fromUser).orElseThrow(() -> new RuntimeException("User not found"));
+
+         if (!requested.getRequestReceived().contains(requester)){
+            throw new IllegalArgumentException("No follow request from this user");
+        }
+
+        requested.getRequestReceived().remove(requester);
+        requester.getRequestedFriends().remove(requested);
+
+        userRepo.save(requester);
+        userRepo.save(requested);
+    }
+
     public User register(User user) {
         if (user.getName() == null || user.getName().trim().isEmpty()) {
             throw new RuntimeException("Username cannot be null or empty.");

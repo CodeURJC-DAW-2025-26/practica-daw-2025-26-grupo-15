@@ -67,11 +67,12 @@
               <p class="fr-card-meta"><i class="bi bi-clock"></i> Wants to follow you</p>
             </div>
             <div class="fr-card-actions">
-              <form action="/follow-requests/{{id}}/accept" method="post" style="display:inline">
+              <form action="/acceptRequest/{{id}}" method="post" style="display:inline">
                 <input type="hidden" name="_csrf" value="{{token}}" />
+                <input type="hidden" name="fromPage" value="/follow-requests" />
                 <button type="submit" class="fr-btn-accept"><i class="bi bi-check-lg"></i> Accept</button>
               </form>
-              <form action="/follow-requests/{{id}}/decline" method="post" style="display:inline">
+              <form action="/declineRequest/{{id}}" method="post" style="display:inline">
                 <input type="hidden" name="_csrf" value="{{token}}" />
                 <button type="submit" class="fr-btn-decline"><i class="bi bi-x-lg"></i> Decline</button>
               </form>
