@@ -769,8 +769,13 @@ textarea {
   border-top: var(--stroke-light);
 }
 
-.dropdown-content a.logout {
+.dropdown-action-danger {
   color: #d9534f;
+}
+
+.dropdown-content a.dropdown-action-danger:hover {
+  background-color: rgba(220, 53, 69, 0.12);
+  color: #ff8a95;
 }
 
 .dropdown:hover .dropdown-content {
@@ -1018,7 +1023,6 @@ textarea {
   justify-content: center;
   gap: 3px;
 }
-
 
 .site-footer {
   background: var(--sidebar-dark);

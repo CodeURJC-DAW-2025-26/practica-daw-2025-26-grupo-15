@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 
@@ -19,6 +21,10 @@ public class ExerciseListService {
 
     public List<ExerciseList> findByOwner(User user){
         return listRepo.findByOwner(user);
+    }
+
+    public Slice<ExerciseList> findByOwner(User user, int page, int size){
+        return listRepo.findByOwner(user, PageRequest.of(page, size));
     }
 
     public ExerciseList editList(ExerciseList editedList, ExerciseList originalList, User user) {
