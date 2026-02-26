@@ -55,6 +55,33 @@ public class UserController {
         }
     }
 
+    @PostMapping("/declineRequest/{fromUser}")
+    public String declineRequest(@PathVariable Long fromUser, @RequestParam String srcPage, Model model, Principal principal) {
+        User currentUser = resolveUser(principal);
+
+        try{
+            userService.declineFollowRequest(currentUser, fromUser);
+            return "redirect:" + srcPage;
+        }catch (Exception e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+    }
+
+    @PostMapping("/acceptRequest/{fromUser}")
+    public String acceptRequest(@PathVariable Long fromUser, @RequestParam String srcPage, Model model, Principal principal) {
+        
+        User currentUser = resolveUser(principal);
+
+        try{
+            userService.acceptFollowRequest(currentUser, fromUser);
+            return "redirect:" + srcPage;
+        }catch (Exception e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+    }
+
     @GetMapping("/profile")
     public String viewOwnProfile(Model model, Principal principal) {
         if (principal == null) {
@@ -73,6 +100,32 @@ public class UserController {
         model.addAttribute("hasPendingRequests", !requests.isEmpty());
         model.addAttribute("pendingCount", requests.size());
         return "profile";
+    }
+
+    @GetMapping("/followers")
+    public String viewFollowers(Model model, Principal principal) {
+        try {
+            User profileUser = resolveUser(principal);
+            model.addAttribute("user", profileUser);
+            model.addAttribute("followers", profileUser.getFollowers());
+            return "followers";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+    }
+
+    @GetMapping("/following")
+    public String viewFollowing(Model model, Principal principal) {
+        try {
+            User profileUser = resolveUser(principal);
+            model.addAttribute("user", profileUser);
+            model.addAttribute("followers", profileUser.getFollowing());
+            return "following";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
     }
 
     @GetMapping("/profile/{id}")
@@ -94,6 +147,8 @@ public class UserController {
                 if (!isOwnProfile){
                     User targetUser = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
                      model.addAttribute("hasRequested", userService.hasRequestedToFollow(loggedUser, targetUser));
+                     boolean isFollowing = loggedUser.getFollowing().contains(targetUser);
+                     model.addAttribute("showFollowButton", !isFollowing && !isOwnProfile);
             } else {
                 }
                 model.addAttribute("isOwnProfile", false);
@@ -135,16 +190,6 @@ public class UserController {
         return "follow-requests";
     }
 
-    @GetMapping("/following")
-    public String viewFollowing(Principal principal) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
-        //TODO: distinguish between principal user and other viewed profile
-        User user = resolveUser(principal);
-
-        return "following";
-    }
 
     @GetMapping("/edit-profile")
     public String editProfile(Model model, Principal principal) {

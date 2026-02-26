@@ -7,6 +7,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Page;
 
 import es.codeurjc.daw.library.model.User;
 
@@ -32,5 +33,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
         u.name ASC
     """, nativeQuery = true)
     Slice<User> searchUsersBySimilarName(@Param("name") String name, Pageable pageable);
+
+    @Query(value = "SELECT * FROM user_table ORDER BY RAND()", nativeQuery = true)
+    Page<User> findRandomUsers(Pageable pageable); 
 
 }

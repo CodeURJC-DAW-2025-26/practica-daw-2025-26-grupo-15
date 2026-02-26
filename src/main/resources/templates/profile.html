@@ -66,8 +66,16 @@
                     <span class="req-name">{{name}}</span>
                   </div>
                   <div class="actions">
-                    <span class="tag tag-accept" title="Accept"><i class="bi bi-check-lg"></i></span>
-                    <span class="tag tag-decline" title="Decline"><i class="bi bi-x-lg"></i></span>
+                    <form action="/acceptRequest/{{id}}" method="post">
+                      <input type="hidden" name="_csrf" value="{{token}}" />
+                      <input type="hidden" name="srcPage" value="/profile">
+                      <span class="tag tag-accept" title="Accept"><button type="submit" class="btn btn-link p-0"><i class="bi bi-check-lg"></i></button></span>
+                    </form>
+                    <form action="/declineRequest/{{id}}" method="post">
+                      <input type="hidden" name="_csrf" value="{{token}}" />
+                      <input type="hidden" name="srcPage" value="/profile">
+                    <span class="tag tag-decline" title="Decline"><button type="submit" class="btn btn-link p-0"><i class="bi bi-x-lg"></i></button></span>
+                    </form>
                   </div>
                 </div>
                 {{/firstTreeRequests}}
@@ -134,12 +142,14 @@
               <button class="btn secondary" type="button" disabled>Requested</button>
                 {{/hasRequested}}
                 {{^hasRequested}}
+                {{#showFollowButton}}
               <form method="post" action="/requestToFollow">
                   <input type="hidden" name="requesterId" value="{{loggedUserId}}"/>
                   <input type="hidden" name="targetId" value="{{user.id}}"/>
                   <input type="hidden" name="_csrf" value="{{token}}"/>
                   <button class="btn secondary" type="submit">Follow</button>
                 </form>
+                {{/showFollowButton}}
                 {{/hasRequested}}
               {{/logged}}
               {{/isOwnProfile}}
