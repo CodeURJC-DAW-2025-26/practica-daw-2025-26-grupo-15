@@ -173,7 +173,7 @@ public class UserService {
         if (user.getFollowing().isEmpty()) {
             return userRepo.findRandomUsers(PageRequest.of(0, limit)).stream()
                     .filter(u -> !u.getId().equals(user.getId()) && !user.getRequestedFriends().contains(u))
-                    .map(u -> new UserPair(u, null))
+                    .map(u -> new UserPair(u, new ArrayList<>()))
                     .toList();
         }
 
