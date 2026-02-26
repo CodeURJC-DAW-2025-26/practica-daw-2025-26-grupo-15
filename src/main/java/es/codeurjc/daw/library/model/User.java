@@ -218,4 +218,12 @@ public class User {
 	public List<User> getFollowers(){
 		return this.followers;
 	}
+
+	public int getSizeFollowers() {
+		return this.followers != null ? this.followers.size() : 0;
+	}
+
+	public int getSizeFollowing() {
+		return this.following != null ? this.following.size() : 0;
+	}
 }
