@@ -12,18 +12,26 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import es.codeurjc.daw.library.repository.UserRepository;
 
 @Service
 public class UserService {
-    
-    @Autowired 
+
+    @Autowired
     private UserRepository userRepo;
 
     @Autowired
     private ImageService imageService;
-    
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -31,15 +39,15 @@ public class UserService {
         return userRepo.findById(id);
     }
 
-    public Optional<User> findByName(String name){
+    public Optional<User> findByName(String name) {
         return userRepo.findByName(name);
     }
 
-    public Optional<User> findByEmail(String email){
+    public Optional<User> findByEmail(String email) {
         return userRepo.findByEmail(email);
     }
 
-    public Optional<User> findByProviderAndProviderId(String provider, String providerId){
+    public Optional<User> findByProviderAndProviderId(String provider, String providerId) {
         return userRepo.findByProviderAndProviderId(provider, providerId);
     }
 
@@ -55,16 +63,16 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public void requestToFollow(User requester, User target){
+    public void requestToFollow(User requester, User target) {
         if (requester.getId().equals(target.getId())) {
             throw new IllegalArgumentException("User cannot follow themselves");
         }
-        
-        if (requester.getRequestedFriends().contains(target)){
+
+        if (requester.getRequestedFriends().contains(target)) {
             throw new IllegalArgumentException("Follow request already sent");
         }
 
-        if (requester.getFollowing().contains(target)){
+        if (requester.getFollowing().contains(target)) {
             throw new IllegalArgumentException("Already following this user");
         }
 
@@ -74,7 +82,7 @@ public class UserService {
         userRepo.save(target);
     }
 
-    public boolean hasRequestedToFollow(User requester, User target){
+    public boolean hasRequestedToFollow(User requester, User target) {
         return requester.getRequestedFriends().contains(target);
     }
 
@@ -82,10 +90,10 @@ public class UserService {
         if (user.getName() == null || user.getName().trim().isEmpty()) {
             throw new RuntimeException("Username cannot be null or empty.");
         }
-        if(user.getName().length() < 3 || user.getName().length() > 30){
+        if (user.getName().length() < 3 || user.getName().length() > 30) {
             throw new RuntimeException("Username must be between 3 and 30 characters.");
         }
-        if(user.getName().matches(".*[^a-zA-Z0-9_].*")){
+        if (user.getName().matches(".*[^a-zA-Z0-9_].*")) {
             throw new RuntimeException("Username can only contain letters, numbers and underscores.");
         }
         if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
@@ -94,17 +102,18 @@ public class UserService {
         if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             throw new RuntimeException("Invalid email format.");
         }
-        if(user.getEncodedPassword() == null || user.getEncodedPassword().trim().isEmpty()){
+        if (user.getEncodedPassword() == null || user.getEncodedPassword().trim().isEmpty()) {
             throw new RuntimeException("Password cannot be null or empty.");
         }
-        if(user.getEncodedPassword().length() < 8 || user.getEncodedPassword().length() > 64){
+        if (user.getEncodedPassword().length() < 8 || user.getEncodedPassword().length() > 64) {
             throw new RuntimeException("Password must be between 8 and 64 characters long.");
         }
-        if(user.getEncodedPassword().matches(".*\\s.*")){
+        if (user.getEncodedPassword().matches(".*\\s.*")) {
             throw new RuntimeException("Password cannot contain whitespace.");
         }
         if (!user.getEncodedPassword().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&#_\\-]).{8,64}$")) {
-            throw new RuntimeException("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+            throw new RuntimeException(
+                    "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
         }
         if (existsByName(user.getName())) {
             throw new RuntimeException("Username '" + user.getName() + "' is already taken.");
@@ -130,7 +139,7 @@ public class UserService {
         if (user.getName() == null || user.getName().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be empty");
         }
-        
+
         oldUser.setName(user.getName());
         oldUser.setBio(user.getBio());
         oldUser.setSpecialty(user.getSpecialty());
@@ -138,7 +147,8 @@ public class UserService {
         if (photoFile != null && !photoFile.isEmpty()) {
             try {
                 if (oldUser.getPhoto() != null) {
-                    Image updated = imageService.replaceImageFile(oldUser.getPhoto().getId(), photoFile.getInputStream());
+                    Image updated = imageService.replaceImageFile(oldUser.getPhoto().getId(),
+                            photoFile.getInputStream());
                     oldUser.setPhoto(updated);
                 } else {
                     Image newImage = imageService.createImage(photoFile.getInputStream());
@@ -150,5 +160,61 @@ public class UserService {
         }
 
         return userRepo.save(oldUser);
+    }
+
+    // because i want to return the suggestion to follow and the contacts in common with that suggestion
+    private record UserPair(User suggestion, List<User> contact) {
+    }
+
+    public List<UserPair> getFollowingSuggestions(User user) {
+        Map<Long, UserPair> suggestionsMap = new LinkedHashMap<>();
+        int limit = 30;
+        int limitPerContact = 5; // Limit suggestions per followed user to avoid a list of suggestions from a single contact
+        if (user.getFollowing().isEmpty()) {
+            return userRepo.findRandomUsers(PageRequest.of(0, limit)).stream()
+                    .filter(u -> !u.getId().equals(user.getId()) && !user.getRequestedFriends().contains(u))
+                    .map(u -> new UserPair(u, null))
+                    .toList();
+        }
+
+        Set<Long> alreadyFollowing = user.getFollowing().stream().map(User::getId).collect(Collectors.toSet()); //To avoid duplicates in suggestions when multiple contacts follow the same user
+        for (User following : user.getFollowing()) {
+            if (suggestionsMap.size() >= limit)
+                break;
+            int count = 0;
+            for (User suggestion : following.getFollowing()) {
+                if (count >= limitPerContact || suggestionsMap.size() >= limit) break;
+
+                Long sId = suggestion.getId();
+                if (!sId.equals(user.getId()) && !alreadyFollowing.contains(sId) && !user.getRequestedFriends().contains(suggestion)) {
+                    if (suggestionsMap.containsKey(sId)) {
+                        List<User> contacts = suggestionsMap.get(sId).contact();
+                        if (!contacts.contains(following)) {
+                            contacts.add(following);
+                        }
+                    } else {
+                        List<User> contacts = new ArrayList<>();
+                        contacts.add(following);
+                        suggestionsMap.put(sId, new UserPair(suggestion, contacts));
+                        count++;
+                    }
+                }
+            }
+        }
+
+        List<UserPair> suggestions = new ArrayList<>(suggestionsMap.values());
+
+        if (suggestions.size() < limit) {
+            List<UserPair> randomSuggestions = userRepo.findRandomUsers(PageRequest.of(0, limit - suggestions.size()))
+                    .stream()
+                    .filter(u -> !u.getId().equals(user.getId()) && !user.getRequestedFriends().contains(u)
+                            && suggestions.stream().noneMatch(s -> s.suggestion.getId().equals(u.getId())))
+                    .map(u -> new UserPair(u, new ArrayList<>()))
+                    .toList();
+            suggestions.addAll(randomSuggestions);
+        }
+
+        Collections.shuffle(suggestions);
+        return suggestions;
     }
 }
