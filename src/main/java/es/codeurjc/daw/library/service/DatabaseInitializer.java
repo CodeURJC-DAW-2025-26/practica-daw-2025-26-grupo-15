@@ -65,7 +65,6 @@ public class DatabaseInitializer {
 			userImage(user, "sample_images/u1.png");
 			userRepository.save(user);
 		}
-	
 
 		
 		ExerciseList lista = new ExerciseList("Lista de ejemplo", "Lista para ver", "Algoritmos", new Date(System.currentTimeMillis()), u1, new ArrayList<>());
