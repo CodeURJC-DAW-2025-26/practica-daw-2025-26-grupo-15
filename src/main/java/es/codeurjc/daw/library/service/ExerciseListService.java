@@ -35,6 +35,10 @@ public class ExerciseListService {
         return listRepo.searchListsBySimilarTitle(q, PageRequest.of(page, size));
     }
 
+    public List<ExerciseList> findAllById(List<Long> ids){
+        return listRepo.findAllById(ids);
+    }
+
     public ExerciseList editList(ExerciseList editedList, ExerciseList originalList, User user) {
         if (editedList.getTitle() == null || editedList.getTitle().isEmpty()) {
             throw new IllegalArgumentException("Title cannot be null or empty");

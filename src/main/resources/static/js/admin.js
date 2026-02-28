@@ -66,8 +66,6 @@ async function loadMoreFeed(size = defaultPageSize) {
 
     const html = await response.text();
 
-    await loadModals(currentPetition, feedPage, size);
-
     const countHeader = response.headers.get("X-Results-Count");
     const count = countHeader ? parseInt(countHeader, 10) : 0;
 
@@ -84,6 +82,7 @@ async function loadMoreFeed(size = defaultPageSize) {
     }
 
     feedStream.innerHTML += html;
+    await loadModals(currentPetition, feedPage, size);
     setTableHeader();
     if (empty) empty.classList.add("visually-hidden");
 
@@ -96,18 +95,16 @@ async function loadMoreFeed(size = defaultPageSize) {
   }
 }
 
-async function loadModals(petition, page, size){
-    try{
-        const amount = (page + 1) * size;
-        const response = await fetch(`/loadModals/${petition}/${amount}`);
+async function loadModals(petition){
+    const rows = document.querySelectorAll("[data-entity-id]");
+    const ids = [...rows].map(r => r.dataset.entityId);
 
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const params = new URLSearchParams();
+    params.set("petition", petition);
+    ids.forEach(id => params.append("ids", id));
 
-        const html = await response.text();
-        modalsContainer.innerHTML = html;
-    } catch (e){
-        console.error(e);
-    }
+    const modalsHtml = await fetch("/loadModals?" + params.toString()).then(r => r.text());
+    document.querySelector("#modalsContainer").innerHTML = modalsHtml;
 }
 
 function setTableHeader(){

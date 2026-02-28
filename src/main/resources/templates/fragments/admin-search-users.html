@@ -1,5 +1,5 @@
-{{#allUsers}}
-<tr class="adm-user-row" data-name="{{name}}" data-email="{{email}}">
+{{#elems}}
+<tr class="adm-user-row" data-name="{{name}}" data-email="{{email}}" data-entity-id="{{id}}">
     <td>
         <div class="adm-user-cell">
             <div class="adm-user-avatar">
@@ -27,4 +27,4 @@
             title="Delete {{name}}"><i class="bi bi-trash3"></i></button>
     </td>
 </tr>
-{{/allUsers}}
+{{/elems}}
