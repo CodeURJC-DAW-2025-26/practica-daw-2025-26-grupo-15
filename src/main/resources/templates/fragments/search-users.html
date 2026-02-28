@@ -1,6 +1,8 @@
 {{#foundUsers}}
-    <a class="sidebar-search-results__item" href="#" role="listitem">
-        <span class="sidebar-search-results__avatar">U</span>
+    <a class="sidebar-search-results__item" href="profile/{{id}}" role="listitem">
+        <span class="sidebar-search-results__avatar avatar--img">
+            <img src="/images/{{photo.id}}" alt="Profile picture" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;"/>
+        </span>
         <span class="sidebar-search-results__name">{{name}}</span>
     </a>
 {{/foundUsers}}

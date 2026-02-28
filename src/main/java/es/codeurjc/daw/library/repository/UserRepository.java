@@ -35,6 +35,28 @@ public interface UserRepository extends JpaRepository<User, Long> {
     """, nativeQuery = true)
     Slice<User> searchUsersBySimilarName(@Param("name") String name, Pageable pageable);
 
+    @Query(value = """
+    SELECT *
+    FROM user_table u
+    WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :name, '%')) AND u.id <> :excludedUserId
+    ORDER BY 
+        CASE 
+            WHEN LOWER(u.name) LIKE LOWER(CONCAT(:name, '%')) THEN 0
+            WHEN LOWER(u.name) LIKE LOWER(CONCAT('%', :name, '%')) THEN 1
+            ELSE 2
+        END,
+        LENGTH(u.name),
+        u.name ASC
+    """, nativeQuery = true)
+    Slice<User> searchUsersBySimilarNameExcludingUser(@Param("name") String name, @Param("excludedUserId") Long excludedUserId, Pageable pageable);
+
+    @Query(value = """
+    SELECT *
+    FROM user_table u
+    WHERE u.id <> :excludedUserId
+    """, nativeQuery = true)
+    Slice<User> findAllExcludingUser(@Param("excludedUserId") Long excludedUserId, Pageable pageable);
+
 
     //suggestion based on random users that are not friends or pending friends
     @Query(value = "SELECT * FROM user_table u " +

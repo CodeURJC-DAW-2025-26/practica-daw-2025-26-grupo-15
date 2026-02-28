@@ -19,7 +19,6 @@ import es.codeurjc.daw.library.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import es.codeurjc.daw.library.service.UserService;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PostMapping;
