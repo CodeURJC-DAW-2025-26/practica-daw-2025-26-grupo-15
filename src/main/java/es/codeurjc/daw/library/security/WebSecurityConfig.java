@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 
 import java.util.List;
 
@@ -55,29 +56,33 @@ public class WebSecurityConfig {
 						.requestMatchers("/register").permitAll()
 						.requestMatchers("/form-register").permitAll()
 						.requestMatchers("/assets/**").permitAll()
-						.requestMatchers("/js/**").permitAll()	
+						.requestMatchers("/js/**").permitAll()
+						.requestMatchers( "/images/**").permitAll()
 						.requestMatchers("/favicon.ico").permitAll()
-						.requestMatchers("/exercise").permitAll()
-						.requestMatchers("/list-view").permitAll()
-						.requestMatchers("/new-list").permitAll()
-						.requestMatchers("/new-exercise").permitAll()
+						.requestMatchers( "/exercise/{id}").permitAll()
+						.requestMatchers("/list-view/{id}").permitAll()
+						.requestMatchers( "/solution/*").permitAll()
                         .requestMatchers("/error").permitAll()
 						.requestMatchers("/searchUsers**").permitAll()
 						.requestMatchers("/searchPosts**").permitAll()
 						.requestMatchers("/searchLists**").permitAll()
 						.requestMatchers("/loginerror").permitAll()
-						.requestMatchers("/error").permitAll()
 						.requestMatchers("/profile/{id}").permitAll()
-						.requestMatchers("/requestToFollow").permitAll() //CAMBIAR A PRIVATE TRAS ARREGLAR LOS ROLES
-						.requestMatchers("/profile").permitAll() //CAMBIAR A PRIVATE TRAS ARREGLAR LOS ROLES
 						.requestMatchers("/followers-following/**").permitAll()
-
-						.requestMatchers("/edit-list/**").permitAll()
+						
 						// PRIVATE PAGES
+						.requestMatchers("/new-list").hasAnyRole("USER")
+						.requestMatchers("/new-exercise").hasAnyRole("USER")
+						.requestMatchers("/add-solution/**").hasAnyRole("USER", "ADMIN")
+						.requestMatchers("/exercise/*/new-solution").hasAnyRole("USER", "ADMIN")
+						.requestMatchers("/exercise/*/solution/*/delete").hasAnyRole("USER", "ADMIN")
+						.requestMatchers("/edit-list/**").hasAnyRole("USER")
 						.requestMatchers("/solution/**").hasAnyRole("USER", "ADMIN")
-						.requestMatchers("/acceptRequest/**").hasAnyRole("USER", "ADMIN")
-						.requestMatchers("/declineRequest/**").hasAnyRole("USER", "ADMIN")
-						.requestMatchers("/edit-profile").hasAnyRole("USER", "ADMIN")
+						.requestMatchers("/requestToFollow").hasAnyRole("USER")
+						.requestMatchers("/profile").hasAnyRole("USER", "ADMIN") 
+						.requestMatchers("/acceptRequest/**").hasAnyRole("USER")
+						.requestMatchers("/declineRequest/**").hasAnyRole("USER")
+						.requestMatchers("/edit-profile").hasAnyRole("USER")
 						.requestMatchers("/new-exercise").hasAnyRole("USER")
 						.requestMatchers("/edit-exercise/**").hasAnyRole("USER")
 						.requestMatchers("/newsolution/**").hasAnyRole("USER")		

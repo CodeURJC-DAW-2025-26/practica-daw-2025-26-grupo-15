@@ -117,6 +117,14 @@
                   <a class="btn plus-btn rounded-circle" href="/new-list">
                     <i class="bi bi-plus"></i>
                   </a>
+                  {{#isOwnProfile}}
+                  {{#admin}}
+                  <a class="btn admin-panel-btn" href="/admin">
+                    <i class="bi bi-shield-lock"></i>
+                    Admin panel
+                  </a>
+                  {{/admin}}
+                  {{/isOwnProfile}}
                 </div>
               </div>
               {{#isOwnProfile}}

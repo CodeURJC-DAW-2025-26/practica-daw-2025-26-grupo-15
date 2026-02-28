@@ -90,14 +90,16 @@
                   </a>
                   
                   <form action="/follow/{{suggestion.id}}" method="POST" class="ms-2">
-                    <button type="submit" class="btn btn-sm btn-outline-primary" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;">Follow</button>
+                    <button type="submit" class="suggestion-follow-btn">Follow</button>
                   </form>
                   
                 </div>
                 {{/suggestions}}
                 
               </div>
-              <a class="btn secondary mt-3" href="/suggestions">See all</a>
+              <a class="btn secondary sidebar-requests-see-all home-suggestions-see-all" href="/suggestions">
+                <i class="bi bi-arrow-right-short"></i> See all suggestions
+              </a>
             </div>
             {{/logged}}
 

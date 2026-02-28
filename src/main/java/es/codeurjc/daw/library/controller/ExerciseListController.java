@@ -17,6 +17,7 @@ import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.PostService;
 import es.codeurjc.daw.library.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,15 +38,18 @@ public class ExerciseListController {
 
     @GetMapping("/list-view/{id}")
     public String getListView(Model model, Principal principal, @PathVariable Long id) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
-        User user = resolveUser(principal);
         ExerciseList list = listService.findById(id);
 
         model.addAttribute("list", list);
-        model.addAttribute("user", user);
-        model.addAttribute("isOwner", list.getOwner().getId().equals(user.getId()));
+        model.addAttribute("logged", principal != null);
+        model.addAttribute("isOwner", false);
+
+        if (principal != null) {
+            User user = resolveUser(principal);
+            model.addAttribute("user", user);
+            model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
+            model.addAttribute("isOwner", list.getOwner().getId().equals(user.getId()));
+        }
         return "list-view";
     }
     
@@ -118,19 +122,24 @@ public class ExerciseListController {
 
 
     @PostMapping("delete/list/{id}")
-    public String deleteList(Model model, @PathVariable Long id, Principal principal) {
-        User user = resolveUser(principal);
-
-        ExerciseList list = listService.findById(id);
-
-        try{
-            listService.deleteList(list, user);
+    public String deleteList(Model model, HttpServletRequest request, @PathVariable Long id) {
+         try{   
+            Principal principal = request.getUserPrincipal();
+            boolean isAdmin = request.isUserInRole("ADMIN");
+            User user = resolveUser(principal);
+            ExerciseList list = listService.findById(id);
+            listService.deleteList(list, user, isAdmin);
+            if(isAdmin)
+                return "redirect:/admin";
+            else
+                return "redirect:/profile";
+            
         } catch (SecurityException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
      
-        return "redirect:/profile";
+        
     }
 
 

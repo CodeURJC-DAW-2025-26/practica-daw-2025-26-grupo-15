@@ -5,5 +5,4 @@ import es.codeurjc.daw.library.model.Solution;
 
 
 public interface SolutionRepository extends JpaRepository<Solution, Long>{
-    
 }

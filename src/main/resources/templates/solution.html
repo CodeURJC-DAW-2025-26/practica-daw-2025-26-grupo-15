@@ -18,6 +18,7 @@
         <span class="brand-mark"></span>
         <a href="/"><span class="brand-title">DSGram</span></a>
       </div>
+      {{#logged}}
       <div class="profile-image d-flex align-items-center gap-2">
         <a href="/profile">
           <div class="avatar avatar--img">
@@ -26,6 +27,10 @@
           </div>
         </a>
       </div>
+      {{/logged}}
+      {{^logged}}
+      <a class="btn ghost" href="/login">Log in</a>
+      {{/logged}}
     </div>
 
     <div class="container">
@@ -42,6 +47,7 @@
                   </p>
                   <small class="text-secondary">Submitted: {{solution.lastUpdate}}</small>
                 </div>
+                {{#logged}}
                 <div class="card-actions d-flex flex-row align-items-center gap-2">
                   <a href="/solution/{{solution.id}}/export/pdf" class="btn solution-export-btn">
                     <i class="bi bi-file-earmark-pdf"></i>
@@ -54,6 +60,7 @@
                   </button>
                   {{/isOwner}}
                 </div>
+                {{/logged}}
               </div>
 
               <div class="solution-description mt-3">
@@ -93,10 +100,22 @@
 
             {{#solution.solImage}}
             <div class="solution-content mt-4">
+              {{#logged}}
               <div class="solution-viewer text-center p-2 bg-dark rounded overflow-hidden">
                 <img src="/images/{{solution.solImage.id}}" alt="Solution Visualization"
                   class="img-fluid rounded shadow-sm" style="max-height: 600px; width: auto;">
               </div>
+              {{/logged}}
+              {{^logged}}
+              <div class="solution-viewer solution-viewer--locked">
+                <div class="solution-viewer__overlay">
+                  <i class="bi bi-lock-fill solution-viewer__lock-icon" aria-hidden="true"></i>
+                  <p class="solution-viewer__lock-title">Solution image locked</p>
+                  <p class="solution-viewer__lock-sub">Log in to view the full solution image.</p>
+                  <a class="btn solution-viewer__login-btn" href="/login">Log in</a>
+                </div>
+              </div>
+              {{/logged}}
             </div>
             {{/solution.solImage}}
           </section>
@@ -164,6 +183,7 @@
               {{/solution.comments}}
             </div>
 
+            {{#logged}}
             <form class="add-comment-form" action="/solution/{{solution.id}}/comment" method="post">
               <div class="row g-3 align-items-end">
                 <div class="col-12 col-md-9">
@@ -177,6 +197,12 @@
               </div>
               <input type="hidden" name="_csrf" value="{{token}}">
             </form>
+            {{/logged}}
+            {{^logged}}
+            <div class="text-center">
+              <p class="text-muted mb-0">Log in to comment, export PDF or manage this solution.</p>
+            </div>
+            {{/logged}}
 
             <div class="text-center mt-5">
               <a class="btn ghost" href="/exercise/{{solution.exercise.id}}">Back to Exercise</a>

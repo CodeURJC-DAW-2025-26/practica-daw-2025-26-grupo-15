@@ -288,6 +288,7 @@ select:focus-visible {
   /* clave para scroll interno */
   height: calc(100vh - var(--feed-offset, 0px));
   overflow-y: auto;
+  padding-top: 6px; /* evita clipping del primer card al elevarse en hover */
   padding-right: 6px; /* opcional: espacio para scrollbar */
 }
 
@@ -658,6 +659,18 @@ textarea {
   gap: var(--space-2);
 }
 
+.admin-panel-btn {
+  background: linear-gradient(135deg, #dc3545, #b02a37);
+  color: #ffffff;
+  border: 1px solid rgba(176, 42, 55, 0.35);
+  box-shadow: 0 10px 20px rgba(176, 42, 55, 0.28);
+}
+
+.admin-panel-btn:hover {
+  color: #ffffff;
+  filter: brightness(1.05);
+}
+
 /* Followers page */
 .followers-card {
   background: #0b0b0d;
@@ -1023,6 +1036,10 @@ textarea {
   gap: 3px;
 }
 
+.home-suggestions-see-all {
+  margin-top: var(--space-2);
+}
+
 .site-footer {
   background: var(--sidebar-dark);
   color: rgba(255, 255, 255, 0.7);
@@ -1328,6 +1345,72 @@ textarea {
   place-items: center;
 }
 
+.solution-viewer--locked {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.09), transparent 52%),
+    radial-gradient(circle at 78% 26%, rgba(255, 255, 255, 0.06), transparent 50%),
+    linear-gradient(145deg, rgba(15, 15, 17, 0.96), rgba(28, 29, 34, 0.97));
+}
+
+.solution-viewer--locked::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(8px);
+  background: rgba(8, 8, 10, 0.34);
+}
+
+.solution-viewer__overlay {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: var(--paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: clamp(18px, 4vw, 28px);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(16, 17, 22, 0.5);
+  max-width: min(520px, 92%);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.4);
+}
+
+.solution-viewer__lock-icon {
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  line-height: 1;
+  color: #f2f2f6;
+}
+
+.solution-viewer__lock-title {
+  margin: 0;
+  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.solution-viewer__lock-sub {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(242, 242, 246, 0.78);
+}
+
+.solution-viewer__login-btn {
+  margin-top: var(--space-1);
+  background: linear-gradient(135deg, #2f3036, #1e1f24);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.35);
+}
+
+.solution-viewer__login-btn:hover {
+  color: #ffffff;
+  filter: brightness(1.06);
+}
+
 .solution-viewer__placeholder {
   text-align: center;
   color: var(--text-muted);
@@ -1401,6 +1484,18 @@ textarea {
   justify-content: center;
 }
 
+.btn-icon i {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.btn-icon .bi-trash,
+.btn-icon .bi-trash-fill,
+.btn-icon .bi-trash3,
+.btn-icon .bi-trash3-fill {
+  font-size: 20px;
+}
+
 .btn-icon:hover {
   background: rgba(47, 38, 64, 0.1);
   color: var(--ink-strong);
@@ -1417,15 +1512,16 @@ textarea {
 }
 
 .icon-static {
-  font-size: 20px;
+  font-size: 18px;
   opacity: 1;
   transition: opacity 0.2s ease;
   z-index: 1;
+  line-height: 1;
 }
 
 .icon-gif {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   display: block;
   opacity: 0;
   position: absolute;
@@ -1829,20 +1925,34 @@ a.fr-stat-chip:hover {
   gap: 2px;
 }
 .adm-nav-item {
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 10px;
   padding: 9px 12px;
   border-radius: 11px;
+  border: none;
+  background: transparent;
+  box-shadow: none;
   font-size: 14px;
   font-weight: 500;
   color: rgba(255,255,255,.45);
+  text-align: left;
   text-decoration: none;
+  cursor: pointer;
   transition: background .15s, color .15s;
+}
+.adm-nav-item span {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .1px;
 }
 .adm-nav-item:hover {
   background: rgba(255,255,255,.07);
   color: #fff;
+  transform: none;
+  box-shadow: none;
 }
 .adm-nav-item--active {
   background: rgba(142,156,224,.15);
@@ -1929,6 +2039,7 @@ a.fr-stat-chip:hover {
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 8px;
   padding: 8px 12px;
   border-radius: 9px;
@@ -1938,6 +2049,7 @@ a.fr-stat-chip:hover {
   color: rgba(255,255,255,.45);
   text-decoration: none;
   width: 100%;
+  text-align: left;
   transition: background .15s, color .15s;
 }
 .adm-sidebar-action-link:hover {
@@ -1955,12 +2067,12 @@ a.fr-stat-chip:hover {
   padding: 9px 12px;
   border-radius: 10px;
   font-size: 13px;
-  font-weight: 600;
-  color: rgba(255,255,255,.35);
+  font-weight: 500;
+  color: rgba(255,255,255,.45);
   text-decoration: none;
   border: 1px solid rgba(255,255,255,.07);
-  text-align: center;
-  justify-content: center;
+  text-align: left;
+  justify-content: flex-start;
   transition: background .15s, color .15s;
 }
 .adm-exit-btn:hover {

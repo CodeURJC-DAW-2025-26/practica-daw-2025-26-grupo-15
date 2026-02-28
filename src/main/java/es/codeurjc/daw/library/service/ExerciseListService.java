@@ -60,9 +60,9 @@ public class ExerciseListService {
 
     }
 
-    public void deleteList (ExerciseList list, User user){
-        if (!list.getOwner().getId().equals(user.getId())) {
-            throw new SecurityException("User is not the owner of the list");
+    public void deleteList (ExerciseList list, User user, boolean isAdmin){
+        if (!list.getOwner().getId().equals(user.getId()) && !isAdmin) {
+            throw new SecurityException("You are not allow to delete this");
         }
         listRepo.deleteById(list.getId());
     }

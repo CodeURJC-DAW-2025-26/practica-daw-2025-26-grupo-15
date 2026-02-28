@@ -38,18 +38,20 @@ public class SolutionController {
 
     @GetMapping("/solution/{id}")
     public String solution(Model model, Principal principal, @PathVariable Long id) {
-         if (principal == null) {
-            return "redirect:/login";
-        }       
-        
-        User user = resolveUser(principal);
         Solution solution = solutionService.findById(id);
-        model.addAttribute("user", user);
         model.addAttribute("solution", solution);
         model.addAttribute("exercise", solution.getExercise());
         model.addAttribute("comments", solution.getComments());
-        boolean isOwner = solution.getOwner().getId().equals(user.getId());
-        model.addAttribute("isOwner", isOwner);
+        model.addAttribute("logged", principal != null);
+        model.addAttribute("isOwner", false);
+
+        if (principal != null) {
+            User user = resolveUser(principal);
+            model.addAttribute("user", user);
+            model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
+            boolean isOwner = solution.getOwner().getId().equals(user.getId());
+            model.addAttribute("isOwner", isOwner);
+        }
 
         return "solution";
     }

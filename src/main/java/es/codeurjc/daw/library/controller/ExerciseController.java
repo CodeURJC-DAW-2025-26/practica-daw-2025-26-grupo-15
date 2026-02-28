@@ -19,6 +19,9 @@ import es.codeurjc.daw.library.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import es.codeurjc.daw.library.service.UserService;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -70,19 +73,20 @@ public class ExerciseController {
 
     @GetMapping("/exercise/{id}")
     public String getExercise(Model model, Principal principal, @PathVariable Long id) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
         try {
-            User user = resolveUser(principal);
             Exercise exercise = exerciseService.findById(id);
-            model.addAttribute("user", user);
-            model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
             model.addAttribute("exercise", exercise);
             model.addAttribute("list", exercise.getExerciseList());
-            boolean isOwner = exercise.getExerciseList().getOwner().getId().equals(user.getId());
-            model.addAttribute("isOwner", isOwner);
+            model.addAttribute("isOwner", false);
+            model.addAttribute("logged", principal != null);
 
+            if (principal != null) {
+                User user = resolveUser(principal);
+                model.addAttribute("user", user);
+                model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
+                boolean isOwner = exercise.getExerciseList().getOwner().getId().equals(user.getId());
+                model.addAttribute("isOwner", isOwner);
+            }
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
@@ -133,11 +137,7 @@ public class ExerciseController {
 
     @GetMapping("/exercise/{exerciseId}/pdf")
     @ResponseBody
-    public ResponseEntity<byte[]> downloadExercisePdf(@PathVariable Long exerciseId, Principal principal) {
-        if (principal == null) {
-            return ResponseEntity.status(401).build();
-        }
-
+    public ResponseEntity<byte[]> downloadExercisePdf(@PathVariable Long exerciseId) {
         Exercise ex = exerciseService.findById(exerciseId);
         if (ex == null || ex.getPdfImage() == null) {
             return ResponseEntity.notFound().build();
@@ -159,19 +159,24 @@ public class ExerciseController {
     }
 
     @PostMapping("/delete-exercise/{exerciseId}")
-    public String deleteExercise(Model model, @PathVariable Long exerciseId, Principal principal) {
-
-        User user = resolveUser(principal);
-        Long listId = exerciseService.findById(exerciseId).getExerciseList().getId();
-        if (listId == null) throw new RuntimeException("Exercise does not belong to any list");
+    public String deleteExercise(Model model, HttpServletRequest request,@PathVariable Long exerciseId) {
+        Long listId = null;
         try{
-            exerciseService.deleteExercise(exerciseId, user);
+            boolean isAdmin = request.isUserInRole("ADMIN");
+            Principal principal = request.getUserPrincipal();
+            User user = resolveUser(principal);    
+            listId = exerciseService.findById(exerciseId).getExerciseList().getId();
+            exerciseService.deleteExercise(exerciseId, user, isAdmin);
+            if(isAdmin)
+                return "redirect:/admin";
+            else
+                return "redirect:/list-view/" + listId;
         }catch(Exception e){
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
 
-        return "redirect:/list-view/" + listId;
+        
     }
     
 

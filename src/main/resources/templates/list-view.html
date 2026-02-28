@@ -18,6 +18,7 @@
         <span class="brand-mark"></span>
         <a href="/"><span class="brand-title">DSGram</span></a>
       </div>
+      {{#logged}}
       <div class="profile-image d-flex align-items-center gap-2">
         <a href="/profile">
           <div class="avatar avatar--img">
@@ -26,6 +27,10 @@
           </div>
         </a>
       </div>
+      {{/logged}}
+      {{^logged}}
+      <a class="btn ghost" href="/login">Log in</a>
+      {{/logged}}
     </div>
 
     <div class="container">
@@ -57,7 +62,7 @@
                       </div>
                       <div class="modal-footer border-0">
                         <button type="button" class="btn secondary" data-bs-dismiss="modal">Cancel</button>
-                        <form method="post" action="/list/{{list.id}}/delete" style="display: inline;">
+                        <form method="post" action="/delete/list/{{list.id}}" style="display: inline;">
                           <input type="hidden" name="_csrf" value="{{token}}"/>
                           <button type="submit" class="btn" style="background-color: var(--danger, #dc3545);">Delete everything</button>
                         </form>
@@ -141,9 +146,14 @@
               </a>
             </div>
             {{/isOwner}}
+            {{^logged}}
+            <div class="text-center">
+              <p class="text-muted mb-0">Log in to create, edit or delete content.</p>
+            </div>
+            {{/logged}}
 
             <div class="text-center mt-4">
-              <a class="btn ghost" href="/profile/{{user.id}}">Back to {{user.name}}'s profile</a>
+              <a class="btn ghost" href="/profile/{{list.owner.id}}">Back to {{list.owner.name}}'s profile</a>
             </div>
           </section>
         </div>
