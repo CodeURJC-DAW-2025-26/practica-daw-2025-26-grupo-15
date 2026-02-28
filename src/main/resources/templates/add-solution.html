@@ -43,7 +43,12 @@
 
             <div class="mb-4 w-100">
               <label for="solDesc" class="form-label">Description</label>
-              <textarea id="solDesc" name="description" rows="3" class="form-control-custom"
+              <textarea id="solDesc" 
+                name="description"
+                rows="3" 
+                minlength="10" 
+                maxlength="10000" 
+                class="form-control-custom"
                 placeholder="Explain your approach..." required></textarea>
             </div>
 

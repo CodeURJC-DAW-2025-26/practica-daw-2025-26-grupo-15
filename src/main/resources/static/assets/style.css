@@ -1192,6 +1192,51 @@ textarea {
   color: var(--ink-strong);
 }
 
+.solution-export-btn {
+  background: linear-gradient(135deg, var(--sky), var(--powder));
+  color: var(--white);
+  border: 1px solid rgba(47, 38, 64, 0.08);
+  box-shadow: var(--shadow-soft);
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.solution-export-btn:hover {
+  color: var(--white);
+}
+
+.solution-export-note {
+  margin-top: var(--space-3);
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.solution-description {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: var(--stroke-light);
+  background: linear-gradient(145deg, rgba(184, 205, 242, 0.2), rgba(182, 242, 225, 0.24));
+}
+
+.solution-description__label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--ink-strong);
+}
+
+.solution-description__text {
+  margin: 0;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 /* ── Solution Card (Modular) ── */
 .solution-card {
   background: var(--bg-soft);

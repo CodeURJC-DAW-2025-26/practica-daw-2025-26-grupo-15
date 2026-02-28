@@ -138,6 +138,9 @@ public class UserController {
 
             if (principal != null) {
                 User loggedUser = resolveUser(principal);
+                if(loggedUser.getId() == id)
+                    return "redirect:/profile";
+                
                 Boolean isOwnProfile = loggedUser.getId().equals(profileUser.getId());
                 model.addAttribute("isOwnProfile", isOwnProfile);
                 model.addAttribute("loggedUserId", loggedUser.getId());

@@ -36,7 +36,7 @@
               <input type="hidden" name="_csrf" value="{{token}}" />
             
             <div class="photo-column col-12 col-md-4">
-              <div class="profile-avatar-preview" id="avatarPreview" onclick="document.getElementById('photoUpload').click()" style="cursor:pointer;" title="Click to change photo">
+              <div class="profile-avatar-preview" id="avatarPreview" style="cursor:pointer;" title="Click to change photo">
                 {{#user.photo}}
                 <img id="avatarImg" src="/images/{{user.photo.id}}" alt="Profile photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
                 {{/user.photo}}
@@ -45,7 +45,7 @@
                 {{/user.photo}}
               </div>
               <label for="photoUpload" class="btn secondary mt-3" style="cursor:pointer;">Upload photo</label>
-              <input id="photoUpload" name="photoFile" type="file" accept="image/*" class="visually-hidden" onchange="previewPhoto(this)" />
+              <input id="photoUpload" name="photoFile" type="file" accept="image/*" class="visually-hidden"/>
             </div>
 
             <div class="info-column col-12 col-md-8">
