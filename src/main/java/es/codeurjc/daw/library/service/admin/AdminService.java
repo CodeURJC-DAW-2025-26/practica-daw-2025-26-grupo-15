@@ -18,10 +18,12 @@ public class AdminService {
     @Autowired private ExerciseListService listService;
     @Autowired private ExerciseService exerciseService;
 
+    private Long currentAdminId;
+
     public Slice<User> searchUsers(int page, int size, String filter) {
         return (filter == null || filter.isEmpty())
-                ? userService.findAll(page, size)
-                : userService.searchUsersBySimilarName(filter, page, size);
+                ? userService.findAllExcludingUser(currentAdminId, page, size)
+                : userService.searchUsersBySimilarNameExcludingUser(filter, currentAdminId, page, size);
     }
 
     public Slice<ExerciseList> searchLists(int page, int size, String filter) {
@@ -34,5 +36,9 @@ public class AdminService {
         return (filter == null || filter.isEmpty())
                 ? exerciseService.findAll(page, size)
                 : exerciseService.searchExercisesBySimilarTitle(filter, page, size);
+    }
+
+    public void setCurrentAdminId(Long id){
+        this.currentAdminId = id;
     }
 }
