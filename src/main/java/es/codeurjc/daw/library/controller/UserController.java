@@ -148,6 +148,7 @@ public class UserController {
                     User targetUser = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
                      model.addAttribute("hasRequested", userService.hasRequestedToFollow(loggedUser, targetUser));
                      boolean isFollowing = loggedUser.getFollowing().contains(targetUser);
+                     model.addAttribute("isFollowing", isFollowing);
                      model.addAttribute("showFollowButton", !isFollowing && !isOwnProfile);
             } else {
                 }
@@ -158,6 +159,20 @@ public class UserController {
         return "error";
     }
         return "profile";
+    }
+
+    @PostMapping("/unfollow")
+    public String unfollow(@RequestParam Long requesterId, @RequestParam Long targetId, Model model) {
+        try {
+            User requesterUser = userService.findById(requesterId).orElseThrow(() -> new RuntimeException("User not found"));
+            User targetUser = userService.findById(targetId).orElseThrow(() -> new RuntimeException("User not found"));
+
+            userService.unfollow(requesterUser, targetUser);
+            return "redirect:/profile/" + targetId;
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
     }
 
     @PostMapping("/requestToFollow")
@@ -185,7 +200,7 @@ public class UserController {
         model.addAttribute("followersNumber", user.getFollowers().size());
         model.addAttribute("followingNumber", user.getFollowing().size());
         model.addAttribute("isOwnProfile", true);
-        model.addAttribute("pendingCount", 0);
+        model.addAttribute("pendingCount", requests.size());
 
         return "follow-requests";
     }

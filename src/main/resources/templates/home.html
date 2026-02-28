@@ -63,7 +63,7 @@
                 {{#suggestions}}
                 <div class="list-item sidebar-search-results__item d-flex align-items-center justify-content-between w-100">
                   
-                  <a href="/profile/{{suggestion.id}}" class="d-flex align-items-center text-decoration-none text-dark" style="flex: 1; min-width: 0;">
+                  <a href="/profile/{{suggestion.id}}" class="d-flex align-items-center text-decoration-none" style="flex: 1; min-width: 0;">
                     
                     {{#suggestion.photo}}
                     <span class="sidebar-search-results__avatar avatar--img">
@@ -84,7 +84,7 @@
                       </span>
                       {{/contact.0}}
                       {{^contact.0}}
-                      <span class="text-muted" style="font-size: 0.75rem;">Suggested for you</span>
+                      <span style="font-size: 0.75rem;">Suggested for you</span>
                       {{/contact.0}}
                     </div>
                   </a>
