@@ -115,7 +115,7 @@
                       </div>
                       <div class="modal-footer border-0">
                         <button type="button" class="btn secondary" data-bs-dismiss="modal">Cancel</button>
-                        <form method="post" action="/list/{{list.id}}/exercise/{{id}}/delete">
+                        <form method="post" action="/delete-exercise/{{id}}">
                           <input type="hidden" name="_csrf" value="{{token}}"/>
                           <button type="submit" class="btn" style="background-color: var(--danger, #dc3545);">Delete</button>
                         </form>

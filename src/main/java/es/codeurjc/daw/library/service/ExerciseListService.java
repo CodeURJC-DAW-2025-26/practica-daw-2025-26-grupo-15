@@ -27,6 +27,14 @@ public class ExerciseListService {
         return listRepo.findByOwner(user, PageRequest.of(page, size));
     }
 
+    public Slice<ExerciseList> findAll(int page, int size){
+        return listRepo.findAll(PageRequest.of(page, size));
+    }
+
+    public Slice<ExerciseList> searchListsBySimilarTitle(String q, int page, int size) {
+        return listRepo.searchListsBySimilarTitle(q, PageRequest.of(page, size));
+    }
+
     public ExerciseList editList(ExerciseList editedList, ExerciseList originalList, User user) {
         if (editedList.getTitle() == null || editedList.getTitle().isEmpty()) {
             throw new IllegalArgumentException("Title cannot be null or empty");

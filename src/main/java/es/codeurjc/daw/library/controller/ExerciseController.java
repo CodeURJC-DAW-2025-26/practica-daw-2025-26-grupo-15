@@ -158,9 +158,12 @@ public class ExerciseController {
         }
     }
 
-    @PostMapping("/list/{listId}/exercise/{exerciseId}/delete")
-    public String deleteExercise(Model model, @PathVariable Long listId, @PathVariable Long exerciseId, Principal principal) {
+    @PostMapping("/delete-exercise/{exerciseId}")
+    public String deleteExercise(Model model, @PathVariable Long exerciseId, Principal principal) {
+
         User user = resolveUser(principal);
+        Long listId = exerciseService.findById(exerciseId).getExerciseList().getId();
+        if (listId == null) throw new RuntimeException("Exercise does not belong to any list");
         try{
             exerciseService.deleteExercise(exerciseId, user);
         }catch(Exception e){

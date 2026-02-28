@@ -59,8 +59,12 @@ public class UserService {
         return userRepo.findByEmail(email).isPresent();
     }
 
-    public java.util.List<User> findAll() {
+    public List<User> findAll() {
         return userRepo.findAll();
+    }
+
+    public Slice<User> findAll(int page, int size){
+        return userRepo.findAll(PageRequest.of(page, size));
     }
 
     public void requestToFollow(User requester, User target) {

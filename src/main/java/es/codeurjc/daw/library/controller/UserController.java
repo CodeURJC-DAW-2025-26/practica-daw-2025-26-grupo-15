@@ -198,18 +198,6 @@ public class UserController {
         return "edit-profile";
     }
 
-    @GetMapping("/admin")
-    public String adminPanel(Model model, Principal principal) {
-        if (principal != null) {
-            User current = resolveUser(principal);
-            model.addAttribute("currentUser", current);
-        }
-        java.util.List<User> all = userService.findAll();
-        model.addAttribute("allUsers", all);
-        model.addAttribute("userCount", all.size());
-        return "admin";
-    }
-
     @GetMapping("/edit-profile-form")
     public String editProfileForm(Model model, Principal principal) {
         User user = resolveUser(principal);

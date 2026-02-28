@@ -84,6 +84,8 @@ public class WebSecurityConfig {
 						.requestMatchers("/following").hasAnyRole("USER")
 						.requestMatchers("/new-list").hasAnyRole("USER")
 						.requestMatchers("/admin").hasAnyRole("ADMIN")
+						.requestMatchers("/adminSearch**").hasAnyRole("ADMIN")
+						.requestMatchers("/loadModals/**").hasAnyRole("ADMIN")
 						.requestMatchers("/follow-requests").hasAnyRole("USER")				
 						.anyRequest().authenticated())
 						

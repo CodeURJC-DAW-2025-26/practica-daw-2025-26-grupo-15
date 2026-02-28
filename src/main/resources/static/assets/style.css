@@ -2039,6 +2039,17 @@ a.fr-stat-chip:hover {
 }
 
 /* Table */
+
+.table-scroll{
+  max-height: 70vh;   /* el alto que quieras */
+  overflow-y: auto;
+}
+
+.feed-sentinel{
+  height: 1px;        /* importante para que exista “algo” que intersectar */
+}
+
+
 .adm-table {
   width: 100%;
   border-collapse: collapse;
@@ -2213,3 +2224,7 @@ a.fr-stat-chip:hover {
   color: #fff;
 }
 .adm-modal-confirm:hover { background: #b02a37; }
+
+.t-body-admin {
+  overflow-y: auto;
+}

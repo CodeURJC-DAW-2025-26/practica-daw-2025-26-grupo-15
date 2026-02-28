@@ -7,6 +7,9 @@ import java.io.IOException;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.repository.ExerciseRepository;
 import jakarta.transaction.Transactional;
@@ -25,6 +28,14 @@ public class ExerciseService {
 
     public Exercise findById(Long id) {
         return exerciseRepo.findById(id).orElseThrow(() -> new RuntimeException("Exercise not found"));
+    }
+
+    public Slice<Exercise> findAll(int page, int size){
+        return exerciseRepo.findAll(PageRequest.of(page, size));
+    }
+
+     public Slice<Exercise> searchExercisesBySimilarTitle(String q, int page, int size) {
+        return exerciseRepo.searchExercisesBySimilarTitle(q, PageRequest.of(page, size));
     }
 
     @Transactional

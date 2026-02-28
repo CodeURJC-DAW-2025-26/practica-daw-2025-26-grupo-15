@@ -1,0 +1,30 @@
+{{#allUsers}}
+<tr class="adm-user-row" data-name="{{name}}" data-email="{{email}}">
+    <td>
+        <div class="adm-user-cell">
+            <div class="adm-user-avatar">
+            {{#photo}}<img src="/images/{{photo.id}}" alt="{{name}}" />{{/photo}}
+            {{^photo}}<span>{{nameInitial}}</span>{{/photo}}
+            </div>
+            <div>
+                <div class="adm-user-name">{{name}}</div>
+                <div class="adm-user-id">ID #{{id}}</div>
+            </div>
+        </div>
+    </td>
+    <td class="adm-email">{{email}}</td>
+    <td>
+    {{#roles}}<span class="adm-role-badge adm-role-badge--{{.}}">{{.}}</span>{{/roles}}
+    </td>
+    <td class="text-center adm-stat-cell">{{sizeFollowers}}</td>
+    <td class="text-center adm-stat-cell">{{sizeFollowing}}</td>
+    <td>
+        <button
+            class="adm-delete-btn"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#delModal{{id}}"
+            title="Delete {{name}}"><i class="bi bi-trash3"></i></button>
+    </td>
+</tr>
+{{/allUsers}}

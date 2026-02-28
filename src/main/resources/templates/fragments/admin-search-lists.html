@@ -1,0 +1,22 @@
+{{#allLists}}
+<tr class="adm-user-row" >
+    <td>
+        <div class="adm-user-cell">
+            <div>
+                <div class="adm-user-name">{{title}}</div>
+                <div class="adm-user-id">ID #{{id}}</div>
+            </div>
+        </div>
+    </td>
+    <td class="adm-email">{{topic}}</td>
+    <td class="text-center adm-stat-cell">{{owner.name}}</td>
+    <td>
+        <button
+            class="adm-delete-btn"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#delModalList{{id}}"
+            title="Delete {{title}}"><i class="bi bi-trash3"></i></button>
+    </td>
+</tr>
+{{/allLists}}

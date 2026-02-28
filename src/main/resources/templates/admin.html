@@ -22,19 +22,19 @@
     <div class="adm-sidebar-label">Admin Panel</div>
 
     <nav class="adm-nav">
-      <a href="#" class="adm-nav-item adm-nav-item--active">
+      <button onclick="setAdminOption('u')" class="adm-nav-item">
         <i class="bi bi-people-fill"></i>
         <span>Users</span>
         <span class="adm-nav-chip">{{userCount}}</span>
-      </a>
-      <a href="#" class="adm-nav-item adm-nav-item--disabled">
+      </button>
+      <button onclick="setAdminOption('l')" class="adm-nav-item">
         <i class="bi bi-collection-fill"></i>
         <span>Lists</span>
-      </a>
-      <a href="#" class="adm-nav-item adm-nav-item--disabled">
+      </button>
+      <button onclick="setAdminOption('e')" class="adm-nav-item">
         <i class="bi bi-journal-code"></i>
         <span>Exercises</span>
-      </a>
+      </button>
     </nav>
 
     <div class="adm-sidebar-bottom">
@@ -83,8 +83,8 @@
       <div class="adm-stat">
         <div class="adm-stat-icon adm-stat-icon--sky"><i class="bi bi-people-fill"></i></div>
         <div>
-          <div class="adm-stat-value">{{userCount}}</div>
-          <div class="adm-stat-label">Registered users</div>
+          <div class="adm-stat-value"></div>
+          <div class="adm-stat-label">Registered</div>
         </div>
       </div>
       <div class="adm-stat">
@@ -110,100 +110,33 @@
         <div class="adm-search-wrap">
           <i class="bi bi-search adm-search-icon"></i>
           <input
-            id="adminSearch"
+            id="inputFilter"
             type="search"
             class="adm-search-input"
-            placeholder="Search by name or email…"
+            placeholder="Search by name…"
             autocomplete="off"
+            oninput="setFilter()"
           />
         </div>
       </div>
 
-      <div class="table-responsive">
+      <div id="feedScroll" class="table-scroll">
         <table class="adm-table">
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Email</th>
-              <th>Roles</th>
-              <th class="text-center">Followers</th>
-              <th class="text-center">Following</th>
-              <th></th>
-            </tr>
+          <thead id="tableHeader">  
           </thead>
-          <tbody id="userTableBody">
-            {{#allUsers}}
-            <tr class="adm-user-row" data-name="{{name}}" data-email="{{email}}">
-              <td>
-                <div class="adm-user-cell">
-                  <div class="adm-user-avatar">
-                    {{#photo}}<img src="/images/{{photo.id}}" alt="{{name}}" />{{/photo}}
-                    {{^photo}}<span>{{nameInitial}}</span>{{/photo}}
-                  </div>
-                  <div>
-                    <div class="adm-user-name">{{name}}</div>
-                    <div class="adm-user-id">ID #{{id}}</div>
-                  </div>
-                </div>
-              </td>
-              <td class="adm-email">{{email}}</td>
-              <td>
-                {{#roles}}<span class="adm-role-badge adm-role-badge--{{.}}">{{.}}</span>{{/roles}}
-              </td>
-              <td class="text-center adm-stat-cell">{{sizeFollowers}}</td>
-              <td class="text-center adm-stat-cell">{{sizeFollowing}}</td>
-              <td>
-                <button
-                  class="adm-delete-btn"
-                  type="button"
-                  data-bs-toggle="modal"
-                  data-bs-target="#delModal{{id}}"
-                  title="Delete {{name}}"
-                ><i class="bi bi-trash3"></i></button>
-              </td>
-            </tr>
-            {{/allUsers}}
-            {{^allUsers}}
-            <tr><td colspan="6" class="adm-empty-row">No users registered yet.</td></tr>
-            {{/allUsers}}
+          <tbody id="feedStream" class="t-body-admin" data-petition="a">
           </tbody>
         </table>
+        <div id="feedSentinel" class="feed-sentinel"></div>            
       </div>
 
-      <div id="noResults" class="adm-no-results" style="display:none;">
-        <i class="bi bi-search" style="font-size:32px;"></i>
-        <p>No users match your search.</p>
-      </div>
+      <div id="modalsContainer"></div>  
 
     </div>
   </main>
 </div>
 
-{{#allUsers}}
-<div class="modal fade" id="delModal{{id}}" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content adm-modal">
-      <div class="modal-header border-0 pb-1">
-        <h6 class="adm-modal-title">
-          <i class="bi bi-exclamation-circle-fill me-2" style="color:var(--sky);"></i>Delete user?
-        </h6>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body py-1">
-        <p class="adm-modal-body">Permanently remove <strong>{{name}}</strong> and all their content. This cannot be undone.</p>
-      </div>
-      <div class="modal-footer border-0 pt-1">
-        <button class="adm-modal-cancel" data-bs-dismiss="modal">Cancel</button>
-        <form method="post" action="/delete-profile/{{id}}" style="display:inline;">
-          <input type="hidden" name="_csrf" value="{{token}}" />
-          <button type="submit" class="adm-modal-confirm">Delete</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-{{/allUsers}}
-
+<script src="/js/admin.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
