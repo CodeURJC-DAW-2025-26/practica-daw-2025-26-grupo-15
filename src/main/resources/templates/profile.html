@@ -138,6 +138,15 @@
               {{/isOwnProfile}}
               {{^isOwnProfile}}
               {{#logged}}
+              {{#isFollowing}}
+              <form method="post" action="/unfollow">
+                  <input type="hidden" name="requesterId" value="{{loggedUserId}}"/>
+                  <input type="hidden" name="targetId" value="{{user.id}}"/>
+                  <input type="hidden" name="_csrf" value="{{token}}"/>
+                  <button class="btn secondary" type="submit" style="background-color: var(--danger, #dc3545); color: #fff;">Unfollow</button>
+              </form>
+              {{/isFollowing}}
+              {{^isFollowing}}
               {{#hasRequested}}
               <button class="btn secondary" type="button" disabled>Requested</button>
                 {{/hasRequested}}
@@ -151,6 +160,7 @@
                 </form>
                 {{/showFollowButton}}
                 {{/hasRequested}}
+                {{/isFollowing}}
               {{/logged}}
               {{/isOwnProfile}}
             </div>

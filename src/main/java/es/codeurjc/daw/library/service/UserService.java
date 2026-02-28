@@ -202,6 +202,22 @@ public class UserService {
     public record UserPair(User suggestion, List<User> contact) {
         public int getCommonCount() { return contact.size() - 1; }
     }
+
+    public void unfollow(User follower, User target){
+        if (follower.getId().equals(target.getId())) {
+            throw new IllegalArgumentException("User cannot unfollow themselves");
+        }
+
+        if (!follower.getFollowing().contains(target)) {
+            throw new IllegalArgumentException("Not following this user");
+        }
+
+        follower.getFollowing().remove(target);
+        target.getFollowers().remove(follower);
+
+        userRepo.save(follower);
+        userRepo.save(target);
+    }
     
 
     public List<UserPair> getFollowingSuggestions(User user) {
