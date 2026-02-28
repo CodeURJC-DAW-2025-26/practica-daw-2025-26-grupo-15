@@ -205,3 +205,33 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.display-flex {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center; /* centra en móvil */
+}
+
+@media (min-width: 992px) {
+  .display-flex {
+    justify-content: flex-start; /* alinea a la izquierda en desktop */
+  }
+}
+
+.sign-in-logo {
+  width: auto;
+  height: 1em; /* mismo alto que el h1 */
+  font-size: inherit;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.sign-in-special-logo{
+  width: 7em;
+  height: 7em; /* mismo alto que el h1 */
+  font-size: inherit;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-left: 1em;
+}
