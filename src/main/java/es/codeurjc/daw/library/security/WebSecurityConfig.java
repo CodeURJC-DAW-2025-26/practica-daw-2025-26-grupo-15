@@ -70,6 +70,7 @@ public class WebSecurityConfig {
 						.requestMatchers("/profile/{id}").permitAll()
 						.requestMatchers("/requestToFollow").permitAll() //CAMBIAR A PRIVATE TRAS ARREGLAR LOS ROLES
 						.requestMatchers("/profile").permitAll() //CAMBIAR A PRIVATE TRAS ARREGLAR LOS ROLES
+						.requestMatchers("/followers-following/**").permitAll()
 
 						.requestMatchers("/edit-list/**").permitAll()
 						// PRIVATE PAGES

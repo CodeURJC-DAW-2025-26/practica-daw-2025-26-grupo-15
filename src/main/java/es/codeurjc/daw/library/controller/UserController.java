@@ -99,31 +99,40 @@ public class UserController {
         return "profile";
     }
 
-    @GetMapping("/followers")
-    public String viewFollowers(Model model, Principal principal) {
+    @GetMapping("/followers-following/{type}")
+    public String viewFollowersFollowing(Model model, Principal principal, @PathVariable String type, @RequestParam(required = false) Long userId) {
         try {
-            User profileUser = resolveUser(principal);
+            User loggedUser = (principal != null) ? resolveUser(principal) : null;
+
+            User profileUser;
+            if (userId != null){
+                profileUser = userService.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+            } else {
+                if (loggedUser == null) {
+                    return "redirect:/login";
+                }
+                profileUser = loggedUser;
+            }
+
+            boolean isOwnProfile = loggedUser != null && loggedUser.getId().equals(profileUser.getId());
             model.addAttribute("user", profileUser);
-            model.addAttribute("followers", profileUser.getFollowers());
-            return "followers";
+            model.addAttribute("isOwnProfile", isOwnProfile);
+            model.addAttribute("followersPage", "followers".equals(type));
+            if (loggedUser != null) {
+                model.addAttribute("loggedUserId", loggedUser.getId());
+            }
+            if ("followers".equals(type)) {
+                model.addAttribute("userList", profileUser.getFollowers());
+            } else {
+                model.addAttribute("userList", profileUser.getFollowing());
+            }
+            return "followers-following";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
         }
     }
 
-    @GetMapping("/following")
-    public String viewFollowing(Model model, Principal principal) {
-        try {
-            User profileUser = resolveUser(principal);
-            model.addAttribute("user", profileUser);
-            model.addAttribute("followers", profileUser.getFollowing());
-            return "following";
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "error";
-        }
-    }
 
     @GetMapping("/profile/{id}")
     public String viewProfile(Model model, Principal principal, @PathVariable Long id) {
@@ -151,8 +160,8 @@ public class UserController {
                      model.addAttribute("isFollowing", isFollowing);
                      model.addAttribute("showFollowButton", !isFollowing && !isOwnProfile);
             } else {
-                }
                 model.addAttribute("isOwnProfile", false);
+                }
             }
     } catch (Exception e) {
         model.addAttribute("errorMessage", e.getMessage());
@@ -162,13 +171,38 @@ public class UserController {
     }
 
     @PostMapping("/unfollow")
-    public String unfollow(@RequestParam Long requesterId, @RequestParam Long targetId, Model model) {
+    public String unfollow(@RequestParam Long requesterId, @RequestParam Long targetId,
+                           @RequestParam(required = false) String srcPage, Model model) {
         try {
             User requesterUser = userService.findById(requesterId).orElseThrow(() -> new RuntimeException("User not found"));
             User targetUser = userService.findById(targetId).orElseThrow(() -> new RuntimeException("User not found"));
 
             userService.unfollow(requesterUser, targetUser);
+
+            if (srcPage != null && !srcPage.isBlank()) {
+                return "redirect:" + srcPage;
+            }
             return "redirect:/profile/" + targetId;
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+    }
+
+    @PostMapping("/removeFollower")
+    public String removeFollower(@RequestParam Long followerId,
+                                 @RequestParam(required = false) String srcPage,
+                                 Model model, Principal principal) {
+        try {
+            User currentUser = resolveUser(principal);
+            User follower = userService.findById(followerId).orElseThrow(() -> new RuntimeException("User not found"));
+
+            userService.unfollow(follower, currentUser);
+
+            if (srcPage != null && !srcPage.isBlank()) {
+                return "redirect:" + srcPage;
+            }
+            return "redirect:/profile";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";

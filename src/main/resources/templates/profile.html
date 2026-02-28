@@ -101,14 +101,14 @@
 
                 <div class="profile-actions d-flex align-items-center flex-nowrap gap-3">
                   <div class="followers-cta">
-                    <a class="followers-cta-link" href="/followers">
+                    <a class="followers-cta-link" href="/followers-following/followers?userId={{user.id}}">
                       <span class="followers-cta-value">{{followersNumber}}</span>
                       <span class="followers-cta-label">Followers</span>
                     </a>
 
                     <div class="followers-cta-divider"></div>
 
-                    <a class="followers-cta-link" href="/following">
+                    <a class="followers-cta-link" href="/followers-following/following?userId={{user.id}}">
                       <span class="followers-cta-value">{{followingNumber}}</span>
                       <span class="followers-cta-label">Following</span>
                     </a>
