@@ -63,6 +63,10 @@ public class UserService {
         return userRepo.findAll(PageRequest.of(page, size));
     }
 
+    public List<User> findAllById(List<Long> ids){
+        return userRepo.findAllById(ids);
+    }
+
     public void requestToFollow(User requester, User target) {
         if (requester.getId().equals(target.getId())) {
             throw new IllegalArgumentException("User cannot follow themselves");

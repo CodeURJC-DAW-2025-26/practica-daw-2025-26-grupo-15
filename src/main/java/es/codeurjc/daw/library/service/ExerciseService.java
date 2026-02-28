@@ -3,6 +3,7 @@ package es.codeurjc.daw.library.service;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -36,6 +37,10 @@ public class ExerciseService {
 
      public Slice<Exercise> searchExercisesBySimilarTitle(String q, int page, int size) {
         return exerciseRepo.searchExercisesBySimilarTitle(q, PageRequest.of(page, size));
+    }
+
+    public List<Exercise> findAllById(List<Long> ids){
+        return exerciseRepo.findAllById(ids);
     }
 
     @Transactional
