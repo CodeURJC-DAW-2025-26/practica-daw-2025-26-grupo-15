@@ -2384,3 +2384,30 @@ a.fr-stat-chip:hover {
 .t-body-admin {
   overflow-y: auto;
 }
+
+
+.plus-btn-labeled {
+    /* El color verde menta de tu imagen */
+    background-color: #b7f2da; 
+    /* El color del icono/texto oscuro para que contraste */
+    color: #1a1d23 !important; 
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.plus-btn-labeled:hover {
+    background-color: #a2e7cb; /* Un pelín más oscuro al pasar el ratón */
+    transform: scale(1.02);
+}
+
+.plus-btn-labeled i {
+    font-weight: bold !important;
+    -webkit-text-stroke: 1px; /* Para que el icono + se vea más definido */
+}

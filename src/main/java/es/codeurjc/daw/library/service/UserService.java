@@ -201,6 +201,7 @@ public class UserService {
     // with that suggestion
     public record UserPair(User suggestion, List<User> contact) {
         public int getCommonCount() { return contact.size() - 1; }
+        
     }
 
     public void unfollow(User follower, User target){
