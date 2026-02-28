@@ -117,11 +117,12 @@
                       <span class="followers-cta-label">Following</span>
                     </a>
                   </div>
-
+                  {{#isOwnProfile}}
                   <a class="btn plus-btn-labeled d-flex align-items-center gap-2" href="/new-list">
                     <i class="bi bi-plus-lg"></i>
                     <span>Create list</span>
                   </a>
+                  {{/isOwnProfile}}
                   {{#isOwnProfile}}
                   {{#admin}}
                   <a class="btn admin-panel-btn" href="/admin">
