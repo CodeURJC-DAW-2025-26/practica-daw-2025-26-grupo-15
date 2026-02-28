@@ -1,19 +1,25 @@
 package es.codeurjc.daw.library.controller;
 
 import java.security.Principal;
+import java.text.Normalizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
 import es.codeurjc.daw.library.service.SolutionService; 
+import es.codeurjc.daw.library.service.SolutionPdfExportService;
 import es.codeurjc.daw.library.model.Solution;
 
 
@@ -26,6 +32,9 @@ public class SolutionController {
 
     @Autowired
     private SolutionService solutionService;
+
+    @Autowired
+    private SolutionPdfExportService solutionPdfExportService;
 
     @GetMapping("/solution/{id}")
     public String solution(Model model, Principal principal, @PathVariable Long id) {
@@ -85,6 +94,27 @@ public class SolutionController {
         return "redirect:/exercise/" + exerciseId;
     }
 
+    @GetMapping("/solution/{id}/export/pdf")
+    @ResponseBody
+    public ResponseEntity<byte[]> exportSolutionPdf(@PathVariable Long id, Principal principal) {
+        try {
+            Solution solution = solutionService.findById(id);
+            byte[] pdf = solutionPdfExportService.generateSolutionPdf(solution);
+            String safeName = sanitizeFileName(solution.getName());
+            String fileName = "solution-" + solution.getId() + "-" + safeName + ".pdf";
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                    .body(pdf);
+        } catch (RuntimeException e) {
+            if (e.getMessage() != null && e.getMessage().contains("Solution not found")) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     private User resolveUser(Principal principal) {
         if (principal instanceof OAuth2AuthenticationToken oauth2Token) {
             String provider = oauth2Token.getAuthorizedClientRegistrationId();
@@ -102,6 +132,20 @@ public class SolutionController {
             return userService.findByEmail(principal.getName())
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
+    }
+
+    private String sanitizeFileName(String rawTitle) {
+        if (rawTitle == null || rawTitle.trim().isEmpty()) {
+            return "untitled";
+        }
+
+        String normalized = Normalizer.normalize(rawTitle, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        String slug = normalized.toLowerCase()
+                .replaceAll("[^a-z0-9]+", "-")
+                .replaceAll("(^-|-$)", "");
+
+        return slug.isEmpty() ? "untitled" : slug;
     }
 
 

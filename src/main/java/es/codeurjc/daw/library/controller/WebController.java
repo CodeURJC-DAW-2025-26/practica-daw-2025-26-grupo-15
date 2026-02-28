@@ -48,6 +48,9 @@ public class WebController {
         if (principal != null) {
             User user = resolveUser(principal);
             model.addAttribute("name", user.getName());
+            List<UserService.UserPair> suggestions = userService.getFollowingSuggestions(user);
+            List<UserService.UserPair> top5Suggestions = suggestions.stream().limit(5).toList(); //TODO: de momento lo hago así pero podríamos hacerlo con pages yo creo y scroll
+            model.addAttribute("suggestions", top5Suggestions);
             if (user.getName() != null && !user.getName().isEmpty()) {
                 model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
             }

@@ -7,6 +7,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Lob;
+import jakarta.persistence.Column;
 import java.util.List;
 import jakarta.persistence.CascadeType;
 import java.util.ArrayList;
@@ -18,6 +20,9 @@ public class Solution {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
     private Date lastUpdate;
     @OneToMany(mappedBy = "solution", cascade = CascadeType.ALL)

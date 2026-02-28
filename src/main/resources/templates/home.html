@@ -55,17 +55,49 @@
               <div id="searchResults" class="sidebar-search-results__list" role="list"></div>
             </div>
 
-            <!--Following users (logged in)-->
             {{#logged}}
             <div class="sidebar-section">
-              <h3 class="sidebar-section__title">Following</h3>
+              <h3 class="sidebar-section__title">Suggested for you</h3>
               <div class="list">
-                <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U1</span><span class="sidebar-search-results__name">User 1</span></div></a>
-                <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U2</span><span class="sidebar-search-results__name">User 2</span></div></a>
-                <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U3</span><span class="sidebar-search-results__name">User 3</span></div></a>
-                <a href="#"><div class="list-item sidebar-search-results__item"><span class="sidebar-search-results__avatar">U4</span><span class="sidebar-search-results__name">User 4</span></div></a>
+                
+                {{#suggestions}}
+                <div class="list-item sidebar-search-results__item d-flex align-items-center justify-content-between w-100">
+                  
+                  <a href="/profile/{{suggestion.id}}" class="d-flex align-items-center text-decoration-none text-dark" style="flex: 1; min-width: 0;">
+                    
+                    {{#suggestion.photo}}
+                    <span class="sidebar-search-results__avatar avatar--img">
+                      <img src="/images/{{suggestion.photo.id}}" alt="Profile picture" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;"/>
+                    </span>
+                    {{/suggestion.photo}}
+                    {{^suggestion.photo}}
+                    <span class="sidebar-search-results__avatar">{{suggestion.nameInitial}}</span>
+                    {{/suggestion.photo}}
+                    
+                    <div class="ms-2" style="overflow: hidden;">
+                      <span class="sidebar-search-results__name d-block text-truncate">{{suggestion.name}}</span>
+                      
+                      {{#contact.0}}
+                      <span class="text-muted" style="font-size: 0.75rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        Followed by {{contact.0.name}}
+                        {{#contact.1}} and {{contact.size}} more{{/contact.1}}
+                      </span>
+                      {{/contact.0}}
+                      {{^contact.0}}
+                      <span class="text-muted" style="font-size: 0.75rem;">Suggested for you</span>
+                      {{/contact.0}}
+                    </div>
+                  </a>
+                  
+                  <form action="/follow/{{suggestion.id}}" method="POST" class="ms-2">
+                    <button type="submit" class="btn btn-sm btn-outline-primary" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;">Follow</button>
+                  </form>
+                  
+                </div>
+                {{/suggestions}}
+                
               </div>
-              <a class="btn secondary" href="/following">See all</a>
+              <a class="btn secondary mt-3" href="/suggestions">See all</a>
             </div>
             {{/logged}}
 

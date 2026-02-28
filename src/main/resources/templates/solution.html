@@ -42,18 +42,23 @@
                   </p>
                   <small class="text-secondary">Submitted: {{solution.lastUpdate}}</small>
                 </div>
-                {{#isOwner}}
                 <div class="card-actions d-flex flex-row align-items-center gap-2">
+                  <a href="/solution/{{solution.id}}/export/pdf" class="btn solution-export-btn">
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    Download PDF
+                  </a>
+                  {{#isOwner}}
                   <button type="button" class="btn-icon d-flex align-items-center justify-content-center"
                     data-bs-toggle="modal" data-bs-target="#deleteSolutionModal{{solution.id}}">
                     <i class="bi bi-trash"></i>
                   </button>
+                  {{/isOwner}}
                 </div>
-                {{/isOwner}}
               </div>
 
-              <div class="bg-light p-3 rounded border-start border-4 border-primary mt-3">
-                <p class="content-section__description mb-0">{{solution.description}}</p>
+              <div class="solution-description mt-3">
+                <p class="solution-description__label mb-2">Solution Description</p>
+                <p class="solution-description__text mb-0">{{solution.description}}</p>
               </div>
             </div>
 

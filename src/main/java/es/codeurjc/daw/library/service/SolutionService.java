@@ -38,6 +38,8 @@ public class SolutionService {
         }
         if (file == null)
             throw new RuntimeException("File cannot be null");
+        if(solution.getDescription().length() < 10 || solution.getDescription().length() > 10000)
+            throw new RuntimeException("The solution description must be between 10 and 10k characters.");
 
         Image image = imageService.createImage(file.getInputStream());
         solution.setSolImage(image);

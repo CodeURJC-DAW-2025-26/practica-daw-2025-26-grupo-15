@@ -6,7 +6,6 @@ import es.codeurjc.daw.library.model.User;
 import java.io.IOException;
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.PageRequest;
@@ -16,10 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.springframework.data.domain.Page;
 
 import es.codeurjc.daw.library.repository.UserRepository;
 
@@ -90,10 +86,10 @@ public class UserService {
         return requester.getRequestedFriends().contains(target);
     }
 
-    public void acceptFollowRequest(User requested, Long fromUser){
+    public void acceptFollowRequest(User requested, Long fromUser) {
         User requester = userRepo.findById(fromUser).orElseThrow(() -> new RuntimeException("User not found"));
 
-         if (!requested.getRequestReceived().contains(requester)){
+        if (!requested.getRequestReceived().contains(requester)) {
             throw new IllegalArgumentException("No follow request from this user");
         }
 
@@ -107,10 +103,10 @@ public class UserService {
         userRepo.save(requested);
     }
 
-    public void declineFollowRequest(User requested, Long fromUser){
+    public void declineFollowRequest(User requested, Long fromUser) {
         User requester = userRepo.findById(fromUser).orElseThrow(() -> new RuntimeException("User not found"));
 
-         if (!requested.getRequestReceived().contains(requester)){
+        if (!requested.getRequestReceived().contains(requester)) {
             throw new IllegalArgumentException("No follow request from this user");
         }
 
@@ -197,91 +193,69 @@ public class UserService {
         return userRepo.save(oldUser);
     }
 
-    // because i want to return the suggestion to follow and the contacts in common with that suggestion
-    private record UserPair(User suggestion, List<User> contact) {
+    // because i want to return the suggestion to follow and the contacts in common
+    // with that suggestion
+    public record UserPair(User suggestion, List<User> contact) {
+        public int getCommonCount() { return contact.size() - 1; }
     }
+    
 
     public List<UserPair> getFollowingSuggestions(User user) {
-        Map<Long, UserPair> suggestionsMap = new LinkedHashMap<>();
+        List<UserPair> suggestions = new ArrayList<>();
         int limit = 30;
-        int limitPerContact = 5; // Limit suggestions per followed user to avoid a list of suggestions from a single contact
-        if (user.getFollowing().isEmpty()) {
-            return userRepo.findRandomUsers(PageRequest.of(0, limit)).stream()
-                    .filter(u -> !u.getId().equals(user.getId()) && !user.getRequestedFriends().contains(u))
-                    .map(u -> new UserPair(u, new ArrayList<>()))
-                    .toList();
+        List<User> suggestedUsers = userRepo.findFollowingSuggestions(user.getId()); //find following suggestions based on friends of friends
+        for (User suggested : suggestedUsers) {
+            if (suggestions.size() >= limit)
+                break;
+            List<User> commonContacts = new ArrayList<>(user.getFollowing());
+            commonContacts.retainAll(suggested.getFollowers());
+
+            List<User> displayContacts = commonContacts.stream().limit(5).toList();
+            suggestions.add(new UserPair(suggested, new ArrayList<>(displayContacts)));
         }
 
-        Set<Long> alreadyFollowing = user.getFollowing().stream().map(User::getId).collect(Collectors.toSet()); //To avoid duplicates in suggestions when multiple contacts follow the same user
-        for (User following : user.getFollowing()) {
-            if (suggestionsMap.size() >= limit)
-                break;
-            int count = 0;
-            for (User suggestion : following.getFollowing()) {
-                if (count >= limitPerContact || suggestionsMap.size() >= limit) break;
-
-                Long sId = suggestion.getId();
-                if (!sId.equals(user.getId()) && !alreadyFollowing.contains(sId) && !user.getRequestedFriends().contains(suggestion)) {
-                    if (suggestionsMap.containsKey(sId)) {
-                        List<User> contacts = suggestionsMap.get(sId).contact();
-                        if (!contacts.contains(following)) {
-                            contacts.add(following);
-                        }
-                    } else {
-                        List<User> contacts = new ArrayList<>();
-                        contacts.add(following);
-                        suggestionsMap.put(sId, new UserPair(suggestion, contacts));
-                        count++;
-                    }
+        if (suggestions.size() < limit) {
+            int needed = limit - suggestions.size();
+            Page<User> randoms = userRepo.findRandomUsers(user.getId(), PageRequest.of(0, needed));
+            for (User r : randoms) {
+                if (suggestions.stream().noneMatch(s -> s.suggestion().getId().equals(r.getId()))) {
+                    suggestions.add(new UserPair(r, new ArrayList<>()));
                 }
             }
         }
-
-        List<UserPair> suggestions = new ArrayList<>(suggestionsMap.values());
-
-        if (suggestions.size() < limit) {
-            List<UserPair> randomSuggestions = userRepo.findRandomUsers(PageRequest.of(0, limit - suggestions.size()))
-                    .stream()
-                    .filter(u -> !u.getId().equals(user.getId()) && !user.getRequestedFriends().contains(u)
-                            && suggestions.stream().noneMatch(s -> s.suggestion.getId().equals(u.getId())))
-                    .map(u -> new UserPair(u, new ArrayList<>()))
-                    .toList();
-            suggestions.addAll(randomSuggestions);
-        }
-
         Collections.shuffle(suggestions);
         return suggestions;
     }
 
-    public void deleteUser(User user,long id,boolean isAdmin){
-        if(user.getId() != id  && !isAdmin)
+    public void deleteUser(User user, long id, boolean isAdmin) {
+        if (user.getId() != id && !isAdmin)
             throw new RuntimeException("You don't have permission to delete this profile.");
 
         User deletedUser = null;
-        if(user.getId() == id)
+        if (user.getId() == id)
             deletedUser = user;
         else
             deletedUser = this.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-            
-        for(User follower : deletedUser.getFollowers()){
+
+        for (User follower : deletedUser.getFollowers()) {
             follower.getFollowing().remove(deletedUser);
             userRepo.save(follower);
         }
         deletedUser.getFollowers().clear();
 
-        for(User following: deletedUser.getFollowing()){
+        for (User following : deletedUser.getFollowing()) {
             following.getFollowers().remove(deletedUser);
             userRepo.save(following);
         }
         deletedUser.getFollowing().clear();
 
-        for(User sender: deletedUser.getRequestReceived()){
+        for (User sender : deletedUser.getRequestReceived()) {
             sender.getRequestedFriends().remove(deletedUser);
             userRepo.save(sender);
         }
         deletedUser.getRequestReceived().clear();
 
-        for(User reciver: deletedUser.getRequestedFriends()){
+        for (User reciver : deletedUser.getRequestedFriends()) {
             reciver.getRequestReceived().remove(deletedUser);
             userRepo.save(reciver);
         }
