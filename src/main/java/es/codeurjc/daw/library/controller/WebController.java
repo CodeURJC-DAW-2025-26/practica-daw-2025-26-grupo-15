@@ -67,7 +67,8 @@ public class WebController {
                               @RequestParam(required = false) int page,
                               @RequestParam(required = false) int size,
                                 Model model,
-                                HttpServletResponse response) {
+                                HttpServletResponse response,
+                                Principal principal) {
 
         String q = name == null ? "" : name.trim();
 
@@ -77,8 +78,11 @@ public class WebController {
             model.addAttribute("foundUsers", List.of());
             return "fragments/search-users";
         }
-
-        Slice<User> slice = userService.searchUsersBySimilarName(q, page, size);
+        
+        Long currentUserId = (principal == null) ? null : resolveUser(principal).getId();
+        Slice<User> slice = (currentUserId == null ) ?
+                                userService.searchUsersBySimilarName(q, page, size) :
+                                userService.searchUsersBySimilarNameExcludingUser(q, currentUserId, page, size);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
@@ -106,6 +110,10 @@ public class WebController {
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
+
+        for (Post p : slice.getContent()){
+            p.calculateTime();
+        }
 
         model.addAttribute("list", slice.getContent());
         

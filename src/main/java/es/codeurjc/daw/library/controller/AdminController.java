@@ -42,6 +42,7 @@ public class AdminController {
 
     @PostConstruct
     private void initHandlers() {
+        //  put handlers on map getting them from adminService
         handlers = Map.of(
             "au", adminService::searchUsers,
             "al", adminService::searchLists,
@@ -49,6 +50,7 @@ public class AdminController {
         );
     }
 
+    // Contains the respective fragments to load the content for each search petition
     private final Map<String, String> viewByPetition = Map.of(
         "au", "fragments/admin-search-users",
         "al", "fragments/admin-search-lists",
@@ -62,9 +64,6 @@ public class AdminController {
             User current = resolveUser(principal);
             model.addAttribute("currentUser", current);
         }
-        java.util.List<User> all = userService.findAll();
-        model.addAttribute("allUsers", all);
-        model.addAttribute("userCount", all.size());
         return "admin";
     }
 
@@ -74,7 +73,8 @@ public class AdminController {
                             @RequestParam String petition,
                             @RequestParam(required = false) String inputFilter,
                             HttpServletResponse response,
-                            Model model) {
+                            Model model,
+                            Principal principal) {
 
         AdminSearchHandler handler = handlers.get(petition);
         String view = viewByPetition.get(petition);
@@ -83,11 +83,14 @@ public class AdminController {
             throw new IllegalArgumentException("Invalid operation: " + petition);
         }
 
+        //  set current admin id in service for excluding themselves in users search. Perhaps enhance in the future
+        adminService.setCurrentAdminId(resolveUser(principal).getId());
+        //  get the handler for the respective petition and execute to get the Slice
         Slice<?> slice = handler.handle(page, size, inputFilter);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
-
+        //  add slice content to mustache attribute
         model.addAttribute("elems", slice.getContent());
         return view;
     }

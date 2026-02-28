@@ -166,6 +166,14 @@ public class UserService {
         return userRepo.searchUsersBySimilarName(q, PageRequest.of(page, size));
     }
 
+    public Slice<User> searchUsersBySimilarNameExcludingUser(String q, Long exclude, int page, int size) {
+        return userRepo.searchUsersBySimilarNameExcludingUser(q, exclude, PageRequest.of(page, size));
+    }
+
+    public Slice<User> findAllExcludingUser(Long exclude, int page, int size){
+        return userRepo.findAllExcludingUser(exclude, PageRequest.of(page, size));
+    }
+
     public User modify(User user, User oldUser) {
         return modify(user, oldUser, null);
     }
