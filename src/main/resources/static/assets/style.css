@@ -919,7 +919,10 @@ textarea {
 }
 
 
-
+.suggestions-container {
+  max-height: 45vh;
+  overflow-y: auto;
+}
 
 
 .card-actions {
