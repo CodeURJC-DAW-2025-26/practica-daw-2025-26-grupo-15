@@ -72,8 +72,8 @@ public class WebSecurityConfig {
 						// PRIVATE PAGES
 						.requestMatchers("/new-list").hasAnyRole("USER")
 						.requestMatchers("/new-exercise").hasAnyRole("USER")
-						.requestMatchers("/add-solution/**").hasAnyRole("USER", "ADMIN")
-						.requestMatchers("/exercise/*/new-solution").hasAnyRole("USER", "ADMIN")
+						.requestMatchers("/add-solution/**").hasAnyRole("USER")
+						.requestMatchers("/exercise/*/new-solution").hasAnyRole("USER")
 						.requestMatchers("/exercise/*/solution/*/delete").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/edit-list/**").hasAnyRole("USER")
 						.requestMatchers("/solution/**").hasAnyRole("USER", "ADMIN")

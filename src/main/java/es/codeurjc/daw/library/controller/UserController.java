@@ -171,9 +171,12 @@ public class UserController {
 
     @PostMapping("/unfollow")
     public String unfollow(@RequestParam Long requesterId, @RequestParam Long targetId,
-                           @RequestParam(required = false) String srcPage, Model model) {
+                           @RequestParam(required = false) String srcPage, Model model, Principal principal) {
         try {
-            User requesterUser = userService.findById(requesterId).orElseThrow(() -> new RuntimeException("User not found"));
+            User requesterUser = resolveUser(principal);
+            if (!requesterUser.getId().equals(requesterId)) {
+                throw new RuntimeException("Invalid requester");
+            }
             User targetUser = userService.findById(targetId).orElseThrow(() -> new RuntimeException("User not found"));
 
             userService.unfollow(requesterUser, targetUser);
@@ -209,9 +212,12 @@ public class UserController {
     }
 
     @PostMapping("/requestToFollow")
-    public String requestToFollow(@RequestParam Long requesterId, @RequestParam Long targetId, Model model){
+    public String requestToFollow(@RequestParam Long requesterId, @RequestParam Long targetId, Model model, Principal principal){
         try{
-            User requesterUser = userService.findById(requesterId).orElseThrow(() -> new RuntimeException("User not found"));
+            User requesterUser = resolveUser(principal);
+            if (!requesterUser.getId().equals(requesterId)) {
+                throw new RuntimeException("Invalid requester");
+            }
             User targetUser = userService.findById(targetId).orElseThrow(() -> new RuntimeException("User not found"));
 
             userService.requestToFollow(requesterUser, targetUser);

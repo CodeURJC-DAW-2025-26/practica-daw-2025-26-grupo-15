@@ -87,7 +87,7 @@ public class ExerciseService {
         Exercise existing = exerciseRepo.findById(exerciseId)
             .orElseThrow(() -> new IllegalArgumentException("Exercise not found"));
 
-        if (!existing.getOwner().equals(user) || !isAdmin) 
+        if (!existing.getOwner().equals(user) && !isAdmin) 
             throw new IllegalArgumentException("Not allowed");
 
         exerciseRepo.delete(existing);
@@ -98,7 +98,6 @@ public class ExerciseService {
             throw new IllegalArgumentException("Exercise data is missing");
         }
 
-        // ajusta a tus nombres reales: title vs name, etc.
         String title = ex.getTitle();
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("Name is required");
@@ -122,7 +121,7 @@ public class ExerciseService {
         try {
             byte[] bytes = pdf.getBytes();
             ex.setPdfImage(new SerialBlob(bytes)); 
-        } catch (Exception e) { // IOException / SerialException / SQLException
+        } catch (Exception e) { 
             throw new RuntimeException("Error processing uploaded PDF");
         }
 

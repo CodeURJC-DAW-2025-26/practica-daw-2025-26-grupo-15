@@ -64,5 +64,4 @@ public class Comment {
         this.solution = solution;
     }
 
-
 }

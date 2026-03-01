@@ -751,6 +751,26 @@ textarea {
   color: #fff;
 }
 
+.btn-delete-profile-admin {
+  background: transparent;
+  color: #9b2430;
+  border: 1px solid rgba(176, 42, 55, 0.4);
+  border-radius: 999px;
+  min-height: 36px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.btn-delete-profile-admin:hover {
+  background: rgba(176, 42, 55, 0.08);
+  color: #7e1c27;
+  border-color: rgba(176, 42, 55, 0.58);
+  box-shadow: none;
+  transform: none;
+}
+
 .input-with-button .btn {
   white-space: nowrap; 
   padding: 10px 16px;  

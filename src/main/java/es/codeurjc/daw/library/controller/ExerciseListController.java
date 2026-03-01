@@ -43,12 +43,20 @@ public class ExerciseListController {
         model.addAttribute("list", list);
         model.addAttribute("logged", principal != null);
         model.addAttribute("isOwner", false);
+        model.addAttribute("isAdmin", false);
+        model.addAttribute("canDeleteList", false);
+        model.addAttribute("canDeleteExercises", false);
 
         if (principal != null) {
             User user = resolveUser(principal);
+            boolean isAdmin = user.getRoles().contains("ADMIN");
+            boolean isOwner = list.getOwner().getId().equals(user.getId());
             model.addAttribute("user", user);
             model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
-            model.addAttribute("isOwner", list.getOwner().getId().equals(user.getId()));
+            model.addAttribute("isOwner", isOwner);
+            model.addAttribute("isAdmin", isAdmin);
+            model.addAttribute("canDeleteList", isOwner || isAdmin);
+            model.addAttribute("canDeleteExercises", isOwner || isAdmin);
         }
         return "list-view";
     }
@@ -122,13 +130,17 @@ public class ExerciseListController {
 
 
     @PostMapping("delete/list/{id}")
-    public String deleteList(Model model, HttpServletRequest request, @PathVariable Long id) {
+    public String deleteList(Model model, HttpServletRequest request, @PathVariable Long id,
+                             @RequestParam(required = false) String srcPage) {
          try{   
             Principal principal = request.getUserPrincipal();
             boolean isAdmin = request.isUserInRole("ADMIN");
             User user = resolveUser(principal);
             ExerciseList list = listService.findById(id);
             listService.deleteList(list, user, isAdmin);
+            if (srcPage != null && !srcPage.isBlank() && srcPage.startsWith("/")) {
+                return "redirect:" + srcPage;
+            }
             if(isAdmin)
                 return "redirect:/admin";
             else
@@ -150,6 +162,7 @@ public class ExerciseListController {
                               @RequestParam Long userId,
                               Model model,
                               Principal principal,
+                              HttpServletRequest request,
                               HttpServletResponse response) {;
         Optional<User> opt = userService.findById(userId);
         if (opt.isEmpty()){
@@ -161,8 +174,12 @@ public class ExerciseListController {
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
 
+        boolean isOwnProfile = principal != null && user.equals(resolveUser(principal));
+        boolean isAdmin = request.isUserInRole("ADMIN");
+
         model.addAttribute("userLists", slice.getContent());
-        model.addAttribute("isOwnProfile", user.equals(resolveUser(principal)));
+        model.addAttribute("isOwnProfile", isOwnProfile);
+        model.addAttribute("canDeleteLists", isOwnProfile || isAdmin);
         
         return "fragments/search-lists";
     }

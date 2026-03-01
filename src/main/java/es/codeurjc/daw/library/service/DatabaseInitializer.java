@@ -58,10 +58,10 @@ public class DatabaseInitializer {
 		for(int i = 1; i <= 20; i++) {
 			User user;
 			if(i == 1) {
-				u1 = new User("user " + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER","ADMIN"), "Bio of user " + i,"Specialty of user " + i, null, new ArrayList<>());
+				u1 = new User("user" + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER","ADMIN"), "Bio of user " + i,"Specialty of user " + i, null, new ArrayList<>());
 				user = u1;
 			} else {
-				user = new User("user " + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio of user " + i,"Specialty of user " + i, null, new ArrayList<>());
+				user = new User("user" + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio of user " + i,"Specialty of user " + i, null, new ArrayList<>());
 			}
 			userImage(user, "sample_images/u1.png");
 			userRepository.save(user);
@@ -110,6 +110,14 @@ public class DatabaseInitializer {
 		createUserDemoContent(u4, "Advanced Graphs", "Dijkstra", "Shortest path in a weighted graph", "Dijkstra solution");
 		createUserDemoContent(u5, "Balanced Trees", "AVL", "Insert nodes while keeping balance", "AVL solution");
 		createUserDemoContent(u6, "Hashing", "Hash Table", "Resolve collisions with chaining", "Hash solution");
+
+		// Extra real content for infinite scroll tests (focus on user1)
+		createBulkContentForUser(u1, "Admin", 10, 3);
+		createBulkContentForUser(u2, "Queue", 3, 2);
+		createBulkContentForUser(u3, "Recursion", 3, 2);
+		createBulkContentForUser(u4, "Graph", 3, 2);
+		createBulkContentForUser(u5, "Tree", 3, 2);
+		createBulkContentForUser(u6, "Hash", 3, 2);
 	}
 
 	private void follow(User follower, User followed) {
@@ -155,6 +163,31 @@ public class DatabaseInitializer {
 		solutionRepository.save(solution);
 		exercise.incrementNumSolutions();
 		exerciseRepository.save(exercise);
+	}
+
+	private void createBulkContentForUser(User owner, String topicPrefix, int listCount, int exercisesPerList) {
+		for (int i = 1; i <= listCount; i++) {
+			ExerciseList list = new ExerciseList(
+					topicPrefix + " List " + i,
+					"Practice list " + i + " by " + owner.getName(),
+					topicPrefix + " Topic " + i,
+					new Date(System.currentTimeMillis()),
+					owner,
+					new ArrayList<>());
+			exerciseListRepository.save(list);
+
+			for (int j = 1; j <= exercisesPerList; j++) {
+				String title = topicPrefix + " Exercise " + i + "." + j;
+				String description = "Solve the " + topicPrefix.toLowerCase() + " challenge " + i + "." + j;
+				Exercise exercise = createExerciseWithPost(owner, list, title, description);
+				createSolution(
+						exercise,
+						owner,
+						"Solution " + i + "." + j,
+						"Detailed answer for " + title + " by " + owner.getName(),
+						"sample_images/dijkstra.jpg");
+			}
+		}
 	}
 
 	public void userImage(User user, String classpathResource) {

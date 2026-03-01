@@ -1,9 +1,8 @@
 {{#userLists}}
 <article class="mt-0 feed-card">
-<a href="/list-view/{{id}}" class="list-name">
 <header class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
     <div>
-    <h3>{{title}}</h3>
+    <h3><a href="/list-view/{{id}}" class="list-name">{{title}}</a></h3>
     <p class="meta">Last update · {{lastUpdate}}</p>
     </div>
 
@@ -15,15 +14,25 @@
         <img src="/assets/pencilanimated.gif" alt="Edit" class="icon-gif">
         </a>
     </button>
+    {{#canDeleteLists}}
+    <button type="button" class="btn-icon" data-bs-toggle="modal" data-bs-target="#deleteModal{{id}}">
+        <i class="bi bi-trash"></i>
+    </button>
+    {{/canDeleteLists}}
+    </div>
+    {{/isOwnProfile}}
+    {{^isOwnProfile}}
+    {{#canDeleteLists}}
+    <div class="card-actions d-flex flex-column align-items-end g-1">
     <button type="button" class="btn-icon" data-bs-toggle="modal" data-bs-target="#deleteModal{{id}}">
         <i class="bi bi-trash"></i>
     </button>
     </div>
+    {{/canDeleteLists}}
     {{/isOwnProfile}}
     
 </header>
 <p class="muted">{{description}}</p>
-</a>
 </article> 
 <div class="modal fade" id="deleteModal{{id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{id}}" aria-hidden="true">
 <div class="modal-dialog modal-dialog-centered">
@@ -39,6 +48,7 @@
     <div class="modal-footer border-0">
         <button type="button" class="btn secondary" data-bs-dismiss="modal">Cancel</button>
         <form method="post" action="/delete/list/{{id}}" class="d-inline">
+        <input type="hidden" name="srcPage" value="/profile/{{owner.id}}" />
         <input type="hidden" name="_csrf" value="{{token}}"/>
         <button type="submit" class="btn btn-danger-action">Delete list</button>
         </form>
