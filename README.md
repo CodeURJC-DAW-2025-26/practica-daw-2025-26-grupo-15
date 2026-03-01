@@ -300,7 +300,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 ![Diagrama de Clases](images/classes-diagram.jpg)
 
-> [Descripción opcional del diagrama y relaciones principales]
+> Los controladores utilizan mútliples servicios. Cada servicio utiliza su respectivo repositorio además de otros servicios que les sean necesarios, lo cual no ha sido representado en el diagrama por simplicidad. Se utilizan también colores diferentes para cada controlador para un mejor entendimiento. Las realciones entre entidades son numerosas porque se ha implementado bidirección entre ellas.
 
 ### **Participación de Miembros en la Práctica 1**
 
@@ -332,17 +332,17 @@ Responsable del desarrollo integral de la lógica de negocio para la gestión y 
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - Jaime Torroba Martínez**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Encargado del sistema de Posts, del sistema de scroll implementado con AJAX para los feeds así como en el panel de administración, en el que también se implementa filtrado por el nombre. Búsqueda de usuarios en la página principal y creación y edición de la entidad Exercise con la opción de adjuntar un archico PDF llevando a cabo las comprobaciones necesarias tanto en front como en back para comprobar el tipo de archivo; pudiendo además decargar el PDF adjuntado a un ejercicio ya subido.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Add admin panel full functionalities for searching users, lists & exercises with and without filter.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/cef1a88dbf68f819d46a31e948df66c982d988d4)  | [AdminController](backend/src/main/java/es/codeurjc/daw/library/controller/AdminController.java)   |
+|2| [ Add following reflexive relation on User](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/1157bb1e6e0dbe1d925541412e2819944ed1373e)  | [feed.js](backend/src/main/resources/static/js/feed.js)   |
+|3| [Add post creation on lists, exercises & comments creation & update.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/bdcb693980bf179e9ad6d73bdb17313a9d170a22)  | [PostService](backend/src/main/java/es/codeurjc/daw/library/service/PostService.java)   |
+|4| [Add edit and create exercise with pdf input check and appliance. Download pdf file from exercise.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/c7df8009b963228ab3741234524b9f6a9777e410)  | [ExerciseService](backend/src/main/java/es/codeurjc/daw/library/service/ExerciseService.java)   |
+|5| [Fix search users infinite scroll (end users search bar implementation)](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/36e48d100ff68f2254e9e19d14996f23b3711d8e)  | [home.js](backend/src/main/resources/static/js/home.js)   |
 
 ---
 
