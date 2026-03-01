@@ -185,7 +185,7 @@ public class UserService {
         if (user.getName().length() < 3 || user.getName().length() > 30) {
             throw new IllegalArgumentException("Username must be between 3 and 30 characters");
         }
-        if (user.getName().matches(".*[^a-zA-Z0-9_].*")) {
+        if (user.getName().matches(".*[^\\p{L}0-9_ ].*")) {
             throw new IllegalArgumentException("Username can only contain letters, numbers and underscores");
         }
         if (!oldUser.getName().equals(user.getName()) && existsByName(user.getName())) {
