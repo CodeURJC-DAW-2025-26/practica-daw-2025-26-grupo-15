@@ -2454,3 +2454,8 @@ a.fr-stat-chip:hover {
     animation-duration: 2.5s;
   }
 }
+
+.chart-container {
+    width: 400px;
+    height: 300px;
+}

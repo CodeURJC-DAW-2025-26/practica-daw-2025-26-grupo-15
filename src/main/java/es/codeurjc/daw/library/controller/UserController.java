@@ -118,6 +118,9 @@ public class UserController {
             model.addAttribute("user", profileUser);
             model.addAttribute("isOwnProfile", isOwnProfile);
             model.addAttribute("followersPage", "followers".equals(type));
+            model.addAttribute("numFollowers", profileUser.getFollowers().size());
+            model.addAttribute("numFollowing", profileUser.getFollowing().size());
+
             if (loggedUser != null) {
                 model.addAttribute("loggedUserId", loggedUser.getId());
             }
