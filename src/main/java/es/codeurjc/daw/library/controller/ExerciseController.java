@@ -2,6 +2,8 @@ package es.codeurjc.daw.library.controller;
 
 import java.security.Principal;
 import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.Post;
+import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.service.ExerciseService;
 import es.codeurjc.daw.library.service.PostService;
 import es.codeurjc.daw.library.model.User;
@@ -77,14 +80,32 @@ public class ExerciseController {
             model.addAttribute("exercise", exercise);
             model.addAttribute("list", exercise.getExerciseList());
             model.addAttribute("isOwner", false);
+            model.addAttribute("isAdmin", false);
             model.addAttribute("logged", principal != null);
+            model.addAttribute("hasSolutions", !exercise.getSolutions().isEmpty());
 
             if (principal != null) {
                 User user = resolveUser(principal);
                 model.addAttribute("user", user);
                 model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
                 boolean isOwner = exercise.getExerciseList().getOwner().getId().equals(user.getId());
+                boolean isAdmin = user.getRoles().contains("ADMIN");
+                List<Solution> deletableSolutions = new ArrayList<>();
+                List<Solution> readonlySolutions = new ArrayList<>();
+                exercise.getSolutions().forEach(solution -> {
+                    if (isAdmin || solution.getOwner().getId().equals(user.getId())) {
+                        deletableSolutions.add(solution);
+                    } else {
+                        readonlySolutions.add(solution);
+                    }
+                });
+                model.addAttribute("deletableSolutions", deletableSolutions);
+                model.addAttribute("readonlySolutions", readonlySolutions);
                 model.addAttribute("isOwner", isOwner);
+                model.addAttribute("isAdmin", isAdmin);
+            } else {
+                model.addAttribute("deletableSolutions", List.of());
+                model.addAttribute("readonlySolutions", exercise.getSolutions());
             }
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());

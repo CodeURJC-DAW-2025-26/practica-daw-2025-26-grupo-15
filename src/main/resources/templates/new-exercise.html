@@ -29,14 +29,14 @@
             <div class="mb-4 w-100">
               <label for="exname" class="form-label">Name</label>
               <input id="exname" name="title" type="text" class="form-control-custom" placeholder="Name of the exercise"
-                required />
+                required {{#exercise}} value="{{exercise.title}}"{{/exercise}} />
               <div id="nameError" class="text-danger small mt-1"></div>
             </div>
 
             <div class="mb-4 w-100">
               <label for="exdesc" class="form-label">Description</label>
               <textarea id="exdesc" name="description" rows="5" class="form-control-custom"
-                placeholder="Describe the exercise" required></textarea>
+                placeholder="Describe the exercise" required>{{#exercise}}{{exercise.description}}{{/exercise}}</textarea>
               <div id="descError" class="text-danger small mt-1"></div>
             </div>
 

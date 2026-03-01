@@ -2,6 +2,8 @@ package es.codeurjc.daw.library.controller;
 
 import java.security.Principal;
 import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
+import es.codeurjc.daw.library.model.Comment;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
 import es.codeurjc.daw.library.service.SolutionService; 
 import es.codeurjc.daw.library.service.SolutionPdfExportService;
 import es.codeurjc.daw.library.model.Solution;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 
@@ -37,20 +41,39 @@ public class SolutionController {
     private SolutionPdfExportService solutionPdfExportService;
 
     @GetMapping("/solution/{id}")
-    public String solution(Model model, Principal principal, @PathVariable Long id) {
+    public String solution(Model model, Principal principal, HttpServletRequest request, @PathVariable Long id) {
         Solution solution = solutionService.findById(id);
         model.addAttribute("solution", solution);
         model.addAttribute("exercise", solution.getExercise());
-        model.addAttribute("comments", solution.getComments());
         model.addAttribute("logged", principal != null);
         model.addAttribute("isOwner", false);
+        model.addAttribute("isAdmin", false);
+        model.addAttribute("canDeleteSolution", false);
+        model.addAttribute("hasComments", !solution.getComments().isEmpty());
 
         if (principal != null) {
             User user = resolveUser(principal);
             model.addAttribute("user", user);
             model.addAttribute("nameInitial", String.valueOf(user.getName().charAt(0)).toUpperCase());
             boolean isOwner = solution.getOwner().getId().equals(user.getId());
+            boolean isAdmin = request.isUserInRole("ADMIN");
+            List<Comment> deletableComments = new ArrayList<>();
+            List<Comment> readonlyComments = new ArrayList<>();
+            solution.getComments().forEach(comment -> {
+                if (isAdmin || comment.getOwner().getId().equals(user.getId())) {
+                    deletableComments.add(comment);
+                } else {
+                    readonlyComments.add(comment);
+                }
+            });
+            model.addAttribute("deletableComments", deletableComments);
+            model.addAttribute("readonlyComments", readonlyComments);
             model.addAttribute("isOwner", isOwner);
+            model.addAttribute("isAdmin", isAdmin);
+            model.addAttribute("canDeleteSolution", isOwner || isAdmin);
+        } else {
+            model.addAttribute("deletableComments", List.of());
+            model.addAttribute("readonlyComments", solution.getComments());
         }
 
         return "solution";
@@ -84,11 +107,12 @@ public class SolutionController {
 
 
     @PostMapping("/exercise/{exerciseId}/solution/{solutionId}/delete")
-    public String deleteSolution(Model model, @PathVariable Long exerciseId, @PathVariable Long solutionId, Principal principal) {
+    public String deleteSolution(Model model, HttpServletRequest request, @PathVariable Long exerciseId, @PathVariable Long solutionId, Principal principal) {
         User user = resolveUser(principal);
         
         try {
-            solutionService.deleteSolution(solutionId, user);
+            boolean isAdmin = request.isUserInRole("ADMIN");
+            solutionService.deleteSolution(solutionId, user, isAdmin);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";
