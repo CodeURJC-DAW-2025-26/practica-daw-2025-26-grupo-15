@@ -2455,3 +2455,7 @@ a.fr-stat-chip:hover {
   }
 }
 
+.chart-container {
+    width: 400px;
+    height: 300px;
+}

@@ -16,9 +16,9 @@
 
     <section class="app-shell feed">
       <div class="container">
-        <div class="row justify-content-center">
-          <div class="content col-12 col-lg-8">
-            <div class="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+        <div class="row">
+          <div class="content col-12 mx-0 g-0">
+            <div class="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
               <div>
                 {{#followersPage}}
                 <h2 class="section-title">Followers</h2>
@@ -34,52 +34,58 @@
               <a class="btn ghost" href="/profile/{{user.id}}">Back</a>
             </div>
 
-            <div class="followers-card">
-              <h3>{{#followersPage}}Followers{{/followersPage}}{{^followersPage}}Following{{/followersPage}}</h3>
-              <div class="followers-list">
-                {{#userList}}
-                <div class="followers-item">
-                  <div class="followers-left">
-                    <div class="followers-avatar">
-                      {{#photo}}<img src="/images/{{photo.id}}" alt="{{name}}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />{{/photo}}
-                      {{^photo}}<span>{{nameInitial}}</span>{{/photo}}
+            <div class="row align-items-start justify-content-between">
+              <div class=" col-md-8 col-12 followers-card mx-0">
+                <h3>{{#followersPage}}Followers{{/followersPage}}{{^followersPage}}Following{{/followersPage}}</h3>
+                <div class="followers-list">
+                  {{#userList}}
+                  <div class="followers-item">
+                    <div class="followers-left">
+                      <div class="followers-avatar">
+                        {{#photo}}<img src="/images/{{photo.id}}" alt="{{name}}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />{{/photo}}
+                        {{^photo}}<span>{{nameInitial}}</span>{{/photo}}
+                      </div>
+                      <span>{{name}}</span>
                     </div>
-                    <span>{{name}}</span>
+                    <div class="d-flex gap-2">
+                      <a class="btn secondary followers-action p-0" href="/profile/{{id}}">View</a>
+                      {{#isOwnProfile}}
+                      {{^followersPage}}
+                      <form method="post" action="/unfollow">
+                        <input type="hidden" name="requesterId" value="{{loggedUserId}}" />
+                        <input type="hidden" name="targetId" value="{{id}}" />
+                        <input type="hidden" name="srcPage" value="/followers-following/following?userId={{loggedUserId}}" />
+                        <input type="hidden" name="_csrf" value="{{token}}" />
+                        <button class="btn followers-action" type="submit" style="background-color: var(--danger, #dc3545); color: #fff;">Unfollow</button>
+                      </form>
+                      {{/followersPage}}
+                      {{#followersPage}}
+                      <form method="post" action="/removeFollower">
+                        <input type="hidden" name="followerId" value="{{id}}" />
+                        <input type="hidden" name="srcPage" value="/followers-following/followers?userId={{loggedUserId}}" />
+                        <input type="hidden" name="_csrf" value="{{token}}" />
+                        <button class="btn followers-action" type="submit" style="background-color: var(--danger, #dc3545); color: #fff;">Remove</button>
+                      </form>
+                      {{/followersPage}}
+                      {{/isOwnProfile}}
+                    </div>
                   </div>
-                  <div class="d-flex gap-2">
-                    <a class="btn secondary followers-action" href="/profile/{{id}}">View</a>
-                    {{#isOwnProfile}}
-                    {{^followersPage}}
-                    <form method="post" action="/unfollow">
-                      <input type="hidden" name="requesterId" value="{{loggedUserId}}" />
-                      <input type="hidden" name="targetId" value="{{id}}" />
-                      <input type="hidden" name="srcPage" value="/followers-following/following?userId={{loggedUserId}}" />
-                      <input type="hidden" name="_csrf" value="{{token}}" />
-                      <button class="btn followers-action" type="submit" style="background-color: var(--danger, #dc3545); color: #fff;">Unfollow</button>
-                    </form>
-                    {{/followersPage}}
-                    {{#followersPage}}
-                    <form method="post" action="/removeFollower">
-                      <input type="hidden" name="followerId" value="{{id}}" />
-                      <input type="hidden" name="srcPage" value="/followers-following/followers?userId={{loggedUserId}}" />
-                      <input type="hidden" name="_csrf" value="{{token}}" />
-                      <button class="btn followers-action" type="submit" style="background-color: var(--danger, #dc3545); color: #fff;">Remove</button>
-                    </form>
-                    {{/followersPage}}
-                    {{/isOwnProfile}}
-                  </div>
+                  {{/userList}}
+                  {{^userList}}
+                  {{#followersPage}}
+                  {{#isOwnProfile}}<p>You don't have any followers yet.</p>{{/isOwnProfile}}
+                  {{^isOwnProfile}}<p>This user doesn't have any followers yet.</p>{{/isOwnProfile}}
+                  {{/followersPage}}
+                  {{^followersPage}}
+                  {{#isOwnProfile}}<p>You're not following anyone yet.</p>{{/isOwnProfile}}
+                  {{^isOwnProfile}}<p>This user isn't following anyone yet.</p>{{/isOwnProfile}}
+                  {{/followersPage}}
+                  {{/userList}}
                 </div>
-                {{/userList}}
-                {{^userList}}
-                {{#followersPage}}
-                {{#isOwnProfile}}<p>You don't have any followers yet.</p>{{/isOwnProfile}}
-                {{^isOwnProfile}}<p>This user doesn't have any followers yet.</p>{{/isOwnProfile}}
-                {{/followersPage}}
-                {{^followersPage}}
-                {{#isOwnProfile}}<p>You're not following anyone yet.</p>{{/isOwnProfile}}
-                {{^isOwnProfile}}<p>This user isn't following anyone yet.</p>{{/isOwnProfile}}
-                {{/followersPage}}
-                {{/userList}}
+              </div>
+
+              <div class="col-md-4 col-12 chart-container mx-0">
+                  <canvas id="comparisonChart" data-num-followers="{{numFollowers}}" data-num-following="{{numFollowing}}"></canvas>
               </div>
             </div>
           </div>
@@ -89,5 +95,8 @@
   </main>
 
   {{>footer}}
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/js/chart-comparison.js"></script>
 </body>
 </html>
