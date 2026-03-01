@@ -28,11 +28,14 @@ target
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Environment secrets
+.env
+backend/.env
 .idea/
 .vscode/
 
 .DS_Store
 
-.env
 application-local.properties
 **/application-secrets.properties
