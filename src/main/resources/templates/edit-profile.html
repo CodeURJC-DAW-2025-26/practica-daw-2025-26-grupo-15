@@ -48,14 +48,14 @@
               <div class="field-group">
                 <label for="bio">Bio</label>
                 <div class="input-with-button">
-                  <p>{{user.bio}}</p>
+                  <p>{{#user.bio}}{{user.bio}}{{/user.bio}}{{^user.bio}}Not bio yet, upload your profile{{/user.bio}}</p>
                 </div>
               </div>
 
               <div class="field-group">
                 <label for="skills">Speciality</label>
                 <div class="input-with-button">
-                  <p>{{user.specialty}}</p>
+                  <p>{{#user.specialty}}{{user.specialty}}{{/user.specialty}}{{^user.specialty}}Not specialty yet, upload your profile{{/user.specialty}}</p>
                 </div>
               </div>
             </div>

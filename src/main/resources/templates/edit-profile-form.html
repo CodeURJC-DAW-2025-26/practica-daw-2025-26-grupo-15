@@ -60,14 +60,14 @@
               <div class="field-group">
                 <label for="bio">Bio</label>
                 <div class="input-with-button">
-                  <textarea id ="bio" name="bio" type="text">{{user.bio}}</textarea>
+                  <textarea id ="bio" name="bio" type="text">{{#user.bio}}{{user.bio}}{{/user.bio}}</textarea>
                 </div>
               </div>
 
               <div class="field-group">
                 <label for="skills">Speciality</label>
                 <div class="input-with-button">
-                  <input id ="specialty" name="specialty" value="{{user.specialty}}" type="text"></input>
+                  <input id ="specialty" name="specialty" {{#user.specialty}}value="{{user.specialty}}"{{/user.specialty}} type="text"></input>
                 </div>
               </div>
             </div>
