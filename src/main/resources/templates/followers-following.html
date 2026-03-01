@@ -18,7 +18,7 @@
       <div class="container">
         <div class="row">
           <div class="content col-12 mx-0 g-0">
-            <div class="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
+            <div class="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0 mt-3">
               <div>
                 {{#followersPage}}
                 <h2 class="section-title">Followers</h2>
@@ -35,7 +35,7 @@
             </div>
 
             <div class="row align-items-start justify-content-between">
-              <div class=" col-md-8 col-12 followers-card mx-0">
+              <div class=" col-md-8 col-12 followers-card mx-0 mt-5">
                 <h3>{{#followersPage}}Followers{{/followersPage}}{{^followersPage}}Following{{/followersPage}}</h3>
                 <div class="followers-list">
                   {{#userList}}
@@ -84,7 +84,7 @@
                 </div>
               </div>
 
-              <div class="col-md-4 col-12 chart-container mx-0">
+              <div class="col-md-4 col-12 chart-container mx-0 mt-5">
                   <canvas id="comparisonChart" data-num-followers="{{numFollowers}}" data-num-following="{{numFollowing}}"></canvas>
               </div>
             </div>
