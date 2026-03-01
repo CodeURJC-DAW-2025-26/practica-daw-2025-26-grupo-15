@@ -290,9 +290,9 @@ Solo si ha cambiado.
 
 Diagrama mostrando las entidades, sus campos y relaciones:
 
-![Diagrama Entidad-Relación](images/database-diagram.png)
+![Diagrama Entidad-Relación](images/Esquema.jpg)
 
-> [Descripción opcional: Ej: "El diagrama muestra las 4 entidades principales: Usuario, Producto, Pedido y Categoría, con sus respectivos atributos y relaciones 1:N y N:M."]
+> El diagrama muestra las entidades de la aplicación
 
 ### **Diagrama de Clases y Templates**
 
@@ -304,17 +304,17 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 ### **Participación de Miembros en la Práctica 1**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - Hugo Capa Mora**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Responsable del desarrollo integral de la lógica de negocio para la gestión y vista de listas, ejercicios, soluciones y comentarios, junto con la implementación de consultas avanzadas de base de datos para el sistema de sugerencias de seguimiento y validaciones dinámicas en el frontend para optimizar la experiencia de usuario.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [feat: Advanced query algorithm in native SQL for follow-up suggestions]([URL_commit_1](http://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/240b1232c754dfab2742bddd692051dadc4203ec))  | [UserRepository](src/main/java/es/codeurjc/daw/library/repository/UserRepository.java)   |
+|2| [Entities ExerciseList, Exercise, Solution, Comment (bidirectionality of cardinalities missing) & attempt to display list-view]([URL_commit_2](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/1bd9b4bd0bddb631e5b7c74d0ed28cd0c2363996))  | [ExerciseListController](src/main/java/es/codeurjc/daw/library/controller/ExerciseListController.java)   |
+|3| [View of solution page & Comment form with PostMapping]([URL_commit_3](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/6e4495b85b32bdc9d0cd457dfad53ff18e1b8c07))  | [CommentController](src/main/java/es/codeurjc/daw/library/controller/CommentController.java)   |
+|4| [Correct navigation between lists, exercises, solutions, and comments]([URL_commit_4](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/4f8c3fa5eae7e1486ebc92d8308c2deef4f7317d))  | [ExerciseListController](src/main/java/es/codeurjc/daw/library/controller/ExerciseListController.java)   |
+|5| [Functionality to add exercises to exercise lists]([URL_commit_5](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/6d646dd2c2d5c6b6714003cdafcc38ebf9e91917))  | [ExerciseService](src/main/java/es/codeurjc/daw/library/service/ExerciseService.java)   |
 
 ---
 
