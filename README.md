@@ -164,7 +164,9 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 #### **Diagrama de Navegación**
 
-Solo si ha cambiado.
+Mientras que la apariencia de las pantallas ha cambiado, el flujo de navegación sigue siendo el mismo que el especificado en el anterior diagrama, a excepción de nuevas opciones para administradores que pueden dirigirse a las páginas de detalle de las entidades que gestionan desde el panel de administración. Además, dependiendo del flujo de ejecución y peticiones del usuario se mostrará una información u otra en cada una de las páginas del diagrama p.ej. mostrar el perfil propio o el de otro usuario; sin embargo la navegación entre páginas no se ve alterada.
+
+![Diagrama de navegación actualizado](images/navigation-diagram-2.jpg)
 
 #### **Capturas de Pantalla Actualizadas**
 
