@@ -128,10 +128,10 @@ public class WebSecurityConfig {
 			String providerId = oidcUser.getAttribute("sub");
 			String email      = oidcUser.getAttribute("email");
 			String name       = oidcUser.getAttribute("name");
-			//Corregir URL Imagen
+			String photo      = oidcUser.getAttribute("picture");
 
 			List<GrantedAuthority> authorities = oauthUserService.processOAuthUser(
-					provider, providerId, email, name, "img");
+					provider, providerId, email, name, photo);
 
 			return new DefaultOidcUser(authorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
 		};

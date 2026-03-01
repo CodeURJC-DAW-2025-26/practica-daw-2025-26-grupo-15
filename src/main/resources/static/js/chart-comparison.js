@@ -28,13 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, // permite tamaño fijo del contenedor
+            maintainAspectRatio: false, // allows a fixed container size
             scales: {
                 y: {
                     beginAtZero: true,
-                    suggestedMax: maxValue * 1.2, // escala dinámica con margen
+                    suggestedMax: maxValue * 1.2, // dynamic scale with margin
                     ticks: {
-                        precision: 0 // solo enteros
+                        precision: 0 // integers only
                     }
                 }
             },

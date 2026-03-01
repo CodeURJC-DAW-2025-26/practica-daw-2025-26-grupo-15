@@ -290,11 +290,11 @@ select:focus-visible {
   gap: var(--space-5);
   align-content: start;
 
-  /* clave para scroll interno */
+  /* key for internal scroll */
   height: calc(90vh - var(--feed-offset, 0px));
   overflow-y: auto;
-  padding-top: 6px; /* evita clipping del primer card al elevarse en hover */
-  padding-right: 6px; /* opcional: espacio para scrollbar */
+  padding-top: 6px; 
+  padding-right: 6px; /* optional: space for scrollbar */
 }
 
 .feed-empty {
@@ -445,6 +445,22 @@ select:focus-visible {
   object-fit: cover;
   border-radius: 50%;
   display: block;
+}
+
+.avatar-image-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.min-w-0 {
+  min-width: 0;
 }
 
 .card {
@@ -725,6 +741,16 @@ textarea {
   min-width: 140px;
 }
 
+.btn-danger-action {
+  background-color: var(--danger, #dc3545);
+  color: #fff;
+}
+
+.btn-danger-action:hover {
+  background-color: #b02a37;
+  color: #fff;
+}
+
 .input-with-button .btn {
   white-space: nowrap; 
   padding: 10px 16px;  
@@ -883,8 +909,8 @@ textarea {
 
 .hero-card--exercise .form-block,
 .hero-card--list .form-block {
-  display: block; /* Quitamos flex column para dejar que bootstrap maneje el layout interno */
-  text-align: left; /* Alineamos etiquetas a la izquierda */
+  display: block; /* remove flex column and let Bootstrap handle inner layout */
+  text-align: left; /* left-align labels */
   padding: 0 var(--space-2);
 }
 
@@ -918,8 +944,8 @@ textarea {
 
 .hero-card--exercise .btn.ghost,
 .hero-card--list .btn.ghost {
-  width: auto; /* Dejar que el botón tenga el ancho de su texto */
-  margin-top: 0; /* Quitamos márgenes extraños */
+  width: auto; /* keep button width close to its text */
+  margin-top: 0; /* remove extra margins */
   min-width: 120px;
 }
 
@@ -1354,6 +1380,11 @@ textarea {
   place-items: center;
 }
 
+.solution-image {
+  max-height: 600px;
+  width: auto;
+}
+
 .solution-viewer--locked {
   position: relative;
   overflow: hidden;
@@ -1568,19 +1599,19 @@ textarea {
 
 .form-label {
   display: block;
-  margin-bottom: var(--space-2); /* Espacio entre label e input */
+  margin-bottom: var(--space-2); /* space between label and input */
   color: var(--ink-strong);
   font-weight: 700;
-  margin-left: 4px; /* Un pequeño ajuste visual */
+  margin-left: 4px; /* minor visual adjustment */
 }
 
-/* Clase personalizada para inputs que respeta tu diseño pero ocupa el 100% del contenedor padre */
+/* Custom input class that keeps design style and uses full parent width */
 .form-control-custom {
   width: 100%;
   background: var(--bg-soft);
   border: var(--stroke);
   border-radius: var(--radius-sm);
-  padding: 14px 16px; /* Un poco más de padding interno */
+  padding: 14px 16px; /* slightly more inner padding */
   font-family: inherit;
   transition: all 0.2s ease;
   display: block;
@@ -1593,7 +1624,7 @@ textarea {
   outline: none;
 }
 
-/* Arreglo visual para el input de tipo archivo (File) */
+/* Visual tweak for file input */
 input[type="file"].form-control-custom {
   padding: 10px;
   background: var(--bg-soft);
@@ -1615,6 +1646,18 @@ input[type="file"].form-control-custom {
   background: var(--bg-card);
   box-shadow: var(--shadow-soft);
   transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.fr-content-container {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.upload-dropzone {
+  min-height: 200px;
+  display: grid;
+  place-items: center;
+  border: 2px dashed #ccc !important;
 }
 
 .fr-back-btn i {
@@ -1917,6 +1960,7 @@ a.fr-stat-chip:hover {
   color: #fff;
   letter-spacing: -.3px;
 }
+
 .adm-sidebar-label {
   font-size: 10px;
   font-weight: 700;
@@ -2206,12 +2250,12 @@ a.fr-stat-chip:hover {
 /* Table */
 
 .table-scroll{
-  max-height: 70vh;   /* el alto que quieras */
+  max-height: 70vh;   /* adjust desired height */
   overflow-y: auto;
 }
 
 .feed-sentinel{
-  height: 1px;        /* importante para que exista “algo” que intersectar */
+  height: 1px;        /* ensures an element exists for observer intersection */
 }
 
 
@@ -2383,6 +2427,15 @@ a.fr-stat-chip:hover {
   color: var(--ink);
   border: var(--stroke-light);
 }
+
+.modal-content-themed {
+  background: var(--bg-card);
+  border: var(--stroke-light);
+}
+
+.text-sky {
+  color: var(--sky);
+}
 .adm-modal-cancel:hover { background: var(--powder); }
 .adm-modal-confirm {
   background: #dc3545;
@@ -2396,9 +2449,9 @@ a.fr-stat-chip:hover {
 
 
 .plus-btn-labeled {
-    /* El color verde menta de tu imagen */
+    /* Mint green color from the visual reference */
     background-color: #b7f2da; 
-    /* El color del icono/texto oscuro para que contraste */
+    /* Dark icon/text color for contrast */
     color: #1a1d23 !important; 
     padding: 6px 16px;
     border-radius: 50px;
@@ -2412,22 +2465,22 @@ a.fr-stat-chip:hover {
 }
 
 .plus-btn-labeled:hover {
-    background-color: #a2e7cb; /* Un pelín más oscuro al pasar el ratón */
+    background-color: #a2e7cb; /* slightly darker on hover */
     transform: scale(1.02);
 }
 
 .plus-btn-labeled i {
     font-weight: bold !important;
-    -webkit-text-stroke: 1px; /* Para que el icono + se vea más definido */
+    -webkit-text-stroke: 1px; /* improves + icon definition */
 }
 
 .spinner{
-  width: 28px;               /* más pequeño */
+  width: 28px;               /* smaller size */
   aspect-ratio: 1;
   border-radius: 50%;
   position: relative;
 
-  /* aro fino con degradado tipo botón */
+  /* thin ring with button-like gradient */
   background: conic-gradient(
     from 0deg,
     var(--sky),
@@ -2436,7 +2489,7 @@ a.fr-stat-chip:hover {
     var(--sky)
   );
 
-  /* grosor del aro (ajusta 2px si lo quieres aún más fino) */
+  /* ring thickness (adjust 2px if an even thinner ring is needed) */
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
           mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
 
@@ -2444,7 +2497,7 @@ a.fr-stat-chip:hover {
   opacity: 0.9;
 }
 
-/* animación */
+/* animation */
 @keyframes spinner-rotate{
   to { transform: rotate(360deg); }
 }

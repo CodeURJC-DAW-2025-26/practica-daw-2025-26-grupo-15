@@ -210,18 +210,18 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  justify-content: center; /* centra en móvil */
+  justify-content: center; /* center on mobile */
 }
 
 @media (min-width: 992px) {
   .display-flex {
-    justify-content: flex-start; /* alinea a la izquierda en desktop */
+    justify-content: flex-start; /* left-align on desktop */
   }
 }
 
 .sign-in-logo {
   width: auto;
-  height: 1em; /* mismo alto que el h1 */
+  height: 1em; /* same height as h1 */
   font-size: inherit;
   object-fit: contain;
   flex-shrink: 0;
@@ -229,9 +229,13 @@ body {
 
 .sign-in-special-logo{
   width: 7em;
-  height: 7em; /* mismo alto que el h1 */
+  height: 7em; /* same height as h1 */
   font-size: inherit;
   object-fit: contain;
   flex-shrink: 0;
   margin-left: 1em;
+}
+
+.mt-20 {
+  margin-top: 20px;
 }
