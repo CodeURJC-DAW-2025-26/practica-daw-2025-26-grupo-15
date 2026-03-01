@@ -182,7 +182,16 @@ public class UserService {
         if (user.getName() == null || user.getName().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be empty");
         }
-
+        if (user.getName().length() < 3 || user.getName().length() > 30) {
+            throw new IllegalArgumentException("Username must be between 3 and 30 characters");
+        }
+        if (user.getName().matches(".*[^a-zA-Z0-9_].*")) {
+            throw new IllegalArgumentException("Username can only contain letters, numbers and underscores");
+        }
+        if (!oldUser.getName().equals(user.getName()) && existsByName(user.getName())) {
+            throw new IllegalArgumentException("Username '" + user.getName() + "' is already taken");
+        }
+        
         oldUser.setName(user.getName());
         oldUser.setBio(user.getBio());
         oldUser.setSpecialty(user.getSpecialty());

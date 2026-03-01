@@ -139,6 +139,5 @@ public class Solution {
             this.numComments--;
         }
     }
-    
 
 }

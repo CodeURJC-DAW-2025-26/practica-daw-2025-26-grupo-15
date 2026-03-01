@@ -16,6 +16,7 @@ import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.service.SolutionService;
 import es.codeurjc.daw.library.service.CommentService;
 import es.codeurjc.daw.library.service.PostService;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -56,10 +57,11 @@ public class CommentController {
     }
 
     @PostMapping("/solution/{solutionId}/comment/{commentId}/delete")
-    public String deleteComment(Model model, @PathVariable Long solutionId, @PathVariable Long commentId, Principal principal) {
+    public String deleteComment(Model model, HttpServletRequest request, @PathVariable Long solutionId, @PathVariable Long commentId, Principal principal) {
         User user = resolveUser(principal);
         try {
-            commentService.deleteComment(commentId, user);
+            boolean isAdmin = request.isUserInRole("ADMIN");
+            commentService.deleteComment(commentId, user, isAdmin);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";

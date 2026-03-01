@@ -26,9 +26,9 @@ public class CommentService {
         commentRepo.save(comment);
     }
 
-    public void deleteComment(Long commentId, User user) {
+    public void deleteComment(Long commentId, User user, boolean isAdmin) {
         Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
-        if (!comment.getOwner().getId().equals(user.getId())) {
+        if (!comment.getOwner().getId().equals(user.getId()) && !isAdmin) {
             throw new RuntimeException("You do not have permission to delete this comment");
         }
         comment.getSolution().decrementNumComments();

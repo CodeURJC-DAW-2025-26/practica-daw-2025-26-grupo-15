@@ -81,7 +81,7 @@
           <section class="content-section">
             <h3 class="content-section__subtitle mb-4">Solutions</h3>
             <div class="row g-4 mb-4">
-              {{#exercise.solutions}}
+              {{#deletableSolutions}}
               <div class="col-12 col-md-6">
                 <div class="solution-card position-relative">
                   <div class="solution-card__header d-flex justify-content-between align-items-start gap-2">
@@ -89,12 +89,10 @@
                       <span class="solution-card__badge">Solution {{-index}}</span>
                       <span class="solution-card__date">{{lastUpdate}}</span>
                     </div>
-                    
-                    {{#isOwner}}
+
                     <button type="button" class="btn-icon position-relative z-3" data-bs-toggle="modal" data-bs-target="#deleteSolutionModal{{id}}">
                       <i class="bi bi-trash"></i>
                     </button>
-                    {{/isOwner}}
                   </div>
 
                   <div class="solution-card__author">
@@ -116,7 +114,6 @@
                   <a href="/solution/{{id}}" class="stretched-link"></a>
                 </div>
 
-                {{#isOwner}}
                 <div class="modal fade" id="deleteSolutionModal{{id}}" tabindex="-1" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content modal-content-themed">
@@ -138,15 +135,45 @@
                     </div>
                   </div>
                 </div>
-                {{/isOwner}}
               </div>
-              {{/exercise.solutions}}
-              
-              {{^exercise.solutions}}
+              {{/deletableSolutions}}
+
+              {{#readonlySolutions}}
+              <div class="col-12 col-md-6">
+                <div class="solution-card position-relative">
+                  <div class="solution-card__header d-flex justify-content-between align-items-start gap-2">
+                    <div>
+                      <span class="solution-card__badge">Solution {{-index}}</span>
+                      <span class="solution-card__date">{{lastUpdate}}</span>
+                    </div>
+                  </div>
+
+                  <div class="solution-card__author">
+                    {{#owner}}
+                      {{#photo}}
+                      <div class="avatar-sm avatar--img"><img src="/images/{{id}}" alt="avatar" class="avatar-image-cover"/></div>
+                      {{/photo}}
+                      {{^photo}}
+                      <div class="avatar-sm">{{nameInitial}}</div>
+                      {{/photo}}
+                    {{/owner}}
+                    <span>{{owner.name}}</span>
+                  </div>
+                  
+                  <div class="solution-card__footer">
+                    <span class="solution-card__comments">{{numComments}} comments</span>
+                  </div>
+
+                  <a href="/solution/{{id}}" class="stretched-link"></a>
+                </div>
+              </div>
+              {{/readonlySolutions}}
+
+              {{^hasSolutions}}
               <div class="col-12 text-center">
                 <p class="text-muted">No solutions for this exercise yet. Click the + button to add one!</p>
               </div>
-              {{/exercise.solutions}}
+              {{/hasSolutions}}
             </div>
             
             {{#logged}}

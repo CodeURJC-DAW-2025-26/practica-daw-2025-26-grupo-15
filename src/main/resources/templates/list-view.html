@@ -44,7 +44,7 @@
                   <p class="content-section__meta text-muted mb-0">Created by {{list.owner.name}} · Last update: {{list.lastUpdate}}</p>
                 </div>
                 
-                {{#isOwner}}
+                {{#canDeleteList}}
                 <div class="d-flex gap-2">
                   <button type="button" class="btn secondary" data-bs-toggle="modal" data-bs-target="#deleteListModal">Delete list</button>
                 </div>
@@ -63,6 +63,7 @@
                       <div class="modal-footer border-0">
                         <button type="button" class="btn secondary" data-bs-dismiss="modal">Cancel</button>
                         <form method="post" action="/delete/list/{{list.id}}" class="d-inline">
+                          <input type="hidden" name="srcPage" value="/profile/{{list.owner.id}}" />
                           <input type="hidden" name="_csrf" value="{{token}}"/>
                           <button type="submit" class="btn btn-danger-action">Delete everything</button>
                         </form>
@@ -70,7 +71,7 @@
                     </div>
                   </div>
                 </div>
-                {{/isOwner}}
+                {{/canDeleteList}}
               </div>
               <p class="content-section__description">{{list.description}}</p>
             </div>
@@ -91,10 +92,21 @@
                         <i class="bi bi-pencil icon-static"></i>
                         <img src="/assets/pencilanimated.gif" alt="Edit" class="icon-gif">
                       </a>
+                      {{#canDeleteExercises}}
+                      <button class="btn-icon" type="button" data-bs-toggle="modal" data-bs-target="#deleteExerciseModal{{id}}">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                      {{/canDeleteExercises}}
+                    </div>
+                    {{/isOwner}}
+                    {{^isOwner}}
+                    {{#canDeleteExercises}}
+                    <div class="d-flex position-relative z-3">
                       <button class="btn-icon" type="button" data-bs-toggle="modal" data-bs-target="#deleteExerciseModal{{id}}">
                         <i class="bi bi-trash"></i>
                       </button>
                     </div>
+                    {{/canDeleteExercises}}
                     {{/isOwner}}
                   </div>
                   
@@ -107,7 +119,7 @@
                   </div>
                 </div>
 
-                {{#isOwner}}
+                {{#canDeleteExercises}}
                 <div class="modal fade" id="deleteExerciseModal{{id}}" tabindex="-1" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content modal-content-themed">
@@ -128,7 +140,7 @@
                     </div>
                   </div>
                 </div>
-                {{/isOwner}}
+                {{/canDeleteExercises}}
               </div>
               {{/list.exercises}}
 

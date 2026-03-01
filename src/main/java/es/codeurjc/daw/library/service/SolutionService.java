@@ -36,6 +36,8 @@ public class SolutionService {
         if(solution.getName() == null || solution.getName().isEmpty() || solution.getDescription() == null || solution.getDescription().isEmpty()) {
             throw new RuntimeException("Name and description cannot be empty");
         }
+        if (solution.getName().length() < 3 || solution.getName().length() > 100)
+            throw new RuntimeException("The solution name must be between 3 and 100 characters.");
         if (file == null)
             throw new RuntimeException("File cannot be null");
         if(solution.getDescription().length() < 10 || solution.getDescription().length() > 10000)
@@ -51,9 +53,9 @@ public class SolutionService {
     }
 
 
-    public void deleteSolution(Long id, User user){
+    public void deleteSolution(Long id, User user, boolean isAdmin){
         Solution solution = solutionRepo.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
-        if (!solution.getOwner().getId().equals(user.getId())) {
+        if (!solution.getOwner().getId().equals(user.getId()) && !isAdmin) {
             throw new RuntimeException("You do not have permission to delete this solution");
         }
         solution.getExercise().decrementNumSolutions();
