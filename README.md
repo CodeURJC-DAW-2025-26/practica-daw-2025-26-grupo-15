@@ -310,11 +310,11 @@ Responsable del desarrollo integral de la lógica de negocio para la gestión y 
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [feat: Advanced query algorithm in native SQL for follow-up suggestions](http://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/240b1232c754dfab2742bddd692051dadc4203ec)  | [UserRepository](src/main/java/es/codeurjc/daw/library/repository/UserRepository.java)   |
-|2| [Entities ExerciseList, Exercise, Solution, Comment (bidirectionality of cardinalities missing) & attempt to display list-view](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/1bd9b4bd0bddb631e5b7c74d0ed28cd0c2363996)  | [ExerciseListController](src/main/java/es/codeurjc/daw/library/controller/ExerciseListController.java)   |
-|3| [View of solution page & Comment form with PostMapping](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/6e4495b85b32bdc9d0cd457dfad53ff18e1b8c07)  | [CommentController](src/main/java/es/codeurjc/daw/library/controller/CommentController.java)   |
-|4| [Correct navigation between lists, exercises, solutions, and comments](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/4f8c3fa5eae7e1486ebc92d8308c2deef4f7317d)  | [ExerciseListController](src/main/java/es/codeurjc/daw/library/controller/ExerciseListController.java)   |
-|5| [Functionality to add exercises to exercise lists](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/6d646dd2c2d5c6b6714003cdafcc38ebf9e91917)  | [ExerciseService](src/main/java/es/codeurjc/daw/library/service/ExerciseService.java)   |
+|1| [feat: Advanced query algorithm in native SQL for follow-up suggestions](http://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/240b1232c754dfab2742bddd692051dadc4203ec)  | [UserRepository](backend/src/main/java/es/codeurjc/daw/library/repository/UserRepository.java)   |
+|2| [Entities ExerciseList, Exercise, Solution, Comment (bidirectionality of cardinalities missing) & attempt to display list-view](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/1bd9b4bd0bddb631e5b7c74d0ed28cd0c2363996)  | [Exercise](backend/src/main/java/es/codeurjc/daw/library/model/Exercise.java)   |
+|3| [View of solution page & Comment form with PostMapping](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/6e4495b85b32bdc9d0cd457dfad53ff18e1b8c07)  | [CommentController](backend/src/main/java/es/codeurjc/daw/library/controller/CommentController.java)   |
+|4| [Correct navigation between lists, exercises, solutions, and comments](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/4f8c3fa5eae7e1486ebc92d8308c2deef4f7317d)  | [ExerciseListController](backend/src/main/java/es/codeurjc/daw/library/controller/ExerciseListController.java)   |
+|5| [Functionality to add exercises to exercise lists](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/6d646dd2c2d5c6b6714003cdafcc38ebf9e91917)  | [ExerciseService](backend/src/main/java/es/codeurjc/daw/library/service/ExerciseService.java)   |
 
 ---
 
