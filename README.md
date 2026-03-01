@@ -283,8 +283,8 @@ Solo si ha cambiado.
 2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
 
 #### **Credenciales de prueba**
-- **Usuario Admin**: usuario: `admin`, contraseña: `admin`
-- **Usuario Registrado**: usuario: `user`, contraseña: `user`
+- **Usuario Admin**: usuario: `user1@example.com`, contraseña: `pass`
+- **Usuario Registrado**: usuario: `user2@example.com`, contraseña: `pass`
 
 ### **Diagrama de Entidades de Base de Datos**
 
