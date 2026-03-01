@@ -7,7 +7,7 @@ const resultsListContainer = document.getElementById("searchResults");
 const resultsMainContainer = document.getElementById("searchContainer");
 const input = document.getElementById("sidebarSearch");
 
-// Carga primera página (llámalo al escribir con debounce)
+// Load first page (call it on input with debounce)
 async function searchFirstPage(size = 25) {
   const name = input.value.trim();
 
@@ -35,7 +35,7 @@ async function loadMore(size = 25) {
   if (!name) return;
 
   if (name !== prevName) {
-    // si cambió la query, empieza de 0
+    // If the query changed, start from page 0
     await searchFirstPage(size);
     return;
   }
@@ -65,9 +65,9 @@ async function loadPage(name, page, size, reset) {
 
     if (reset) resultsListContainer.innerHTML = html;
     else if (count > 0) resultsListContainer.insertAdjacentHTML("beforeend", html);
-    // si count == 0 y page>0, el fragment no añade nada (por template) y no ensuciamos
+    // If count == 0 and page > 0, the fragment adds nothing (template behavior)
 
-    // avanzamos página SOLO si la request fue OK
+    // Move to the next page only when the request succeeds
     currentPage = page + 1;
 
   } catch (e) {
@@ -77,7 +77,7 @@ async function loadPage(name, page, size, reset) {
   }
 }
 
-// Scroll dentro del contenedor
+// Scroll inside the container
 resultsListContainer.addEventListener("scroll", () => {
   const nearBottom =
     resultsListContainer.scrollTop + resultsListContainer.clientHeight >=
@@ -86,12 +86,12 @@ resultsListContainer.addEventListener("scroll", () => {
   if (nearBottom) loadMore(25);
 });
 
-// Buscar mientras escribes (debounce)
+// Search while typing (debounce)
 let t;
 
 input.addEventListener("input", () => {
   clearTimeout(t);
   t = setTimeout(() => {
     searchFirstPage(25);
-  }, 2000); // 2 segundos
+  }, 2000); // 2 seconds
 });

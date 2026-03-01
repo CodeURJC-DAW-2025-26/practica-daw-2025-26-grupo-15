@@ -37,7 +37,7 @@ public class Exercise {
     public Exercise() {
     }
 
-    //constructor sin imagen pdf porque el usuario tiene la opción de subirlo así
+    // Constructor without PDF because users can upload it later
     public Exercise(String title, String description, int numSolutions, User owner) {
         this.title = title;
         this.description = description;

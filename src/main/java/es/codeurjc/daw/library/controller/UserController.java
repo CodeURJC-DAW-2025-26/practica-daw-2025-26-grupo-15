@@ -3,7 +3,6 @@ package es.codeurjc.daw.library.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,17 +27,12 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 public class UserController {
 
-    private final PasswordEncoder passwordEncoder;
-
     @Autowired
     private UserService userService;
 
     @Autowired
     private ExerciseListService listService;
 
-    UserController(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -96,6 +90,7 @@ public class UserController {
         model.addAttribute("isOwnProfile", true);
         model.addAttribute("hasPendingRequests", !requests.isEmpty());
         model.addAttribute("pendingCount", requests.size());
+        addNormalizedProfileText(model, user);
         return "profile";
     }
 
@@ -147,6 +142,7 @@ public class UserController {
             model.addAttribute("followersNumber", profileUser.getFollowers().size());
             model.addAttribute("followingNumber", profileUser.getFollowing().size());
             model.addAttribute("userLists", userLists);
+            addNormalizedProfileText(model, profileUser);
 
             if (principal != null) {
                 User loggedUser = resolveUser(principal);
@@ -321,5 +317,22 @@ public class UserController {
             return userService.findByEmail(principal.getName())
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
+    }
+
+    private void addNormalizedProfileText(Model model, User user) {
+        String normalizedBio = normalizeBlank(user.getBio());
+        String normalizedSpecialty = normalizeBlank(user.getSpecialty());
+        model.addAttribute("profileBio", normalizedBio);
+        model.addAttribute("profileSpecialty", normalizedSpecialty);
+        model.addAttribute("hasBio", normalizedBio != null);
+        model.addAttribute("hasSpecialty", normalizedSpecialty != null);
+    }
+
+    private String normalizeBlank(String value) {
+        if (value == null) {
+            return null;
+        }
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? null : trimmed;
     }
 }

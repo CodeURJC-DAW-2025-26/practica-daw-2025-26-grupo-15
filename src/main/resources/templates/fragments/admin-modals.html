@@ -4,7 +4,7 @@
     <div class="modal-content adm-modal">
       <div class="modal-header border-0 pb-1">
         <h6 class="adm-modal-title">
-          <i class="bi bi-exclamation-circle-fill me-2" style="color:var(--sky);"></i>Delete user?
+          <i class="bi bi-exclamation-circle-fill me-2 text-sky"></i>Delete user?
         </h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -13,7 +13,7 @@
       </div>
       <div class="modal-footer border-0 pt-1">
         <button class="adm-modal-cancel" data-bs-dismiss="modal">Cancel</button>
-        <form method="post" action="/delete-profile/{{id}}" style="display:inline;">
+        <form method="post" action="/delete-profile/{{id}}" class="d-inline">
           <input type="hidden" name="_csrf" value="{{token}}" />
           <button type="submit" class="adm-modal-confirm">Delete</button>
         </form>
@@ -28,7 +28,7 @@
     <div class="modal-content adm-modal">
       <div class="modal-header border-0 pb-1">
         <h6 class="adm-modal-title">
-          <i class="bi bi-exclamation-circle-fill me-2" style="color:var(--sky);"></i>Delete list?
+          <i class="bi bi-exclamation-circle-fill me-2 text-sky"></i>Delete list?
         </h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -37,7 +37,7 @@
       </div>
       <div class="modal-footer border-0 pt-1">
         <button class="adm-modal-cancel" data-bs-dismiss="modal">Cancel</button>
-        <form method="post" action="/delete/list/{{id}}" style="display:inline;">
+        <form method="post" action="/delete/list/{{id}}" class="d-inline">
           <input type="hidden" name="_csrf" value="{{token}}" />
           <button type="submit" class="adm-modal-confirm">Delete</button>
         </form>
@@ -52,7 +52,7 @@
     <div class="modal-content adm-modal">
       <div class="modal-header border-0 pb-1">
         <h6 class="adm-modal-title">
-          <i class="bi bi-exclamation-circle-fill me-2" style="color:var(--sky);"></i>Delete exercise?
+          <i class="bi bi-exclamation-circle-fill me-2 text-sky"></i>Delete exercise?
         </h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -61,7 +61,7 @@
       </div>
       <div class="modal-footer border-0 pt-1">
         <button class="adm-modal-cancel" data-bs-dismiss="modal">Cancel</button>
-        <form method="post" action="/delete-exercise/{{id}}" style="display:inline;">
+        <form method="post" action="/delete-exercise/{{id}}" class="d-inline">
           <input type="hidden" name="_csrf" value="{{token}}" />
           <button type="submit" class="adm-modal-confirm">Delete</button>
         </form>

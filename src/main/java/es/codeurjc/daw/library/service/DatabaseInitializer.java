@@ -58,10 +58,10 @@ public class DatabaseInitializer {
 		for(int i = 1; i <= 20; i++) {
 			User user;
 			if(i == 1) {
-				u1 = new User("user " + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER","ADMIN"), "Bio de user " + i,"Especialidad de user " + i, null, new ArrayList<>());
+				u1 = new User("user " + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER","ADMIN"), "Bio of user " + i,"Specialty of user " + i, null, new ArrayList<>());
 				user = u1;
 			} else {
-				user = new User("user " + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio de user " + i,"Especialidad de user " + i, null, new ArrayList<>());
+				user = new User("user " + i, "user" + i + "@example.com", passwordEncoder.encode("pass"), List.of("USER"), "Bio of user " + i,"Specialty of user " + i, null, new ArrayList<>());
 			}
 			userImage(user, "sample_images/u1.png");
 			userRepository.save(user);
@@ -74,14 +74,14 @@ public class DatabaseInitializer {
 		User u5 = users.get(4);
 		User u6 = users.get(5);
 
-		// Follows por defecto para que haya feed útil desde el arranque
+		// Default follows so the feed is useful on startup
 		follow(u1, u2);
 		follow(u1, u3);
 		follow(u1, u4);
 		follow(u1, u5);
 		follow(u1, u6);
 
-		// Más relaciones entre usuarios para simular red social activa
+		// More user relationships to simulate an active social network
 		follow(u2, u1);
 		follow(u3, u1);
 		follow(u4, u1);
@@ -94,22 +94,22 @@ public class DatabaseInitializer {
 
 		userRepository.saveAll(List.of(u1, u2, u3, u4, u5, u6));
 		
-		// Contenido del admin/user1
-		ExerciseList lista = new ExerciseList("Lista de ejemplo", "Lista para ver", "Algoritmos", new Date(System.currentTimeMillis()), u1, new ArrayList<>());
-		exerciseListRepository.save(lista);
+		// Initial content for admin/user1
+		ExerciseList sampleList = new ExerciseList("Sample List", "List to browse", "Algorithms", new Date(System.currentTimeMillis()), u1, new ArrayList<>());
+		exerciseListRepository.save(sampleList);
 
-		Exercise ex1 = createExerciseWithPost(u1, lista, "Grafo", "Hacer un BFS");
-		Exercise ex2 = createExerciseWithPost(u1, lista, "Árbol", "Hacer un recorrido in-order");
+		Exercise ex1 = createExerciseWithPost(u1, sampleList, "Graph", "Perform a BFS");
+		Exercise ex2 = createExerciseWithPost(u1, sampleList, "Tree", "Perform an in-order traversal");
 
-		createSolution(ex1, u1, "Solución al ejercicio de grafo", "Esta es la solución al ejercicio de grafo", "sample_images/dijkstra.jpg");
-		createSolution(ex2, u1, "Solución al ejercicio de árbol", "Esta es la solución al ejercicio de árbol in-order", "sample_images/aestrella.jpg");
+		createSolution(ex1, u1, "Solution to the graph exercise", "This is the solution to the graph exercise", "sample_images/dijkstra.jpg");
+		createSolution(ex2, u1, "Solution to the tree exercise", "This is the solution to the in-order tree exercise", "sample_images/aestrella.jpg");
 
-		// Contenido de usuarios seguidos por user1 para poblar el feed
-		createUserDemoContent(u2, "Estructuras lineales", "Colas", "Resolver gestión de turnos con cola", "Solución de colas");
-		createUserDemoContent(u3, "Recursividad", "Torres de Hanoi", "Resolver n discos con recursividad", "Solución de Hanoi");
-		createUserDemoContent(u4, "Grafos avanzados", "Dijkstra", "Camino mínimo en grafo ponderado", "Solución de Dijkstra");
-		createUserDemoContent(u5, "Árboles balanceados", "AVL", "Insertar nodos manteniendo balance", "Solución AVL");
-		createUserDemoContent(u6, "Hashing", "Tabla hash", "Resolver colisiones por encadenamiento", "Solución de hash");
+		// Content from users followed by user1 to populate the feed
+		createUserDemoContent(u2, "Linear Data Structures", "Queues", "Solve queue-based turn management", "Queue solution");
+		createUserDemoContent(u3, "Recursion", "Towers of Hanoi", "Solve n disks with recursion", "Hanoi solution");
+		createUserDemoContent(u4, "Advanced Graphs", "Dijkstra", "Shortest path in a weighted graph", "Dijkstra solution");
+		createUserDemoContent(u5, "Balanced Trees", "AVL", "Insert nodes while keeping balance", "AVL solution");
+		createUserDemoContent(u6, "Hashing", "Hash Table", "Resolve collisions with chaining", "Hash solution");
 	}
 
 	private void follow(User follower, User followed) {
@@ -127,15 +127,15 @@ public class DatabaseInitializer {
 	private void createUserDemoContent(User owner, String listTitle, String exerciseTitle, String exerciseDescription, String solutionTitle) {
 		ExerciseList list = new ExerciseList(
 				listTitle,
-				"Lista de " + owner.getName(),
-				"Estructuras de datos",
+				"List of " + owner.getName(),
+				"Data Structures",
 				new Date(System.currentTimeMillis()),
 				owner,
 				new ArrayList<>());
 		exerciseListRepository.save(list);
 
 		Exercise exercise = createExerciseWithPost(owner, list, exerciseTitle, exerciseDescription);
-		createSolution(exercise, owner, solutionTitle, "Esta es la solución propuesta por " + owner.getName(), "sample_images/dijkstra.jpg");
+		createSolution(exercise, owner, solutionTitle, "This is the proposed solution by " + owner.getName(), "sample_images/dijkstra.jpg");
 	}
 
 	private Exercise createExerciseWithPost(User owner, ExerciseList list, String title, String description) {
@@ -164,7 +164,7 @@ public class DatabaseInitializer {
 			user.setPhoto(createdImage);
 
 		} catch (IOException e) {
-			System.err.println("[DatabaseInitializer] No se pudo cargar la imagen '" + classpathResource + "': " + e.getMessage());
+			System.err.println("[DatabaseInitializer] Could not load image '" + classpathResource + "': " + e.getMessage());
 		}
 	}
 	
@@ -174,7 +174,7 @@ public class DatabaseInitializer {
 			Image createdImage = imageService.createImage(image.getInputStream());
 			solution.setSolImage(createdImage);
 		} catch (IOException e) {
-			System.err.println("[DatabaseInitializer] No se pudo cargar la imagen '" + classpathResource + "': " + e.getMessage());
+			System.err.println("[DatabaseInitializer] Could not load image '" + classpathResource + "': " + e.getMessage());
 		}
 	}
 }
