@@ -6,6 +6,7 @@ let currentPetition;
 let observer;
 const feedStream = document.getElementById("feedStream");
 const sentinel = document.getElementById("feedSentinel");
+const spinner = document.getElementById("loadingSpinner");
 
 const defaultPageSize = 10;
 
@@ -18,14 +19,18 @@ async function loadMoreFeed(size = defaultPageSize) {
   currentPetition = feedStream?.dataset?.petition ?? "";  
   const profileId = feedStream?.dataset?.profileId ?? null;
 
-  console.log(profileId)
-
   if (currentPetition === null || !operations.has(currentPetition)) return;  
   if (profileId === null && currentPetition === "l") return;
   if (feedLoading || !feedHasMore) return;
     
 
   feedLoading = true;
+
+  if (feedPage > 0){
+    spinner.classList.toggle("visually-hidden");
+    //timeout so that the spinner is seen
+    await new Promise(r => setTimeout(r, 3000));
+  }
 
   try {
     const buildUrl = operations.get(currentPetition);
@@ -55,6 +60,8 @@ async function loadMoreFeed(size = defaultPageSize) {
       }
       return;
     }
+
+    spinner.classList.add("visually-hidden")
 
     // HTML inserted before sentinel, which has to be last element on feedStream
     sentinel.insertAdjacentHTML("beforebegin", html);

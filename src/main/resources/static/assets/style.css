@@ -291,7 +291,7 @@ select:focus-visible {
   align-content: start;
 
   /* clave para scroll interno */
-  height: calc(100vh - var(--feed-offset, 0px));
+  height: calc(90vh - var(--feed-offset, 0px));
   overflow-y: auto;
   padding-top: 6px; /* evita clipping del primer card al elevarse en hover */
   padding-right: 6px; /* opcional: espacio para scrollbar */
@@ -2419,4 +2419,38 @@ a.fr-stat-chip:hover {
 .plus-btn-labeled i {
     font-weight: bold !important;
     -webkit-text-stroke: 1px; /* Para que el icono + se vea más definido */
+}
+
+.spinner{
+  width: 28px;               /* más pequeño */
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: relative;
+
+  /* aro fino con degradado tipo botón */
+  background: conic-gradient(
+    from 0deg,
+    var(--sky),
+    var(--powder),
+    #9a8be8,
+    var(--sky)
+  );
+
+  /* grosor del aro (ajusta 2px si lo quieres aún más fino) */
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
+          mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 0);
+
+  animation: spinner-rotate 0.8s linear infinite;
+  opacity: 0.9;
+}
+
+/* animación */
+@keyframes spinner-rotate{
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .spinner{
+    animation-duration: 2.5s;
+  }
 }
