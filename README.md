@@ -268,19 +268,65 @@ Solo si ha cambiado.
 
 #### **Requisitos Previos**
 - **Java**: versión 21 o superior
-- **Maven**: versión 3.8 o superior
-- **MySQL**: versión 8.0 o superior
+- **Maven**: versión 3.8 o superior (`mvn`)
+- **Docker**: para levantar la base de datos MySQL
 - **Git**: para clonar el repositorio
 
 #### **Pasos para ejecutar la aplicación**
 
 1. **Clonar el repositorio**
    ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
+   git clone https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15.git
+   cd practica-daw-2025-26-grupo-15
    ```
 
-2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
+2. **Crear el archivo `.env` en la raíz del repositorio**
+
+   Es obligatorio crear un fichero llamado `.env` en la raíz del repositorio (junto a `start_db.sh`) con las siguientes variables de entorno:
+
+   ```properties
+   DB_USERNAME=root
+   DB_PASSWORD=password
+   KEYSTORE_PASSWORD=<contraseña del keystore>
+   KEYSTORE_SECRET=<secreto del keystore>
+   GOOGLE_CLIENT_ID=<client id de Google OAuth2>
+   GOOGLE_CLIENT_SECRET=<client secret de Google OAuth2>
+   GITHUB_CLIENT_ID=<client id de GitHub OAuth2>
+   GITHUB_CLIENT_SECRET=<client secret de GitHub OAuth2>
+   ```
+
+   > Los valores de `KEYSTORE_PASSWORD` y `KEYSTORE_SECRET` deben coincidir con los usados al generar el `keystore.jks` incluido en el proyecto. Los valores de Google y GitHub se obtienen registrando una aplicación OAuth2 en sus respectivas consolas de desarrollador.
+
+3. **Arrancar la base de datos MySQL con Docker**
+   ```bash
+   bash start_db.sh
+   ```
+   Esto levanta un contenedor MySQL 9.2 con la base de datos `dsgram` en el puerto `3306`. Las credenciales son `root` / `password`.
+
+4. **Compilar y ejecutar la aplicación**
+
+   Se puede arrancar de cualquiera de las siguientes formas. En todos los casos es importante que el directorio de trabajo sea la **raíz del repositorio** para que Spring Boot encuentre el `.env`.
+
+   **Opción A — Maven desde terminal** (requiere `mvn` instalado):
+   ```bash
+   mvn -f backend/pom.xml spring-boot:run
+   ```
+
+   **Opción B — Clase `main` de Java** (desde el IDE):
+   Ejecutar directamente la clase `es.codeurjc.daw.library.Application` con la raíz del repositorio como directorio de trabajo (_working directory_).
+
+   **Opción C — Extensión Spring Boot Dashboard de VS Code**:
+   Con la extensión [Spring Boot Dashboard](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-spring-boot-dashboard) instalada, aparecerá el proyecto en el panel lateral. Antes de arrancarlo, asegúrate de que el _working directory_ configurado apunta a la raíz del repositorio (por defecto lo hace si abres VS Code desde ahí). Pulsa el botón ▶ junto al proyecto para iniciarlo.
+
+   > En los tres casos Spring Boot cargará automáticamente el fichero `.env` de la raíz al arrancar.
+
+5. **Acceder a la aplicación**
+
+   La aplicación se sirve únicamente por HTTPS. Abre en el navegador:
+   ```
+   https://localhost:8443
+   ```
+   > El certificado es autofirmado, por lo que el navegador mostrará una advertencia de seguridad. Acepta la excepción para continuar.
 
 #### **Credenciales de prueba**
 - **Usuario Admin**: usuario: `user1@example.com`, contraseña: `pass`
