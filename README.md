@@ -157,14 +157,16 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 ## 🛠 **Práctica 1: Web con HTML generado en servidor y AJAX**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
+📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=9E4HDM51W4Y)**
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Navegación y Capturas de Pantalla**
 
 #### **Diagrama de Navegación**
 
-Solo si ha cambiado.
+Mientras que la apariencia de las pantallas ha cambiado, el flujo de navegación sigue siendo el mismo que el especificado en el anterior diagrama, a excepción de nuevas opciones para administradores que pueden dirigirse a las páginas de detalle de las entidades que gestionan desde el panel de administración. Además, dependiendo del flujo de ejecución y peticiones del usuario se mostrará una información u otra en cada una de las páginas del diagrama p.ej. mostrar el perfil propio o el de otro usuario; sin embargo la navegación entre páginas no se ve alterada.
+
+![Diagrama de navegación actualizado](images/navigation-diagram-2.jpg)
 
 #### **Capturas de Pantalla Actualizadas**
 
@@ -344,9 +346,9 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 Diagrama de clases de la aplicación con diferenciación por colores o secciones:
 
-![Diagrama de Clases](images/classes-diagram.png)
+![Diagrama de Clases](images/classes-diagram.jpg)
 
-> [Descripción opcional del diagrama y relaciones principales]
+> Los controladores utilizan mútliples servicios. Cada servicio utiliza su respectivo repositorio además de otros servicios que les sean necesarios, lo cual no ha sido representado en el diagrama por simplicidad. Se utilizan también colores diferentes para cada controlador para un mejor entendimiento. Las realciones entre entidades son numerosas porque se ha implementado bidirección entre ellas.
 
 ### **Participación de Miembros en la Práctica 1**
 
@@ -356,53 +358,56 @@ Responsable del desarrollo integral de la lógica de negocio para la gestión y 
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [feat: Advanced query algorithm in native SQL for follow-up suggestions]([URL_commit_1](http://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/240b1232c754dfab2742bddd692051dadc4203ec))  | [UserRepository](src/main/java/es/codeurjc/daw/library/repository/UserRepository.java)   |
-|2| [Entities ExerciseList, Exercise, Solution, Comment (bidirectionality of cardinalities missing) & attempt to display list-view]([URL_commit_2](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/1bd9b4bd0bddb631e5b7c74d0ed28cd0c2363996))  | [ExerciseListController](src/main/java/es/codeurjc/daw/library/controller/ExerciseListController.java)   |
-|3| [View of solution page & Comment form with PostMapping]([URL_commit_3](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/6e4495b85b32bdc9d0cd457dfad53ff18e1b8c07))  | [CommentController](src/main/java/es/codeurjc/daw/library/controller/CommentController.java)   |
-|4| [Correct navigation between lists, exercises, solutions, and comments]([URL_commit_4](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/4f8c3fa5eae7e1486ebc92d8308c2deef4f7317d))  | [ExerciseListController](src/main/java/es/codeurjc/daw/library/controller/ExerciseListController.java)   |
-|5| [Functionality to add exercises to exercise lists]([URL_commit_5](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/6d646dd2c2d5c6b6714003cdafcc38ebf9e91917))  | [ExerciseService](src/main/java/es/codeurjc/daw/library/service/ExerciseService.java)   |
+|1| [feat: Advanced query algorithm in native SQL for follow-up suggestions](http://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/240b1232c754dfab2742bddd692051dadc4203ec)  | [UserRepository](backend/src/main/java/es/codeurjc/daw/library/repository/UserRepository.java)   |
+|2| [Entities ExerciseList, Exercise, Solution, Comment (bidirectionality of cardinalities missing) & attempt to display list-view](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/1bd9b4bd0bddb631e5b7c74d0ed28cd0c2363996)  | [Exercise](backend/src/main/java/es/codeurjc/daw/library/model/Exercise.java)   |
+|3| [View of solution page & Comment form with PostMapping](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/6e4495b85b32bdc9d0cd457dfad53ff18e1b8c07)  | [CommentController](backend/src/main/java/es/codeurjc/daw/library/controller/CommentController.java)   |
+|4| [Correct navigation between lists, exercises, solutions, and comments](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/4f8c3fa5eae7e1486ebc92d8308c2deef4f7317d)  | [ExerciseListController](backend/src/main/java/es/codeurjc/daw/library/controller/ExerciseListController.java)   |
+|5| [Functionality to add exercises to exercise lists](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/6d646dd2c2d5c6b6714003cdafcc38ebf9e91917)  | [ExerciseService](backend/src/main/java/es/codeurjc/daw/library/service/ExerciseService.java)   |
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
+#### **Alumno 2 - Isidoro Pérez Rivera**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Responsable de la lógica e implementación de la relación entre usuarios: solicitudes de seguimiento y funcionalidad de seguir y dejar de seguir usuarios, así como la visualización de dichas características en sus respectivas páginas de detalle. Implementación de la funcionalidad de edición de varias entidades y modularización de plantillas con atributos de mustache.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implement follow request acceptance and decline functionality, update user profile interactions](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/85c66092258faa55e0c3c4ca41c796544d367ac8)  | [UserController](backend/src/main/java/es/codeurjc/daw/library/controller/UserController.java)   |
+|2| [Refactor followers and following functionality with new unified view and remove deprecated templates. Now its possible to watch other peoples followers and following without being able to make any changes. You also can watch your own followers and following list in which you can do changes](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/a95909881c26dee4a8127df9408343a9fd816d3b)  | [followers-following](backend/src/main/resources/templates/followers-following.html)   |
+|3| [Implement list editing functionality and enhance user interface](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/bbd7b4ec9b0e6cc247adb2ecedabea18d9ca230a)  | [ExerciseListController](backend/src/main/java/es/codeurjc/daw/library/controller/ExerciseListController.java)   |
+|4| [Add user profile editing functionality with validation; update User model and views](github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/ec6a31be2e1ce5344f391cfd82bcc9746badc0ba)  | [edit-profile-form](backend/src/main/resources/templates/edit-profile-form.html)   |
+|5| [Implement follow request feature and update user profile statistics](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/82be6cefbd146b1472aa6e44a76b5f1d2b4a2960)  | [UserController](backend/src/main/java/es/codeurjc/daw/library/controller/UserController.java)   |
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - Jaime Torroba Martínez**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Encargado del sistema de Posts, del sistema de scroll implementado con AJAX para los feeds así como en el panel de administración, en el que también se implementa filtrado por el nombre. Búsqueda de usuarios en la página principal y creación y edición de la entidad Exercise con la opción de adjuntar un archico PDF llevando a cabo las comprobaciones necesarias tanto en front como en back para comprobar el tipo de archivo; pudiendo además decargar el PDF adjuntado a un ejercicio ya subido.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Add admin panel full functionalities for searching users, lists & exercises with and without filter.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/cef1a88dbf68f819d46a31e948df66c982d988d4)  | [AdminController](backend/src/main/java/es/codeurjc/daw/library/controller/AdminController.java)   |
+|2| [ Add following reflexive relation on User](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/1157bb1e6e0dbe1d925541412e2819944ed1373e)  | [feed.js](backend/src/main/resources/static/js/feed.js)   |
+|3| [Add post creation on lists, exercises & comments creation & update.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/bdcb693980bf179e9ad6d73bdb17313a9d170a22)  | [PostService](backend/src/main/java/es/codeurjc/daw/library/service/PostService.java)   |
+|4| [Add edit and create exercise with pdf input check and appliance. Download pdf file from exercise.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/c7df8009b963228ab3741234524b9f6a9777e410)  | [ExerciseService](backend/src/main/java/es/codeurjc/daw/library/service/ExerciseService.java)   |
+|5| [Fix search users infinite scroll (end users search bar implementation)](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/36e48d100ff68f2254e9e19d14996f23b3711d8e)  | [home.js](backend/src/main/resources/static/js/home.js)   |
 
 ---
 
-#### **Alumno 4 - [Nombre Completo]**
+#### **Alumno 4 - Pablo Ruiz Uroz**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Responsable de la integración de tecnologías externas, incluyendo la implementación del sistema de autenticación mediante OAuth2 con Google y GitHub, así como la funcionalidad de exportación a PDF. Desarrollo de toda la lógica de seguridad de la aplicación: gestión de usuarios y entidades relacionadas, comprobaciones de permisos y validaciones de acceso.
+Implementación de la lógica de gestión de imágenes en todas las entidades del sistema, asegurando sus correctas relaciones y funcionamiento.
+Desarrollo de las funcionalidades de borrado de usuarios, creación y gestión del panel de administración, y control de la visualización de páginas accesibles para usuarios anónimos.
+Control dinámico de los elementos mostrados en la interfaz según el rol del usuario y definición de la lógica de acceso en función del tipo de usuario autenticado.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implement OAuth2 authentication with Google and GitHub](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/c2ce9d296370937038237effdd5d12c91a92e2df)  | [OAuthUserServie](backend/src/main/java/es/codeurjc/daw/library/security/OAuthUserService.java)   |
+|2| [Add user registration feature with validation and error handling](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/acdde38588b5c7e5a895fc986cfc6be79ca97a59)  | [UserService](backend/src/main/java/es/codeurjc/daw/library/service/UserService.java)   |
+|3| [Admin Panel Functionality](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/fa3674a6a4a842004cbc3ed0c1422607d878ff95)  | [UserController](backend/src/main/java/es/codeurjc/daw/library/controller/UserController.java)   |
+|4| [PDF Solution Export Functionality](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/aa8ccc589ed7d6dea7735d568148e0fe230d9da3)  | [SolutionPdfExportService](backend/src/main/java/es/codeurjc/daw/library/service/SolutionPdfExportService.java)   |
+|5| [Login with Email Functionality](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/3344f995316134e9a665f3c1364bf095d1c249ad)  | [WebController](backend/src/main/java/es/codeurjc/daw/library/controller/WebController.java)   |
 
 ---
 
