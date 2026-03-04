@@ -157,7 +157,7 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 ## 🛠 **Práctica 1: Web con HTML generado en servidor y AJAX**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
+📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=9E4HDM51W4Y)**
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Navegación y Capturas de Pantalla**
@@ -270,19 +270,65 @@ Mientras que la apariencia de las pantallas ha cambiado, el flujo de navegación
 
 #### **Requisitos Previos**
 - **Java**: versión 21 o superior
-- **Maven**: versión 3.8 o superior
-- **MySQL**: versión 8.0 o superior
+- **Maven**: versión 3.8 o superior (`mvn`)
+- **Docker**: para levantar la base de datos MySQL
 - **Git**: para clonar el repositorio
 
 #### **Pasos para ejecutar la aplicación**
 
 1. **Clonar el repositorio**
    ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
+   git clone https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15.git
+   cd practica-daw-2025-26-grupo-15
    ```
 
-2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
+2. **Crear el archivo `.env` en la raíz del repositorio**
+
+   Es obligatorio crear un fichero llamado `.env` en la raíz del repositorio (junto a `start_db.sh`) con las siguientes variables de entorno:
+
+   ```properties
+   DB_USERNAME=root
+   DB_PASSWORD=password
+   KEYSTORE_PASSWORD=<contraseña del keystore>
+   KEYSTORE_SECRET=<secreto del keystore>
+   GOOGLE_CLIENT_ID=<client id de Google OAuth2>
+   GOOGLE_CLIENT_SECRET=<client secret de Google OAuth2>
+   GITHUB_CLIENT_ID=<client id de GitHub OAuth2>
+   GITHUB_CLIENT_SECRET=<client secret de GitHub OAuth2>
+   ```
+
+   > Los valores de `KEYSTORE_PASSWORD` y `KEYSTORE_SECRET` deben coincidir con los usados al generar el `keystore.jks` incluido en el proyecto. Los valores de Google y GitHub se obtienen registrando una aplicación OAuth2 en sus respectivas consolas de desarrollador.
+
+3. **Arrancar la base de datos MySQL con Docker**
+   ```bash
+   bash start_db.sh
+   ```
+   Esto levanta un contenedor MySQL 9.2 con la base de datos `dsgram` en el puerto `3306`. Las credenciales son `root` / `password`.
+
+4. **Compilar y ejecutar la aplicación**
+
+   Se puede arrancar de cualquiera de las siguientes formas. En todos los casos es importante que el directorio de trabajo sea la **raíz del repositorio** para que Spring Boot encuentre el `.env`.
+
+   **Opción A — Maven desde terminal** (requiere `mvn` instalado):
+   ```bash
+   mvn -f backend/pom.xml spring-boot:run
+   ```
+
+   **Opción B — Clase `main` de Java** (desde el IDE):
+   Ejecutar directamente la clase `es.codeurjc.daw.library.Application` con la raíz del repositorio como directorio de trabajo (_working directory_).
+
+   **Opción C — Extensión Spring Boot Dashboard de VS Code**:
+   Con la extensión [Spring Boot Dashboard](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-spring-boot-dashboard) instalada, aparecerá el proyecto en el panel lateral. Antes de arrancarlo, asegúrate de que el _working directory_ configurado apunta a la raíz del repositorio (por defecto lo hace si abres VS Code desde ahí). Pulsa el botón ▶ junto al proyecto para iniciarlo.
+
+   > En los tres casos Spring Boot cargará automáticamente el fichero `.env` de la raíz al arrancar.
+
+5. **Acceder a la aplicación**
+
+   La aplicación se sirve únicamente por HTTPS. Abre en el navegador:
+   ```
+   https://localhost:8443
+   ```
+   > El certificado es autofirmado, por lo que el navegador mostrará una advertencia de seguridad. Acepta la excepción para continuar.
 
 #### **Credenciales de prueba**
 - **Usuario Admin**: usuario: `user1@example.com`, contraseña: `pass`
@@ -320,17 +366,17 @@ Responsable del desarrollo integral de la lógica de negocio para la gestión y 
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
+#### **Alumno 2 - Isidoro Pérez Rivera**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Responsable de la lógica e implementación de la relación entre usuarios: solicitudes de seguimiento y funcionalidad de seguir y dejar de seguir usuarios, así como la visualización de dichas características en sus respectivas páginas de detalle. Implementación de la funcionalidad de edición de varias entidades y modularización de plantillas con atributos de mustache.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implement follow request acceptance and decline functionality, update user profile interactions](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/85c66092258faa55e0c3c4ca41c796544d367ac8)  | [UserController](backend/src/main/java/es/codeurjc/daw/library/controller/UserController.java)   |
+|2| [Refactor followers and following functionality with new unified view and remove deprecated templates. Now its possible to watch other peoples followers and following without being able to make any changes. You also can watch your own followers and following list in which you can do changes](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/a95909881c26dee4a8127df9408343a9fd816d3b)  | [followers-following](backend/src/main/resources/templates/followers-following.html)   |
+|3| [Implement list editing functionality and enhance user interface](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/bbd7b4ec9b0e6cc247adb2ecedabea18d9ca230a)  | [ExerciseListController](backend/src/main/java/es/codeurjc/daw/library/controller/ExerciseListController.java)   |
+|4| [Add user profile editing functionality with validation; update User model and views](github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/ec6a31be2e1ce5344f391cfd82bcc9746badc0ba)  | [edit-profile-form](backend/src/main/resources/templates/edit-profile-form.html)   |
+|5| [Implement follow request feature and update user profile statistics](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/82be6cefbd146b1472aa6e44a76b5f1d2b4a2960)  | [UserController](backend/src/main/java/es/codeurjc/daw/library/controller/UserController.java)   |
 
 ---
 
