@@ -3,7 +3,6 @@ package es.codeurjc.daw.library.repository;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,7 +32,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         LENGTH(u.name),
         u.name ASC
     """, nativeQuery = true)
-    Slice<User> searchUsersBySimilarName(@Param("name") String name, Pageable pageable);
+    Page<User> searchUsersBySimilarName(@Param("name") String name, Pageable pageable);
 
     @Query(value = """
     SELECT *
@@ -48,14 +47,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
         LENGTH(u.name),
         u.name ASC
     """, nativeQuery = true)
-    Slice<User> searchUsersBySimilarNameExcludingUser(@Param("name") String name, @Param("excludedUserId") Long excludedUserId, Pageable pageable);
+    Page<User> searchUsersBySimilarNameExcludingUser(@Param("name") String name, @Param("excludedUserId") Long excludedUserId, Pageable pageable);
 
     @Query(value = """
     SELECT *
     FROM user_table u
     WHERE u.id <> :excludedUserId
     """, nativeQuery = true)
-    Slice<User> findAllExcludingUser(@Param("excludedUserId") Long excludedUserId, Pageable pageable);
+    Page<User> findAllExcludingUser(@Param("excludedUserId") Long excludedUserId, Pageable pageable);
 
 
     //suggestion based on random users that are not friends or pending friends

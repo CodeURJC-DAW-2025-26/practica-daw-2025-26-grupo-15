@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Page;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,6 @@ import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.ExerciseService;
 import es.codeurjc.daw.library.service.UserService;
 import es.codeurjc.daw.library.service.admin.AdminService;
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.ui.Model;
 
@@ -30,25 +29,9 @@ public class AdminController {
     @Autowired
     private ExerciseService exerciseService;
 
-    @FunctionalInterface
-    private interface AdminSearchHandler {
-        Slice<?> handle(int page, int size, String inputFilter);
-    }
     
     @Autowired
     private AdminService adminService;
-
-    private Map<String, AdminSearchHandler> handlers;
-
-    @PostConstruct
-    private void initHandlers() {
-        //  put handlers on map getting them from adminService
-        handlers = Map.of(
-            "au", adminService::searchUsers,
-            "al", adminService::searchLists,
-            "ae", adminService::searchExercises
-        );
-    }
 
     // Contains the respective fragments to load the content for each search petition
     private final Map<String, String> viewByPetition = Map.of(
@@ -76,17 +59,17 @@ public class AdminController {
                             Model model,
                             Principal principal) {
 
-        AdminSearchHandler handler = handlers.get(petition);
+        
         String view = viewByPetition.get(petition);
 
-        if (handler == null || view == null) {
+        if (view == null) {
             throw new IllegalArgumentException("Invalid operation: " + petition);
         }
 
         //  set current admin id in service for excluding themselves in users search. Perhaps enhance in the future
         adminService.setCurrentAdminId(resolveUser(principal).getId());
         //  get the handler for the respective petition and execute to get the Slice
-        Slice<?> slice = handler.handle(page, size, inputFilter);
+        Page<?> slice = adminService.searchByPetition(petition, page, size, inputFilter);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));

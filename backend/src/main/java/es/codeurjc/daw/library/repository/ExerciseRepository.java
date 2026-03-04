@@ -1,7 +1,7 @@
 package es.codeurjc.daw.library.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +23,5 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
         LENGTH(e.title),
         e.title ASC
     """, nativeQuery = true)
-    Slice<Exercise> searchExercisesBySimilarTitle(@Param("title") String title, Pageable pageable);
+    Page<Exercise> searchExercisesBySimilarTitle(@Param("title") String title, Pageable pageable);
 }

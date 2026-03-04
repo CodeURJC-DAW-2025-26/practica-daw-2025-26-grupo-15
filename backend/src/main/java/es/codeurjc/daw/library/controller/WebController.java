@@ -18,7 +18,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.data.domain.Slice;
+
+import org.springframework.data.domain.Page;
 
 
 
@@ -80,7 +81,7 @@ public class WebController {
         }
         
         Long currentUserId = (principal == null) ? null : resolveUser(principal).getId();
-        Slice<User> slice = (currentUserId == null ) ?
+        Page<User> slice = (currentUserId == null ) ?
                                 userService.searchUsersBySimilarName(q, page, size) :
                                 userService.searchUsersBySimilarNameExcludingUser(q, currentUserId, page, size);
 
@@ -98,7 +99,7 @@ public class WebController {
                                      Principal principal, 
                                      Model model, 
                                      HttpServletResponse response){
-        Slice<Post> slice;
+        Page<Post> slice;
         if (principal != null){
             User user = resolveUser(principal);
 

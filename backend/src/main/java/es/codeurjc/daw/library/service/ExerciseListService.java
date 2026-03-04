@@ -4,8 +4,8 @@ import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 
@@ -23,15 +23,15 @@ public class ExerciseListService {
         return listRepo.findByOwner(user);
     }
 
-    public Slice<ExerciseList> findByOwner(User user, int page, int size){
+    public Page<ExerciseList> findByOwner(User user, int page, int size){
         return listRepo.findByOwner(user, PageRequest.of(page, size));
     }
 
-    public Slice<ExerciseList> findAll(int page, int size){
+    public Page<ExerciseList> findAll(int page, int size){
         return listRepo.findAll(PageRequest.of(page, size));
     }
 
-    public Slice<ExerciseList> searchListsBySimilarTitle(String q, int page, int size) {
+    public Page<ExerciseList> searchListsBySimilarTitle(String q, int page, int size) {
         return listRepo.searchListsBySimilarTitle(q, PageRequest.of(page, size));
     }
 

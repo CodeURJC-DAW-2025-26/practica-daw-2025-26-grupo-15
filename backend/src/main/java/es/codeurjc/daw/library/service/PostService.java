@@ -3,8 +3,8 @@ package es.codeurjc.daw.library.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import es.codeurjc.daw.library.model.Post;
@@ -29,11 +29,11 @@ public class PostService {
         return newPost;
     }
 
-    public Slice<Post> findFeedForUser(User user, int page, int size){
+    public Page<Post> findFeedForUser(User user, int page, int size){
         return postRepo.findFeedForUser(user.getId(), PageRequest.of(page, size));
     }
 
-    public Slice<Post> findAll(int page, int size){
+    public Page<Post> findAll(int page, int size){
         return postRepo.findAll(PageRequest.of(page, size));
     }
 

@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -59,7 +58,7 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public Slice<User> findAll(int page, int size){
+    public Page<User> findAll(int page, int size){
         return userRepo.findAll(PageRequest.of(page, size));
     }
 
@@ -162,15 +161,15 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public Slice<User> searchUsersBySimilarName(String q, int page, int size) {
+    public Page<User> searchUsersBySimilarName(String q, int page, int size) {
         return userRepo.searchUsersBySimilarName(q, PageRequest.of(page, size));
     }
 
-    public Slice<User> searchUsersBySimilarNameExcludingUser(String q, Long exclude, int page, int size) {
+    public Page<User> searchUsersBySimilarNameExcludingUser(String q, Long exclude, int page, int size) {
         return userRepo.searchUsersBySimilarNameExcludingUser(q, exclude, PageRequest.of(page, size));
     }
 
-    public Slice<User> findAllExcludingUser(Long exclude, int page, int size){
+    public Page<User> findAllExcludingUser(Long exclude, int page, int size){
         return userRepo.findAllExcludingUser(exclude, PageRequest.of(page, size));
     }
 

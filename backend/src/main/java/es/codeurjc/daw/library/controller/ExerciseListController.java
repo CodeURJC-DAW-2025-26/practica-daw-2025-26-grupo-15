@@ -4,7 +4,7 @@ import java.security.Principal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Page;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -169,7 +169,7 @@ public class ExerciseListController {
             throw new RuntimeException("User not found");
         }
         User user = opt.get();
-        Slice<ExerciseList> slice = listService.findByOwner(user, page, size);
+        Page<ExerciseList> slice = listService.findByOwner(user, page, size);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));

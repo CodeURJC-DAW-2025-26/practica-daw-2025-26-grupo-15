@@ -13,7 +13,7 @@ const inputFilter = document.getElementById("inputFilter");
 
 const modalsContainer = document.getElementById("modalsContainer");
 
-const defaultPageSize = 10;
+const defaultPageSize = 15;
 
 
 
