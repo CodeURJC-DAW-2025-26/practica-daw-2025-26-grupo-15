@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.ui.Model;
 
 @Controller
-public class AdminController {
+public class AdminWebController {
 
     @Autowired
     private UserService userService;

@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 
 @Controller
-public class UserController {
+public class UserWebController {
 
     @Autowired
     private UserService userService;

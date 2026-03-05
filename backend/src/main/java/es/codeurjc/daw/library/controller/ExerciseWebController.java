@@ -31,7 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
-public class ExerciseController {
+public class ExerciseWebController {
 
     @Autowired
     private UserService userService;

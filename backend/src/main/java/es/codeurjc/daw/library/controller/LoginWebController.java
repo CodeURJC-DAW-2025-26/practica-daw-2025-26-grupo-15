@@ -11,7 +11,7 @@ import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
-public class LoginController {
+public class LoginWebController {
 
     @Autowired
     private UserService userService;

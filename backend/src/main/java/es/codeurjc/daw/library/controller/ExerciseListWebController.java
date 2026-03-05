@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class ExerciseListController {
+public class ExerciseListWebController {
 
     @Autowired
     private UserService userService;

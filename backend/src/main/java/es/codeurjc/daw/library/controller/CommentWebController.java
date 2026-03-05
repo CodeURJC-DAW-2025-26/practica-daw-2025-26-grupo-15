@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 
 @Controller
-public class CommentController {
+public class CommentWebController {
 
     @Autowired
     private UserService userService;

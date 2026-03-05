@@ -24,7 +24,7 @@ import org.springframework.data.domain.Page;
 
 
 @Controller
-public class WebController {
+public class HomeWebController {
 
     @Autowired
     private PostService postService;

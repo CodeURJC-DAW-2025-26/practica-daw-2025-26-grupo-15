@@ -29,7 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 
 @Controller
-public class SolutionController {
+public class SolutionWebController {
 
     @Autowired
     private UserService userService;
