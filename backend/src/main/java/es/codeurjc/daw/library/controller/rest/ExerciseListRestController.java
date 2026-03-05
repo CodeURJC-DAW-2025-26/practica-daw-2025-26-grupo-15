@@ -1,4 +1,4 @@
-package es.codeurjc.daw.library.controller;
+package es.codeurjc.daw.library.controller.rest;
 
 public class ExerciseListRestController {
     

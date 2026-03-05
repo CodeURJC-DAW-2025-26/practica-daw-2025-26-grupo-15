@@ -1,4 +1,4 @@
-package es.codeurjc.daw.library.controller;
+package es.codeurjc.daw.library.controller.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
