@@ -8,7 +8,7 @@ public interface UserMapper {
 
     UserDTO toDTO(User user);
 
-    User toDomain(UserDTO userDTO);
+   // User toDomain(UserDTO userDTO);
 }
     
 

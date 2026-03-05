@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.codeurjc.daw.library.dto.UserDTO;
 import es.codeurjc.daw.library.dto.UserMapper;
-import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
 
 @RestController
