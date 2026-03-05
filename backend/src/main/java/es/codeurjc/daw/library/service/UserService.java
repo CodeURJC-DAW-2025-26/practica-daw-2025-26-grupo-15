@@ -302,4 +302,8 @@ public class UserService {
         userRepo.delete(deletedUser);
 
     }
+
+    public User getUser(Long id) {
+        return userRepo.findById(id).orElseThrow();
+    }
 }
