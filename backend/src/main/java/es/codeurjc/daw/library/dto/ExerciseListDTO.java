@@ -1,5 +1,13 @@
 package es.codeurjc.daw.library.dto;
 
-public record ExerciseListDTO() {
+import java.sql.Date;
+
+public record ExerciseListDTO(
+    Long id,
+    String title,
+    String description,
+    String topic,
+    Date lastUpdate
+) {
     
 }

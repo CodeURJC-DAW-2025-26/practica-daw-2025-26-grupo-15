@@ -23,6 +23,15 @@ public class ExerciseListService {
         return listRepo.findByOwner(user);
     }
 
+    public ExerciseList deleteById(long id) {
+
+        ExerciseList list = listRepo.findById(id).orElseThrow();
+
+        listRepo.deleteById(id);
+
+        return list;
+    }
+
     public Page<ExerciseList> findByOwner(User user, int page, int size){
         return listRepo.findByOwner(user, PageRequest.of(page, size));
     }
