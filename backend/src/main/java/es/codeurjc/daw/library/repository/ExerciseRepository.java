@@ -24,4 +24,6 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
         e.title ASC
     """, nativeQuery = true)
     Page<Exercise> searchExercisesBySimilarTitle(@Param("title") String title, Pageable pageable);
+
+    Page<Exercise> findByListId(Long listId, Pageable pageable);    
 }
