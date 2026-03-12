@@ -2,15 +2,22 @@ package es.codeurjc.daw.library.controller.rest;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.codeurjc.daw.library.dto.ExerciseMapper;
 import es.codeurjc.daw.library.service.SearchService;
+import es.codeurjc.daw.library.model.Exercise;
+import es.codeurjc.daw.library.dto.ExerciseDTO;
+
+
 
 
 public class ExerciseRestController {
     
     @Autowired private SearchService searchService;
+    @Autowired private ExerciseMapper exerciseMapper;
 
     @GetMapping("/")
     public Page<ExerciseDTO> getExercises(@RequestParam(required = true ) int page,
