@@ -1,5 +1,5 @@
 package es.codeurjc.daw.library.dto;
 
-public record ImageDTO() {
+public record ImageDTO(Long id) {
     
 }
