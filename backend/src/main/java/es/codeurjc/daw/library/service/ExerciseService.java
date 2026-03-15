@@ -44,7 +44,7 @@ public class ExerciseService {
     }
 
     public Page<Exercise> findByListId(int page, int size, Long listId){
-        return exerciseRepo.findByListId(listId, PageRequest.of(page, size));
+        return exerciseRepo.findByExerciseListId(listId, PageRequest.of(page, size));
     }
 
     @Transactional
