@@ -10,10 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.ui.Model;
-import es.codeurjc.daw.library.model.Post;
 import es.codeurjc.daw.library.model.User;
-import es.codeurjc.daw.library.service.PostService;
+import es.codeurjc.daw.library.model.Post;
 import es.codeurjc.daw.library.service.UserService;
+import es.codeurjc.daw.library.service.SearchService;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,9 +27,9 @@ import org.springframework.data.domain.Page;
 public class HomeWebController {
 
     @Autowired
-    private PostService postService;
-    @Autowired
     private UserService userService;
+    @Autowired
+    private SearchService searchService;
     
      @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -81,9 +81,8 @@ public class HomeWebController {
         }
         
         Long currentUserId = (principal == null) ? null : resolveUser(principal).getId();
-        Page<User> slice = (currentUserId == null ) ?
-                                userService.searchUsersBySimilarName(q, page, size) :
-                                userService.searchUsersBySimilarNameExcludingUser(q, currentUserId, page, size);
+
+        Page<User> slice =  searchService.searchUsers(page, size, q, currentUserId);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
@@ -99,22 +98,13 @@ public class HomeWebController {
                                      Principal principal, 
                                      Model model, 
                                      HttpServletResponse response){
-        Page<Post> slice;
-        if (principal != null){
-            User user = resolveUser(principal);
+        User user = (principal == null)? null : resolveUser(principal);
+        Long currentUserId = (user == null)? null : user.getId();
 
-            slice = postService.findFeedForUser(user, page, size);
-        } else {
-            slice = postService.findAll(page, size);
-        }
-        if (slice == null) throw new RuntimeException("Error on posts search");
+        Page<Post> slice = searchService.searchPosts(page, size, null, currentUserId);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
-
-        for (Post p : slice.getContent()){
-            p.calculateTime();
-        }
 
         model.addAttribute("list", slice.getContent());
         
