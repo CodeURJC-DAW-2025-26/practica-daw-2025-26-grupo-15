@@ -303,7 +303,4 @@ public class UserService {
 
     }
 
-    public User getUser(Long id) {
-        return userRepo.findById(id).orElseThrow();
-    }
 }

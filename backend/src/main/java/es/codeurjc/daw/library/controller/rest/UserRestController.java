@@ -24,17 +24,17 @@ public class UserRestController {
 
     @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable Long id) {
-        return userMapper.toDTO(userService.getUser(id));
+        return userMapper.toDTO(userService.findById(id).orElseThrow(() -> new IllegalArgumentException("no user for this id")));
     }
 
     @GetMapping("/")
     public Page<UserDTO> getUsers(@RequestParam(required = true) int page,
                                   @RequestParam(required = true) int size,
-                                  @RequestParam Long excludeId,
+                                  @RequestParam Long excludedId,
                                   @RequestParam String nameFilter){
 
         if (page < 0 || size < 0) throw new IllegalArgumentException("Invalid page or size");
-        Page<User> usersPage = searchService.searchUsers(page, size, nameFilter, excludeId);
+        Page<User> usersPage = searchService.searchUsers(page, size, nameFilter, excludedId);
         
         if (usersPage == null) throw new RuntimeException("Unable to find users page");
         Page<UserDTO> usersDTOPage = usersPage.map(userMapper::toDTO);
