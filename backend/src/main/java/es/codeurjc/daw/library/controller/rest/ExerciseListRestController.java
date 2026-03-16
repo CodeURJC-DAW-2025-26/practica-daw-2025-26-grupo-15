@@ -1,9 +1,10 @@
 package es.codeurjc.daw.library.controller.rest;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import java.net.URI;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.dto.ExerciseListDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import es.codeurjc.daw.library.service.UserService;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
 @RequestMapping("/api/v1/exerciselists")
@@ -37,7 +39,7 @@ public class ExerciseListRestController {
     @Autowired
     private UserService userService;
 
-    @Autowired 
+    @Autowired
     private SearchService searchService;
 
     @GetMapping("/{id}")
@@ -46,12 +48,17 @@ public class ExerciseListRestController {
     }
 
     @PostMapping("/")
-    public ExerciseListDTO createExerciseList(@RequestBody ExerciseListDTO dto, Principal principal) {
+    public ResponseEntity<ExerciseListDTO> createExerciseList(@RequestBody ExerciseListDTO dto, Principal principal) {
         ExerciseList entity = exerciseListMapper.toEntity(dto);
         String email = principal.getName();
         User owner = userService.findByEmail(email).orElseThrow();
         entity.setOwner(owner);
-        return exerciseListMapper.toDTO(exerciseListService.createList(entity, owner));
+        ExerciseList savedEntity = exerciseListService.createList(entity, owner);
+        ExerciseListDTO createdDTO = exerciseListMapper.toDTO(savedEntity);
+
+        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(createdDTO.id()).toUri();
+
+        return ResponseEntity.created(location).body(createdDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -67,17 +74,19 @@ public class ExerciseListRestController {
     }
 
     @GetMapping("/")
-    public Page<ExerciseListDTO> getLists(@RequestParam(required = true ) int page,
-                                          @RequestParam(required = true) int size,
-                                          @RequestParam Long ownerId,
-                                          @RequestParam String nameFilter){
-        if (page < 0 || size < 0) throw new IllegalArgumentException("Invalid page or size");
+    public Page<ExerciseListDTO> getLists(@RequestParam(required = true) int page,
+            @RequestParam(required = true) int size,
+            @RequestParam Long ownerId,
+            @RequestParam String nameFilter) {
+        if (page < 0 || size < 0)
+            throw new IllegalArgumentException("Invalid page or size");
 
         Page<ExerciseList> listsPage = searchService.searchLists(page, size, nameFilter, ownerId);
-        
-        if (listsPage == null) throw new RuntimeException("Unable to find lists page");
+
+        if (listsPage == null)
+            throw new RuntimeException("Unable to find lists page");
         Page<ExerciseListDTO> listsDTOPage = listsPage.map(exerciseListMapper::toDTO);
-        
+
         return listsDTOPage;
     }
 }
