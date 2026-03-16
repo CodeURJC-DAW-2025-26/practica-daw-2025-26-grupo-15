@@ -152,4 +152,8 @@ public class ExerciseService {
         }
     }
 
+    public Exercise getExercise(Long id) {
+        return exerciseRepo.findById(id).orElseThrow();
+    }
+
 }
