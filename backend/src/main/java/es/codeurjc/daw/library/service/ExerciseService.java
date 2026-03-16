@@ -44,7 +44,7 @@ public class ExerciseService {
     }
 
     public Page<Exercise> findByListId(int page, int size, Long listId){
-        return exerciseRepo.findByListId(listId, PageRequest.of(page, size));
+        return exerciseRepo.findByExerciseListId(listId, PageRequest.of(page, size));
     }
 
     @Transactional
@@ -154,6 +154,10 @@ public class ExerciseService {
         } catch (Exception e) {
             throw new RuntimeException("Error reading uploaded file");
         }
+    }
+
+    public Exercise getExercise(Long id) {
+        return exerciseRepo.findById(id).orElseThrow();
     }
 
 }
