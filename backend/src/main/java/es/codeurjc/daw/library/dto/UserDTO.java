@@ -8,6 +8,11 @@ public record UserDTO(
     String email,
     String bio,
     String specialty,   
-    List<String> roles
+    List<String> roles, 
+    List<ExerciseListBasicInfoDTO> exerciseLists,
+    List<UserBasicInfoDTO> followers,
+    List<UserBasicInfoDTO> following,
+    List<UserBasicInfoDTO> requestedFriends,
+    List<UserBasicInfoDTO> requestReceived
 ) {
 }

@@ -43,6 +43,10 @@ public class ExerciseService {
         return exerciseRepo.findAllById(ids);
     }
 
+    public Page<Exercise> findByListId(int page, int size, Long listId){
+        return exerciseRepo.findByExerciseListId(listId, PageRequest.of(page, size));
+    }
+
     @Transactional
     public Exercise createExercise(Exercise exercise, User user, MultipartFile pdfFile, Long listId) throws IOException{
         this.validateExerciseFields(exercise);

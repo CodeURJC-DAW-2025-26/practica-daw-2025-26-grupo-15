@@ -17,6 +17,7 @@ import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.PostService;
 import es.codeurjc.daw.library.service.UserService;
+import es.codeurjc.daw.library.service.SearchService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -34,6 +35,9 @@ public class ExerciseListWebController {
 
     @Autowired 
     private PostService postService;
+
+    @Autowired
+    private SearchService searchService;
 
 
     @GetMapping("/list-view/{id}")
@@ -169,7 +173,7 @@ public class ExerciseListWebController {
             throw new RuntimeException("User not found");
         }
         User user = opt.get();
-        Page<ExerciseList> slice = listService.findByOwner(user, page, size);
+        Page<ExerciseList> slice = searchService.searchLists(page, size, null, user.getId());
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));

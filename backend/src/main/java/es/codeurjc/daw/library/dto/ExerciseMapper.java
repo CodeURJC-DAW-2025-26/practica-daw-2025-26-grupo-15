@@ -4,11 +4,11 @@ import org.mapstruct.Mapper;
 
 import es.codeurjc.daw.library.model.Exercise;
 
+import es.codeurjc.daw.library.model.Exercise;
+
 @Mapper(componentModel = "spring")
 public interface ExerciseMapper {
 
-        ExerciseDTO toDTO(Exercise exercise);
-    
-        //Exercise toDomain(ExerciseDTO exerciseDTO);
+    public ExerciseDTO toDTO(Exercise exercise);
     
 }

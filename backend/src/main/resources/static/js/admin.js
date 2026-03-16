@@ -1,8 +1,7 @@
 let feedPage = 0;
 let feedLoading = false;
 let feedHasMore = true;
-let currentPetition;
-let adminOption = "u";
+let currentPetition = "u";
 let filter = "";
 
 let observer;
@@ -19,7 +18,7 @@ const defaultPageSize = 15;
 
 function setAdminOption(opt){
   if (!["u","l","e"].includes(opt)) return;
-  adminOption = opt;
+  currentPetition = opt;
 
   reloadFeed()  
 }
@@ -42,11 +41,8 @@ function reloadFeed(){
 }
 
 async function loadMoreFeed(size = defaultPageSize) {
-  currentPetition = feedStream?.dataset?.petition ?? "";  
 
-  currentPetition += adminOption;
-
-  if (currentPetition === null || (currentPetition !== "al" && currentPetition !== "au" && currentPetition !== "ae")) return;  
+  if (currentPetition === null || (currentPetition !== "l" && currentPetition !== "u" && currentPetition !== "e")) return;  
 
   if (feedLoading || !feedHasMore) return;
     
@@ -109,7 +105,7 @@ async function loadModals(petition){
 
 function setTableHeader(){
     const header = document.getElementById("tableHeader");
-    if (currentPetition === "au"){
+    if (currentPetition === "u"){
         header.innerHTML = `<tr>
                                 <th>User</th>
                                 <th>Email</th>
@@ -118,14 +114,14 @@ function setTableHeader(){
                                 <th class="text-center">Following</th>
                                 <th></th>
                             </tr>`;
-    } else if (currentPetition === "al") {
+    } else if (currentPetition === "l") {
         header.innerHTML = `<tr>
                                 <th>Title</th>
                                 <th>Topic</th>
                                 <th class="text-center">Owner</th>
                                 <th></th>
                             </tr>`;
-    } else if (currentPetition === "ae"){
+    } else if (currentPetition === "e"){
         header.innerHTML = `<tr>
                                 <th>Title</th>
                                 <th>List</th>

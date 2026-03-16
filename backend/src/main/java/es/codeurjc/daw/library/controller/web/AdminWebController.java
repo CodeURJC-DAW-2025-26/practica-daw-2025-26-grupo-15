@@ -15,7 +15,8 @@ import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.ExerciseService;
 import es.codeurjc.daw.library.service.UserService;
-import es.codeurjc.daw.library.service.admin.AdminService;
+import es.codeurjc.daw.library.service.SearchService;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.ui.Model;
 
@@ -29,15 +30,33 @@ public class AdminWebController {
     @Autowired
     private ExerciseService exerciseService;
 
+     @FunctionalInterface
+    private interface AdminSearchHandler {
+        Page<?> handle(int page, int size, String inputFilter, Long currentUserId);
+    }
+
+    private Map<String, AdminSearchHandler> handlers;
+    
+    @PostConstruct
+    public void initializeHandlers(){
+        handlers = Map.of(
+            "u", searchService::searchUsers,
+            "l", searchService::searchLists,
+            "e", searchService::searchExercises,
+            "p", searchService::searchPosts
+        );
+    }
+    
+
     
     @Autowired
-    private AdminService adminService;
+    private SearchService searchService;
 
     // Contains the respective fragments to load the content for each search petition
     private final Map<String, String> viewByPetition = Map.of(
-        "au", "fragments/admin-search-users",
-        "al", "fragments/admin-search-lists",
-        "ae", "fragments/admin-search-exercises"
+        "u", "fragments/admin-search-users",
+        "l", "fragments/admin-search-lists",
+        "e", "fragments/admin-search-exercises"
     );
     
 
@@ -66,10 +85,9 @@ public class AdminWebController {
             throw new IllegalArgumentException("Invalid operation: " + petition);
         }
 
-        //  set current admin id in service for excluding themselves in users search. Perhaps enhance in the future
-        adminService.setCurrentAdminId(resolveUser(principal).getId());
+        Long currentUserId = (principal == null)? null : resolveUser(principal).getId();
         //  get the handler for the respective petition and execute to get the Slice
-        Page<?> slice = adminService.searchByPetition(petition, page, size, inputFilter);
+        Page<?> slice = this.handlers.get(petition).handle(page, size, inputFilter, currentUserId);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
@@ -88,9 +106,9 @@ public class AdminWebController {
         }
 
         switch (petition) {
-            case "au" -> model.addAttribute("users", userService.findAllById(ids));
-            case "al" -> model.addAttribute("lists", listService.findAllById(ids));
-            case "ae" -> model.addAttribute("exercises", exerciseService.findAllById(ids));
+            case "u" -> model.addAttribute("users", userService.findAllById(ids));
+            case "l" -> model.addAttribute("lists", listService.findAllById(ids));
+            case "e" -> model.addAttribute("exercises", exerciseService.findAllById(ids));
             default -> throw new IllegalArgumentException("Invalid operation: " + petition);
         }
 

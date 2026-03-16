@@ -264,7 +264,7 @@ public class UserService {
         return suggestions;
     }
 
-    public void deleteUser(User user, long id, boolean isAdmin) {
+    public User deleteUser(User user, long id, boolean isAdmin) {
         if (user.getId() != id && !isAdmin)
             throw new RuntimeException("You don't have permission to delete this profile.");
 
@@ -300,10 +300,13 @@ public class UserService {
 
         userRepo.save(deletedUser);
         userRepo.delete(deletedUser);
-
+        return deletedUser;
     }
 
     public User getUser(Long id) {
         return userRepo.findById(id).orElseThrow();
+    }
+     public User getUser(String email) {
+        return userRepo.findByEmail(email).orElseThrow();
     }
 }
