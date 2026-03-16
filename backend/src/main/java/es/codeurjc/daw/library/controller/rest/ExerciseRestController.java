@@ -14,23 +14,33 @@ import es.codeurjc.daw.library.dto.ExerciseDTO;
 
 
 
-public class ExerciseRestController {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import es.codeurjc.daw.library.dto.ExerciseDTO;
+import es.codeurjc.daw.library.dto.ExerciseMapper;
+import es.codeurjc.daw.library.dto.UserDTO;
+import es.codeurjc.daw.library.dto.UserMapper;
+import es.codeurjc.daw.library.service.ExerciseService;
+import es.codeurjc.daw.library.service.UserService;
+
+@RestController
+@RequestMapping("/api/v1/exercises")
+    public class ExerciseRestController {
+        @Autowired
+        ExerciseMapper exerciseMapper;
     
-    @Autowired private SearchService searchService;
-    @Autowired private ExerciseMapper exerciseMapper;
 
-    @GetMapping("/")
-    public Page<ExerciseDTO> getExercises(@RequestParam(required = true ) int page,
-                                          @RequestParam(required = true) int size,
-                                          @RequestParam Long listId,
-                                          @RequestParam String nameFilter){
-        if (page < 0 || size < 0) throw new IllegalArgumentException("Invalid page or size");
+        @Autowired
+        ExerciseService exerciseService;
 
-        Page<Exercise> exercisesPage = searchService.searchExercises(page, size, nameFilter, listId);
-        
-        if (exercisesPage == null) throw new RuntimeException("Unable to find exercises page");
-        Page<ExerciseDTO> exercisesDTOPage= exercisesPage.map(exerciseMapper::toDTO);
-        
-        return exercisesDTOPage;
-    }
+        @GetMapping("/{id}")
+        public ExerciseDTO getExerciseById(@PathVariable Long id) {
+            return exerciseMapper.toDTO(exerciseService.getExercise(id));
+        }
+    
+
 }
