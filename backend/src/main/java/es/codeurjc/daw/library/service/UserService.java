@@ -178,6 +178,10 @@ public class UserService {
     }
 
     public User modify(User user, User oldUser, MultipartFile photoFile) {
+
+        if(user.getId() == null || !user.getId().equals(oldUser.getId())) {
+            throw new IllegalArgumentException("User ID mismatch");
+        }
         if (user.getName() == null || user.getName().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be empty");
         }
@@ -309,4 +313,24 @@ public class UserService {
      public User getUser(String email) {
         return userRepo.findByEmail(email).orElseThrow();
     }
+    public User addPhotoToUser(Long userId, User oldUser, MultipartFile photoFile) {
+        if(oldUser.getId() != userId) {
+            throw new SecurityException("User ID mismatch");
+        }
+        try {
+            if (oldUser.getPhoto() != null) {
+                Image updated = imageService.replaceImageFile(oldUser.getPhoto().getId(),photoFile.getInputStream());
+                oldUser.setPhoto(updated);
+            } else {
+                Image newImage = imageService.createImage(photoFile.getInputStream());
+                oldUser.setPhoto(newImage);
+                }
+        } catch (IOException e) {
+                throw new RuntimeException("Failed to save profile photo", e);
+        }
+
+        userRepo.save(oldUser);
+        return oldUser;
+    }
+
 }
