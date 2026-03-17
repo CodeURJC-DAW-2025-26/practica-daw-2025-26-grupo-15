@@ -107,12 +107,11 @@ public class SolutionWebController {
 
 
     @PostMapping("/exercise/{exerciseId}/solution/{solutionId}/delete")
-    public String deleteSolution(Model model, HttpServletRequest request, @PathVariable Long exerciseId, @PathVariable Long solutionId, Principal principal) {
+    public String deleteSolution(Model model, @PathVariable Long exerciseId, @PathVariable Long solutionId, Principal principal) {
         User user = resolveUser(principal);
         
         try {
-            boolean isAdmin = request.isUserInRole("ADMIN");
-            solutionService.deleteSolution(solutionId, user, isAdmin);
+            solutionService.deleteSolution(solutionId, user);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";

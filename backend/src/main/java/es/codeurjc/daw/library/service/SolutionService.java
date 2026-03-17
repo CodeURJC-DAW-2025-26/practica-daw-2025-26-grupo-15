@@ -52,14 +52,31 @@ public class SolutionService {
         return solutionRepo.save(solution);
     }
 
+    public Solution createSolutionWithoutImage(Long exerciseId, Solution solution, User user)  {
+        solution.setOwner(user);
+        solution.setNumComments(0);
+        solution.setLastUpdate(new Date(System.currentTimeMillis()));
+        if(solution.getName() == null || solution.getName().isEmpty() || solution.getDescription() == null || solution.getDescription().isEmpty()) {
+            throw new RuntimeException("Name and description cannot be empty");
+        }
+        if (solution.getName().length() < 3 || solution.getName().length() > 100)
+            throw new RuntimeException("The solution name must be between 3 and 100 characters.");
+        Exercise exercise = exerciseService.findById(exerciseId);
+        solution.setExercise(exercise);
+        exercise.getSolutions().add(solution);
+        exercise.incrementNumSolutions();
+        return solutionRepo.save(solution);
+    }
 
-    public void deleteSolution(Long id, User user, boolean isAdmin){
+
+    public void deleteSolution(Long id, User user){
         Solution solution = solutionRepo.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
-        if (!solution.getOwner().getId().equals(user.getId()) && !isAdmin) {
+        if (!solution.getOwner().getId().equals(user.getId())) {
             throw new RuntimeException("You do not have permission to delete this solution");
         }
         solution.getExercise().decrementNumSolutions();
         solutionRepo.delete(solution);
+        
     }
 
 
