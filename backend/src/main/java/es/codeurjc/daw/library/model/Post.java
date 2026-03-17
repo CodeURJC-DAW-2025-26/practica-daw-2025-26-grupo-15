@@ -90,4 +90,8 @@ public class Post {
     public void setOwner(User owner){
         this.owner = owner;
     }
+
+    public Long getId(){
+        return this.id;
+    }
 }

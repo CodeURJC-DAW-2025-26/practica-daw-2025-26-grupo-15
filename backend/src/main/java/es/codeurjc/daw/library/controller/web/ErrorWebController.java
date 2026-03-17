@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ErrorWebController {
 
-    @GetMapping("/error")
+    /*@GetMapping("/error")
     public String error() {
         return "error";
-    }
+    }*/
 
     @GetMapping("/loginerror")
     public String loginError(Model model) {

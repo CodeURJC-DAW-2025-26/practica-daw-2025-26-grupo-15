@@ -9,7 +9,7 @@ import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.repository.ExerciseRepository;
@@ -31,20 +31,20 @@ public class ExerciseService {
         return exerciseRepo.findById(id).orElseThrow(() -> new RuntimeException("Exercise not found"));
     }
 
-    public Page<Exercise> findAll(int page, int size){
-        return exerciseRepo.findAll(PageRequest.of(page, size));
+    public Page<Exercise> findAll(Pageable pageable){
+        return exerciseRepo.findAll(pageable);
     }
 
-     public Page<Exercise> searchExercisesBySimilarTitle(String q, int page, int size) {
-        return exerciseRepo.searchExercisesBySimilarTitle(q, PageRequest.of(page, size));
+     public Page<Exercise> searchExercisesBySimilarTitle(String q, Pageable pageable) {
+        return exerciseRepo.searchExercisesBySimilarTitle(q, pageable);
     }
 
     public List<Exercise> findAllById(List<Long> ids){
         return exerciseRepo.findAllById(ids);
     }
 
-    public Page<Exercise> findByListId(int page, int size, Long listId){
-        return exerciseRepo.findByExerciseListId(listId, PageRequest.of(page, size));
+    public Page<Exercise> findByExerciseListId(Pageable pageable, Long listId){
+        return exerciseRepo.findByExerciseListId(listId, pageable);
     }
 
     @Transactional

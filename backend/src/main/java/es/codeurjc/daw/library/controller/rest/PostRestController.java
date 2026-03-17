@@ -2,6 +2,7 @@ package es.codeurjc.daw.library.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,12 +21,10 @@ public class PostRestController {
     @Autowired private SearchService searchService;
 
     @GetMapping("/")
-    public Page<PostDTO> getLists(@RequestParam(required = true ) int page,
-                                          @RequestParam(required = true) int size,
-                                          @RequestParam Long currentUserId){
-        if (page < 0 || size < 0) throw new IllegalArgumentException("Invalid page or size");
+    public Page<PostDTO> getPosts(Pageable pageable,
+                                  @RequestParam(required = false) Long currentUserId){
 
-        Page<Post> postsPage = searchService.searchPosts(page, size, null, currentUserId);
+        Page<Post> postsPage = searchService.searchPosts(pageable, null, currentUserId);
         
         if (postsPage == null) throw new RuntimeException("Unable to find posts page");
         Page<PostDTO> postsDTOPage = postsPage.map(postMapper::toDTO);

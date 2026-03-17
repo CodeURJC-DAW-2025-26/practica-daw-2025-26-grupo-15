@@ -10,7 +10,7 @@ public record ExerciseListDTO(
     String description,
     String topic,
     Date lastUpdate,
-    UserBasicDTO owner, 
+    UserBasicInfoDTO owner, 
     List<ExerciseBasicInfoDTO> exercises
 ) {
     
