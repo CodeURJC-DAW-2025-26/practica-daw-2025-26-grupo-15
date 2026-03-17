@@ -87,7 +87,7 @@ public class ExerciseService {
         return existing;
     }
 
-    public void deleteExercise(Long exerciseId, User user, boolean isAdmin) {
+    public Exercise deleteExercise(Long exerciseId, User user, boolean isAdmin) {
         Exercise existing = exerciseRepo.findById(exerciseId)
             .orElseThrow(() -> new IllegalArgumentException("Exercise not found"));
 
@@ -95,6 +95,8 @@ public class ExerciseService {
             throw new IllegalArgumentException("Not allowed");
 
         exerciseRepo.delete(existing);
+
+        return existing;
     }
 
     private void validateExerciseFields(Exercise ex) {
