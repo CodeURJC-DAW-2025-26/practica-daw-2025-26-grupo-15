@@ -18,13 +18,14 @@ import es.codeurjc.daw.library.dto.ExerciseListMapper;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.model.User;
+import es.codeurjc.daw.library.model.ExerciseList;
 
 import es.codeurjc.daw.library.dto.ExerciseListDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import es.codeurjc.daw.library.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
@@ -49,28 +50,31 @@ public class ExerciseListRestController {
 
     @PostMapping("/")
     public ResponseEntity<ExerciseListDTO> createExerciseList(@RequestBody ExerciseListDTO dto, Principal principal) {
-        ExerciseList entity = exerciseListMapper.toEntity(dto);
+        ExerciseList exerciseList = exerciseListMapper.toEntity(dto);
         String email = principal.getName();
         User owner = userService.findByEmail(email).orElseThrow();
-        entity.setOwner(owner);
-        ExerciseList savedEntity = exerciseListService.createList(entity, owner);
+        ExerciseList savedEntity = exerciseListService.createList(exerciseList, owner);
         ExerciseListDTO createdDTO = exerciseListMapper.toDTO(savedEntity);
 
         URI location = fromCurrentRequest().path("/{id}").buildAndExpand(createdDTO.id()).toUri();
-
         return ResponseEntity.created(location).body(createdDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ExerciseListDTO deleteExerciseList(@PathVariable Long id) {
-        return exerciseListMapper.toDTO(exerciseListService.deleteById(id));
+    public ExerciseListDTO deleteExerciseList(@PathVariable Long id, Principal principal, HttpServletRequest request) {
+        User user = userService.getUser(principal.getName());
+        boolean isAdmin = request.isUserInRole("ADMIN");
+        ExerciseList list = exerciseListService.findById(id);
+        exerciseListService.deleteList(list, user, isAdmin);
+        return exerciseListMapper.toDTO(list);
     }
 
     @PutMapping("/{id}")
     public ExerciseListDTO updateExerciseList(@PathVariable Long id, @RequestBody ExerciseListDTO exerciseListDTO) {
         User user = exerciseListService.findById(id).getOwner();
-        return exerciseListMapper.toDTO(exerciseListService.editList(exerciseListMapper.toEntity(exerciseListDTO),
-                exerciseListService.findById(id), user));
+        ExerciseList originalList = exerciseListService.findById(id);
+        ExerciseList editedList = exerciseListMapper.toEntity(exerciseListDTO);
+        return exerciseListMapper.toDTO(exerciseListService.editList(editedList, originalList, user));
     }
 
     @GetMapping("/")

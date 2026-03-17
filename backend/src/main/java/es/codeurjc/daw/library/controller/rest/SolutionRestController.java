@@ -10,21 +10,17 @@ import java.net.URI;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import es.codeurjc.daw.library.dto.ExerciseListDTO;
 import es.codeurjc.daw.library.dto.SolutionDTO;
 import es.codeurjc.daw.library.dto.SolutionMapper;
-import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.service.SolutionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
+
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
@@ -46,6 +42,8 @@ public class SolutionRestController {
         return solutionMapper.toDTO(solutionService.findById(id));
     }
 
+
+    //TODO: implement endpoint to create solution WITH image
     @PostMapping("/")
     public ResponseEntity<SolutionDTO> postSolutionById(@RequestBody SolutionDTO dto, Principal principal) {
         Solution entity = solutionMapper.toEntity(dto);
@@ -62,15 +60,12 @@ public class SolutionRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSolutionById(@PathVariable Long id, HttpServletRequest request,
-            Principal principal) {
-        if (principal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        boolean isAdmin = request.isUserInRole("ADMIN");
+    public SolutionDTO deleteSolutionById(@PathVariable Long id, Principal principal) {
+        
         User user = userService.getUser(principal.getName());
-        solutionService.deleteSolution(id, user, isAdmin);
-        return ResponseEntity.noContent().build();
+        Solution solution = solutionService.findById(id);
+        solutionService.deleteSolution(id, user);
+        return solutionMapper.toDTO(solution);
     }
 
 }

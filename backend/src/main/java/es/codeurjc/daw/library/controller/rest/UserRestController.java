@@ -19,7 +19,6 @@ import es.codeurjc.daw.library.dto.UserDTO;
 import es.codeurjc.daw.library.dto.UserEditDTO;
 import es.codeurjc.daw.library.dto.UserLoginDTO;
 import es.codeurjc.daw.library.dto.UserMapper;
-import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.SearchService;
 import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 import org.springframework.web.bind.annotation.PutMapping;
 
