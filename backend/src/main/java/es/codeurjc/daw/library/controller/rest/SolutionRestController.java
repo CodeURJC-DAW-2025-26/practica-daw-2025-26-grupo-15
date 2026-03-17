@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
@@ -60,11 +61,12 @@ public class SolutionRestController {
     }
 
     @DeleteMapping("/{id}")
-    public SolutionDTO deleteSolutionById(@PathVariable Long id, Principal principal) {
-        
+    public SolutionDTO deleteSolutionById(@PathVariable Long id, HttpServletRequest request, Principal principal) {
+
+        boolean isAdmin = request.isUserInRole("ADMIN");
         User user = userService.getUser(principal.getName());
         Solution solution = solutionService.findById(id);
-        solutionService.deleteSolution(id, user);
+        solutionService.deleteSolution(id, user, isAdmin);
         return solutionMapper.toDTO(solution);
     }
 
