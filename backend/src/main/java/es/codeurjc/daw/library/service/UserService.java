@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -58,8 +59,8 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public Page<User> findAll(int page, int size){
-        return userRepo.findAll(PageRequest.of(page, size));
+    public Page<User> findAll(Pageable pageable){
+        return userRepo.findAll(pageable);
     }
 
     public List<User> findAllById(List<Long> ids){
@@ -161,16 +162,16 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public Page<User> searchUsersBySimilarName(String q, int page, int size) {
-        return userRepo.searchUsersBySimilarName(q, PageRequest.of(page, size));
+    public Page<User> searchUsersBySimilarName(String q, Pageable pageable) {
+        return userRepo.searchUsersBySimilarName(q, pageable);
     }
 
-    public Page<User> searchUsersBySimilarNameExcludingUser(String q, Long exclude, int page, int size) {
-        return userRepo.searchUsersBySimilarNameExcludingUser(q, exclude, PageRequest.of(page, size));
+    public Page<User> searchUsersBySimilarNameExcludingUser(String q, Long exclude, Pageable pageable) {
+        return userRepo.searchUsersBySimilarNameExcludingUser(q, exclude, pageable);
     }
 
-    public Page<User> findAllExcludingUser(Long exclude, int page, int size){
-        return userRepo.findAllExcludingUser(exclude, PageRequest.of(page, size));
+    public Page<User> findAllExcludingUser(Long exclude, Pageable pageable){
+        return userRepo.findAllExcludingUser(exclude, pageable);
     }
 
     public User modify(User user, User oldUser) {

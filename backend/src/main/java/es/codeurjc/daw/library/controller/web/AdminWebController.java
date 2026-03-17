@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,7 @@ public class AdminWebController {
 
      @FunctionalInterface
     private interface AdminSearchHandler {
-        Page<?> handle(int page, int size, String inputFilter, Long currentUserId);
+        Page<?> handle(Pageable pageable, String inputFilter, Long currentUserId);
     }
 
     private Map<String, AdminSearchHandler> handlers;
@@ -70,8 +71,7 @@ public class AdminWebController {
     }
 
     @GetMapping("/adminSearch")
-    public String adminSearch(@RequestParam int page,
-                            @RequestParam int size,
+    public String adminSearch(@RequestParam Pageable pageable,
                             @RequestParam String petition,
                             @RequestParam(required = false) String inputFilter,
                             HttpServletResponse response,
@@ -87,7 +87,7 @@ public class AdminWebController {
 
         Long currentUserId = (principal == null)? null : resolveUser(principal).getId();
         //  get the handler for the respective petition and execute to get the Slice
-        Page<?> slice = this.handlers.get(petition).handle(page, size, inputFilter, currentUserId);
+        Page<?> slice = this.handlers.get(petition).handle(pageable, inputFilter, currentUserId);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));

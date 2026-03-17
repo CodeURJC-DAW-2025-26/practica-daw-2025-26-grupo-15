@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 
+
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserRestController {
@@ -51,7 +53,7 @@ public class UserRestController {
 
     @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable Long id) {
-        return userMapper.toDTO(userService.getUser(id));
+        return userMapper.toDTO(userService.findById(id).orElseThrow(() -> new IllegalArgumentException("no user for this id")));
     }
 
     @DeleteMapping("/{id}")
@@ -132,13 +134,11 @@ public class UserRestController {
 
 
     @GetMapping("/")
-    public Page<UserDTO> getUsers(@RequestParam(required = true) int page,
-                                  @RequestParam(required = true) int size,
-                                  @RequestParam Long excludeId,
-                                  @RequestParam String nameFilter){
+    public Page<UserDTO> getUsers(Pageable pageable,
+                                  @RequestParam(required = false) Long excludedId,
+                                  @RequestParam(required = false) String nameFilter){
 
-        if (page < 0 || size < 0) throw new IllegalArgumentException("Invalid page or size");
-        Page<User> usersPage = searchService.searchUsers(page, size, nameFilter, excludeId);
+        Page<User> usersPage = searchService.searchUsers(pageable, nameFilter, excludedId);
         
         if (usersPage == null) throw new RuntimeException("Unable to find users page");
         Page<UserDTO> usersDTOPage = usersPage.map(userMapper::toDTO);
