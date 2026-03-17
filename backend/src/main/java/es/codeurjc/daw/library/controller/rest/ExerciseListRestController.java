@@ -14,20 +14,26 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import es.codeurjc.daw.library.service.ExerciseListService;
+import es.codeurjc.daw.library.service.ExerciseService;
 import es.codeurjc.daw.library.service.SearchService;
 import es.codeurjc.daw.library.dto.ExerciseListMapper;
+import es.codeurjc.daw.library.dto.ExerciseMapper;
+import es.codeurjc.daw.library.dto.ExercisePostDTO;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import es.codeurjc.daw.library.model.User;
+import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.ExerciseList;
-
+import es.codeurjc.daw.library.dto.ExerciseDTO;
 import es.codeurjc.daw.library.dto.ExerciseListDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
 
 @RestController
 @RequestMapping("/api/v1/exerciselists")
@@ -43,6 +49,12 @@ public class ExerciseListRestController {
 
     @Autowired
     private SearchService searchService;
+
+    @Autowired
+    private ExerciseMapper exerciseMapper;
+
+    @Autowired
+    ExerciseService exerciseService;
 
     @GetMapping("/{id}")
     public ExerciseListDTO getExerciseListById(@PathVariable Long id) {
@@ -77,6 +89,19 @@ public class ExerciseListRestController {
         ExerciseList editedList = exerciseListMapper.toEntity(exerciseListDTO);
         return exerciseListMapper.toDTO(exerciseListService.editList(editedList, originalList, user));
     }
+
+    @PostMapping("/{id}/exercises/")
+        public ResponseEntity<ExerciseDTO> postExercise(@RequestBody ExercisePostDTO exercisePostDTO, HttpServletRequest request, @PathVariable Long id) {
+            User user = userService.getUser(request.getUserPrincipal().getName());
+            Exercise exercise = exerciseMapper.toEntity(exercisePostDTO);
+            try{
+            Exercise savedExercise = exerciseService.createExercise(exercise, user, null, id);
+            URI location = fromCurrentContextPath().path("/api/v1/exercises/{id}").buildAndExpand(savedExercise.getId()).toUri();
+            return ResponseEntity.created(location).body(exerciseMapper.toDTO(savedExercise));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
     @GetMapping("/")
     public Page<ExerciseListDTO> getLists(Pageable pageable,

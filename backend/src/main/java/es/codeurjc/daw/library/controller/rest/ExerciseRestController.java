@@ -41,11 +41,11 @@ public class ExerciseRestController {
     @Autowired 
     private SearchService searchService;
 
-        @Autowired
-        ExerciseService exerciseService;
+    @Autowired
+    ExerciseService exerciseService;
 
-        @Autowired
-        UserService userService;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/{id}")
     public ExerciseDTO getExerciseById(@PathVariable Long id) {
@@ -53,7 +53,7 @@ public class ExerciseRestController {
     }
 
 
-        @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
         public ExerciseDTO deleteExercise(@PathVariable Long id, HttpServletRequest request) {
             User user = userService.getUser(request.getUserPrincipal().getName());
             boolean isAdmin = request.isUserInRole("ADMIN");
