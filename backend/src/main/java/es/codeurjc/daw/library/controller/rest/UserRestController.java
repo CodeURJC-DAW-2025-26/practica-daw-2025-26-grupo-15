@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,13 +97,11 @@ public class UserRestController {
     
 
     @GetMapping("/")
-    public Page<UserDTO> getUsers(@RequestParam(required = true) int page,
-                                  @RequestParam(required = true) int size,
-                                  @RequestParam Long excludedId,
-                                  @RequestParam String nameFilter){
+    public Page<UserDTO> getUsers(Pageable pageable,
+                                  @RequestParam(required = false) Long excludedId,
+                                  @RequestParam(required = false) String nameFilter){
 
-        if (page < 0 || size < 0) throw new IllegalArgumentException("Invalid page or size");
-        Page<User> usersPage = searchService.searchUsers(page, size, nameFilter, excludedId);
+        Page<User> usersPage = searchService.searchUsers(pageable, nameFilter, excludedId);
         
         if (usersPage == null) throw new RuntimeException("Unable to find users page");
         Page<UserDTO> usersDTOPage = usersPage.map(userMapper::toDTO);

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 
@@ -65,8 +66,7 @@ public class HomeWebController {
 
     @GetMapping(value="/searchUsers", produces="text/html;charset=UTF-8")
     public String searchUsers(@RequestParam String name,
-                              @RequestParam(required = false) int page,
-                              @RequestParam(required = false) int size,
+                              @RequestParam Pageable pageable,
                                 Model model,
                                 HttpServletResponse response,
                                 Principal principal) {
@@ -82,7 +82,7 @@ public class HomeWebController {
         
         Long currentUserId = (principal == null) ? null : resolveUser(principal).getId();
 
-        Page<User> slice =  searchService.searchUsers(page, size, q, currentUserId);
+        Page<User> slice =  searchService.searchUsers(pageable, q, currentUserId);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
@@ -93,15 +93,14 @@ public class HomeWebController {
     }
 
     @GetMapping("/searchPosts")
-    public String searchPostsForUser(@RequestParam int page, 
-                                     @RequestParam int size, 
+    public String searchPostsForUser(@RequestParam Pageable pageable, 
                                      Principal principal, 
                                      Model model, 
                                      HttpServletResponse response){
         User user = (principal == null)? null : resolveUser(principal);
         Long currentUserId = (user == null)? null : user.getId();
 
-        Page<Post> slice = searchService.searchPosts(page, size, null, currentUserId);
+        Page<Post> slice = searchService.searchPosts(pageable, null, currentUserId);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));

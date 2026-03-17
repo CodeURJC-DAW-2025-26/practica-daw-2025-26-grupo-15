@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -32,16 +32,16 @@ public class ExerciseListService {
         return list;
     }
 
-    public Page<ExerciseList> findByOwner(User user, int page, int size){
-        return listRepo.findByOwner(user, PageRequest.of(page, size));
+    public Page<ExerciseList> findByOwner(User user, Pageable pageable){
+        return listRepo.findByOwner(user, pageable);
     }
 
-    public Page<ExerciseList> findAll(int page, int size){
-        return listRepo.findAll(PageRequest.of(page, size));
+    public Page<ExerciseList> findAll(Pageable pageable){
+        return listRepo.findAll(pageable);
     }
 
-    public Page<ExerciseList> searchListsBySimilarTitle(String q, int page, int size) {
-        return listRepo.searchListsBySimilarTitle(q, PageRequest.of(page, size));
+    public Page<ExerciseList> searchListsBySimilarTitle(String q, Pageable pageable) {
+        return listRepo.searchListsBySimilarTitle(q, pageable);
     }
 
     public List<ExerciseList> findAllById(List<Long> ids){
