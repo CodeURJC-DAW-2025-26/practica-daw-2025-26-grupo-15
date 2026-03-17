@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import es.codeurjc.daw.library.model.Post;
@@ -29,12 +29,12 @@ public class PostService {
         return newPost;
     }
 
-    public Page<Post> findFeedForUser(User user, int page, int size){
-        return postRepo.findFeedForUser(user.getId(), PageRequest.of(page, size));
+    public Page<Post> findFeedForUser(User user, Pageable pageable){
+        return postRepo.findFeedForUser(user.getId(), pageable);
     }
 
-    public Page<Post> findAll(int page, int size){
-        return postRepo.findAll(PageRequest.of(page, size));
+    public Page<Post> findAll(Pageable pageable){
+        return postRepo.findAll(pageable);
     }
 
 

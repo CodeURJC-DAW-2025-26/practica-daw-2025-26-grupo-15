@@ -1,6 +1,7 @@
 package es.codeurjc.daw.library.controller.rest;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -67,13 +68,11 @@ public class ExerciseListRestController {
     }
 
     @GetMapping("/")
-    public Page<ExerciseListDTO> getLists(@RequestParam(required = true ) int page,
-                                          @RequestParam(required = true) int size,
-                                          @RequestParam Long ownerId,
-                                          @RequestParam String nameFilter){
-        if (page < 0 || size < 0) throw new IllegalArgumentException("Invalid page or size");
+    public Page<ExerciseListDTO> getLists(Pageable pageable,
+                                          @RequestParam(required = false) Long ownerId,
+                                          @RequestParam(required = false) String nameFilter){
 
-        Page<ExerciseList> listsPage = searchService.searchLists(page, size, nameFilter, ownerId);
+        Page<ExerciseList> listsPage = searchService.searchLists(pageable, nameFilter, ownerId);
         
         if (listsPage == null) throw new RuntimeException("Unable to find lists page");
         Page<ExerciseListDTO> listsDTOPage = listsPage.map(exerciseListMapper::toDTO);

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -161,8 +162,7 @@ public class ExerciseListWebController {
 
 
     @GetMapping("/searchLists")
-    public String searchLists(@RequestParam int page,
-                              @RequestParam int size,
+    public String searchLists(@RequestParam Pageable pageable,
                               @RequestParam Long userId,
                               Model model,
                               Principal principal,
@@ -173,7 +173,7 @@ public class ExerciseListWebController {
             throw new RuntimeException("User not found");
         }
         User user = opt.get();
-        Page<ExerciseList> slice = searchService.searchLists(page, size, null, user.getId());
+        Page<ExerciseList> slice = searchService.searchLists(pageable, null, user.getId());
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));
