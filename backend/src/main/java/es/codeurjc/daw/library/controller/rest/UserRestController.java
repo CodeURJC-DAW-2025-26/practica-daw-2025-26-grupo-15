@@ -103,14 +103,20 @@ public class UserRestController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserLoginDTO userLogDto) {
-        User user = userMapper.toEntity(userLogDto);
-        User createdUser = userService.register(user);
-        UserDTO userDTO = userMapper.toDTO(createdUser);
-        
-        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(userDTO.id()).toUri();
+    public ResponseEntity<?> createUser(@RequestBody UserLoginDTO userLogDto) {
+        try{
+            User user = userMapper.toEntity(userLogDto);
+            User createdUser = userService.register(user);
+            UserDTO userDTO = userMapper.toDTO(createdUser);
+            
+            URI location = fromCurrentRequest().path("/{id}").buildAndExpand(userDTO.id()).toUri();
 
-        return ResponseEntity.created(location).body(userDTO);
+            return ResponseEntity.created(location).body(userDTO);
+        }
+
+        catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(Map.of("error", e.getMessage()));
+        }
         
     }
 

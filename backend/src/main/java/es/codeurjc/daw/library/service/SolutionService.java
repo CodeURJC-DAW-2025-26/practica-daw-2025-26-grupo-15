@@ -7,6 +7,8 @@ import es.codeurjc.daw.library.repository.SolutionRepository;
 import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.model.User;
 import java.sql.Date;
+import java.text.Normalizer;
+
 import org.springframework.web.multipart.MultipartFile;
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.Image;
@@ -70,13 +72,30 @@ public class SolutionService {
 
 
     public void deleteSolution(Long id, User user, boolean isAdmin){
-        Solution solution = solutionRepo.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
+        Solution solution = solutionRepo.findById(id).orElseThrow();
         if (!solution.getOwner().getId().equals(user.getId()) && !isAdmin) {
             throw new RuntimeException("You do not have permission to delete this solution");
         }
         solution.getExercise().decrementNumSolutions();
         solutionRepo.delete(solution);
         
+    }
+    public Solution getSolutionById(Long id) {
+        return solutionRepo.findById(id).orElseThrow();
+    }
+
+    public String sanitizeFileName(String rawTitle) {
+        if (rawTitle == null || rawTitle.trim().isEmpty()) {
+            return "untitled";
+        }
+
+        String normalized = Normalizer.normalize(rawTitle, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        String slug = normalized.toLowerCase()
+                .replaceAll("[^a-z0-9]+", "-")
+                .replaceAll("(^-|-$)", "");
+
+        return slug.isEmpty() ? "untitled" : slug;
     }
 
 
