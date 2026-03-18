@@ -91,7 +91,7 @@ public class UserService {
     }
 
     public void acceptFollowRequest(User requested, Long fromUser) {
-        User requester = userRepo.findById(fromUser).orElseThrow(() -> new RuntimeException("User not found"));
+        User requester = getUser(fromUser);
 
         if (!requested.getRequestReceived().contains(requester)) {
             throw new IllegalArgumentException("No follow request from this user");
@@ -108,7 +108,7 @@ public class UserService {
     }
 
     public void declineFollowRequest(User requested, Long fromUser) {
-        User requester = userRepo.findById(fromUser).orElseThrow(() -> new RuntimeException("User not found"));
+        User requester = userRepo.findById(fromUser).orElseThrow();
 
         if (!requested.getRequestReceived().contains(requester)) {
             throw new IllegalArgumentException("No follow request from this user");
@@ -181,7 +181,7 @@ public class UserService {
     public User modify(User user, User oldUser, MultipartFile photoFile) {
 
         if(user.getId() == null || !user.getId().equals(oldUser.getId())) {
-            throw new IllegalArgumentException("User ID mismatch");
+            throw new SecurityException("User ID mismatch");
         }
         if (user.getName() == null || user.getName().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be empty");
@@ -219,7 +219,6 @@ public class UserService {
     }
 
     // because i want to return the suggestion to follow and the contacts in common
-    // with that suggestion
     public record UserPair(User suggestion, List<User> contact) {
         public int getCommonCount() { return contact.size() - 1; }
         
@@ -271,13 +270,13 @@ public class UserService {
 
     public User deleteUser(User user, long id, boolean isAdmin) {
         if (user.getId() != id && !isAdmin)
-            throw new RuntimeException("You don't have permission to delete this profile.");
+            throw new SecurityException("You don't have permission to delete this profile.");
 
         User deletedUser = null;
         if (user.getId() == id)
             deletedUser = user;
         else
-            deletedUser = this.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            deletedUser = getUser(id);
 
         for (User follower : deletedUser.getFollowers()) {
             follower.getFollowing().remove(deletedUser);
