@@ -6,8 +6,12 @@ import org.springframework.stereotype.Service;
 import es.codeurjc.daw.library.repository.SolutionRepository;
 import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.model.User;
+
+import java.io.IOException;
 import java.sql.Date;
 import java.text.Normalizer;
+
+import java.util.NoSuchElementException;
 
 import org.springframework.web.multipart.MultipartFile;
 import es.codeurjc.daw.library.model.Exercise;
@@ -27,7 +31,7 @@ public class SolutionService {
 
 
     public Solution findById(Long id) {
-        return solutionRepo.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
+        return solutionRepo.findById(id).orElseThrow();
     }
 
 
@@ -36,14 +40,14 @@ public class SolutionService {
         solution.setNumComments(0);
         solution.setLastUpdate(new Date(System.currentTimeMillis()));
         if(solution.getName() == null || solution.getName().isEmpty() || solution.getDescription() == null || solution.getDescription().isEmpty()) {
-            throw new RuntimeException("Name and description cannot be empty");
+            throw new IllegalArgumentException("Name and description cannot be empty");
         }
         if (solution.getName().length() < 3 || solution.getName().length() > 100)
-            throw new RuntimeException("The solution name must be between 3 and 100 characters.");
+            throw new IllegalArgumentException("The solution name must be between 3 and 100 characters.");
         if (file == null)
-            throw new RuntimeException("File cannot be null");
+            throw new IllegalArgumentException("File cannot be null");
         if(solution.getDescription().length() < 10 || solution.getDescription().length() > 10000)
-            throw new RuntimeException("The solution description must be between 10 and 10k characters.");
+            throw new IllegalArgumentException("The solution description must be between 10 and 10k characters.");
 
         Image image = imageService.createImage(file.getInputStream());
         solution.setSolImage(image);
@@ -59,10 +63,10 @@ public class SolutionService {
         solution.setNumComments(0);
         solution.setLastUpdate(new Date(System.currentTimeMillis()));
         if(solution.getName() == null || solution.getName().isEmpty() || solution.getDescription() == null || solution.getDescription().isEmpty()) {
-            throw new RuntimeException("Name and description cannot be empty");
+            throw new IllegalArgumentException("Name and description cannot be empty");
         }
         if (solution.getName().length() < 3 || solution.getName().length() > 100)
-            throw new RuntimeException("The solution name must be between 3 and 100 characters.");
+            throw new IllegalArgumentException("The solution name must be between 3 and 100 characters.");
         Exercise exercise = exerciseService.findById(exerciseId);
         solution.setExercise(exercise);
         exercise.getSolutions().add(solution);
@@ -74,7 +78,7 @@ public class SolutionService {
     public void deleteSolution(Long id, User user, boolean isAdmin){
         Solution solution = solutionRepo.findById(id).orElseThrow();
         if (!solution.getOwner().getId().equals(user.getId()) && !isAdmin) {
-            throw new RuntimeException("You do not have permission to delete this solution");
+            throw new SecurityException("You do not have permission to delete this solution");
         }
         solution.getExercise().decrementNumSolutions();
         solutionRepo.delete(solution);
@@ -98,5 +102,20 @@ public class SolutionService {
         return slug.isEmpty() ? "untitled" : slug;
     }
 
+    public Solution addPhotoToSolution(Long id, MultipartFile imageFile, User user) {
+        Solution solution = solutionRepo.findById(id).orElseThrow();
+        if (!solution.getOwner().getId().equals(user.getId())) {
+            throw new SecurityException("You do not have permission to edit this solution");
+        }
+        
+        try{
+            Image image = imageService.createImage(imageFile.getInputStream());
+            solution.setSolImage(image);
+            solutionRepo.save(solution);
+            return solution;
+        }catch(IOException e){
+            throw new RuntimeException("Error processing the image file");
+        }
+    }
 
 }

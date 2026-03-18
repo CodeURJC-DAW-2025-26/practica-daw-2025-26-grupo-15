@@ -8,13 +8,17 @@ import es.codeurjc.daw.library.model.Comment;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.model.Solution;
 import java.sql.Date;
+import java.util.NoSuchElementException;
 
 @Service
 public class CommentService {
     @Autowired
     private CommentRepository commentRepo;
 
-    public void createComment(Comment comment, User user, Solution solution) {
+    @Autowired
+    private SolutionService solutionService;
+
+    public Comment createComment(Comment comment, User user, Solution solution) {
         if (comment.getText() == null || comment.getText().trim().isEmpty()) {
             throw new IllegalArgumentException("Comment text cannot be empty");
         }
@@ -23,15 +27,21 @@ public class CommentService {
         comment.getSolution().incrementNumComments();
         comment.setLastUpdate(new Date(System.currentTimeMillis()));
         solution.getComments().add(comment);
-        commentRepo.save(comment);
+        return commentRepo.save(comment);
     }
 
-    public void deleteComment(Long commentId, User user, boolean isAdmin) {
+    public Comment deleteComment(Long commentId, User user, boolean isAdmin) {
         Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
         if (!comment.getOwner().getId().equals(user.getId()) && !isAdmin) {
             throw new RuntimeException("You do not have permission to delete this comment");
         }
         comment.getSolution().decrementNumComments();
         commentRepo.delete(comment);
+        return comment;
     }
+
+    public Comment getById(Long id){
+        return commentRepo.findById(id).orElseThrow(() -> new NoSuchElementException());
+    }
+
 }

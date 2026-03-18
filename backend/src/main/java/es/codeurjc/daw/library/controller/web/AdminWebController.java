@@ -71,7 +71,7 @@ public class AdminWebController {
     }
 
     @GetMapping("/adminSearch")
-    public String adminSearch(@RequestParam Pageable pageable,
+    public String adminSearch(Pageable pageable,
                             @RequestParam String petition,
                             @RequestParam(required = false) String inputFilter,
                             HttpServletResponse response,
@@ -87,7 +87,9 @@ public class AdminWebController {
 
         Long currentUserId = (principal == null)? null : resolveUser(principal).getId();
         //  get the handler for the respective petition and execute to get the Slice
-        Page<?> slice = this.handlers.get(petition).handle(pageable, inputFilter, currentUserId);
+        Page<?> slice = (petition.equals("u"))
+            ? this.handlers.get(petition).handle(pageable, inputFilter, currentUserId)
+            : this.handlers.get(petition).handle(pageable, inputFilter, null);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));

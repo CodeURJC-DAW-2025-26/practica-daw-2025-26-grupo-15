@@ -6,7 +6,8 @@ public record CommentDTO(
     Long id,
     String text,
     Date lastUpdate,
-    UserBasicInfoDTO owner
+    UserBasicInfoDTO owner,
+    SolutionBasicInfoDTO solution
 ) {
     
 }
