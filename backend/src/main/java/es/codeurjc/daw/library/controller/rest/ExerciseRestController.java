@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import es.codeurjc.daw.library.dto.ExerciseMapper;
 import es.codeurjc.daw.library.dto.ExercisePostDTO;
+import es.codeurjc.daw.library.dto.ExercisePutDTO;
 import es.codeurjc.daw.library.service.SearchService;
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.User;
@@ -28,6 +29,7 @@ import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
@@ -62,7 +64,16 @@ public class ExerciseRestController {
             return exerciseMapper.toDTO(deletedExercise);
             
         }
-        
+
+    @PutMapping("/{id}")
+    public ExerciseDTO updateExercise(@PathVariable Long id, @RequestBody ExercisePutDTO exercisePutDTO, HttpServletRequest request) {
+        User user = userService.getUser(request.getUserPrincipal().getName());
+
+        Exercise updatedExercise = exerciseService.updateExercise(id, exerciseMapper.toEntity(exercisePutDTO), user, null); //TODO: pdf file update
+    
+        return exerciseMapper.toDTO(updatedExercise);
+    }
+
 
     @GetMapping("/")
     public Page<ExerciseDTO> getExercises(Pageable pageable,

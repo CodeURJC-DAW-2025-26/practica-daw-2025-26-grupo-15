@@ -15,5 +15,7 @@ public interface ExerciseMapper {
 
     public Exercise toEntity(ExercisePostDTO exercisePostDTO);
 
+    public Exercise toEntity(ExercisePutDTO exercisePutDTO);
+
     
 }
