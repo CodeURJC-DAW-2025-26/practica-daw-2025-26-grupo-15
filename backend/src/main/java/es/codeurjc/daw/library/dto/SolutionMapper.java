@@ -8,5 +8,6 @@ public interface SolutionMapper {
 
     public SolutionDTO toDTO(Solution entity);
 
+
     public Solution toEntity(SolutionDTO dto);
 }

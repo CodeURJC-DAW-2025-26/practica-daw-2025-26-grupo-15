@@ -162,7 +162,7 @@ public class ExerciseListWebController {
 
 
     @GetMapping("/searchLists")
-    public String searchLists(@RequestParam Pageable pageable,
+    public String searchLists(Pageable pageable,
                               @RequestParam Long userId,
                               Model model,
                               Principal principal,
@@ -173,7 +173,7 @@ public class ExerciseListWebController {
             throw new RuntimeException("User not found");
         }
         User user = opt.get();
-        Page<ExerciseList> slice = searchService.searchLists(pageable, null, user.getId());
+        Page<ExerciseList> slice = searchService.searchLists(pageable, null, userId);
 
         response.setHeader("X-Has-More", String.valueOf(slice.hasNext()));
         response.setHeader("X-Results-Count", String.valueOf(slice.getNumberOfElements()));

@@ -66,7 +66,7 @@ public class HomeWebController {
 
     @GetMapping(value="/searchUsers", produces="text/html;charset=UTF-8")
     public String searchUsers(@RequestParam String name,
-                              @RequestParam Pageable pageable,
+                              Pageable pageable,
                                 Model model,
                                 HttpServletResponse response,
                                 Principal principal) {
@@ -93,7 +93,7 @@ public class HomeWebController {
     }
 
     @GetMapping("/searchPosts")
-    public String searchPostsForUser(@RequestParam Pageable pageable, 
+    public String searchPostsForUser(Pageable pageable, 
                                      Principal principal, 
                                      Model model, 
                                      HttpServletResponse response){
