@@ -1,7 +1,9 @@
 package es.codeurjc.daw.library.controller.rest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +12,7 @@ import java.net.URI;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import es.codeurjc.daw.library.dto.SolutionDTO;
@@ -21,9 +24,11 @@ import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import es.codeurjc.daw.library.dto.ImageMapper;
 
-
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/solutions")
@@ -38,36 +43,56 @@ public class SolutionRestController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ImageMapper imageMapper;
+
     @GetMapping("/{id}")
     public SolutionDTO getSolutionById(@PathVariable Long id) {
         return solutionMapper.toDTO(solutionService.findById(id));
     }
 
 
-    //TODO: implement endpoint to create solution WITH image
     @PostMapping("/")
-    public ResponseEntity<SolutionDTO> postSolutionById(@RequestBody SolutionDTO dto, Principal principal) {
-        Solution entity = solutionMapper.toEntity(dto);
+    public ResponseEntity<?> createSolution(@RequestBody SolutionDTO dto, Principal principal) {
+        try{
+            Solution entity = solutionMapper.toEntity(dto);
+            User owner = userService.getUser(principal.getName());
+            Solution savedEntity = solutionService.createSolutionWithoutImage(dto.exercise().id(), entity, owner);
+            SolutionDTO createdDTO = solutionMapper.toDTO(savedEntity);
+            URI location = fromCurrentRequest().path("/{id}").buildAndExpand(createdDTO.id()).toUri();
+            return ResponseEntity.created(location).body(createdDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(Map.of("error", e.getMessage()));
+        }
+    }
 
-        User owner = userService.getUser(principal.getName());
-        entity.setOwner(owner);
-        Solution savedEntity = solutionService.createSolutionWithoutImage(dto.exercise().id(), entity, owner);
-
-        SolutionDTO createdDTO = solutionMapper.toDTO(savedEntity);
-
-        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(createdDTO.id()).toUri();
-
-        return ResponseEntity.created(location).body(createdDTO);
+    @PostMapping("/{id}/images")
+    public ResponseEntity<?> uploadSolutionImage(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal){
+        try{ 
+            User user = userService.getUser(principal.getName());
+            Solution editedSolution = solutionService.addPhotoToSolution(id, imageFile, user);
+            URI location = fromCurrentContextPath().path("/api/v1/images/{imageId}/media").buildAndExpand(editedSolution.getSolImage().getId()).toUri();
+            return ResponseEntity.created(location).body(imageMapper.toDTO(editedSolution.getSolImage()));
+        }
+        catch(SecurityException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", e.getMessage()));
+        }
+        catch(RuntimeException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
     }
 
     @DeleteMapping("/{id}")
-    public SolutionDTO deleteSolutionById(@PathVariable Long id, HttpServletRequest request, Principal principal) {
-
-        boolean isAdmin = request.isUserInRole("ADMIN");
-        User user = userService.getUser(principal.getName());
-        Solution solution = solutionService.findById(id);
-        solutionService.deleteSolution(id, user, isAdmin);
-        return solutionMapper.toDTO(solution);
+    public ResponseEntity<?> deleteSolutionById(@PathVariable Long id, HttpServletRequest request, Principal principal) {
+        try{
+            boolean isAdmin = request.isUserInRole("ADMIN");
+            User user = userService.getUser(principal.getName());
+            Solution solution = solutionService.findById(id);
+            solutionService.deleteSolution(id, user, isAdmin);
+            return ResponseEntity.ok(solutionMapper.toDTO(solution));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", e.getMessage()));
+        }
     }
 
 }
