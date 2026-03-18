@@ -71,9 +71,9 @@ public class SolutionService {
     }
 
 
-    public void deleteSolution(Long id, User user){
+    public void deleteSolution(Long id, User user, boolean isAdmin){
         Solution solution = solutionRepo.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
-        if (!solution.getOwner().getId().equals(user.getId())) {
+        if (!solution.getOwner().getId().equals(user.getId()) && !isAdmin) {
             throw new RuntimeException("You do not have permission to delete this solution");
         }
         solution.getExercise().decrementNumSolutions();

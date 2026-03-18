@@ -75,22 +75,28 @@ public class SecurityConfig {
 
 		http
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
-						// PRIVATE ENDPOINTS
-						//Users
-						.requestMatchers("/api/v1/users/**").hasRole("USER")
-						// Images
-						//.requestMatchers(HttpMethod.PUT, "/api/v1/**/media").hasRole("USER")
-						//Exercises
-						//.requestMatchers(HttpMethod.POST, "/api/v1/exercises/**").hasRole("USER") 
+					// PUBLIC ENDPOINTS
+						.requestMatchers(HttpMethod.POST, "/api/v1/users/").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/exercises/{id}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/users/{id}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/exerciselists/{id}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/solutions/{id}").permitAll()
+						.requestMatchers(HttpMethod.GET,"/api/v1/images/{id}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/images/{id}/media").permitAll()
+						.requestMatchers(HttpMethod.GET,"/api/v1/posts/").permitAll()
+						.requestMatchers(HttpMethod.GET,"/api/v1/users/me/followers/").permitAll()
+						.requestMatchers(HttpMethod.GET,"/api/v1/users/me/follows/").permitAll()
+
+
 						
 						// PUBLIC ENDPOINTS
-						.anyRequest().permitAll());
+						.anyRequest().authenticated());
 
 		// Disable Form login Authentication
 		http.formLogin(formLogin -> formLogin.disable());
 
-		// Disable CSRF protection (it is difficult to implement in REST APIs)
+		// Disable CSRF protection 
 		http.csrf(csrf -> csrf.disable());
 
 		// Disable Basic Authentication

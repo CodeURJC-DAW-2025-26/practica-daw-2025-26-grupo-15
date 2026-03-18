@@ -9,5 +9,12 @@ import es.codeurjc.daw.library.model.Exercise;
 public interface ExerciseMapper {
 
     public ExerciseDTO toDTO(Exercise exercise);
+
+    public Exercise toEntity(ExerciseDTO exerciseDTO);
+
+    public Exercise toEntity(ExercisePostDTO exercisePostDTO);
+
+    public Exercise toEntity(ExercisePutDTO exercisePutDTO);
+
     
 }

@@ -13,6 +13,7 @@ public record UserDTO(
     List<UserBasicInfoDTO> followers,
     List<UserBasicInfoDTO> following,
     List<UserBasicInfoDTO> requestedFriends,
-    List<UserBasicInfoDTO> requestReceived
+    List<UserBasicInfoDTO> requestReceived,
+    ImageDTO photo
 ) {
 }
