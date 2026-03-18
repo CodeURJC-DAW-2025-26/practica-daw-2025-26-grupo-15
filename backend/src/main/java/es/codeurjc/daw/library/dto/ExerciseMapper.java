@@ -4,7 +4,6 @@ import org.mapstruct.Mapper;
 
 import es.codeurjc.daw.library.model.Exercise;
 
-import es.codeurjc.daw.library.model.Exercise;
 
 @Mapper(componentModel = "spring")
 public interface ExerciseMapper {

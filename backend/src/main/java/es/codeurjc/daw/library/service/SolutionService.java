@@ -7,6 +7,8 @@ import es.codeurjc.daw.library.repository.SolutionRepository;
 import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.model.User;
 import java.sql.Date;
+import java.util.NoSuchElementException;
+
 import org.springframework.web.multipart.MultipartFile;
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.Image;
@@ -25,7 +27,7 @@ public class SolutionService {
 
 
     public Solution findById(Long id) {
-        return solutionRepo.findById(id).orElseThrow(() -> new RuntimeException("Solution not found"));
+        return solutionRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Solution not found"));
     }
 
 
