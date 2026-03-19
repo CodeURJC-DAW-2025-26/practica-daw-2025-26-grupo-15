@@ -105,8 +105,8 @@ public class ExerciseRestController {
 
     @GetMapping("/")
     public Page<ExerciseDTO> getExercises(Pageable pageable,
-                                          @RequestParam Long listId,
-                                          @RequestParam String nameFilter){
+                                          @RequestParam(required = false) Long listId,
+                                          @RequestParam(required = false) String nameFilter){
 
         Page<Exercise> exercisesPage = searchService.searchExercises(pageable, nameFilter, listId);
         

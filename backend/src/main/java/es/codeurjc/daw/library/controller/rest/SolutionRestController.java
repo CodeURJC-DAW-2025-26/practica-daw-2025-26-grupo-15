@@ -105,20 +105,25 @@ public class SolutionRestController {
     }
 
     @PostMapping("/{id}/comment")
-    public ResponseEntity<CommentDTO> postComment(@PathVariable Long id, @RequestBody CommentPostDTO dto, Principal principal) {
-        Comment comment = commentMapper.toEntity(dto);
+    public ResponseEntity<?> postComment(@PathVariable Long id, @RequestBody CommentPostDTO dto, Principal principal) {
+        try {
+            Comment comment = commentMapper.toEntity(dto);
 
-        User owner = userService.getUser(principal.getName());
-        Solution solution = solutionService.findById(id);
-        Comment saved = commentService.createComment(comment, owner, solution);
+            User owner = userService.getUser(principal.getName());
+            Solution solution = solutionService.findById(id);
+            Comment saved = commentService.createComment(comment, owner, solution);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path("api/v1/solutions/{id}")
-                .buildAndExpand(id)
-                .toUri();
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("api/v1/solutions/{id}")
+                    .buildAndExpand(id)
+                    .toUri();
+            return ResponseEntity.created(location).body(commentMapper.toDTO(saved));
+        } catch(IllegalArgumentException e) {
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage())); 
+        }
+        
 
-        return ResponseEntity.created(location).body(commentMapper.toDTO(saved));
     }
 
     @GetMapping("/{id}/comments")
