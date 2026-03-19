@@ -126,7 +126,7 @@ public class SolutionWebController {
         try {
             Solution solution = solutionService.findById(id);
             byte[] pdf = solutionPdfExportService.generateSolutionPdf(solution);
-            String safeName = sanitizeFileName(solution.getName());
+            String safeName = solutionService.sanitizeFileName(solution.getName());
             String fileName = "solution-" + solution.getId() + "-" + safeName + ".pdf";
 
             return ResponseEntity.ok()
@@ -160,19 +160,7 @@ public class SolutionWebController {
         }
     }
 
-    private String sanitizeFileName(String rawTitle) {
-        if (rawTitle == null || rawTitle.trim().isEmpty()) {
-            return "untitled";
-        }
-
-        String normalized = Normalizer.normalize(rawTitle, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "");
-        String slug = normalized.toLowerCase()
-                .replaceAll("[^a-z0-9]+", "-")
-                .replaceAll("(^-|-$)", "");
-
-        return slug.isEmpty() ? "untitled" : slug;
-    }
+    
 
 
 }

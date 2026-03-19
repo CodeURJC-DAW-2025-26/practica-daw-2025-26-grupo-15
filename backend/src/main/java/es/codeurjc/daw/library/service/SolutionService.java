@@ -9,6 +9,8 @@ import es.codeurjc.daw.library.model.User;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.text.Normalizer;
+
 import java.util.NoSuchElementException;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -81,6 +83,23 @@ public class SolutionService {
         solution.getExercise().decrementNumSolutions();
         solutionRepo.delete(solution);
         
+    }
+    public Solution getSolutionById(Long id) {
+        return solutionRepo.findById(id).orElseThrow();
+    }
+
+    public String sanitizeFileName(String rawTitle) {
+        if (rawTitle == null || rawTitle.trim().isEmpty()) {
+            return "untitled";
+        }
+
+        String normalized = Normalizer.normalize(rawTitle, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        String slug = normalized.toLowerCase()
+                .replaceAll("[^a-z0-9]+", "-")
+                .replaceAll("(^-|-$)", "");
+
+        return slug.isEmpty() ? "untitled" : slug;
     }
 
     public Solution addPhotoToSolution(Long id, MultipartFile imageFile, User user) {

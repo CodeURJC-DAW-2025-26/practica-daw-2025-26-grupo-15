@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.net.URI;
 import java.security.Principal;
+import java.util.Map;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import es.codeurjc.daw.library.dto.CommentDTO;
@@ -24,6 +27,7 @@ import es.codeurjc.daw.library.dto.CommentPostDTO;
 import es.codeurjc.daw.library.dto.SolutionDTO;
 import es.codeurjc.daw.library.dto.SolutionMapper;
 import es.codeurjc.daw.library.service.CommentService;
+import es.codeurjc.daw.library.service.SolutionPdfExportService;
 import es.codeurjc.daw.library.service.SolutionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,7 +40,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import es.codeurjc.daw.library.dto.ImageMapper;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
-import java.util.Map;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+
+
 
 @RestController
 @RequestMapping("/api/v1/solutions")
@@ -59,6 +65,9 @@ public class SolutionRestController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private SolutionPdfExportService solutionPdfExportService;
 
     @GetMapping("/{id}")
     public SolutionDTO getSolutionById(@PathVariable Long id) {
@@ -118,6 +127,25 @@ public class SolutionRestController {
         List<CommentDTO> dtoList = new LinkedList<>();
         for (Comment c : comments) dtoList.add(commentMapper.toDTO(c)); 
         return dtoList;    
+    }
+
+
+    @GetMapping("/{id}/pdfs/")
+    public  ResponseEntity<?> createSolutionPDF(@PathVariable Long id, Principal principal) {
+        try {
+            Solution solution = solutionService.getSolutionById(id);
+            byte[] pdfData = solutionPdfExportService.generateSolutionPdf(solution);
+            String safeName = solutionService.sanitizeFileName(solution.getName());
+            String fileName = "solution-" + solution.getId() + "-" + safeName + ".pdf";
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                    .body(pdfData);
+        }
+        catch(RuntimeException e) {
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+        }
     }
 
 }
