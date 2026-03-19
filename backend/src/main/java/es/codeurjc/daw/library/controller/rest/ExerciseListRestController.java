@@ -92,11 +92,11 @@ public class ExerciseListRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateExerciseList(@PathVariable Long id, @RequestBody ExerciseListDTO exerciseListDTO) {
+    public ResponseEntity<?> updateExerciseList(@PathVariable Long id, @RequestBody ExerciseListPostDTO dto) {
         try{
             User user = exerciseListService.findById(id).getOwner();
             ExerciseList originalList = exerciseListService.findById(id);
-            ExerciseList editedList = exerciseListMapper.toEntity(exerciseListDTO);
+            ExerciseList editedList = exerciseListMapper.toEntity(dto);
             return ResponseEntity.ok(exerciseListMapper.toDTO(exerciseListService.editList(editedList, originalList, user)));
         } catch(SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", e.getMessage()));
