@@ -54,6 +54,29 @@ public class Post {
         }
     }
 
+    public void setOwnerName(String name){
+        this.ownerName = name;
+    }
+
+    public void setDate(Instant date){
+        this.date = date;
+    }
+
+    public void setActionType(String actionType){
+        this.actionType = actionType;
+    }
+
+    public void setHeader(String header){
+        this.header = header;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
+
+    public void setContentLink(String contentLink){
+        this.contentLink = contentLink;
+    }
 
     public User getOwner(){
         return this.owner;
@@ -89,6 +112,7 @@ public class Post {
 
     public void setOwner(User owner){
         this.owner = owner;
+        if (owner != null) this.setOwnerName(owner.getName());
     }
 
     public Long getId(){

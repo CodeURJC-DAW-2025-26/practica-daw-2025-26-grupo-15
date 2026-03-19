@@ -100,6 +100,10 @@ public class User {
 		p.setOwner(this);
 	}
 
+	public void removePost(Post p){
+		this.posts.remove(p);
+		p.setOwner(null);
+	}
 
 	public void setRequestReceived(List<User> requestReceived) {
 		this.requestReceived = requestReceived;

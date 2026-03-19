@@ -49,7 +49,7 @@ public class ExerciseListService {
     }
 
     public ExerciseList editList(ExerciseList editedList, ExerciseList originalList, User user) {
-        if (!originalList.getOwner().getId().equals(user.getId())) {
+        if (!originalList.getOwner().equals(user)) {
             throw new SecurityException("You are not allowed to edit this list");
         }
 

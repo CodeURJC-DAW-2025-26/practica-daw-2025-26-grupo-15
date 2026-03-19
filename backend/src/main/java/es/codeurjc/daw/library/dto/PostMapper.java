@@ -7,4 +7,6 @@ import es.codeurjc.daw.library.model.Post;
 public interface PostMapper {
    
     PostDTO toDTO(Post post);
+
+    Post toEntity(PostCreateDTO dto);
 }

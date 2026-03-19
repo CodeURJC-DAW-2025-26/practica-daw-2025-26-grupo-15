@@ -92,9 +92,9 @@ public class ExerciseListRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateExerciseList(@PathVariable Long id, @RequestBody ExerciseListPostDTO dto) {
+    public ResponseEntity<?> updateExerciseList(@PathVariable Long id, @RequestBody ExerciseListPostDTO dto, HttpServletRequest request) {
         try{
-            User user = exerciseListService.findById(id).getOwner();
+            User user = userService.getUser(request.getUserPrincipal().getName());
             ExerciseList originalList = exerciseListService.findById(id);
             ExerciseList editedList = exerciseListMapper.toEntity(dto);
             return ResponseEntity.ok(exerciseListMapper.toDTO(exerciseListService.editList(editedList, originalList, user)));
@@ -106,19 +106,19 @@ public class ExerciseListRestController {
     }
 
     @PostMapping("/{id}/exercises/")
-        public ResponseEntity<?> postExercise(@RequestBody ExercisePostDTO exercisePostDTO, HttpServletRequest request, @PathVariable Long id) {
-            try{
-                User user = userService.getUser(request.getUserPrincipal().getName());
-                Exercise exercise = exerciseMapper.toEntity(exercisePostDTO);
-                Exercise savedExercise = exerciseService.createExercise(exercise, user, null, id);
-                URI location = fromCurrentContextPath().path("/api/v1/exercises/{id}").buildAndExpand(savedExercise.getId()).toUri();
-                return ResponseEntity.created(location).body(exerciseMapper.toDTO(savedExercise));
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(Map.of("error", e.getMessage()));
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
-            }
+    public ResponseEntity<?> postExercise(@RequestBody ExercisePostDTO exercisePostDTO, HttpServletRequest request, @PathVariable Long id) {
+        try{
+            User user = userService.getUser(request.getUserPrincipal().getName());
+            Exercise exercise = exerciseMapper.toEntity(exercisePostDTO);
+            Exercise savedExercise = exerciseService.createExercise(exercise, user, null, id);
+            URI location = fromCurrentContextPath().path("/api/v1/exercises/{id}").buildAndExpand(savedExercise.getId()).toUri();
+            return ResponseEntity.created(location).body(exerciseMapper.toDTO(savedExercise));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
         }
+    }
 
     @GetMapping("/")
     public Page<ExerciseListDTO> getLists(Pageable pageable,

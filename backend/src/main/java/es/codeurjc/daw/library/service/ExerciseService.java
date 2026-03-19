@@ -53,7 +53,7 @@ public class ExerciseService {
         
         ExerciseList list = exerciseListService.findById(listId);
 
-        if(!list.getOwner().equals(user)) throw new IllegalArgumentException("Action not allowed");
+        if(!list.getOwner().equals(user)) throw new SecurityException("Action not allowed");
 
         list.addExercise(exercise);
         exercise.setOwner(user);
@@ -69,10 +69,9 @@ public class ExerciseService {
 
     @Transactional
     public Exercise updateExercise(Long exerciseId, Exercise edited, User user, MultipartFile pdfFile) {
-        Exercise existing = exerciseRepo.findById(exerciseId)
-            .orElseThrow(() -> new IllegalArgumentException("Exercise not found"));
+        Exercise existing = exerciseRepo.findById(exerciseId).orElseThrow();
 
-        if (!existing.getOwner().equals(user)) throw new IllegalArgumentException("Not allowed");
+        if (!existing.getOwner().equals(user)) throw new SecurityException("Not allowed");
 
         validateExerciseFields(edited);
 

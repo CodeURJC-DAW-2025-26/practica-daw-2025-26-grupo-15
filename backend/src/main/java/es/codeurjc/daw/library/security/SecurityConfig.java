@@ -78,13 +78,16 @@ public class SecurityConfig {
 					// PUBLIC ENDPOINTS
 						.requestMatchers(HttpMethod.POST, "/api/v1/users/").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/users/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/exercises/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/exerciselists/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/exercises/{id}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/users/{id}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/exerciselists/{id}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/solutions/{id}").permitAll()
 						.requestMatchers(HttpMethod.GET,"/api/v1/images/{id}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/images/{id}/media").permitAll()
-						.requestMatchers(HttpMethod.GET,"/api/v1/posts/").permitAll()
+						.requestMatchers(HttpMethod.GET,"/api/v1/posts/**").permitAll()
 						.requestMatchers(HttpMethod.GET,"/api/v1/users/me/followers/").permitAll()
 						.requestMatchers(HttpMethod.GET,"/api/v1/users/me/follows/").permitAll()
 
