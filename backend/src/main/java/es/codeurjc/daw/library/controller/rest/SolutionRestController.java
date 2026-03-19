@@ -36,7 +36,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import es.codeurjc.daw.library.dto.ImageMapper;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 import java.util.Map;
 
 @RestController
@@ -66,20 +65,6 @@ public class SolutionRestController {
         return solutionMapper.toDTO(solutionService.findById(id));
     }
 
-
-    @PostMapping("/")
-    public ResponseEntity<?> createSolution(@RequestBody SolutionDTO dto, Principal principal) {
-        try{
-            Solution entity = solutionMapper.toEntity(dto);
-            User owner = userService.getUser(principal.getName());
-            Solution savedEntity = solutionService.createSolutionWithoutImage(dto.exercise().id(), entity, owner);
-            SolutionDTO createdDTO = solutionMapper.toDTO(savedEntity);
-            URI location = fromCurrentRequest().path("/{id}").buildAndExpand(createdDTO.id()).toUri();
-            return ResponseEntity.created(location).body(createdDTO);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(Map.of("error", e.getMessage()));
-        }
-    }
 
     @PostMapping("/{id}/images")
     public ResponseEntity<?> uploadSolutionImage(@PathVariable long id, @RequestParam MultipartFile imageFile, Principal principal){

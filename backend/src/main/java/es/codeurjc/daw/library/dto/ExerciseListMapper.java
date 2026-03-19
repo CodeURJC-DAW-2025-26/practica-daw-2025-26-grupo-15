@@ -9,4 +9,6 @@ public interface ExerciseListMapper {
     public ExerciseListDTO toDTO(ExerciseList exerciseList);
 
     public ExerciseList toEntity(ExerciseListDTO exerciseListDTO);
+
+    public ExerciseList toEntity(ExerciseListPostDTO exerciseListPostDTO);
 }

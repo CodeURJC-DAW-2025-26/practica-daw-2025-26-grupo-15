@@ -28,6 +28,7 @@ import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.ExerciseList;
 import es.codeurjc.daw.library.dto.ExerciseListDTO;
+import es.codeurjc.daw.library.dto.ExerciseListPostDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,7 +64,7 @@ public class ExerciseListRestController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createExerciseList(@RequestBody ExerciseListDTO dto, Principal principal) {
+    public ResponseEntity<?> createExerciseList(@RequestBody ExerciseListPostDTO dto, Principal principal) {
         try{
             ExerciseList exerciseList = exerciseListMapper.toEntity(dto);
             String email = principal.getName();

@@ -10,4 +10,6 @@ public interface SolutionMapper {
 
 
     public Solution toEntity(SolutionDTO dto);
+
+    public Solution toEntity(SolutionPostDTO dto);
 }

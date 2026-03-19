@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.codeurjc.daw.library.dto.ExerciseMapper;
-import es.codeurjc.daw.library.dto.ExercisePostDTO;
 import es.codeurjc.daw.library.dto.ExercisePutDTO;
+import es.codeurjc.daw.library.dto.SolutionDTO;
 import es.codeurjc.daw.library.service.SearchService;
 import es.codeurjc.daw.library.model.Exercise;
+import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.dto.ExerciseDTO;
 
@@ -28,6 +29,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.codeurjc.daw.library.service.ExerciseService;
 import es.codeurjc.daw.library.service.UserService;
+import es.codeurjc.daw.library.dto.SolutionMapper;
+import es.codeurjc.daw.library.dto.SolutionPostDTO;
+import es.codeurjc.daw.library.service.SolutionService;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,10 +51,16 @@ public class ExerciseRestController {
     private SearchService searchService;
 
     @Autowired
-    ExerciseService exerciseService;
+    private ExerciseService exerciseService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private SolutionMapper solutionMapper;
+
+    @Autowired
+    private SolutionService solutionService;
 
     @GetMapping("/{id}")
     public ExerciseDTO getExerciseById(@PathVariable Long id) {
@@ -103,6 +114,20 @@ public class ExerciseRestController {
         Page<ExerciseDTO> exercisesDTOPage= exercisesPage.map(exerciseMapper::toDTO);
         
         return exercisesDTOPage;
+    }
+
+    @PostMapping("/{id}/solutions/")
+    public ResponseEntity<?> createSolution(@PathVariable Long id, @RequestBody SolutionPostDTO dto, Principal principal) {
+        try{
+            Solution entity = solutionMapper.toEntity(dto);
+            User owner = userService.getUser(principal.getName());
+            Solution savedEntity = solutionService.createSolutionWithoutImage(id, entity, owner);
+            SolutionDTO createdDTO = solutionMapper.toDTO(savedEntity);
+            URI location = fromCurrentRequest().path("/{id}").buildAndExpand(createdDTO.id()).toUri();
+            return ResponseEntity.created(location).body(createdDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(Map.of("error", e.getMessage()));
+        }
     }
     
 
