@@ -120,6 +120,31 @@ public class ExerciseService {
         }
     }
 
+    public Exercise uploadPdf(Long exerciseId, User user, MultipartFile pdfFile) {
+        Exercise exercise = exerciseRepo.findById(exerciseId).orElseThrow();
+
+        if (!exercise.getOwner().getId().equals(user.getId())) throw new SecurityException("Not allowed");
+    
+        applyPdf(exercise, pdfFile);
+        return exerciseRepo.save(exercise);
+    }
+
+    public Exercise deletePdf(Long exerciseId, User user, boolean isAdmin) {
+        Exercise exercise = exerciseRepo.findById(exerciseId).orElseThrow();
+
+        if (!exercise.getOwner().getId().equals(user.getId()) && !isAdmin) {
+            throw new SecurityException("Not allowed");
+        }
+
+        if (exercise.getPdfImage() == null) {
+            throw new IllegalArgumentException("Exercise does not have a PDF");
+        }
+
+        exercise.setPdfImage(null);
+
+        return exerciseRepo.save(exercise);
+    }
+
     private void applyPdf(Exercise ex, MultipartFile pdf){
         this.validatePdf(pdf);
 
