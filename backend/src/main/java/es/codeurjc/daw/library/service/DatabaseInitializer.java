@@ -53,6 +53,10 @@ public class DatabaseInitializer {
 	@PostConstruct
 	public void init() throws IOException, URISyntaxException {
 
+		if(userRepository.count() > 0) {
+			return;
+		}
+
 		User u1 = null;
 		List<User> users = new ArrayList<>();
 		for(int i = 1; i <= 20; i++) {

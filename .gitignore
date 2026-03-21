@@ -40,3 +40,7 @@ backend/.env
 
 application-local.properties
 **/application-secrets.properties
+
+Dockerfile
+.dockerignore
+docker-compose.yml

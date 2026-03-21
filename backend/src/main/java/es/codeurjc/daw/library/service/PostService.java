@@ -56,5 +56,8 @@ public class PostService {
         return postRepo.findAll(pageable);
     }
 
+    public Post getPost(Long postId) {
+        return postRepo.findById(postId).orElseThrow();
+    }
 
 }

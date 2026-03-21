@@ -109,8 +109,13 @@ public class SolutionService {
         }
         
         try{
-            Image image = imageService.createImage(imageFile.getInputStream());
-            solution.setSolImage(image);
+            if(solution.getSolImage() == null) {
+                Image image = imageService.createImage(imageFile.getInputStream());
+                solution.setSolImage(image);
+            } else {
+                Image updated = imageService.replaceImageFile(solution.getSolImage().getId(), imageFile.getInputStream());
+                solution.setSolImage(updated);
+            }
             solutionRepo.save(solution);
             return solution;
         }catch(IOException e){

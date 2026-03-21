@@ -38,6 +38,12 @@ public class PostRestController {
     @Autowired private SearchService searchService;
     @Autowired private UserService userService;
 
+
+    @GetMapping("/{id}")
+    public PostDTO getPostById(@PathVariable Long id) {
+        return postMapper.toDTO(postService.getPost(id));
+    }
+    
     @GetMapping("/")
     public Page<PostDTO> getPosts(Pageable pageable,
                                   @RequestParam(required = false) Long currentUserId){
