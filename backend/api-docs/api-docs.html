@@ -925,6 +925,12 @@ ul.nav-tabs {
     },
     "exerciseList" : {
       "$ref" : "#/components/schemas/ExerciseListBasicInfoDTO"
+    },
+    "solutions" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/components/schemas/SolutionBasicInfoDTO"
+      }
     }
   }
 };
@@ -966,6 +972,19 @@ ul.nav-tabs {
       "items" : {
         "$ref" : "#/components/schemas/ExerciseBasicInfoDTO"
       }
+    }
+  }
+};
+    defs["ExerciseListPostDTO"] = {
+  "properties" : {
+    "title" : {
+      "type" : "string"
+    },
+    "topic" : {
+      "type" : "string"
+    },
+    "description" : {
+      "type" : "string"
     }
   }
 };
@@ -1099,6 +1118,22 @@ ul.nav-tabs {
     }
   }
 };
+    defs["PostCreateDTO"] = {
+  "properties" : {
+    "header" : {
+      "type" : "string"
+    },
+    "description" : {
+      "type" : "string"
+    },
+    "contentLink" : {
+      "type" : "string"
+    },
+    "actionType" : {
+      "type" : "string"
+    }
+  }
+};
     defs["PostDTO"] = {
   "properties" : {
     "id" : {
@@ -1175,6 +1210,25 @@ ul.nav-tabs {
       "items" : {
         "$ref" : "#/components/schemas/CommentDTO"
       }
+    }
+  }
+};
+    defs["SolutionPostDTO"] = {
+  "properties" : {
+    "name" : {
+      "type" : "string"
+    },
+    "description" : {
+      "type" : "string"
+    }
+  }
+};
+    defs["uploadExercisePdf_request"] = {
+  "required" : [ "pdfFile" ],
+  "properties" : {
+    "pdfFile" : {
+      "type" : "string",
+      "format" : "binary"
     }
   }
 };
@@ -1326,17 +1380,29 @@ ul.nav-tabs {
                       <a href="#api-ExerciseListRestController-updateExerciseList">updateExerciseList</a>
                     </li>
                   <li class="nav-header" data-group="ExerciseRestController"><a href="#api-ExerciseRestController">API Methods - ExerciseRestController</a></li>
+                    <li data-group="ExerciseRestController" data-name="createSolution" class="">
+                      <a href="#api-ExerciseRestController-createSolution">createSolution</a>
+                    </li>
                     <li data-group="ExerciseRestController" data-name="deleteExercise" class="">
                       <a href="#api-ExerciseRestController-deleteExercise">deleteExercise</a>
                     </li>
+                    <li data-group="ExerciseRestController" data-name="deleteExercisePdf" class="">
+                      <a href="#api-ExerciseRestController-deleteExercisePdf">deleteExercisePdf</a>
+                    </li>
                     <li data-group="ExerciseRestController" data-name="getExerciseById" class="">
                       <a href="#api-ExerciseRestController-getExerciseById">getExerciseById</a>
+                    </li>
+                    <li data-group="ExerciseRestController" data-name="getExercisePdf" class="">
+                      <a href="#api-ExerciseRestController-getExercisePdf">getExercisePdf</a>
                     </li>
                     <li data-group="ExerciseRestController" data-name="getExercises" class="">
                       <a href="#api-ExerciseRestController-getExercises">getExercises</a>
                     </li>
                     <li data-group="ExerciseRestController" data-name="updateExercise" class="">
                       <a href="#api-ExerciseRestController-updateExercise">updateExercise</a>
+                    </li>
+                    <li data-group="ExerciseRestController" data-name="uploadExercisePdf" class="">
+                      <a href="#api-ExerciseRestController-uploadExercisePdf">uploadExercisePdf</a>
                     </li>
                   <li class="nav-header" data-group="ExerciseWebController"><a href="#api-ExerciseWebController">API Methods - ExerciseWebController</a></li>
                     <li data-group="ExerciseWebController" data-name="downloadExercisePdf" class="">
@@ -1363,13 +1429,19 @@ ul.nav-tabs {
                       <a href="#api-LoginRestController-refreshToken">refreshToken</a>
                     </li>
                   <li class="nav-header" data-group="PostRestController"><a href="#api-PostRestController">API Methods - PostRestController</a></li>
+                    <li data-group="PostRestController" data-name="deletePostById" class="">
+                      <a href="#api-PostRestController-deletePostById">deletePostById</a>
+                    </li>
+                    <li data-group="PostRestController" data-name="getPostById" class="">
+                      <a href="#api-PostRestController-getPostById">getPostById</a>
+                    </li>
                     <li data-group="PostRestController" data-name="getPosts" class="">
                       <a href="#api-PostRestController-getPosts">getPosts</a>
                     </li>
-                  <li class="nav-header" data-group="SolutionRestController"><a href="#api-SolutionRestController">API Methods - SolutionRestController</a></li>
-                    <li data-group="SolutionRestController" data-name="createSolution" class="">
-                      <a href="#api-SolutionRestController-createSolution">createSolution</a>
+                    <li data-group="PostRestController" data-name="postNewPost" class="">
+                      <a href="#api-PostRestController-postNewPost">postNewPost</a>
                     </li>
+                  <li class="nav-header" data-group="SolutionRestController"><a href="#api-SolutionRestController">API Methods - SolutionRestController</a></li>
                     <li data-group="SolutionRestController" data-name="createSolutionPDF" class="">
                       <a href="#api-SolutionRestController-createSolutionPDF">createSolutionPDF</a>
                     </li>
@@ -1520,7 +1592,7 @@ public class CommentRestControllerApiExample {
         Long id = 789; // Long | 
 
         try {
-            CommentDTO result = apiInstance.deleteComment(id);
+            Object result = apiInstance.deleteComment(id);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CommentRestControllerApi#deleteComment");
@@ -1557,7 +1629,7 @@ public class CommentRestControllerApiExample {
         Long id = 789; // Long | 
 
         try {
-            CommentDTO result = apiInstance.deleteComment(id);
+            Object result = apiInstance.deleteComment(id);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CommentRestControllerApi#deleteComment");
@@ -1578,7 +1650,7 @@ CommentRestControllerApi *apiInstance = [[CommentRestControllerApi alloc] init];
 Long *id = 789; //  (default to null)
 
 [apiInstance deleteCommentWith:id
-              completionHandler: ^(CommentDTO output, NSError* error) {
+              completionHandler: ^(Object output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
     }
@@ -1629,7 +1701,7 @@ namespace Example
             var id = 789;  // Long |  (default to null)
 
             try {
-                CommentDTO result = apiInstance.deleteComment(id);
+                Object result = apiInstance.deleteComment(id);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling CommentRestControllerApi.deleteComment: " + e.Message );
@@ -1850,7 +1922,7 @@ pub fn main() {
   "content" : {
     "*/*" : {
       "schema" : {
-        "$ref" : "#/components/schemas/CommentDTO"
+        "type" : "object"
       }
     }
   }
@@ -2366,26 +2438,8 @@ pub fn main() {
  -H "Content-Type: application/json" \
  "http://localhost:8081/api/v1/exerciselists/" \
  -d '{
-  &quot;owner&quot; : {
-    &quot;name&quot; : &quot;name&quot;,
-    &quot;id&quot; : 1,
-    &quot;email&quot; : &quot;email&quot;
-  },
-  &quot;exercises&quot; : [ {
-    &quot;description&quot; : &quot;description&quot;,
-    &quot;numSolutions&quot; : 1,
-    &quot;id&quot; : 6,
-    &quot;title&quot; : &quot;title&quot;
-  }, {
-    &quot;description&quot; : &quot;description&quot;,
-    &quot;numSolutions&quot; : 1,
-    &quot;id&quot; : 6,
-    &quot;title&quot; : &quot;title&quot;
-  } ],
-  &quot;lastUpdate&quot; : &quot;2000-01-23T04:56:07.000+00:00&quot;,
-  &quot;description&quot; : &quot;description&quot;,
   &quot;topic&quot; : &quot;topic&quot;,
-  &quot;id&quot; : 0,
+  &quot;description&quot; : &quot;description&quot;,
   &quot;title&quot; : &quot;title&quot;
 }'
 </code></pre>
@@ -2404,10 +2458,10 @@ public class ExerciseListRestControllerApiExample {
 
         // Create an instance of the API class
         ExerciseListRestControllerApi apiInstance = new ExerciseListRestControllerApi();
-        ExerciseListDTO exerciseListDTO = ; // ExerciseListDTO | 
+        ExerciseListPostDTO exerciseListPostDTO = ; // ExerciseListPostDTO | 
 
         try {
-            Object result = apiInstance.createExerciseList(exerciseListDTO);
+            Object result = apiInstance.createExerciseList(exerciseListPostDTO);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ExerciseListRestControllerApi#createExerciseList");
@@ -2423,10 +2477,10 @@ public class ExerciseListRestControllerApiExample {
 
 final api_instance = DefaultApi();
 
-final ExerciseListDTO exerciseListDTO = new ExerciseListDTO(); // ExerciseListDTO | 
+final ExerciseListPostDTO exerciseListPostDTO = new ExerciseListPostDTO(); // ExerciseListPostDTO | 
 
 try {
-    final result = await api_instance.createExerciseList(exerciseListDTO);
+    final result = await api_instance.createExerciseList(exerciseListPostDTO);
     print(result);
 } catch (e) {
     print('Exception when calling DefaultApi->createExerciseList: $e\n');
@@ -2441,10 +2495,10 @@ try {
 public class ExerciseListRestControllerApiExample {
     public static void main(String[] args) {
         ExerciseListRestControllerApi apiInstance = new ExerciseListRestControllerApi();
-        ExerciseListDTO exerciseListDTO = ; // ExerciseListDTO | 
+        ExerciseListPostDTO exerciseListPostDTO = ; // ExerciseListPostDTO | 
 
         try {
-            Object result = apiInstance.createExerciseList(exerciseListDTO);
+            Object result = apiInstance.createExerciseList(exerciseListPostDTO);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ExerciseListRestControllerApi#createExerciseList");
@@ -2462,9 +2516,9 @@ public class ExerciseListRestControllerApiExample {
 
 // Create an instance of the API class
 ExerciseListRestControllerApi *apiInstance = [[ExerciseListRestControllerApi alloc] init];
-ExerciseListDTO *exerciseListDTO = ; // 
+ExerciseListPostDTO *exerciseListPostDTO = ; // 
 
-[apiInstance createExerciseListWith:exerciseListDTO
+[apiInstance createExerciseListWith:exerciseListPostDTO
               completionHandler: ^(Object output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
@@ -2481,7 +2535,7 @@ ExerciseListDTO *exerciseListDTO = ; //
 
 // Create an instance of the API class
 var api = new OpenApiDefinition.ExerciseListRestControllerApi()
-var exerciseListDTO = ; // {ExerciseListDTO} 
+var exerciseListPostDTO = ; // {ExerciseListPostDTO} 
 
 var callback = function(error, data, response) {
   if (error) {
@@ -2490,7 +2544,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.createExerciseList(exerciseListDTO, callback);
+api.createExerciseList(exerciseListPostDTO, callback);
 </code></pre>
                             </div>
 
@@ -2513,10 +2567,10 @@ namespace Example
 
             // Create an instance of the API class
             var apiInstance = new ExerciseListRestControllerApi();
-            var exerciseListDTO = new ExerciseListDTO(); // ExerciseListDTO | 
+            var exerciseListPostDTO = new ExerciseListPostDTO(); // ExerciseListPostDTO | 
 
             try {
-                Object result = apiInstance.createExerciseList(exerciseListDTO);
+                Object result = apiInstance.createExerciseList(exerciseListPostDTO);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling ExerciseListRestControllerApi.createExerciseList: " + e.Message );
@@ -2533,10 +2587,10 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 // Create an instance of the API class
 $api_instance = new OpenAPITools\Client\Api\ExerciseListRestControllerApi();
-$exerciseListDTO = ; // ExerciseListDTO | 
+$exerciseListPostDTO = ; // ExerciseListPostDTO | 
 
 try {
-    $result = $api_instance->createExerciseList($exerciseListDTO);
+    $result = $api_instance->createExerciseList($exerciseListPostDTO);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ExerciseListRestControllerApi->createExerciseList: ', $e->getMessage(), PHP_EOL;
@@ -2551,10 +2605,10 @@ use WWW::OPenAPIClient::ExerciseListRestControllerApi;
 
 # Create an instance of the API class
 my $api_instance = WWW::OPenAPIClient::ExerciseListRestControllerApi->new();
-my $exerciseListDTO = WWW::OPenAPIClient::Object::ExerciseListDTO->new(); # ExerciseListDTO | 
+my $exerciseListPostDTO = WWW::OPenAPIClient::Object::ExerciseListPostDTO->new(); # ExerciseListPostDTO | 
 
 eval {
-    my $result = $api_instance->createExerciseList(exerciseListDTO => $exerciseListDTO);
+    my $result = $api_instance->createExerciseList(exerciseListPostDTO => $exerciseListPostDTO);
     print Dumper($result);
 };
 if ($@) {
@@ -2571,10 +2625,10 @@ from pprint import pprint
 
 # Create an instance of the API class
 api_instance = openapi_client.ExerciseListRestControllerApi()
-exerciseListDTO =  # ExerciseListDTO | 
+exerciseListPostDTO =  # ExerciseListPostDTO | 
 
 try:
-    api_response = api_instance.create_exercise_list(exerciseListDTO)
+    api_response = api_instance.create_exercise_list(exerciseListPostDTO)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ExerciseListRestControllerApi->createExerciseList: %s\n" % e)</code></pre>
@@ -2584,10 +2638,10 @@ except ApiException as e:
                               <pre class="prettyprint"><code class="language-rust">extern crate ExerciseListRestControllerApi;
 
 pub fn main() {
-    let exerciseListDTO = ; // ExerciseListDTO
+    let exerciseListPostDTO = ; // ExerciseListPostDTO
 
     let mut context = ExerciseListRestControllerApi::Context::default();
-    let result = client.createExerciseList(exerciseListDTO, &context).wait();
+    let result = client.createExerciseList(exerciseListPostDTO, &context).wait();
 
     println!("{:?}", result);
 }
@@ -2610,7 +2664,7 @@ pub fn main() {
                                 <th width="150px">Name</th>
                                 <th>Description</th>
                               </tr>
-                                <tr><td style="width:150px;">exerciseListDTO <span style="color:red;">*</span></td>
+                                <tr><td style="width:150px;">exerciseListPostDTO <span style="color:red;">*</span></td>
 <td>
 <p class="marked"></p>
 <script>
@@ -2619,7 +2673,7 @@ $(document).ready(function() {
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/ExerciseListDTO"
+        "$ref" : "#/components/schemas/ExerciseListPostDTO"
       }
     }
   },
@@ -2642,12 +2696,12 @@ $(document).ready(function() {
   }
 
   var view = new JSONSchemaView(schema,2,{isBodyParam: true});
-  var result = $('#d2e199_createExerciseList_exerciseListDTO');
+  var result = $('#d2e199_createExerciseList_exerciseListPostDTO');
   result.empty();
   result.append(view.render());
 });
 </script>
-<div id="d2e199_createExerciseList_exerciseListDTO"></div>
+<div id="d2e199_createExerciseList_exerciseListPostDTO"></div>
 </td>
 </tr>
 
@@ -4680,26 +4734,8 @@ $(document).ready(function() {
  -H "Content-Type: application/json" \
  "http://localhost:8081/api/v1/exerciselists/{id}" \
  -d '{
-  &quot;owner&quot; : {
-    &quot;name&quot; : &quot;name&quot;,
-    &quot;id&quot; : 1,
-    &quot;email&quot; : &quot;email&quot;
-  },
-  &quot;exercises&quot; : [ {
-    &quot;description&quot; : &quot;description&quot;,
-    &quot;numSolutions&quot; : 1,
-    &quot;id&quot; : 6,
-    &quot;title&quot; : &quot;title&quot;
-  }, {
-    &quot;description&quot; : &quot;description&quot;,
-    &quot;numSolutions&quot; : 1,
-    &quot;id&quot; : 6,
-    &quot;title&quot; : &quot;title&quot;
-  } ],
-  &quot;lastUpdate&quot; : &quot;2000-01-23T04:56:07.000+00:00&quot;,
-  &quot;description&quot; : &quot;description&quot;,
   &quot;topic&quot; : &quot;topic&quot;,
-  &quot;id&quot; : 0,
+  &quot;description&quot; : &quot;description&quot;,
   &quot;title&quot; : &quot;title&quot;
 }'
 </code></pre>
@@ -4719,10 +4755,10 @@ public class ExerciseListRestControllerApiExample {
         // Create an instance of the API class
         ExerciseListRestControllerApi apiInstance = new ExerciseListRestControllerApi();
         Long id = 789; // Long | 
-        ExerciseListDTO exerciseListDTO = ; // ExerciseListDTO | 
+        ExerciseListPostDTO exerciseListPostDTO = ; // ExerciseListPostDTO | 
 
         try {
-            Object result = apiInstance.updateExerciseList(id, exerciseListDTO);
+            Object result = apiInstance.updateExerciseList(id, exerciseListPostDTO);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ExerciseListRestControllerApi#updateExerciseList");
@@ -4739,10 +4775,10 @@ public class ExerciseListRestControllerApiExample {
 final api_instance = DefaultApi();
 
 final Long id = new Long(); // Long | 
-final ExerciseListDTO exerciseListDTO = new ExerciseListDTO(); // ExerciseListDTO | 
+final ExerciseListPostDTO exerciseListPostDTO = new ExerciseListPostDTO(); // ExerciseListPostDTO | 
 
 try {
-    final result = await api_instance.updateExerciseList(id, exerciseListDTO);
+    final result = await api_instance.updateExerciseList(id, exerciseListPostDTO);
     print(result);
 } catch (e) {
     print('Exception when calling DefaultApi->updateExerciseList: $e\n');
@@ -4758,10 +4794,10 @@ public class ExerciseListRestControllerApiExample {
     public static void main(String[] args) {
         ExerciseListRestControllerApi apiInstance = new ExerciseListRestControllerApi();
         Long id = 789; // Long | 
-        ExerciseListDTO exerciseListDTO = ; // ExerciseListDTO | 
+        ExerciseListPostDTO exerciseListPostDTO = ; // ExerciseListPostDTO | 
 
         try {
-            Object result = apiInstance.updateExerciseList(id, exerciseListDTO);
+            Object result = apiInstance.updateExerciseList(id, exerciseListPostDTO);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ExerciseListRestControllerApi#updateExerciseList");
@@ -4780,10 +4816,10 @@ public class ExerciseListRestControllerApiExample {
 // Create an instance of the API class
 ExerciseListRestControllerApi *apiInstance = [[ExerciseListRestControllerApi alloc] init];
 Long *id = 789; //  (default to null)
-ExerciseListDTO *exerciseListDTO = ; // 
+ExerciseListPostDTO *exerciseListPostDTO = ; // 
 
 [apiInstance updateExerciseListWith:id
-    exerciseListDTO:exerciseListDTO
+    exerciseListPostDTO:exerciseListPostDTO
               completionHandler: ^(Object output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
@@ -4801,7 +4837,7 @@ ExerciseListDTO *exerciseListDTO = ; //
 // Create an instance of the API class
 var api = new OpenApiDefinition.ExerciseListRestControllerApi()
 var id = 789; // {Long} 
-var exerciseListDTO = ; // {ExerciseListDTO} 
+var exerciseListPostDTO = ; // {ExerciseListPostDTO} 
 
 var callback = function(error, data, response) {
   if (error) {
@@ -4810,7 +4846,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.updateExerciseList(id, exerciseListDTO, callback);
+api.updateExerciseList(id, exerciseListPostDTO, callback);
 </code></pre>
                             </div>
 
@@ -4834,10 +4870,10 @@ namespace Example
             // Create an instance of the API class
             var apiInstance = new ExerciseListRestControllerApi();
             var id = 789;  // Long |  (default to null)
-            var exerciseListDTO = new ExerciseListDTO(); // ExerciseListDTO | 
+            var exerciseListPostDTO = new ExerciseListPostDTO(); // ExerciseListPostDTO | 
 
             try {
-                Object result = apiInstance.updateExerciseList(id, exerciseListDTO);
+                Object result = apiInstance.updateExerciseList(id, exerciseListPostDTO);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling ExerciseListRestControllerApi.updateExerciseList: " + e.Message );
@@ -4855,10 +4891,10 @@ require_once(__DIR__ . '/vendor/autoload.php');
 // Create an instance of the API class
 $api_instance = new OpenAPITools\Client\Api\ExerciseListRestControllerApi();
 $id = 789; // Long | 
-$exerciseListDTO = ; // ExerciseListDTO | 
+$exerciseListPostDTO = ; // ExerciseListPostDTO | 
 
 try {
-    $result = $api_instance->updateExerciseList($id, $exerciseListDTO);
+    $result = $api_instance->updateExerciseList($id, $exerciseListPostDTO);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ExerciseListRestControllerApi->updateExerciseList: ', $e->getMessage(), PHP_EOL;
@@ -4874,10 +4910,10 @@ use WWW::OPenAPIClient::ExerciseListRestControllerApi;
 # Create an instance of the API class
 my $api_instance = WWW::OPenAPIClient::ExerciseListRestControllerApi->new();
 my $id = 789; # Long | 
-my $exerciseListDTO = WWW::OPenAPIClient::Object::ExerciseListDTO->new(); # ExerciseListDTO | 
+my $exerciseListPostDTO = WWW::OPenAPIClient::Object::ExerciseListPostDTO->new(); # ExerciseListPostDTO | 
 
 eval {
-    my $result = $api_instance->updateExerciseList(id => $id, exerciseListDTO => $exerciseListDTO);
+    my $result = $api_instance->updateExerciseList(id => $id, exerciseListPostDTO => $exerciseListPostDTO);
     print Dumper($result);
 };
 if ($@) {
@@ -4895,10 +4931,10 @@ from pprint import pprint
 # Create an instance of the API class
 api_instance = openapi_client.ExerciseListRestControllerApi()
 id = 789 # Long |  (default to null)
-exerciseListDTO =  # ExerciseListDTO | 
+exerciseListPostDTO =  # ExerciseListPostDTO | 
 
 try:
-    api_response = api_instance.update_exercise_list(id, exerciseListDTO)
+    api_response = api_instance.update_exercise_list(id, exerciseListPostDTO)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ExerciseListRestControllerApi->updateExerciseList: %s\n" % e)</code></pre>
@@ -4909,10 +4945,10 @@ except ApiException as e:
 
 pub fn main() {
     let id = 789; // Long
-    let exerciseListDTO = ; // ExerciseListDTO
+    let exerciseListPostDTO = ; // ExerciseListPostDTO
 
     let mut context = ExerciseListRestControllerApi::Context::default();
-    let result = client.updateExerciseList(id, exerciseListDTO, &context).wait();
+    let result = client.updateExerciseList(id, exerciseListPostDTO, &context).wait();
 
     println!("{:?}", result);
 }
@@ -4965,7 +5001,7 @@ pub fn main() {
                                 <th width="150px">Name</th>
                                 <th>Description</th>
                               </tr>
-                                <tr><td style="width:150px;">exerciseListDTO <span style="color:red;">*</span></td>
+                                <tr><td style="width:150px;">exerciseListPostDTO <span style="color:red;">*</span></td>
 <td>
 <p class="marked"></p>
 <script>
@@ -4974,7 +5010,7 @@ $(document).ready(function() {
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/ExerciseListDTO"
+        "$ref" : "#/components/schemas/ExerciseListPostDTO"
       }
     }
   },
@@ -4997,12 +5033,12 @@ $(document).ready(function() {
   }
 
   var view = new JSONSchemaView(schema,2,{isBodyParam: true});
-  var result = $('#d2e199_updateExerciseList_exerciseListDTO');
+  var result = $('#d2e199_updateExerciseList_exerciseListPostDTO');
   result.empty();
   result.append(view.render());
 });
 </script>
-<div id="d2e199_updateExerciseList_exerciseListDTO"></div>
+<div id="d2e199_updateExerciseList_exerciseListPostDTO"></div>
 </td>
 </tr>
 
@@ -5157,6 +5193,500 @@ $(document).ready(function() {
                   </section>
                 <section id="api-ExerciseRestController">
                   <h1>ExerciseRestController</h1>
+                    <div id="api-ExerciseRestController-createSolution">
+                      <article id="api-ExerciseRestController-createSolution-0" data-group="User" data-name="createSolution" data-version="0">
+                        <div class="pull-left">
+                          <h1>createSolution</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/api/v1/exercises/{id}/solutions/</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-ExerciseRestController-createSolution-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-createSolution-0-java">Java</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-createSolution-0-dart">Dart</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-createSolution-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-ExerciseRestController-createSolution-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-ExerciseRestController-createSolution-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-createSolution-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-ExerciseRestController-createSolution-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-ExerciseRestController-createSolution-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-createSolution-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-createSolution-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-createSolution-0-python">Python</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-createSolution-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-ExerciseRestController-createSolution-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X POST \
+ -H "Accept: */*" \
+ -H "Content-Type: application/json" \
+ "http://localhost:8081/api/v1/exercises/{id}/solutions/" \
+ -d '{
+  &quot;name&quot; : &quot;name&quot;,
+  &quot;description&quot; : &quot;description&quot;
+}'
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.ExerciseRestControllerApi;
+
+import java.io.File;
+import java.util.*;
+
+public class ExerciseRestControllerApiExample {
+    public static void main(String[] args) {
+
+        // Create an instance of the API class
+        ExerciseRestControllerApi apiInstance = new ExerciseRestControllerApi();
+        Long id = 789; // Long | 
+        SolutionPostDTO solutionPostDTO = ; // SolutionPostDTO | 
+
+        try {
+            Object result = apiInstance.createSolution(id, solutionPostDTO);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ExerciseRestControllerApi#createSolution");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-dart">
+                            <pre class="prettyprint"><code class="language-dart">import 'package:openapi/api.dart';
+
+final api_instance = DefaultApi();
+
+final Long id = new Long(); // Long | 
+final SolutionPostDTO solutionPostDTO = new SolutionPostDTO(); // SolutionPostDTO | 
+
+try {
+    final result = await api_instance.createSolution(id, solutionPostDTO);
+    print(result);
+} catch (e) {
+    print('Exception when calling DefaultApi->createSolution: $e\n');
+}
+
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.ExerciseRestControllerApi;
+
+public class ExerciseRestControllerApiExample {
+    public static void main(String[] args) {
+        ExerciseRestControllerApi apiInstance = new ExerciseRestControllerApi();
+        Long id = 789; // Long | 
+        SolutionPostDTO solutionPostDTO = ; // SolutionPostDTO | 
+
+        try {
+            Object result = apiInstance.createSolution(id, solutionPostDTO);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ExerciseRestControllerApi#createSolution");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">
+
+// Create an instance of the API class
+ExerciseRestControllerApi *apiInstance = [[ExerciseRestControllerApi alloc] init];
+Long *id = 789; //  (default to null)
+SolutionPostDTO *solutionPostDTO = ; // 
+
+[apiInstance createSolutionWith:id
+    solutionPostDTO:solutionPostDTO
+              completionHandler: ^(Object output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var OpenApiDefinition = require('open_api_definition');
+
+// Create an instance of the API class
+var api = new OpenApiDefinition.ExerciseRestControllerApi()
+var id = 789; // {Long} 
+var solutionPostDTO = ; // {SolutionPostDTO} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.createSolution(id, solutionPostDTO, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Org.OpenAPITools.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.Model;
+
+namespace Example
+{
+    public class createSolutionExample
+    {
+        public void main()
+        {
+
+            // Create an instance of the API class
+            var apiInstance = new ExerciseRestControllerApi();
+            var id = 789;  // Long |  (default to null)
+            var solutionPostDTO = new SolutionPostDTO(); // SolutionPostDTO | 
+
+            try {
+                Object result = apiInstance.createSolution(id, solutionPostDTO);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling ExerciseRestControllerApi.createSolution: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\ExerciseRestControllerApi();
+$id = 789; // Long | 
+$solutionPostDTO = ; // SolutionPostDTO | 
+
+try {
+    $result = $api_instance->createSolution($id, $solutionPostDTO);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling ExerciseRestControllerApi->createSolution: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::ExerciseRestControllerApi;
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::ExerciseRestControllerApi->new();
+my $id = 789; # Long | 
+my $solutionPostDTO = WWW::OPenAPIClient::Object::SolutionPostDTO->new(); # SolutionPostDTO | 
+
+eval {
+    my $result = $api_instance->createSolution(id => $id, solutionPostDTO => $solutionPostDTO);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling ExerciseRestControllerApi->createSolution: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Create an instance of the API class
+api_instance = openapi_client.ExerciseRestControllerApi()
+id = 789 # Long |  (default to null)
+solutionPostDTO =  # SolutionPostDTO | 
+
+try:
+    api_response = api_instance.create_solution(id, solutionPostDTO)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ExerciseRestControllerApi->createSolution: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-createSolution-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate ExerciseRestControllerApi;
+
+pub fn main() {
+    let id = 789; // Long
+    let solutionPostDTO = ; // SolutionPostDTO
+
+    let mut context = ExerciseRestControllerApi::Context::default();
+    let result = client.createSolution(id, solutionPostDTO, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">id*</td>
+<td>
+
+
+    <div id="d2e199_createSolution_id">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Long
+                </span>
+                    <span class="format">
+                        (int64)
+                    </span>
+
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">solutionPostDTO <span style="color:red;">*</span></td>
+<td>
+<p class="marked"></p>
+<script>
+$(document).ready(function() {
+  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/SolutionPostDTO"
+      }
+    }
+  },
+  "required" : true
+};
+
+  var schema = findNode('schema',schemaWrapper).schema;
+  if (!schema) {
+    schema = schemaWrapper.schema;
+  }
+  if (schema.$ref != null) {
+    schema = defsParser.$refs.get(schema.$ref);
+  } else if (schema.items != null && schema.items.$ref != null) {
+    schema.items = defsParser.$refs.get(schema.items.$ref);
+  } else {
+    schemaWrapper.definitions = Object.assign({}, defs);
+    $RefParser.dereference(schemaWrapper).catch(function(err) {
+      console.log(err);
+    });
+  }
+
+  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+  var result = $('#d2e199_createSolution_solutionPostDTO');
+  result.empty();
+  result.append(view.render());
+});
+</script>
+<div id="d2e199_createSolution_solutionPostDTO"></div>
+</td>
+</tr>
+
+                            </table>
+
+
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-ExerciseRestController-createSolution-title-404"></h3>
+                            <p id="examples-ExerciseRestController-createSolution-description-404" class="marked"></p>
+                            <script>
+                              var responseExerciseRestController404_description = `Not Found`;
+                              var responseExerciseRestController404_description_break = responseExerciseRestController404_description.indexOf('\n');
+                              if (responseExerciseRestController404_description_break == -1) {
+                                $("#examples-ExerciseRestController-createSolution-title-404").text("Status: 404 - " + responseExerciseRestController404_description);
+                              } else {
+                                $("#examples-ExerciseRestController-createSolution-title-404").text("Status: 404 - " + responseExerciseRestController404_description.substring(0, responseExerciseRestController404_description_break));
+                                $("#examples-ExerciseRestController-createSolution-description-404").html(responseExerciseRestController404_description.substring(responseExerciseRestController404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ExerciseRestController-createSolution-404" class="nav nav-tabs nav-tabs-examples" >
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ExerciseRestController-createSolution-404-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-ExerciseRestController-createSolution-404-schema">
+                                <div id="responses-ExerciseRestController-createSolution-schema-404" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Not Found"
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-ExerciseRestController-createSolution-404-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-ExerciseRestController-createSolution-schema-404');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-ExerciseRestController-createSolution-404-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-ExerciseRestController-createSolution-title-200"></h3>
+                            <p id="examples-ExerciseRestController-createSolution-description-200" class="marked"></p>
+                            <script>
+                              var responseExerciseRestController200_description = `OK`;
+                              var responseExerciseRestController200_description_break = responseExerciseRestController200_description.indexOf('\n');
+                              if (responseExerciseRestController200_description_break == -1) {
+                                $("#examples-ExerciseRestController-createSolution-title-200").text("Status: 200 - " + responseExerciseRestController200_description);
+                              } else {
+                                $("#examples-ExerciseRestController-createSolution-title-200").text("Status: 200 - " + responseExerciseRestController200_description.substring(0, responseExerciseRestController200_description_break));
+                                $("#examples-ExerciseRestController-createSolution-description-200").html(responseExerciseRestController200_description.substring(responseExerciseRestController200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ExerciseRestController-createSolution-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ExerciseRestController-createSolution-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ExerciseRestController-createSolution-200-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-ExerciseRestController-createSolution-200-schema">
+                                <div id="responses-ExerciseRestController-createSolution-schema-200" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "OK",
+  "content" : {
+    "*/*" : {
+      "schema" : {
+        "type" : "object"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-ExerciseRestController-createSolution-200-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-ExerciseRestController-createSolution-schema-200');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-ExerciseRestController-createSolution-200-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-ExerciseRestController-deleteExercise">
                       <article id="api-ExerciseRestController-deleteExercise-0" data-group="User" data-name="deleteExercise" data-version="0">
                         <div class="pull-left">
@@ -5582,6 +6112,436 @@ pub fn main() {
                                   </script>
                                 </div>
                                 <input id='responses-ExerciseRestController-deleteExercise-200-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-ExerciseRestController-deleteExercisePdf">
+                      <article id="api-ExerciseRestController-deleteExercisePdf-0" data-group="User" data-name="deleteExercisePdf" data-version="0">
+                        <div class="pull-left">
+                          <h1>deleteExercisePdf</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/api/v1/exercises/{id}/pdf</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-ExerciseRestController-deleteExercisePdf-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-java">Java</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-dart">Dart</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-python">Python</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-deleteExercisePdf-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-ExerciseRestController-deleteExercisePdf-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE \
+ -H "Accept: */*" \
+ "http://localhost:8081/api/v1/exercises/{id}/pdf"
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.ExerciseRestControllerApi;
+
+import java.io.File;
+import java.util.*;
+
+public class ExerciseRestControllerApiExample {
+    public static void main(String[] args) {
+
+        // Create an instance of the API class
+        ExerciseRestControllerApi apiInstance = new ExerciseRestControllerApi();
+        Long id = 789; // Long | 
+
+        try {
+            Object result = apiInstance.deleteExercisePdf(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ExerciseRestControllerApi#deleteExercisePdf");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-dart">
+                            <pre class="prettyprint"><code class="language-dart">import 'package:openapi/api.dart';
+
+final api_instance = DefaultApi();
+
+final Long id = new Long(); // Long | 
+
+try {
+    final result = await api_instance.deleteExercisePdf(id);
+    print(result);
+} catch (e) {
+    print('Exception when calling DefaultApi->deleteExercisePdf: $e\n');
+}
+
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.ExerciseRestControllerApi;
+
+public class ExerciseRestControllerApiExample {
+    public static void main(String[] args) {
+        ExerciseRestControllerApi apiInstance = new ExerciseRestControllerApi();
+        Long id = 789; // Long | 
+
+        try {
+            Object result = apiInstance.deleteExercisePdf(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ExerciseRestControllerApi#deleteExercisePdf");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">
+
+// Create an instance of the API class
+ExerciseRestControllerApi *apiInstance = [[ExerciseRestControllerApi alloc] init];
+Long *id = 789; //  (default to null)
+
+[apiInstance deleteExercisePdfWith:id
+              completionHandler: ^(Object output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var OpenApiDefinition = require('open_api_definition');
+
+// Create an instance of the API class
+var api = new OpenApiDefinition.ExerciseRestControllerApi()
+var id = 789; // {Long} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.deleteExercisePdf(id, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Org.OpenAPITools.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.Model;
+
+namespace Example
+{
+    public class deleteExercisePdfExample
+    {
+        public void main()
+        {
+
+            // Create an instance of the API class
+            var apiInstance = new ExerciseRestControllerApi();
+            var id = 789;  // Long |  (default to null)
+
+            try {
+                Object result = apiInstance.deleteExercisePdf(id);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling ExerciseRestControllerApi.deleteExercisePdf: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\ExerciseRestControllerApi();
+$id = 789; // Long | 
+
+try {
+    $result = $api_instance->deleteExercisePdf($id);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling ExerciseRestControllerApi->deleteExercisePdf: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::ExerciseRestControllerApi;
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::ExerciseRestControllerApi->new();
+my $id = 789; # Long | 
+
+eval {
+    my $result = $api_instance->deleteExercisePdf(id => $id);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling ExerciseRestControllerApi->deleteExercisePdf: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Create an instance of the API class
+api_instance = openapi_client.ExerciseRestControllerApi()
+id = 789 # Long |  (default to null)
+
+try:
+    api_response = api_instance.delete_exercise_pdf(id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ExerciseRestControllerApi->deleteExercisePdf: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-deleteExercisePdf-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate ExerciseRestControllerApi;
+
+pub fn main() {
+    let id = 789; // Long
+
+    let mut context = ExerciseRestControllerApi::Context::default();
+    let result = client.deleteExercisePdf(id, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">id*</td>
+<td>
+
+
+    <div id="d2e199_deleteExercisePdf_id">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Long
+                </span>
+                    <span class="format">
+                        (int64)
+                    </span>
+
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-ExerciseRestController-deleteExercisePdf-title-404"></h3>
+                            <p id="examples-ExerciseRestController-deleteExercisePdf-description-404" class="marked"></p>
+                            <script>
+                              var responseExerciseRestController404_description = `Not Found`;
+                              var responseExerciseRestController404_description_break = responseExerciseRestController404_description.indexOf('\n');
+                              if (responseExerciseRestController404_description_break == -1) {
+                                $("#examples-ExerciseRestController-deleteExercisePdf-title-404").text("Status: 404 - " + responseExerciseRestController404_description);
+                              } else {
+                                $("#examples-ExerciseRestController-deleteExercisePdf-title-404").text("Status: 404 - " + responseExerciseRestController404_description.substring(0, responseExerciseRestController404_description_break));
+                                $("#examples-ExerciseRestController-deleteExercisePdf-description-404").html(responseExerciseRestController404_description.substring(responseExerciseRestController404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ExerciseRestController-deleteExercisePdf-404" class="nav nav-tabs nav-tabs-examples" >
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ExerciseRestController-deleteExercisePdf-404-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-ExerciseRestController-deleteExercisePdf-404-schema">
+                                <div id="responses-ExerciseRestController-deleteExercisePdf-schema-404" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Not Found"
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-ExerciseRestController-deleteExercisePdf-404-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-ExerciseRestController-deleteExercisePdf-schema-404');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-ExerciseRestController-deleteExercisePdf-404-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-ExerciseRestController-deleteExercisePdf-title-200"></h3>
+                            <p id="examples-ExerciseRestController-deleteExercisePdf-description-200" class="marked"></p>
+                            <script>
+                              var responseExerciseRestController200_description = `OK`;
+                              var responseExerciseRestController200_description_break = responseExerciseRestController200_description.indexOf('\n');
+                              if (responseExerciseRestController200_description_break == -1) {
+                                $("#examples-ExerciseRestController-deleteExercisePdf-title-200").text("Status: 200 - " + responseExerciseRestController200_description);
+                              } else {
+                                $("#examples-ExerciseRestController-deleteExercisePdf-title-200").text("Status: 200 - " + responseExerciseRestController200_description.substring(0, responseExerciseRestController200_description_break));
+                                $("#examples-ExerciseRestController-deleteExercisePdf-description-200").html(responseExerciseRestController200_description.substring(responseExerciseRestController200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ExerciseRestController-deleteExercisePdf-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ExerciseRestController-deleteExercisePdf-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ExerciseRestController-deleteExercisePdf-200-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-ExerciseRestController-deleteExercisePdf-200-schema">
+                                <div id="responses-ExerciseRestController-deleteExercisePdf-schema-200" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "OK",
+  "content" : {
+    "*/*" : {
+      "schema" : {
+        "type" : "object"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-ExerciseRestController-deleteExercisePdf-200-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-ExerciseRestController-deleteExercisePdf-schema-200');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-ExerciseRestController-deleteExercisePdf-200-schema-data' type='hidden' value=''></input>
                               </div>
                             </div>
                         </article>
@@ -6017,6 +6977,436 @@ pub fn main() {
                         </article>
                       </div>
                       <hr>
+                    <div id="api-ExerciseRestController-getExercisePdf">
+                      <article id="api-ExerciseRestController-getExercisePdf-0" data-group="User" data-name="getExercisePdf" data-version="0">
+                        <div class="pull-left">
+                          <h1>getExercisePdf</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/api/v1/exercises/{id}/pdf</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-ExerciseRestController-getExercisePdf-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-java">Java</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-dart">Dart</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-python">Python</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-getExercisePdf-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-ExerciseRestController-getExercisePdf-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X GET \
+ -H "Accept: */*" \
+ "http://localhost:8081/api/v1/exercises/{id}/pdf"
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.ExerciseRestControllerApi;
+
+import java.io.File;
+import java.util.*;
+
+public class ExerciseRestControllerApiExample {
+    public static void main(String[] args) {
+
+        // Create an instance of the API class
+        ExerciseRestControllerApi apiInstance = new ExerciseRestControllerApi();
+        Long id = 789; // Long | 
+
+        try {
+            Object result = apiInstance.getExercisePdf(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ExerciseRestControllerApi#getExercisePdf");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-dart">
+                            <pre class="prettyprint"><code class="language-dart">import 'package:openapi/api.dart';
+
+final api_instance = DefaultApi();
+
+final Long id = new Long(); // Long | 
+
+try {
+    final result = await api_instance.getExercisePdf(id);
+    print(result);
+} catch (e) {
+    print('Exception when calling DefaultApi->getExercisePdf: $e\n');
+}
+
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.ExerciseRestControllerApi;
+
+public class ExerciseRestControllerApiExample {
+    public static void main(String[] args) {
+        ExerciseRestControllerApi apiInstance = new ExerciseRestControllerApi();
+        Long id = 789; // Long | 
+
+        try {
+            Object result = apiInstance.getExercisePdf(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ExerciseRestControllerApi#getExercisePdf");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">
+
+// Create an instance of the API class
+ExerciseRestControllerApi *apiInstance = [[ExerciseRestControllerApi alloc] init];
+Long *id = 789; //  (default to null)
+
+[apiInstance getExercisePdfWith:id
+              completionHandler: ^(Object output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var OpenApiDefinition = require('open_api_definition');
+
+// Create an instance of the API class
+var api = new OpenApiDefinition.ExerciseRestControllerApi()
+var id = 789; // {Long} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getExercisePdf(id, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Org.OpenAPITools.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.Model;
+
+namespace Example
+{
+    public class getExercisePdfExample
+    {
+        public void main()
+        {
+
+            // Create an instance of the API class
+            var apiInstance = new ExerciseRestControllerApi();
+            var id = 789;  // Long |  (default to null)
+
+            try {
+                Object result = apiInstance.getExercisePdf(id);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling ExerciseRestControllerApi.getExercisePdf: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\ExerciseRestControllerApi();
+$id = 789; // Long | 
+
+try {
+    $result = $api_instance->getExercisePdf($id);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling ExerciseRestControllerApi->getExercisePdf: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::ExerciseRestControllerApi;
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::ExerciseRestControllerApi->new();
+my $id = 789; # Long | 
+
+eval {
+    my $result = $api_instance->getExercisePdf(id => $id);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling ExerciseRestControllerApi->getExercisePdf: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Create an instance of the API class
+api_instance = openapi_client.ExerciseRestControllerApi()
+id = 789 # Long |  (default to null)
+
+try:
+    api_response = api_instance.get_exercise_pdf(id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ExerciseRestControllerApi->getExercisePdf: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-getExercisePdf-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate ExerciseRestControllerApi;
+
+pub fn main() {
+    let id = 789; // Long
+
+    let mut context = ExerciseRestControllerApi::Context::default();
+    let result = client.getExercisePdf(id, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">id*</td>
+<td>
+
+
+    <div id="d2e199_getExercisePdf_id">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Long
+                </span>
+                    <span class="format">
+                        (int64)
+                    </span>
+
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-ExerciseRestController-getExercisePdf-title-404"></h3>
+                            <p id="examples-ExerciseRestController-getExercisePdf-description-404" class="marked"></p>
+                            <script>
+                              var responseExerciseRestController404_description = `Not Found`;
+                              var responseExerciseRestController404_description_break = responseExerciseRestController404_description.indexOf('\n');
+                              if (responseExerciseRestController404_description_break == -1) {
+                                $("#examples-ExerciseRestController-getExercisePdf-title-404").text("Status: 404 - " + responseExerciseRestController404_description);
+                              } else {
+                                $("#examples-ExerciseRestController-getExercisePdf-title-404").text("Status: 404 - " + responseExerciseRestController404_description.substring(0, responseExerciseRestController404_description_break));
+                                $("#examples-ExerciseRestController-getExercisePdf-description-404").html(responseExerciseRestController404_description.substring(responseExerciseRestController404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ExerciseRestController-getExercisePdf-404" class="nav nav-tabs nav-tabs-examples" >
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ExerciseRestController-getExercisePdf-404-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-ExerciseRestController-getExercisePdf-404-schema">
+                                <div id="responses-ExerciseRestController-getExercisePdf-schema-404" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Not Found"
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-ExerciseRestController-getExercisePdf-404-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-ExerciseRestController-getExercisePdf-schema-404');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-ExerciseRestController-getExercisePdf-404-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-ExerciseRestController-getExercisePdf-title-200"></h3>
+                            <p id="examples-ExerciseRestController-getExercisePdf-description-200" class="marked"></p>
+                            <script>
+                              var responseExerciseRestController200_description = `OK`;
+                              var responseExerciseRestController200_description_break = responseExerciseRestController200_description.indexOf('\n');
+                              if (responseExerciseRestController200_description_break == -1) {
+                                $("#examples-ExerciseRestController-getExercisePdf-title-200").text("Status: 200 - " + responseExerciseRestController200_description);
+                              } else {
+                                $("#examples-ExerciseRestController-getExercisePdf-title-200").text("Status: 200 - " + responseExerciseRestController200_description.substring(0, responseExerciseRestController200_description_break));
+                                $("#examples-ExerciseRestController-getExercisePdf-description-200").html(responseExerciseRestController200_description.substring(responseExerciseRestController200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ExerciseRestController-getExercisePdf-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ExerciseRestController-getExercisePdf-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ExerciseRestController-getExercisePdf-200-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-ExerciseRestController-getExercisePdf-200-schema">
+                                <div id="responses-ExerciseRestController-getExercisePdf-schema-200" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "OK",
+  "content" : {
+    "*/*" : {
+      "schema" : {
+        "type" : "object"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-ExerciseRestController-getExercisePdf-200-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-ExerciseRestController-getExercisePdf-schema-200');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-ExerciseRestController-getExercisePdf-200-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-ExerciseRestController-getExercises">
                       <article id="api-ExerciseRestController-getExercises-0" data-group="User" data-name="getExercises" data-version="0">
                         <div class="pull-left">
@@ -6135,8 +7525,8 @@ public class ExerciseRestControllerApiExample {
 // Create an instance of the API class
 ExerciseRestControllerApi *apiInstance = [[ExerciseRestControllerApi alloc] init];
 Pageable *pageable = ; //  (default to null)
-Long *listId = 789; //  (default to null)
-String *nameFilter = nameFilter_example; //  (default to null)
+Long *listId = 789; //  (optional) (default to null)
+String *nameFilter = nameFilter_example; //  (optional) (default to null)
 
 [apiInstance getExercisesWith:pageable
     listId:listId
@@ -6158,8 +7548,10 @@ String *nameFilter = nameFilter_example; //  (default to null)
 // Create an instance of the API class
 var api = new OpenApiDefinition.ExerciseRestControllerApi()
 var pageable = ; // {Pageable} 
-var listId = 789; // {Long} 
-var nameFilter = nameFilter_example; // {String} 
+var opts = {
+  'listId': 789, // {Long} 
+  'nameFilter': nameFilter_example // {String} 
+};
 
 var callback = function(error, data, response) {
   if (error) {
@@ -6168,7 +7560,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.getExercises(pageable, listId, nameFilter, callback);
+api.getExercises(pageable, opts, callback);
 </code></pre>
                             </div>
 
@@ -6192,8 +7584,8 @@ namespace Example
             // Create an instance of the API class
             var apiInstance = new ExerciseRestControllerApi();
             var pageable = new Pageable(); // Pageable |  (default to null)
-            var listId = 789;  // Long |  (default to null)
-            var nameFilter = nameFilter_example;  // String |  (default to null)
+            var listId = 789;  // Long |  (optional)  (default to null)
+            var nameFilter = nameFilter_example;  // String |  (optional)  (default to null)
 
             try {
                 PagedModelExerciseDTO result = apiInstance.getExercises(pageable, listId, nameFilter);
@@ -6256,11 +7648,11 @@ from pprint import pprint
 # Create an instance of the API class
 api_instance = openapi_client.ExerciseRestControllerApi()
 pageable =  # Pageable |  (default to null)
-listId = 789 # Long |  (default to null)
-nameFilter = nameFilter_example # String |  (default to null)
+listId = 789 # Long |  (optional) (default to null)
+nameFilter = nameFilter_example # String |  (optional) (default to null)
 
 try:
-    api_response = api_instance.get_exercises(pageable, listId, nameFilter)
+    api_response = api_instance.get_exercises(pageable, listId=listId, nameFilter=nameFilter)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ExerciseRestControllerApi->getExercises: %s\n" % e)</code></pre>
@@ -6320,7 +7712,7 @@ pub fn main() {
 </td>
 </tr>
 
-                                <tr><td style="width:150px;">listId*</td>
+                                <tr><td style="width:150px;">listId</td>
 <td>
 
 
@@ -6335,15 +7727,12 @@ pub fn main() {
                     </span>
 
             </div>
-                <div class="inner required">
-                    Required
-                </div>
         </div>
     </div>
 </td>
 </tr>
 
-                                <tr><td style="width:150px;">nameFilter*</td>
+                                <tr><td style="width:150px;">nameFilter</td>
 <td>
 
 
@@ -6355,9 +7744,6 @@ pub fn main() {
                 </span>
 
             </div>
-                <div class="inner required">
-                    Required
-                </div>
         </div>
     </div>
 </td>
@@ -6998,6 +8384,498 @@ $(document).ready(function() {
                                   </script>
                                 </div>
                                 <input id='responses-ExerciseRestController-updateExercise-200-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-ExerciseRestController-uploadExercisePdf">
+                      <article id="api-ExerciseRestController-uploadExercisePdf-0" data-group="User" data-name="uploadExercisePdf" data-version="0">
+                        <div class="pull-left">
+                          <h1>uploadExercisePdf</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="put"><code><span class="pln">/api/v1/exercises/{id}/pdf</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-ExerciseRestController-uploadExercisePdf-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-java">Java</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-dart">Dart</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-python">Python</a></li>
+                          <li class=""><a href="#examples-ExerciseRestController-uploadExercisePdf-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-ExerciseRestController-uploadExercisePdf-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X PUT \
+ -H "Accept: */*" \
+ -H "Content-Type: application/json" \
+ "http://localhost:8081/api/v1/exercises/{id}/pdf" \
+ -d ''
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.ExerciseRestControllerApi;
+
+import java.io.File;
+import java.util.*;
+
+public class ExerciseRestControllerApiExample {
+    public static void main(String[] args) {
+
+        // Create an instance of the API class
+        ExerciseRestControllerApi apiInstance = new ExerciseRestControllerApi();
+        Long id = 789; // Long | 
+        UploadExercisePdfRequest uploadExercisePdfRequest = ; // UploadExercisePdfRequest | 
+
+        try {
+            Object result = apiInstance.uploadExercisePdf(id, uploadExercisePdfRequest);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ExerciseRestControllerApi#uploadExercisePdf");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-dart">
+                            <pre class="prettyprint"><code class="language-dart">import 'package:openapi/api.dart';
+
+final api_instance = DefaultApi();
+
+final Long id = new Long(); // Long | 
+final UploadExercisePdfRequest uploadExercisePdfRequest = new UploadExercisePdfRequest(); // UploadExercisePdfRequest | 
+
+try {
+    final result = await api_instance.uploadExercisePdf(id, uploadExercisePdfRequest);
+    print(result);
+} catch (e) {
+    print('Exception when calling DefaultApi->uploadExercisePdf: $e\n');
+}
+
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.ExerciseRestControllerApi;
+
+public class ExerciseRestControllerApiExample {
+    public static void main(String[] args) {
+        ExerciseRestControllerApi apiInstance = new ExerciseRestControllerApi();
+        Long id = 789; // Long | 
+        UploadExercisePdfRequest uploadExercisePdfRequest = ; // UploadExercisePdfRequest | 
+
+        try {
+            Object result = apiInstance.uploadExercisePdf(id, uploadExercisePdfRequest);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ExerciseRestControllerApi#uploadExercisePdf");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">
+
+// Create an instance of the API class
+ExerciseRestControllerApi *apiInstance = [[ExerciseRestControllerApi alloc] init];
+Long *id = 789; //  (default to null)
+UploadExercisePdfRequest *uploadExercisePdfRequest = ; //  (optional)
+
+[apiInstance uploadExercisePdfWith:id
+    uploadExercisePdfRequest:uploadExercisePdfRequest
+              completionHandler: ^(Object output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var OpenApiDefinition = require('open_api_definition');
+
+// Create an instance of the API class
+var api = new OpenApiDefinition.ExerciseRestControllerApi()
+var id = 789; // {Long} 
+var opts = {
+  'uploadExercisePdfRequest':  // {UploadExercisePdfRequest} 
+};
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.uploadExercisePdf(id, opts, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Org.OpenAPITools.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.Model;
+
+namespace Example
+{
+    public class uploadExercisePdfExample
+    {
+        public void main()
+        {
+
+            // Create an instance of the API class
+            var apiInstance = new ExerciseRestControllerApi();
+            var id = 789;  // Long |  (default to null)
+            var uploadExercisePdfRequest = new UploadExercisePdfRequest(); // UploadExercisePdfRequest |  (optional) 
+
+            try {
+                Object result = apiInstance.uploadExercisePdf(id, uploadExercisePdfRequest);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling ExerciseRestControllerApi.uploadExercisePdf: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\ExerciseRestControllerApi();
+$id = 789; // Long | 
+$uploadExercisePdfRequest = ; // UploadExercisePdfRequest | 
+
+try {
+    $result = $api_instance->uploadExercisePdf($id, $uploadExercisePdfRequest);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling ExerciseRestControllerApi->uploadExercisePdf: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::ExerciseRestControllerApi;
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::ExerciseRestControllerApi->new();
+my $id = 789; # Long | 
+my $uploadExercisePdfRequest = WWW::OPenAPIClient::Object::UploadExercisePdfRequest->new(); # UploadExercisePdfRequest | 
+
+eval {
+    my $result = $api_instance->uploadExercisePdf(id => $id, uploadExercisePdfRequest => $uploadExercisePdfRequest);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling ExerciseRestControllerApi->uploadExercisePdf: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Create an instance of the API class
+api_instance = openapi_client.ExerciseRestControllerApi()
+id = 789 # Long |  (default to null)
+uploadExercisePdfRequest =  # UploadExercisePdfRequest |  (optional)
+
+try:
+    api_response = api_instance.upload_exercise_pdf(id, uploadExercisePdfRequest=uploadExercisePdfRequest)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ExerciseRestControllerApi->uploadExercisePdf: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ExerciseRestController-uploadExercisePdf-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate ExerciseRestControllerApi;
+
+pub fn main() {
+    let id = 789; // Long
+    let uploadExercisePdfRequest = ; // UploadExercisePdfRequest
+
+    let mut context = ExerciseRestControllerApi::Context::default();
+    let result = client.uploadExercisePdf(id, uploadExercisePdfRequest, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">id*</td>
+<td>
+
+
+    <div id="d2e199_uploadExercisePdf_id">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Long
+                </span>
+                    <span class="format">
+                        (int64)
+                    </span>
+
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">uploadExercisePdfRequest </td>
+<td>
+<p class="marked"></p>
+<script>
+$(document).ready(function() {
+  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/uploadExercisePdf_request"
+      }
+    }
+  }
+};
+
+  var schema = findNode('schema',schemaWrapper).schema;
+  if (!schema) {
+    schema = schemaWrapper.schema;
+  }
+  if (schema.$ref != null) {
+    schema = defsParser.$refs.get(schema.$ref);
+  } else if (schema.items != null && schema.items.$ref != null) {
+    schema.items = defsParser.$refs.get(schema.items.$ref);
+  } else {
+    schemaWrapper.definitions = Object.assign({}, defs);
+    $RefParser.dereference(schemaWrapper).catch(function(err) {
+      console.log(err);
+    });
+  }
+
+  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+  var result = $('#d2e199_uploadExercisePdf_uploadExercisePdfRequest');
+  result.empty();
+  result.append(view.render());
+});
+</script>
+<div id="d2e199_uploadExercisePdf_uploadExercisePdfRequest"></div>
+</td>
+</tr>
+
+                            </table>
+
+
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-ExerciseRestController-uploadExercisePdf-title-404"></h3>
+                            <p id="examples-ExerciseRestController-uploadExercisePdf-description-404" class="marked"></p>
+                            <script>
+                              var responseExerciseRestController404_description = `Not Found`;
+                              var responseExerciseRestController404_description_break = responseExerciseRestController404_description.indexOf('\n');
+                              if (responseExerciseRestController404_description_break == -1) {
+                                $("#examples-ExerciseRestController-uploadExercisePdf-title-404").text("Status: 404 - " + responseExerciseRestController404_description);
+                              } else {
+                                $("#examples-ExerciseRestController-uploadExercisePdf-title-404").text("Status: 404 - " + responseExerciseRestController404_description.substring(0, responseExerciseRestController404_description_break));
+                                $("#examples-ExerciseRestController-uploadExercisePdf-description-404").html(responseExerciseRestController404_description.substring(responseExerciseRestController404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ExerciseRestController-uploadExercisePdf-404" class="nav nav-tabs nav-tabs-examples" >
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ExerciseRestController-uploadExercisePdf-404-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-ExerciseRestController-uploadExercisePdf-404-schema">
+                                <div id="responses-ExerciseRestController-uploadExercisePdf-schema-404" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Not Found"
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-ExerciseRestController-uploadExercisePdf-404-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-ExerciseRestController-uploadExercisePdf-schema-404');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-ExerciseRestController-uploadExercisePdf-404-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-ExerciseRestController-uploadExercisePdf-title-200"></h3>
+                            <p id="examples-ExerciseRestController-uploadExercisePdf-description-200" class="marked"></p>
+                            <script>
+                              var responseExerciseRestController200_description = `OK`;
+                              var responseExerciseRestController200_description_break = responseExerciseRestController200_description.indexOf('\n');
+                              if (responseExerciseRestController200_description_break == -1) {
+                                $("#examples-ExerciseRestController-uploadExercisePdf-title-200").text("Status: 200 - " + responseExerciseRestController200_description);
+                              } else {
+                                $("#examples-ExerciseRestController-uploadExercisePdf-title-200").text("Status: 200 - " + responseExerciseRestController200_description.substring(0, responseExerciseRestController200_description_break));
+                                $("#examples-ExerciseRestController-uploadExercisePdf-description-200").html(responseExerciseRestController200_description.substring(responseExerciseRestController200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-ExerciseRestController-uploadExercisePdf-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-ExerciseRestController-uploadExercisePdf-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-ExerciseRestController-uploadExercisePdf-200-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-ExerciseRestController-uploadExercisePdf-200-schema">
+                                <div id="responses-ExerciseRestController-uploadExercisePdf-schema-200" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "OK",
+  "content" : {
+    "*/*" : {
+      "schema" : {
+        "type" : "object"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-ExerciseRestController-uploadExercisePdf-200-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-ExerciseRestController-uploadExercisePdf-schema-200');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-ExerciseRestController-uploadExercisePdf-200-schema-data' type='hidden' value=''></input>
                               </div>
                             </div>
                         </article>
@@ -10042,6 +11920,866 @@ pub fn main() {
                   </section>
                 <section id="api-PostRestController">
                   <h1>PostRestController</h1>
+                    <div id="api-PostRestController-deletePostById">
+                      <article id="api-PostRestController-deletePostById-0" data-group="User" data-name="deletePostById" data-version="0">
+                        <div class="pull-left">
+                          <h1>deletePostById</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/api/v1/posts/{id}</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-PostRestController-deletePostById-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-PostRestController-deletePostById-0-java">Java</a></li>
+                          <li class=""><a href="#examples-PostRestController-deletePostById-0-dart">Dart</a></li>
+                          <li class=""><a href="#examples-PostRestController-deletePostById-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-PostRestController-deletePostById-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-PostRestController-deletePostById-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-PostRestController-deletePostById-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-PostRestController-deletePostById-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-PostRestController-deletePostById-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-PostRestController-deletePostById-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-PostRestController-deletePostById-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-PostRestController-deletePostById-0-python">Python</a></li>
+                          <li class=""><a href="#examples-PostRestController-deletePostById-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-PostRestController-deletePostById-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE \
+ -H "Accept: */*" \
+ "http://localhost:8081/api/v1/posts/{id}"
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-PostRestController-deletePostById-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.PostRestControllerApi;
+
+import java.io.File;
+import java.util.*;
+
+public class PostRestControllerApiExample {
+    public static void main(String[] args) {
+
+        // Create an instance of the API class
+        PostRestControllerApi apiInstance = new PostRestControllerApi();
+        Long id = 789; // Long | 
+
+        try {
+            Object result = apiInstance.deletePostById(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PostRestControllerApi#deletePostById");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-PostRestController-deletePostById-0-dart">
+                            <pre class="prettyprint"><code class="language-dart">import 'package:openapi/api.dart';
+
+final api_instance = DefaultApi();
+
+final Long id = new Long(); // Long | 
+
+try {
+    final result = await api_instance.deletePostById(id);
+    print(result);
+} catch (e) {
+    print('Exception when calling DefaultApi->deletePostById: $e\n');
+}
+
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-PostRestController-deletePostById-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.PostRestControllerApi;
+
+public class PostRestControllerApiExample {
+    public static void main(String[] args) {
+        PostRestControllerApi apiInstance = new PostRestControllerApi();
+        Long id = 789; // Long | 
+
+        try {
+            Object result = apiInstance.deletePostById(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PostRestControllerApi#deletePostById");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-PostRestController-deletePostById-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-PostRestController-deletePostById-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">
+
+// Create an instance of the API class
+PostRestControllerApi *apiInstance = [[PostRestControllerApi alloc] init];
+Long *id = 789; //  (default to null)
+
+[apiInstance deletePostByIdWith:id
+              completionHandler: ^(Object output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostRestController-deletePostById-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var OpenApiDefinition = require('open_api_definition');
+
+// Create an instance of the API class
+var api = new OpenApiDefinition.PostRestControllerApi()
+var id = 789; // {Long} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.deletePostById(id, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-PostRestController-deletePostById-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-PostRestController-deletePostById-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Org.OpenAPITools.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.Model;
+
+namespace Example
+{
+    public class deletePostByIdExample
+    {
+        public void main()
+        {
+
+            // Create an instance of the API class
+            var apiInstance = new PostRestControllerApi();
+            var id = 789;  // Long |  (default to null)
+
+            try {
+                Object result = apiInstance.deletePostById(id);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling PostRestControllerApi.deletePostById: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostRestController-deletePostById-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\PostRestControllerApi();
+$id = 789; // Long | 
+
+try {
+    $result = $api_instance->deletePostById($id);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling PostRestControllerApi->deletePostById: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostRestController-deletePostById-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::PostRestControllerApi;
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::PostRestControllerApi->new();
+my $id = 789; # Long | 
+
+eval {
+    my $result = $api_instance->deletePostById(id => $id);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling PostRestControllerApi->deletePostById: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostRestController-deletePostById-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Create an instance of the API class
+api_instance = openapi_client.PostRestControllerApi()
+id = 789 # Long |  (default to null)
+
+try:
+    api_response = api_instance.delete_post_by_id(id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling PostRestControllerApi->deletePostById: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostRestController-deletePostById-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate PostRestControllerApi;
+
+pub fn main() {
+    let id = 789; // Long
+
+    let mut context = PostRestControllerApi::Context::default();
+    let result = client.deletePostById(id, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">id*</td>
+<td>
+
+
+    <div id="d2e199_deletePostById_id">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Long
+                </span>
+                    <span class="format">
+                        (int64)
+                    </span>
+
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-PostRestController-deletePostById-title-404"></h3>
+                            <p id="examples-PostRestController-deletePostById-description-404" class="marked"></p>
+                            <script>
+                              var responsePostRestController404_description = `Not Found`;
+                              var responsePostRestController404_description_break = responsePostRestController404_description.indexOf('\n');
+                              if (responsePostRestController404_description_break == -1) {
+                                $("#examples-PostRestController-deletePostById-title-404").text("Status: 404 - " + responsePostRestController404_description);
+                              } else {
+                                $("#examples-PostRestController-deletePostById-title-404").text("Status: 404 - " + responsePostRestController404_description.substring(0, responsePostRestController404_description_break));
+                                $("#examples-PostRestController-deletePostById-description-404").html(responsePostRestController404_description.substring(responsePostRestController404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-PostRestController-deletePostById-404" class="nav nav-tabs nav-tabs-examples" >
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-PostRestController-deletePostById-404-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-PostRestController-deletePostById-404-schema">
+                                <div id="responses-PostRestController-deletePostById-schema-404" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Not Found"
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-PostRestController-deletePostById-404-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-PostRestController-deletePostById-schema-404');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-PostRestController-deletePostById-404-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-PostRestController-deletePostById-title-200"></h3>
+                            <p id="examples-PostRestController-deletePostById-description-200" class="marked"></p>
+                            <script>
+                              var responsePostRestController200_description = `OK`;
+                              var responsePostRestController200_description_break = responsePostRestController200_description.indexOf('\n');
+                              if (responsePostRestController200_description_break == -1) {
+                                $("#examples-PostRestController-deletePostById-title-200").text("Status: 200 - " + responsePostRestController200_description);
+                              } else {
+                                $("#examples-PostRestController-deletePostById-title-200").text("Status: 200 - " + responsePostRestController200_description.substring(0, responsePostRestController200_description_break));
+                                $("#examples-PostRestController-deletePostById-description-200").html(responsePostRestController200_description.substring(responsePostRestController200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-PostRestController-deletePostById-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-PostRestController-deletePostById-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-PostRestController-deletePostById-200-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-PostRestController-deletePostById-200-schema">
+                                <div id="responses-PostRestController-deletePostById-schema-200" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "OK",
+  "content" : {
+    "*/*" : {
+      "schema" : {
+        "type" : "object"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-PostRestController-deletePostById-200-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-PostRestController-deletePostById-schema-200');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-PostRestController-deletePostById-200-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-PostRestController-getPostById">
+                      <article id="api-PostRestController-getPostById-0" data-group="User" data-name="getPostById" data-version="0">
+                        <div class="pull-left">
+                          <h1>getPostById</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/api/v1/posts/{id}</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-PostRestController-getPostById-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-PostRestController-getPostById-0-java">Java</a></li>
+                          <li class=""><a href="#examples-PostRestController-getPostById-0-dart">Dart</a></li>
+                          <li class=""><a href="#examples-PostRestController-getPostById-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-PostRestController-getPostById-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-PostRestController-getPostById-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-PostRestController-getPostById-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-PostRestController-getPostById-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-PostRestController-getPostById-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-PostRestController-getPostById-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-PostRestController-getPostById-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-PostRestController-getPostById-0-python">Python</a></li>
+                          <li class=""><a href="#examples-PostRestController-getPostById-0-rust">Rust</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-PostRestController-getPostById-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X GET \
+ -H "Accept: */*" \
+ "http://localhost:8081/api/v1/posts/{id}"
+</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-PostRestController-getPostById-0-java">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.model.*;
+import org.openapitools.client.api.PostRestControllerApi;
+
+import java.io.File;
+import java.util.*;
+
+public class PostRestControllerApiExample {
+    public static void main(String[] args) {
+
+        // Create an instance of the API class
+        PostRestControllerApi apiInstance = new PostRestControllerApi();
+        Long id = 789; // Long | 
+
+        try {
+            PostDTO result = apiInstance.getPostById(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PostRestControllerApi#getPostById");
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-PostRestController-getPostById-0-dart">
+                            <pre class="prettyprint"><code class="language-dart">import 'package:openapi/api.dart';
+
+final api_instance = DefaultApi();
+
+final Long id = new Long(); // Long | 
+
+try {
+    final result = await api_instance.getPostById(id);
+    print(result);
+} catch (e) {
+    print('Exception when calling DefaultApi->getPostById: $e\n');
+}
+
+</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-PostRestController-getPostById-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.PostRestControllerApi;
+
+public class PostRestControllerApiExample {
+    public static void main(String[] args) {
+        PostRestControllerApi apiInstance = new PostRestControllerApi();
+        Long id = 789; // Long | 
+
+        try {
+            PostDTO result = apiInstance.getPostById(id);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling PostRestControllerApi#getPostById");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-PostRestController-getPostById-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-PostRestController-getPostById-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">
+
+// Create an instance of the API class
+PostRestControllerApi *apiInstance = [[PostRestControllerApi alloc] init];
+Long *id = 789; //  (default to null)
+
+[apiInstance getPostByIdWith:id
+              completionHandler: ^(PostDTO output, NSError* error) {
+    if (output) {
+        NSLog(@"%@", output);
+    }
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+}];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostRestController-getPostById-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var OpenApiDefinition = require('open_api_definition');
+
+// Create an instance of the API class
+var api = new OpenApiDefinition.PostRestControllerApi()
+var id = 789; // {Long} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getPostById(id, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-PostRestController-getPostById-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-PostRestController-getPostById-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using Org.OpenAPITools.Api;
+using Org.OpenAPITools.Client;
+using Org.OpenAPITools.Model;
+
+namespace Example
+{
+    public class getPostByIdExample
+    {
+        public void main()
+        {
+
+            // Create an instance of the API class
+            var apiInstance = new PostRestControllerApi();
+            var id = 789;  // Long |  (default to null)
+
+            try {
+                PostDTO result = apiInstance.getPostById(id);
+                Debug.WriteLine(result);
+            } catch (Exception e) {
+                Debug.Print("Exception when calling PostRestControllerApi.getPostById: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostRestController-getPostById-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Create an instance of the API class
+$api_instance = new OpenAPITools\Client\Api\PostRestControllerApi();
+$id = 789; // Long | 
+
+try {
+    $result = $api_instance->getPostById($id);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling PostRestControllerApi->getPostById: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostRestController-getPostById-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::OPenAPIClient::Configuration;
+use WWW::OPenAPIClient::PostRestControllerApi;
+
+# Create an instance of the API class
+my $api_instance = WWW::OPenAPIClient::PostRestControllerApi->new();
+my $id = 789; # Long | 
+
+eval {
+    my $result = $api_instance->getPostById(id => $id);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling PostRestControllerApi->getPostById: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostRestController-getPostById-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import openapi_client
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Create an instance of the API class
+api_instance = openapi_client.PostRestControllerApi()
+id = 789 # Long |  (default to null)
+
+try:
+    api_response = api_instance.get_post_by_id(id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling PostRestControllerApi->getPostById: %s\n" % e)</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-PostRestController-getPostById-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate PostRestControllerApi;
+
+pub fn main() {
+    let id = 789; // Long
+
+    let mut context = PostRestControllerApi::Context::default();
+    let result = client.getPostById(id, &context).wait();
+
+    println!("{:?}", result);
+}
+</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Scopes</h2>
+                          <table>
+                            
+                          </table>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">id*</td>
+<td>
+
+
+    <div id="d2e199_getPostById_id">
+        <div class="json-schema-view">
+            <div class="primitive">
+                <span class="type">
+                    Long
+                </span>
+                    <span class="format">
+                        (int64)
+                    </span>
+
+            </div>
+                <div class="inner required">
+                    Required
+                </div>
+        </div>
+    </div>
+</td>
+</tr>
+
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3 id="examples-PostRestController-getPostById-title-404"></h3>
+                            <p id="examples-PostRestController-getPostById-description-404" class="marked"></p>
+                            <script>
+                              var responsePostRestController404_description = `Not Found`;
+                              var responsePostRestController404_description_break = responsePostRestController404_description.indexOf('\n');
+                              if (responsePostRestController404_description_break == -1) {
+                                $("#examples-PostRestController-getPostById-title-404").text("Status: 404 - " + responsePostRestController404_description);
+                              } else {
+                                $("#examples-PostRestController-getPostById-title-404").text("Status: 404 - " + responsePostRestController404_description.substring(0, responsePostRestController404_description_break));
+                                $("#examples-PostRestController-getPostById-description-404").html(responsePostRestController404_description.substring(responsePostRestController404_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-PostRestController-getPostById-404" class="nav nav-tabs nav-tabs-examples" >
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-PostRestController-getPostById-404-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-PostRestController-getPostById-404-schema">
+                                <div id="responses-PostRestController-getPostById-schema-404" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "Not Found"
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-PostRestController-getPostById-404-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-PostRestController-getPostById-schema-404');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-PostRestController-getPostById-404-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                            <h3 id="examples-PostRestController-getPostById-title-200"></h3>
+                            <p id="examples-PostRestController-getPostById-description-200" class="marked"></p>
+                            <script>
+                              var responsePostRestController200_description = `OK`;
+                              var responsePostRestController200_description_break = responsePostRestController200_description.indexOf('\n');
+                              if (responsePostRestController200_description_break == -1) {
+                                $("#examples-PostRestController-getPostById-title-200").text("Status: 200 - " + responsePostRestController200_description);
+                              } else {
+                                $("#examples-PostRestController-getPostById-title-200").text("Status: 200 - " + responsePostRestController200_description.substring(0, responsePostRestController200_description_break));
+                                $("#examples-PostRestController-getPostById-description-200").html(responsePostRestController200_description.substring(responsePostRestController200_description_break));
+                              }
+                            </script>
+
+
+                            <ul id="responses-detail-PostRestController-getPostById-200" class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-PostRestController-getPostById-200-schema">Schema</a>
+                                </li>
+
+
+
+
+                            </ul>
+
+
+                            <div class="tab-content" id="responses-PostRestController-getPostById-200-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-PostRestController-getPostById-200-schema">
+                                <div id="responses-PostRestController-getPostById-schema-200" class="exampleStyle">
+                                  <script>
+                                    $(document).ready(function() {
+                                      var schemaWrapper = {
+  "description" : "OK",
+  "content" : {
+    "*/*" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/PostDTO"
+      }
+    }
+  }
+};
+                                      var schema = findNode('schema',schemaWrapper).schema;
+                                      if (!schema) {
+                                        schema = schemaWrapper.schema;
+                                      }
+                                      if (schema == null) {
+                                        return;
+                                      }
+                                      if (schema.$ref != null) {
+                                        schema = defsParser.$refs.get(schema.$ref);
+                                        if (schema.properties != null) {
+                                          Object.keys(schema.properties).forEach( (item) => {
+                                            if (schema.properties[item].$ref != null) {
+                                              schema.properties[item] = defsParser.$refs.get(schema.properties[item].$ref);
+                                            }
+                                          });
+                                        }
+                                      } else if (schema.items != null && schema.items.$ref != null) {
+                                        schema.items = defsParser.$refs.get(schema.items.$ref);
+                                      } else {
+                                        schemaWrapper.definitions = Object.assign({}, defs);
+                                        $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                          console.log(err);
+                                        });
+                                      }
+
+                                      var view = new JSONSchemaView(schema, 3);
+                                      $('#responses-PostRestController-getPostById-200-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-PostRestController-getPostById-schema-200');
+                                      result.empty();
+                                      result.append(view.render());
+                                    });
+                                  </script>
+                                </div>
+                                <input id='responses-PostRestController-getPostById-200-schema-data' type='hidden' value=''></input>
+                              </div>
+                            </div>
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-PostRestController-getPosts">
                       <article id="api-PostRestController-getPosts-0" data-group="User" data-name="getPosts" data-version="0">
                         <div class="pull-left">
@@ -10502,13 +13240,10 @@ pub fn main() {
                         </article>
                       </div>
                       <hr>
-                  </section>
-                <section id="api-SolutionRestController">
-                  <h1>SolutionRestController</h1>
-                    <div id="api-SolutionRestController-createSolution">
-                      <article id="api-SolutionRestController-createSolution-0" data-group="User" data-name="createSolution" data-version="0">
+                    <div id="api-PostRestController-postNewPost">
+                      <article id="api-PostRestController-postNewPost-0" data-group="User" data-name="postNewPost" data-version="0">
                         <div class="pull-left">
-                          <h1>createSolution</h1>
+                          <h1>postNewPost</h1>
                           <p></p>
                         </div>
                         <div class="pull-right"></div>
@@ -10517,102 +13252,61 @@ pub fn main() {
                         <p class="marked"></p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/api/v1/solutions/</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/api/v1/posts/</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
                         <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-SolutionRestController-createSolution-0-curl">Curl</a></li>
-                          <li class=""><a href="#examples-SolutionRestController-createSolution-0-java">Java</a></li>
-                          <li class=""><a href="#examples-SolutionRestController-createSolution-0-dart">Dart</a></li>
-                          <li class=""><a href="#examples-SolutionRestController-createSolution-0-android">Android</a></li>
-                          <!--<li class=""><a href="#examples-SolutionRestController-createSolution-0-groovy">Groovy</a></li>-->
-                          <li class=""><a href="#examples-SolutionRestController-createSolution-0-objc">Obj-C</a></li>
-                          <li class=""><a href="#examples-SolutionRestController-createSolution-0-javascript">JavaScript</a></li>
-                          <!--<li class=""><a href="#examples-SolutionRestController-createSolution-0-angular">Angular</a></li>-->
-                          <li class=""><a href="#examples-SolutionRestController-createSolution-0-csharp">C#</a></li>
-                          <li class=""><a href="#examples-SolutionRestController-createSolution-0-php">PHP</a></li>
-                          <li class=""><a href="#examples-SolutionRestController-createSolution-0-perl">Perl</a></li>
-                          <li class=""><a href="#examples-SolutionRestController-createSolution-0-python">Python</a></li>
-                          <li class=""><a href="#examples-SolutionRestController-createSolution-0-rust">Rust</a></li>
+                          <li class="active"><a href="#examples-PostRestController-postNewPost-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-PostRestController-postNewPost-0-java">Java</a></li>
+                          <li class=""><a href="#examples-PostRestController-postNewPost-0-dart">Dart</a></li>
+                          <li class=""><a href="#examples-PostRestController-postNewPost-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-PostRestController-postNewPost-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-PostRestController-postNewPost-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-PostRestController-postNewPost-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-PostRestController-postNewPost-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-PostRestController-postNewPost-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-PostRestController-postNewPost-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-PostRestController-postNewPost-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-PostRestController-postNewPost-0-python">Python</a></li>
+                          <li class=""><a href="#examples-PostRestController-postNewPost-0-rust">Rust</a></li>
                         </ul>
 
                         <div class="tab-content">
-                          <div class="tab-pane active" id="examples-SolutionRestController-createSolution-0-curl">
+                          <div class="tab-pane active" id="examples-PostRestController-postNewPost-0-curl">
                             <pre class="prettyprint"><code class="language-bsh">curl -X POST \
  -H "Accept: */*" \
  -H "Content-Type: application/json" \
- "http://localhost:8081/api/v1/solutions/" \
+ "http://localhost:8081/api/v1/posts/" \
  -d '{
-  &quot;owner&quot; : {
-    &quot;name&quot; : &quot;name&quot;,
-    &quot;id&quot; : 1,
-    &quot;email&quot; : &quot;email&quot;
-  },
-  &quot;comments&quot; : [ {
-    &quot;owner&quot; : {
-      &quot;name&quot; : &quot;name&quot;,
-      &quot;id&quot; : 1,
-      &quot;email&quot; : &quot;email&quot;
-    },
-    &quot;solution&quot; : {
-      &quot;name&quot; : &quot;name&quot;,
-      &quot;id&quot; : 6
-    },
-    &quot;lastUpdate&quot; : &quot;2000-01-23T04:56:07.000+00:00&quot;,
-    &quot;id&quot; : 0,
-    &quot;text&quot; : &quot;text&quot;
-  }, {
-    &quot;owner&quot; : {
-      &quot;name&quot; : &quot;name&quot;,
-      &quot;id&quot; : 1,
-      &quot;email&quot; : &quot;email&quot;
-    },
-    &quot;solution&quot; : {
-      &quot;name&quot; : &quot;name&quot;,
-      &quot;id&quot; : 6
-    },
-    &quot;lastUpdate&quot; : &quot;2000-01-23T04:56:07.000+00:00&quot;,
-    &quot;id&quot; : 0,
-    &quot;text&quot; : &quot;text&quot;
-  } ],
-  &quot;solImage&quot; : {
-    &quot;id&quot; : 5
-  },
-  &quot;lastUpdate&quot; : &quot;2000-01-23T04:56:07.000+00:00&quot;,
-  &quot;name&quot; : &quot;name&quot;,
+  &quot;actionType&quot; : &quot;actionType&quot;,
+  &quot;header&quot; : &quot;header&quot;,
   &quot;description&quot; : &quot;description&quot;,
-  &quot;exercise&quot; : {
-    &quot;description&quot; : &quot;description&quot;,
-    &quot;numSolutions&quot; : 1,
-    &quot;id&quot; : 6,
-    &quot;title&quot; : &quot;title&quot;
-  },
-  &quot;id&quot; : 0
+  &quot;contentLink&quot; : &quot;contentLink&quot;
 }'
 </code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-SolutionRestController-createSolution-0-java">
+                          <div class="tab-pane" id="examples-PostRestController-postNewPost-0-java">
                             <pre class="prettyprint"><code class="language-java">import org.openapitools.client.*;
 import org.openapitools.client.auth.*;
 import org.openapitools.client.model.*;
-import org.openapitools.client.api.SolutionRestControllerApi;
+import org.openapitools.client.api.PostRestControllerApi;
 
 import java.io.File;
 import java.util.*;
 
-public class SolutionRestControllerApiExample {
+public class PostRestControllerApiExample {
     public static void main(String[] args) {
 
         // Create an instance of the API class
-        SolutionRestControllerApi apiInstance = new SolutionRestControllerApi();
-        SolutionDTO solutionDTO = ; // SolutionDTO | 
+        PostRestControllerApi apiInstance = new PostRestControllerApi();
+        PostCreateDTO postCreateDTO = ; // PostCreateDTO | 
 
         try {
-            Object result = apiInstance.createSolution(solutionDTO);
+            Object result = apiInstance.postNewPost(postCreateDTO);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling SolutionRestControllerApi#createSolution");
+            System.err.println("Exception when calling PostRestControllerApi#postNewPost");
             e.printStackTrace();
         }
     }
@@ -10620,53 +13314,53 @@ public class SolutionRestControllerApiExample {
 </code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-SolutionRestController-createSolution-0-dart">
+                          <div class="tab-pane" id="examples-PostRestController-postNewPost-0-dart">
                             <pre class="prettyprint"><code class="language-dart">import 'package:openapi/api.dart';
 
 final api_instance = DefaultApi();
 
-final SolutionDTO solutionDTO = new SolutionDTO(); // SolutionDTO | 
+final PostCreateDTO postCreateDTO = new PostCreateDTO(); // PostCreateDTO | 
 
 try {
-    final result = await api_instance.createSolution(solutionDTO);
+    final result = await api_instance.postNewPost(postCreateDTO);
     print(result);
 } catch (e) {
-    print('Exception when calling DefaultApi->createSolution: $e\n');
+    print('Exception when calling DefaultApi->postNewPost: $e\n');
 }
 
 </code></pre>
                           </div>
 
-                          <div class="tab-pane" id="examples-SolutionRestController-createSolution-0-android">
-                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.SolutionRestControllerApi;
+                          <div class="tab-pane" id="examples-PostRestController-postNewPost-0-android">
+                            <pre class="prettyprint"><code class="language-java">import org.openapitools.client.api.PostRestControllerApi;
 
-public class SolutionRestControllerApiExample {
+public class PostRestControllerApiExample {
     public static void main(String[] args) {
-        SolutionRestControllerApi apiInstance = new SolutionRestControllerApi();
-        SolutionDTO solutionDTO = ; // SolutionDTO | 
+        PostRestControllerApi apiInstance = new PostRestControllerApi();
+        PostCreateDTO postCreateDTO = ; // PostCreateDTO | 
 
         try {
-            Object result = apiInstance.createSolution(solutionDTO);
+            Object result = apiInstance.postNewPost(postCreateDTO);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling SolutionRestControllerApi#createSolution");
+            System.err.println("Exception when calling PostRestControllerApi#postNewPost");
             e.printStackTrace();
         }
     }
 }</code></pre>
                           </div>
   <!--
-  <div class="tab-pane" id="examples-SolutionRestController-createSolution-0-groovy">
+  <div class="tab-pane" id="examples-PostRestController-postNewPost-0-groovy">
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
-                            <div class="tab-pane" id="examples-SolutionRestController-createSolution-0-objc">
+                            <div class="tab-pane" id="examples-PostRestController-postNewPost-0-objc">
                               <pre class="prettyprint"><code class="language-cpp">
 
 // Create an instance of the API class
-SolutionRestControllerApi *apiInstance = [[SolutionRestControllerApi alloc] init];
-SolutionDTO *solutionDTO = ; // 
+PostRestControllerApi *apiInstance = [[PostRestControllerApi alloc] init];
+PostCreateDTO *postCreateDTO = ; // 
 
-[apiInstance createSolutionWith:solutionDTO
+[apiInstance postNewPostWith:postCreateDTO
               completionHandler: ^(Object output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
@@ -10678,12 +13372,12 @@ SolutionDTO *solutionDTO = ; //
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-SolutionRestController-createSolution-0-javascript">
+                            <div class="tab-pane" id="examples-PostRestController-postNewPost-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var OpenApiDefinition = require('open_api_definition');
 
 // Create an instance of the API class
-var api = new OpenApiDefinition.SolutionRestControllerApi()
-var solutionDTO = ; // {SolutionDTO} 
+var api = new OpenApiDefinition.PostRestControllerApi()
+var postCreateDTO = ; // {PostCreateDTO} 
 
 var callback = function(error, data, response) {
   if (error) {
@@ -10692,14 +13386,14 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.createSolution(solutionDTO, callback);
+api.postNewPost(postCreateDTO, callback);
 </code></pre>
                             </div>
 
-                            <!--<div class="tab-pane" id="examples-SolutionRestController-createSolution-0-angular">
+                            <!--<div class="tab-pane" id="examples-PostRestController-postNewPost-0-angular">
               <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
             </div>-->
-                            <div class="tab-pane" id="examples-SolutionRestController-createSolution-0-csharp">
+                            <div class="tab-pane" id="examples-PostRestController-postNewPost-0-csharp">
                               <pre class="prettyprint"><code class="language-cs">using System;
 using System.Diagnostics;
 using Org.OpenAPITools.Api;
@@ -10708,20 +13402,20 @@ using Org.OpenAPITools.Model;
 
 namespace Example
 {
-    public class createSolutionExample
+    public class postNewPostExample
     {
         public void main()
         {
 
             // Create an instance of the API class
-            var apiInstance = new SolutionRestControllerApi();
-            var solutionDTO = new SolutionDTO(); // SolutionDTO | 
+            var apiInstance = new PostRestControllerApi();
+            var postCreateDTO = new PostCreateDTO(); // PostCreateDTO | 
 
             try {
-                Object result = apiInstance.createSolution(solutionDTO);
+                Object result = apiInstance.postNewPost(postCreateDTO);
                 Debug.WriteLine(result);
             } catch (Exception e) {
-                Debug.Print("Exception when calling SolutionRestControllerApi.createSolution: " + e.Message );
+                Debug.Print("Exception when calling PostRestControllerApi.postNewPost: " + e.Message );
             }
         }
     }
@@ -10729,42 +13423,42 @@ namespace Example
 </code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-SolutionRestController-createSolution-0-php">
+                            <div class="tab-pane" id="examples-PostRestController-postNewPost-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Create an instance of the API class
-$api_instance = new OpenAPITools\Client\Api\SolutionRestControllerApi();
-$solutionDTO = ; // SolutionDTO | 
+$api_instance = new OpenAPITools\Client\Api\PostRestControllerApi();
+$postCreateDTO = ; // PostCreateDTO | 
 
 try {
-    $result = $api_instance->createSolution($solutionDTO);
+    $result = $api_instance->postNewPost($postCreateDTO);
     print_r($result);
 } catch (Exception $e) {
-    echo 'Exception when calling SolutionRestControllerApi->createSolution: ', $e->getMessage(), PHP_EOL;
+    echo 'Exception when calling PostRestControllerApi->postNewPost: ', $e->getMessage(), PHP_EOL;
 }
 ?></code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-SolutionRestController-createSolution-0-perl">
+                            <div class="tab-pane" id="examples-PostRestController-postNewPost-0-perl">
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::OPenAPIClient::Configuration;
-use WWW::OPenAPIClient::SolutionRestControllerApi;
+use WWW::OPenAPIClient::PostRestControllerApi;
 
 # Create an instance of the API class
-my $api_instance = WWW::OPenAPIClient::SolutionRestControllerApi->new();
-my $solutionDTO = WWW::OPenAPIClient::Object::SolutionDTO->new(); # SolutionDTO | 
+my $api_instance = WWW::OPenAPIClient::PostRestControllerApi->new();
+my $postCreateDTO = WWW::OPenAPIClient::Object::PostCreateDTO->new(); # PostCreateDTO | 
 
 eval {
-    my $result = $api_instance->createSolution(solutionDTO => $solutionDTO);
+    my $result = $api_instance->postNewPost(postCreateDTO => $postCreateDTO);
     print Dumper($result);
 };
 if ($@) {
-    warn "Exception when calling SolutionRestControllerApi->createSolution: $@\n";
+    warn "Exception when calling PostRestControllerApi->postNewPost: $@\n";
 }</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-SolutionRestController-createSolution-0-python">
+                            <div class="tab-pane" id="examples-PostRestController-postNewPost-0-python">
                               <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
 import time
 import openapi_client
@@ -10772,24 +13466,24 @@ from openapi_client.rest import ApiException
 from pprint import pprint
 
 # Create an instance of the API class
-api_instance = openapi_client.SolutionRestControllerApi()
-solutionDTO =  # SolutionDTO | 
+api_instance = openapi_client.PostRestControllerApi()
+postCreateDTO =  # PostCreateDTO | 
 
 try:
-    api_response = api_instance.create_solution(solutionDTO)
+    api_response = api_instance.post_new_post(postCreateDTO)
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling SolutionRestControllerApi->createSolution: %s\n" % e)</code></pre>
+    print("Exception when calling PostRestControllerApi->postNewPost: %s\n" % e)</code></pre>
                             </div>
 
-                            <div class="tab-pane" id="examples-SolutionRestController-createSolution-0-rust">
-                              <pre class="prettyprint"><code class="language-rust">extern crate SolutionRestControllerApi;
+                            <div class="tab-pane" id="examples-PostRestController-postNewPost-0-rust">
+                              <pre class="prettyprint"><code class="language-rust">extern crate PostRestControllerApi;
 
 pub fn main() {
-    let solutionDTO = ; // SolutionDTO
+    let postCreateDTO = ; // PostCreateDTO
 
-    let mut context = SolutionRestControllerApi::Context::default();
-    let result = client.createSolution(solutionDTO, &context).wait();
+    let mut context = PostRestControllerApi::Context::default();
+    let result = client.postNewPost(postCreateDTO, &context).wait();
 
     println!("{:?}", result);
 }
@@ -10812,7 +13506,7 @@ pub fn main() {
                                 <th width="150px">Name</th>
                                 <th>Description</th>
                               </tr>
-                                <tr><td style="width:150px;">solutionDTO <span style="color:red;">*</span></td>
+                                <tr><td style="width:150px;">postCreateDTO <span style="color:red;">*</span></td>
 <td>
 <p class="marked"></p>
 <script>
@@ -10821,7 +13515,7 @@ $(document).ready(function() {
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/SolutionDTO"
+        "$ref" : "#/components/schemas/PostCreateDTO"
       }
     }
   },
@@ -10844,12 +13538,12 @@ $(document).ready(function() {
   }
 
   var view = new JSONSchemaView(schema,2,{isBodyParam: true});
-  var result = $('#d2e199_createSolution_solutionDTO');
+  var result = $('#d2e199_postNewPost_postCreateDTO');
   result.empty();
   result.append(view.render());
 });
 </script>
-<div id="d2e199_createSolution_solutionDTO"></div>
+<div id="d2e199_postNewPost_postCreateDTO"></div>
 </td>
 </tr>
 
@@ -10858,29 +13552,29 @@ $(document).ready(function() {
 
 
                           <h2>Responses</h2>
-                            <h3 id="examples-SolutionRestController-createSolution-title-404"></h3>
-                            <p id="examples-SolutionRestController-createSolution-description-404" class="marked"></p>
+                            <h3 id="examples-PostRestController-postNewPost-title-404"></h3>
+                            <p id="examples-PostRestController-postNewPost-description-404" class="marked"></p>
                             <script>
-                              var responseSolutionRestController404_description = `Not Found`;
-                              var responseSolutionRestController404_description_break = responseSolutionRestController404_description.indexOf('\n');
-                              if (responseSolutionRestController404_description_break == -1) {
-                                $("#examples-SolutionRestController-createSolution-title-404").text("Status: 404 - " + responseSolutionRestController404_description);
+                              var responsePostRestController404_description = `Not Found`;
+                              var responsePostRestController404_description_break = responsePostRestController404_description.indexOf('\n');
+                              if (responsePostRestController404_description_break == -1) {
+                                $("#examples-PostRestController-postNewPost-title-404").text("Status: 404 - " + responsePostRestController404_description);
                               } else {
-                                $("#examples-SolutionRestController-createSolution-title-404").text("Status: 404 - " + responseSolutionRestController404_description.substring(0, responseSolutionRestController404_description_break));
-                                $("#examples-SolutionRestController-createSolution-description-404").html(responseSolutionRestController404_description.substring(responseSolutionRestController404_description_break));
+                                $("#examples-PostRestController-postNewPost-title-404").text("Status: 404 - " + responsePostRestController404_description.substring(0, responsePostRestController404_description_break));
+                                $("#examples-PostRestController-postNewPost-description-404").html(responsePostRestController404_description.substring(responsePostRestController404_description_break));
                               }
                             </script>
 
 
-                            <ul id="responses-detail-SolutionRestController-createSolution-404" class="nav nav-tabs nav-tabs-examples" >
+                            <ul id="responses-detail-PostRestController-postNewPost-404" class="nav nav-tabs nav-tabs-examples" >
 
 
                             </ul>
 
 
-                            <div class="tab-content" id="responses-SolutionRestController-createSolution-404-wrapper" style='margin-bottom: 10px;'>
-                              <div class="tab-pane active" id="responses-SolutionRestController-createSolution-404-schema">
-                                <div id="responses-SolutionRestController-createSolution-schema-404" class="exampleStyle">
+                            <div class="tab-content" id="responses-PostRestController-postNewPost-404-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-PostRestController-postNewPost-404-schema">
+                                <div id="responses-PostRestController-postNewPost-schema-404" class="exampleStyle">
                                   <script>
                                     $(document).ready(function() {
                                       var schemaWrapper = {
@@ -10912,33 +13606,33 @@ $(document).ready(function() {
                                       }
 
                                       var view = new JSONSchemaView(schema, 3);
-                                      $('#responses-SolutionRestController-createSolution-404-schema-data').val(JSON.stringify(schema));
-                                      var result = $('#responses-SolutionRestController-createSolution-schema-404');
+                                      $('#responses-PostRestController-postNewPost-404-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-PostRestController-postNewPost-schema-404');
                                       result.empty();
                                       result.append(view.render());
                                     });
                                   </script>
                                 </div>
-                                <input id='responses-SolutionRestController-createSolution-404-schema-data' type='hidden' value=''></input>
+                                <input id='responses-PostRestController-postNewPost-404-schema-data' type='hidden' value=''></input>
                               </div>
                             </div>
-                            <h3 id="examples-SolutionRestController-createSolution-title-200"></h3>
-                            <p id="examples-SolutionRestController-createSolution-description-200" class="marked"></p>
+                            <h3 id="examples-PostRestController-postNewPost-title-200"></h3>
+                            <p id="examples-PostRestController-postNewPost-description-200" class="marked"></p>
                             <script>
-                              var responseSolutionRestController200_description = `OK`;
-                              var responseSolutionRestController200_description_break = responseSolutionRestController200_description.indexOf('\n');
-                              if (responseSolutionRestController200_description_break == -1) {
-                                $("#examples-SolutionRestController-createSolution-title-200").text("Status: 200 - " + responseSolutionRestController200_description);
+                              var responsePostRestController200_description = `OK`;
+                              var responsePostRestController200_description_break = responsePostRestController200_description.indexOf('\n');
+                              if (responsePostRestController200_description_break == -1) {
+                                $("#examples-PostRestController-postNewPost-title-200").text("Status: 200 - " + responsePostRestController200_description);
                               } else {
-                                $("#examples-SolutionRestController-createSolution-title-200").text("Status: 200 - " + responseSolutionRestController200_description.substring(0, responseSolutionRestController200_description_break));
-                                $("#examples-SolutionRestController-createSolution-description-200").html(responseSolutionRestController200_description.substring(responseSolutionRestController200_description_break));
+                                $("#examples-PostRestController-postNewPost-title-200").text("Status: 200 - " + responsePostRestController200_description.substring(0, responsePostRestController200_description_break));
+                                $("#examples-PostRestController-postNewPost-description-200").html(responsePostRestController200_description.substring(responsePostRestController200_description_break));
                               }
                             </script>
 
 
-                            <ul id="responses-detail-SolutionRestController-createSolution-200" class="nav nav-tabs nav-tabs-examples" >
+                            <ul id="responses-detail-PostRestController-postNewPost-200" class="nav nav-tabs nav-tabs-examples" >
                                 <li class="active">
-                                  <a data-toggle="tab" href="#responses-SolutionRestController-createSolution-200-schema">Schema</a>
+                                  <a data-toggle="tab" href="#responses-PostRestController-postNewPost-200-schema">Schema</a>
                                 </li>
 
 
@@ -10947,9 +13641,9 @@ $(document).ready(function() {
                             </ul>
 
 
-                            <div class="tab-content" id="responses-SolutionRestController-createSolution-200-wrapper" style='margin-bottom: 10px;'>
-                              <div class="tab-pane active" id="responses-SolutionRestController-createSolution-200-schema">
-                                <div id="responses-SolutionRestController-createSolution-schema-200" class="exampleStyle">
+                            <div class="tab-content" id="responses-PostRestController-postNewPost-200-wrapper" style='margin-bottom: 10px;'>
+                              <div class="tab-pane active" id="responses-PostRestController-postNewPost-200-schema">
+                                <div id="responses-PostRestController-postNewPost-schema-200" class="exampleStyle">
                                   <script>
                                     $(document).ready(function() {
                                       var schemaWrapper = {
@@ -10988,19 +13682,22 @@ $(document).ready(function() {
                                       }
 
                                       var view = new JSONSchemaView(schema, 3);
-                                      $('#responses-SolutionRestController-createSolution-200-schema-data').val(JSON.stringify(schema));
-                                      var result = $('#responses-SolutionRestController-createSolution-schema-200');
+                                      $('#responses-PostRestController-postNewPost-200-schema-data').val(JSON.stringify(schema));
+                                      var result = $('#responses-PostRestController-postNewPost-schema-200');
                                       result.empty();
                                       result.append(view.render());
                                     });
                                   </script>
                                 </div>
-                                <input id='responses-SolutionRestController-createSolution-200-schema-data' type='hidden' value=''></input>
+                                <input id='responses-PostRestController-postNewPost-200-schema-data' type='hidden' value=''></input>
                               </div>
                             </div>
                         </article>
                       </div>
                       <hr>
+                  </section>
+                <section id="api-SolutionRestController">
+                  <h1>SolutionRestController</h1>
                     <div id="api-SolutionRestController-createSolutionPDF">
                       <article id="api-SolutionRestController-createSolutionPDF-0" data-group="User" data-name="createSolutionPDF" data-version="0">
                         <div class="pull-left">
@@ -12785,7 +15482,7 @@ public class SolutionRestControllerApiExample {
         CommentPostDTO commentPostDTO = ; // CommentPostDTO | 
 
         try {
-            CommentDTO result = apiInstance.postComment(id, commentPostDTO);
+            Object result = apiInstance.postComment(id, commentPostDTO);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling SolutionRestControllerApi#postComment");
@@ -12824,7 +15521,7 @@ public class SolutionRestControllerApiExample {
         CommentPostDTO commentPostDTO = ; // CommentPostDTO | 
 
         try {
-            CommentDTO result = apiInstance.postComment(id, commentPostDTO);
+            Object result = apiInstance.postComment(id, commentPostDTO);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling SolutionRestControllerApi#postComment");
@@ -12847,7 +15544,7 @@ CommentPostDTO *commentPostDTO = ; //
 
 [apiInstance postCommentWith:id
     commentPostDTO:commentPostDTO
-              completionHandler: ^(CommentDTO output, NSError* error) {
+              completionHandler: ^(Object output, NSError* error) {
     if (output) {
         NSLog(@"%@", output);
     }
@@ -12900,7 +15597,7 @@ namespace Example
             var commentPostDTO = new CommentPostDTO(); // CommentPostDTO | 
 
             try {
-                CommentDTO result = apiInstance.postComment(id, commentPostDTO);
+                Object result = apiInstance.postComment(id, commentPostDTO);
                 Debug.WriteLine(result);
             } catch (Exception e) {
                 Debug.Print("Exception when calling SolutionRestControllerApi.postComment: " + e.Message );
@@ -13173,7 +15870,7 @@ $(document).ready(function() {
   "content" : {
     "*/*" : {
       "schema" : {
-        "$ref" : "#/components/schemas/CommentDTO"
+        "type" : "object"
       }
     }
   }

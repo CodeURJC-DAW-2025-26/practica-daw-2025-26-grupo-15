@@ -122,6 +122,7 @@
 				<configuration>
 					<!-- Change if error with used port-->
 					<jmxPort>8100</jmxPort>
+					<jvmArguments>-Dserver.port=8081 -Dserver.ssl.enabled=false</jvmArguments>
 				</configuration>
 				<executions>
 					<execution>
