@@ -586,6 +586,27 @@
             }
           },
           "response": []
+        },
+         {
+          "name": "Get Number Of Followers (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/1/number-of-followers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "1",
+                "number-of-followers"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },

@@ -185,10 +185,14 @@ public class UserRestController {
 
     @GetMapping("/me/follow-requests/")
     public ResponseEntity<?> getFollowRequests(Principal principal) {
-        User user = userService.getUser(principal.getName());
-        List<UserBasicInfoDTO> followRequests = userMapper.toBasicInfoDTOs(user.getRequestReceived());
-        return ResponseEntity.ok(followRequests);
-         
+        try {
+            if (principal == null) throw new SecurityException("User not authenticated");
+            User user = userService.getUser(principal.getName());
+            List<UserBasicInfoDTO> followRequests = userMapper.toBasicInfoDTOs(user.getRequestReceived());
+            return ResponseEntity.ok(followRequests);
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", e.getMessage()));
+        }       
     }
 
     @DeleteMapping("/me/follows/{targetId}")

@@ -79,6 +79,8 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/api/v1/users/").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/users/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/users/{id}/number-of-followers").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/users/{id}/number-of-following").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/exercises/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/exerciselists/**").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/v1/exercises/{id}").permitAll()
