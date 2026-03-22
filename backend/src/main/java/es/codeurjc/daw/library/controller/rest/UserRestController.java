@@ -77,6 +77,7 @@ public class UserRestController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", e.getMessage()));
         }
     }
+
     @GetMapping("/me")
     public UserDTO getUserLogged(HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
@@ -168,7 +169,7 @@ public class UserRestController {
     
     }
 
-    
+
     @PostMapping("/{targetId}/follow-requests/")
     public ResponseEntity<?> sendFollowRequest(Principal principal, @PathVariable Long targetId) {
         try{
@@ -279,6 +280,30 @@ public class UserRestController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
         }
         
+    }
+
+    @GetMapping("/{id}/number-of-followers")
+    public ResponseEntity<?> getNumberOfFollowers(@PathVariable Long id) {
+        try{
+            User user = userService.getUser(id);
+            long count = user.getFollowers().size();
+            return ResponseEntity.ok(Map.of("number-of-followers", count));
+        }
+        catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/{id}/number-of-following")
+    public ResponseEntity<?> getNumberOfFollowing(@PathVariable Long id) {
+        try{
+            User user = userService.getUser(id);
+            long count = user.getFollowing().size();
+            return ResponseEntity.ok(Map.of("number-of-following", count));
+        }
+        catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+        }
     }
     
 }
