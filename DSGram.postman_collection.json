@@ -565,6 +565,27 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Get Number Of Following (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/1/number-of-following",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "1",
+                "number-of-following"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
