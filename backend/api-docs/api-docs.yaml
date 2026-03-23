@@ -781,6 +781,27 @@ paths:
               schema:
                 type: string
                 format: byte
+  /api/v1/users/{id}/following-statistics:
+    get:
+      tags:
+      - user-rest-controller
+      operationId: getFollowingStatistics
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
   /api/v1/users/me:
     get:
       tags:

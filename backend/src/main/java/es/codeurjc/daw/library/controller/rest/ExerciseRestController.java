@@ -96,9 +96,7 @@ public class ExerciseRestController {
         try{
         
         User user = userService.getUser(request.getUserPrincipal().getName());
-
-        Exercise updatedExercise = exerciseService.updateExercise(id, exerciseMapper.toEntity(exercisePutDTO), user, null); //TODO: pdf file update
-    
+        Exercise updatedExercise = exerciseService.updateExercise(id, exerciseMapper.toEntity(exercisePutDTO), user, null);
         return ResponseEntity.ok(exerciseMapper.toDTO(updatedExercise));
         
         }catch(SecurityException e){
