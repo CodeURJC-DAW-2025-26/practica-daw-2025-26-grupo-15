@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.Normalizer;
 
-import java.util.NoSuchElementException;
-
 import org.springframework.web.multipart.MultipartFile;
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.Image;
