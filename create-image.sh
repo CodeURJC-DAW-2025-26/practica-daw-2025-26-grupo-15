@@ -15,4 +15,4 @@ if [ -z "$USERNAME" ] || [ -z "$TAG" ]; then
 	exit 1
 fi
 
-docker build -t "$USERNAME/dsgram:$TAG" .
+docker build -t "$USERNAME/dsgram-app:$TAG" .

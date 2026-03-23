@@ -15,4 +15,4 @@ if [ -z "$USERNAME" ] || [ -z "$TAG" ]; then
 	exit 1
 fi
 
-docker compose publish "$USERNAME/dsgram-project:$TAG"
+docker compose publish "$USERNAME/dsgram-app-compose:$TAG"

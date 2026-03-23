@@ -15,4 +15,4 @@ if [ -z "$USERNAME" ] || [ -z "$TAG" ]; then
 	exit 1
 fi
 
-docker push "$USERNAME/dsgram:$TAG"
+docker push "$USERNAME/dsgram-app:$TAG"
