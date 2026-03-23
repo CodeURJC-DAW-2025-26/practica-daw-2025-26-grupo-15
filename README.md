@@ -287,10 +287,10 @@ Mientras que la apariencia de las pantallas ha cambiado, el flujo de navegación
    Es obligatorio crear un fichero llamado `.env` en la raíz del repositorio (junto a `start_db.sh`) con las siguientes variables de entorno:
    
    ```properties
-   DB_USERNAME= <usuario>
-   DB_PASSWORD= <contraseña>
-   DB_NAME = <nombre del esquema de BD>
-   SPRING_JPA_HIBERNATE_DDL_AUTO=<Modo de inicialización de la BD>
+   DB_USERNAME=<usuario>
+   DB_PASSWORD=<contraseña>
+   DB_NAME=<nombre del esquema de BD>
+   DB_CONFIG=<Modo de inicialización de la BD>
    KEYSTORE_PASSWORD=<contraseña del keystore>
    KEYSTORE_SECRET=<secreto del keystore>
    GOOGLE_CLIENT_ID=<client id de Google OAuth2>
@@ -443,21 +443,15 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 #### **Pasos para ejecutar con docker-compose:**
 
-1. **Clonar el repositorio** (si no lo has hecho ya):
-   ```bash
-   git clone https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15.git
-   cd practica-daw-2025-26-grupo-15
-   ```
+1. **Crear el archivo `.env`**
 
-2. **Crear el archivo `.env` en la raíz del repositorio**
-
-   Es obligatorio crear un fichero llamado `.env` en la raíz del repositorio con las siguientes variables de entorno:
+   Es obligatorio crear un fichero llamado `.env` en el lugar donde se vaya a ejecutar el comando docker compose con las siguientes variables de entorno:
 
    ```properties
-   DB_USERNAME= <usuario>
-   DB_PASSWORD= <contraseña>
-   DB_NAME = <nombre del esquema de BD>
-   SPRING_JPA_HIBERNATE_DDL_AUTO=<Modo de inicialización de la BD>
+   DB_USERNAME=<usuario-bd>
+   DB_PASSWORD=<contraseña-bd>
+   DB_NAME=<nombre-esquema-BD>
+   DB_CONFIG=<Modo-inicialización-BD>
    KEYSTORE_PASSWORD=<contraseña del keystore>
    KEYSTORE_SECRET=<secreto del keystore>
    GOOGLE_CLIENT_ID=<client id de Google OAuth2>
@@ -470,7 +464,7 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 3. **Ejecutar los contenedores**:
    ```bash
-   docker compose up -d
+   env $(cat .env | xargs) docker compose -f oci://docker.io/pruizz/dsgram-app-compose:1.0.0 up
    ```
 
 ### **Construcción de la Imagen Docker**
@@ -484,26 +478,39 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 1. **Construir la imagen**:
    Para construir la imagen etiquetada, puedes ejecutar el script proporcionado indicando tu nombre de usuario de Docker Hub:
    ```bash
-   create-image.sh <tu-usuario-dockerhub>
+   create-image.sh <tu-usuario-dockerhub> <version-tag>
    ```
    O también puedes ejecutar el siguiente comando en el mismo directorio donde se encuentra el Dockerfile:
    ```bash
-   docker build -t <tu-usuario-docker>/<nombre-de-la-imagen>
+   docker build -t <tu-usuario-docker>/<nombre-de-la-imagen>:<version-tag>
    ```
 
 2. **Publicar la imagen**:
    Inicia sesión en Docker y ejecuta el script de subida:
    ```bash
    docker login
-   publish_image.sh <tu-usuario-dockerhub>
+   publish_image.sh <tu-usuario-dockerhub> <version-tag>
    ```
    O también puedes ejecutar el siguiente comando:
     ```bash
    docker login
    docker push <tu-usuario-dockerhub>/<nombre-de-la-imagen>:<version-tag>
    ```
-
-
+3. **Publicar el Compose**:
+   Inicia sesión en Docker y ejecuta el script de subida:
+   ```bash
+   docker login
+   publish_docker-compose.sh <tu-usuario-dockerhub> <version-tag>
+   ```
+   O también puedes ejecutar el siguiente comando en el mismo directorio donde se encuentra el docker-compose:
+    ```bash
+   docker login
+   docker compose publish <tu-usuario-dockerhub>/<nombre-compose>:<version-tag>
+   ```
+4. **Descargar el OCI Artifact y ejecutar los contenedores**:
+   ```bash
+   env $(cat .env | xargs) docker compose -f oci://docker.io/pruizz/dsgram-app-compose:1.0.0 up
+   ```
 
 ### **Despliegue en Máquina Virtual**
 
@@ -525,13 +532,13 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 2. **Crear el archivo `.env`**
 
-   Es obligatorio crear un fichero llamado `.env` en el lugar donde vayas a descargar la imagen de DockerHub:
+   Es obligatorio crear un fichero llamado (`.env`) en el lugar donde vayas a descargar la imagen de DockerHub:
 
    ```properties
-   DB_USERNAME= <usuario>
-   DB_PASSWORD= <contraseña>
-   DB_NAME = <nombre del esquema de BD>
-   SPRING_JPA_HIBERNATE_DDL_AUTO=<Modo de inicialización de la BD>
+   DB_USERNAME=<usuario-bd>
+   DB_PASSWORD=<contraseña-bd>
+   DB_NAME=<nombre-esquema-BD>
+   DB_CONFIG=<Modo-inicialización-BD>
    KEYSTORE_PASSWORD=<contraseña del keystore>
    KEYSTORE_SECRET=<secreto del keystore>
    GOOGLE_CLIENT_ID=<client id de Google OAuth2>
@@ -543,9 +550,9 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
    > Los valores de `KEYSTORE_PASSWORD` y `KEYSTORE_SECRET` deben coincidir con los usados al generar el `keystore.jks` incluido en el proyecto. Los valores de Google y GitHub se obtienen registrando una aplicación OAuth2 en sus respectivas consolas de desarrollador.
 
 3. **Desplegar la aplicación en la VM**:
-   Navega al directorio donde transferiste los archivos e inicia la aplicación:
+   Navega al directorio donde tienes el archivo (`.env`) e inicia la aplicación:
    ```bash
-   docker compose -f oci://docker.io/<usuario-imagen>/dsgram-app-compose:1.0.0 --env-file .env up
+    env $(cat .env | xargs) docker compose -f oci://docker.io/pruizz/dsgram-app-compose:1.0.0 up
    ```
 
 ### **URL de la Aplicación Desplegada**
