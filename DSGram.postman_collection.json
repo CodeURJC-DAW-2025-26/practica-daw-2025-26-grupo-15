@@ -566,34 +566,13 @@
           },
           "response": []
         },
-        {
-          "name": "Get Number Of Following (Public)",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/users/1/number-of-following",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "users",
-                "1",
-                "number-of-following"
-              ]
-            }
-          },
-          "response": []
-        },
          {
-          "name": "Get Number Of Followers (Public)",
+          "name": "Get Following statistics (Public)",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/users/1/number-of-followers",
+              "raw": "{{baseUrl}}/api/v1/users/1/following-statistics",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -602,7 +581,7 @@
                 "v1",
                 "users",
                 "1",
-                "number-of-followers"
+                "following-statistics"
               ]
             }
           },
