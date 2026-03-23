@@ -433,7 +433,8 @@ Control dinámico de los elementos mostrados en la interfaz según el rol del us
 
 Diagrama actualizado incluyendo los @RestController y su relación con los @Service compartidos:
 
-![Diagrama de Clases Actualizado](images/complete-classes-diagram.png)
+![Diagrama de Clases con Web Controllers](images/classes-diagram.jpg)
+![Diagrama de Clases con Rest Controllers](images/rest-classes-diagram.jpg)
 
 ### **Instrucciones de Ejecución con Docker**
 
