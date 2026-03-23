@@ -596,16 +596,17 @@ Responsable de la creación de los endpoints de la entidad Exercise. Implementac
 ---
 
 #### **Alumno 3 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Encargado del listado de todas las entidades listables de forma paginada y dinámica en base a parámetros para lo cual se llevó a cabo la refactorización de búsqueda de elementos listados en un Service, de manera que quede desplazada en la lógica de negocio y sea reutilizable. Encargado a su vez de los endpoints relacionados con la entidad Comentario y de la entidad Post, y con los relacionados con la carga, descarga y borrado del pdf de un ejercicio.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Add pdf upload, download and deletition for Exercise entity](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/bf8a00880eb62dceca5ddcf6a5eb91336cd0a106)  | [ExerciseRestController](backend/src/main/java/es/codeurjc/daw/library/controller/rest/ExerciseRestController.java)   |
+|2| [Add POST & DELETE methods for Post entity, and all methods involved. Fix multiple Security issues regarding authorization in deletition & update, and incorrect exception catches and server response.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/c778eb4a26cad80b9280d258c44ed33af9360d15)  | [PostRestController](backend/src/main/java/es/codeurjc/daw/library/controller/rest/PostRestController.java)   |
+|3| [Add Comment entity POST, GET & DELETE endpoints. Create CommentDTO's & CommentMapper along with implementation of CommentRestController. Fix wrong content load in previous web controllers for pageable petitions.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/c2570bf7440f10493355ce697efe545a4f28e9fd)  | [CommentRestController](backend/src/main/java/es/codeurjc/daw/library/controller/rest/CommentRestController.java)   |
+|4| [feat: complete paged GET petitions for users, posts, exercises and exerciselists depending on parameters.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/1983d1d3201ce023bf2f9ddb226bed946e81f082)  | [SearchService](backend/src/main/java/es/codeurjc/daw/library/service/SearchService.java)   |
+|5| [Refactor searching mecanism to SearchService. Add Page gets for every entity with variable results depending on parameters.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/00611da9e53792ba9f8da390e09c17080806c0cb)  | [PostRestController](backend/src/main/java/es/codeurjc/daw/library/controller/rest/PostRestController.java)   |
+
+En el último commit el archivo más relevante es realmente AdminService, sin embargo este fue eliminado y más tarde refactorizado en SearchService.
 
 ---
 
