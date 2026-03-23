@@ -286,24 +286,13 @@ public class UserRestController {
         
     }
 
-    @GetMapping("/{id}/number-of-followers")
-    public ResponseEntity<?> getNumberOfFollowers(@PathVariable Long id) {
+    @GetMapping("/{id}/following-statistics")
+    public ResponseEntity<?> getFollowingStatistics(@PathVariable Long id) {
         try{
             User user = userService.getUser(id);
-            long count = user.getFollowers().size();
-            return ResponseEntity.ok(Map.of("number-of-followers", count));
-        }
-        catch(IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
-        }
-    }
-
-    @GetMapping("/{id}/number-of-following")
-    public ResponseEntity<?> getNumberOfFollowing(@PathVariable Long id) {
-        try{
-            User user = userService.getUser(id);
-            long count = user.getFollowing().size();
-            return ResponseEntity.ok(Map.of("number-of-following", count));
+            long followersCount = user.getFollowers().size();
+            long followingCount = user.getFollowing().size();
+            return ResponseEntity.ok(Map.of("number-of-followers", followersCount, "number-of-following", followingCount));
         }
         catch(IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
