@@ -285,10 +285,12 @@ Mientras que la apariencia de las pantallas ha cambiado, el flujo de navegación
 2. **Crear el archivo `.env` en la raíz del repositorio**
 
    Es obligatorio crear un fichero llamado `.env` en la raíz del repositorio (junto a `start_db.sh`) con las siguientes variables de entorno:
-
+   
    ```properties
-   DB_USERNAME=root
-   DB_PASSWORD=password
+   DB_USERNAME= <usuario>
+   DB_PASSWORD= <contraseña>
+   DB_NAME = <nombre del esquema de BD>
+   SPRING_JPA_HIBERNATE_DDL_AUTO=<Modo de inicialización de la BD>
    KEYSTORE_PASSWORD=<contraseña del keystore>
    KEYSTORE_SECRET=<secreto del keystore>
    GOOGLE_CLIENT_ID=<client id de Google OAuth2>
@@ -420,10 +422,10 @@ Control dinámico de los elementos mostrados en la interfaz según el rol del us
 ### **Documentación de la API REST**
 
 #### **Especificación OpenAPI**
-📄 **[Especificación OpenAPI (YAML)](/api-docs/api-docs.yaml)**
+📄 **[Especificación OpenAPI (YAML)](backend/api-docs/api-docs.yaml)**
 
 #### **Documentación HTML**
-📖 **[Documentación API REST (HTML)](https://raw.githack.com/[usuario]/[repositorio]/main/api-docs/api-docs.html)**
+📖 **[Documentación API REST (HTML)](https://raw.githack.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/main/backend/api-docs/api-docs.html)**
 
 > La documentación de la API REST se encuentra en la carpeta `/api-docs` del repositorio. Se ha generado automáticamente con SpringDoc a partir de las anotaciones en el código Java.
 
@@ -443,25 +445,65 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 1. **Clonar el repositorio** (si no lo has hecho ya):
    ```bash
-   git clone https://github.com/[usuario]/[repositorio].git
-   cd [repositorio]
+   git clone https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15.git
+   cd practica-daw-2025-26-grupo-15
    ```
 
-2. **AQUÍ LOS SIGUIENTES PASOS**:
+2. **Crear el archivo `.env` en la raíz del repositorio**
+
+   Es obligatorio crear un fichero llamado `.env` en la raíz del repositorio con las siguientes variables de entorno:
+
+   ```properties
+   DB_USERNAME= <usuario>
+   DB_PASSWORD= <contraseña>
+   DB_NAME = <nombre del esquema de BD>
+   SPRING_JPA_HIBERNATE_DDL_AUTO=<Modo de inicialización de la BD>
+   KEYSTORE_PASSWORD=<contraseña del keystore>
+   KEYSTORE_SECRET=<secreto del keystore>
+   GOOGLE_CLIENT_ID=<client id de Google OAuth2>
+   GOOGLE_CLIENT_SECRET=<client secret de Google OAuth2>
+   GITHUB_CLIENT_ID=<client id de GitHub OAuth2>
+   GITHUB_CLIENT_SECRET=<client secret de GitHub OAuth2>
+   ```
+
+   > Los valores de `KEYSTORE_PASSWORD` y `KEYSTORE_SECRET` deben coincidir con los usados al generar el `keystore.jks` incluido en el proyecto. Los valores de Google y GitHub se obtienen registrando una aplicación OAuth2 en sus respectivas consolas de desarrollador.
+
+3. **Ejecutar los contenedores**:
+   ```bash
+   docker compose up -d
+   ```
 
 ### **Construcción de la Imagen Docker**
 
 #### **Requisitos:**
 - Docker instalado en el sistema
+- Una cuenta en Docker Hub u otro registro.
 
 #### **Pasos para construir y publicar la imagen:**
 
-1. **Navegar al directorio de Docker**:
+1. **Construir la imagen**:
+   Para construir la imagen etiquetada, puedes ejecutar el script proporcionado indicando tu nombre de usuario de Docker Hub:
    ```bash
-   cd docker
+   create-image.sh <tu-usuario-dockerhub>
+   ```
+   O también puedes ejecutar el siguiente comando en el mismo directorio donde se encuentra el Dockerfile:
+   ```bash
+   docker build -t <tu-usuario-docker>/<nombre-de-la-imagen>
    ```
 
-2. **AQUÍ LOS SIGUIENTES PASOS**
+2. **Publicar la imagen**:
+   Inicia sesión en Docker y ejecuta el script de subida:
+   ```bash
+   docker login
+   publish_image.sh <tu-usuario-dockerhub>
+   ```
+   O también puedes ejecutar el siguiente comando:
+    ```bash
+   docker login
+   docker push <tu-usuario-dockerhub>/<nombre-de-la-imagen>:<version-tag>
+   ```
+
+
 
 ### **Despliegue en Máquina Virtual**
 
@@ -476,25 +518,44 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
    ```bash
    ssh -i [ruta/a/clave.key] [usuario]@[IP-o-dominio-VM]
    ```
-   
    Ejemplo:
    ```bash
    ssh -i ssh-keys/app.key vmuser@10.100.139.XXX
    ```
 
-2. **AQUÍ LOS SIGUIENTES PASOS**:
+2. **Crear el archivo `.env`**
+
+   Es obligatorio crear un fichero llamado `.env` en el lugar donde vayas a descargar la imagen de DockerHub:
+
+   ```properties
+   DB_USERNAME= <usuario>
+   DB_PASSWORD= <contraseña>
+   DB_NAME = <nombre del esquema de BD>
+   SPRING_JPA_HIBERNATE_DDL_AUTO=<Modo de inicialización de la BD>
+   KEYSTORE_PASSWORD=<contraseña del keystore>
+   KEYSTORE_SECRET=<secreto del keystore>
+   GOOGLE_CLIENT_ID=<client id de Google OAuth2>
+   GOOGLE_CLIENT_SECRET=<client secret de Google OAuth2>
+   GITHUB_CLIENT_ID=<client id de GitHub OAuth2>
+   GITHUB_CLIENT_SECRET=<client secret de GitHub OAuth2>
+   ```
+
+   > Los valores de `KEYSTORE_PASSWORD` y `KEYSTORE_SECRET` deben coincidir con los usados al generar el `keystore.jks` incluido en el proyecto. Los valores de Google y GitHub se obtienen registrando una aplicación OAuth2 en sus respectivas consolas de desarrollador.
+
+3. **Desplegar la aplicación en la VM**:
+   Navega al directorio donde transferiste los archivos e inicia la aplicación:
+   ```bash
+   docker compose -f oci://docker.io/<usuario-imagen>/dsgram-app-compose:1.0.0 --env-file .env up
+   ```
 
 ### **URL de la Aplicación Desplegada**
 
-🌐 **URL de acceso**: `https://[nombre-app].etsii.urjc.es:8443`
+🌐 **URL de acceso**: `https://appweb15.dawgis.etsii.urjc.es:8443`
 
 #### **Credenciales de Usuarios de Ejemplo**
 
-| Rol | Usuario | Contraseña |
-|:---|:---|:---|
-| Administrador | admin | admin123 |
-| Usuario Registrado | user1 | user123 |
-| Usuario Registrado | user2 | user123 |
+- **Usuario Admin**: usuario: `user1@example.com`, contraseña: `pass`
+- **Usuario Registrado**: usuario: `user2@example.com`, contraseña: `pass`
 
 ### **Participación de Miembros en la Práctica 2**
 
@@ -540,17 +601,17 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 ---
 
-#### **Alumno 4 - [Nombre Completo]**
+#### **Alumno 4 - Pablo Ruiz Uroz**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Responsable de la integración del sistema de autenticación mediante JWT. Desarrollo completo de los endpoints de la entidad usuario, junto con la documentación de la API REST. Preparación del sistema para un despliegue dual, permitiendo tanto la carga inicial de datos como la ejecución sin modificaciones en la base de datos. Implementación de un endpoint propio para la exportación a PDF y creación de la colección de Postman para el testing de la API. Desarrollo del Dockerfile y la configuración de Docker Compose.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Add JWT authentication](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/0cf19e3d77120507c6a2763654095ef37ee67c0d)  | [SecurityConfig](backend/src/main/java/es/codeurjc/daw/library/security/SecurityConfig.java)   |
+|2| [Implement User REST endpoints for following logic with security, DTOs, mappers, and error handling](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/4240de136d9f3df0ef3c26cdaa6bc8ad185df49b)  | [UserRestController](backend/src/main/java/es/codeurjc/daw/library/controller/rest/UserRestController.java)   |
+|3| [User CRUD operations and DTO manage](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/9ace2fed3b264810e6a03030a43fce0a5830fbf6)  | [UserRestController](backend/src/main/java/es/codeurjc/daw/library/controller/rest/UserRestController.java)   |
+|4| [Add Image upload and Image REST controllers](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/288b2d13cbeb621469f13bac1307c954396c6e6c)  | [ImageRestController](backend/src/main/java/es/codeurjc/daw/library/controller/rest/ImageRestController.java)   |
+|5| [Dual-start web deployment functionality and Postman collection with all endpoints, additional REST functionalities](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/4f1c7b39422ce904941afdc79bbe131879b5e875#diff-b357bac448d6dbc289cd88013dbf9cc867b6f020f90752c84719856323bb6c0a)  | [DSGram.postman_collection](DSGram.postman_collection.json)   |
 
 ---
 
