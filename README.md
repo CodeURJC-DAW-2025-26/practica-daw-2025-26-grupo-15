@@ -560,17 +560,17 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 ### **Participación de Miembros en la Práctica 2**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - Hugo Capa Mora**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Responsable de migrar la lógica de negocio a arquitectura API REST, implementando los RestControllers para las operaciones CRUD (GET, POST, PUT, DELETE) y creando los DTOs necesarios para la transferencia de datos y manejo de creación de imágenes. Colaborador de la creación de colecciones en Postman para el testeo de los endpoints. Adicionalmente, he colaborado en la configuración de Docker y Docker Compose para el despliegue de la aplicación y su posterior publicación en Docker Hub.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implement REST controllers for comments and solutions, enhance DTOs, and add solution creation logic without image](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/8cee39a4e536437e80c45dc6636a84f11593ea69)  | [SolutionRestController](backend/src/main/java/es/codeurjc/daw/library/controller/rest/SolutionRestController.java)   |
+|2| [feat: enhance ExerciseList and Solution controllers with error handling and response improvements; add image to Solution upload functionality](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/65b04152a777480811c0a16f994af4f972af6d39)  | [SolutionRestController](backend/src/main/java/es/codeurjc/daw/library/controller/rest/SolutionRestController.java)   |
+|3| [feat: enhance ExerciseList functionality with create and update operations; add ExerciseBasicInfoDTO and UserBasicDTO](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/88008ed4aeee0e5796463e778d033cd5bf60c683)  | [ExerciseListRestController](backend/src/main/java/es/codeurjc/daw/library/controller/rest/ExerciseListRestController.java)   |
+|4| [feat: createSolution moved to ExerciseRestController, add ExerciseListPostDTO and SolutionPostDTO; update RestControllers to use new DTOs](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/85e916218dd945c68e63692235e065753a17483f)  | [ExerciseListRestController](backend/src/main/java/es/codeurjc/daw/library/controller/rest/ExerciseListRestController.java)   |
+|5| [feat: implement ExerciseList REST controller with CRUD operations and DTO mapping](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/a41ac87a7890630b44057e65943996c866f7c0a1)  | [ExerciseListDTO](backend/src/main/java/es/codeurjc/daw/library/dto/ExerciseListDTO.java)   |
 
 ---
 
