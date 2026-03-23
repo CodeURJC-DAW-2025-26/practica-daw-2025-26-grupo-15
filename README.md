@@ -553,7 +553,7 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 3. **Desplegar la aplicación en la VM**:
    Navega al directorio donde tienes el archivo (`.env`) e inicia la aplicación:
    ```bash
-    env $(cat .env | xargs) docker compose -f oci://docker.io/pruizz/dsgram-app-compose:1.0.0 up
+    env $(cat .env | xargs) docker compose -f oci://docker.io/<tu-usuario-dockerhub>/<nombre-compose>:<version-tag> up
    ```
 
 ### **URL de la Aplicación Desplegada**
