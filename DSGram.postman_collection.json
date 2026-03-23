@@ -307,12 +307,10 @@
               ]
             },
             "url": {
-              "raw": "https://localhost:8443/api/v1/users/2/images",
-              "protocol": "https",
+              "raw": "{{baseUrl}}/api/v1/users/2/images",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8443",
               "path": [
                 "api",
                 "v1",
@@ -561,27 +559,6 @@
                 "v1",
                 "users",
                 ""
-              ]
-            }
-          },
-          "response": []
-        },
-         {
-          "name": "Get Following statistics (Public)",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/v1/users/1/following-statistics",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "users",
-                "1",
-                "following-statistics"
               ]
             }
           },
