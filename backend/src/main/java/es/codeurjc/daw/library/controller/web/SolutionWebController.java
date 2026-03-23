@@ -1,7 +1,6 @@
 package es.codeurjc.daw.library.controller.web;
 
 import java.security.Principal;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 

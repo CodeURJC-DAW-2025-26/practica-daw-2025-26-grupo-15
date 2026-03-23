@@ -15,9 +15,6 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepo;
 
-    @Autowired
-    private SolutionService solutionService;
-
     public Comment createComment(Comment comment, User user, Solution solution) {
         if (comment.getText() == null || comment.getText().trim().isEmpty()) {
             throw new IllegalArgumentException("Comment text cannot be empty");

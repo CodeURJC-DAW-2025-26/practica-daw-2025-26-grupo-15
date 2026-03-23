@@ -40,7 +40,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import es.codeurjc.daw.library.dto.ImageMapper;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 
 

@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 import es.codeurjc.daw.library.dto.CommentDTO;
 import es.codeurjc.daw.library.dto.CommentMapper;
 import es.codeurjc.daw.library.model.Comment;
-import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.CommentService;
 import es.codeurjc.daw.library.service.UserService;
