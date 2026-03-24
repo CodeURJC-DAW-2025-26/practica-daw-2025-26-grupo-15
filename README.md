@@ -528,7 +528,7 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
    ```
    Ejemplo:
    ```bash
-   ssh -i ssh-keys/app.key vmuser@10.100.139.XXX
+   ssh -i ssh-keys/appWeb15.key vmuser@10.100.139.208
    ```
 
 2. **Crear el archivo `.env`**
@@ -555,6 +555,11 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
    ```bash
     env $(cat .env | xargs) docker compose -f oci://docker.io/<tu-usuario-dockerhub>/<nombre-compose>:<version-tag> up
    ```
+   o usar la imagen ya existente:
+   ```bash
+    env $(cat .env | xargs) docker compose -f oci://docker.io/pruizz/dsgram-app-compose:1.0.0 up
+   ```
+
 
 ### **URL de la Aplicación Desplegada**
 
