@@ -600,7 +600,7 @@ Responsable de la creación de los endpoints de la entidad Exercise. Implementac
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - Jaime Torroba Martínez**
 Encargado del listado de todas las entidades listables de forma paginada y dinámica en base a parámetros para lo cual se llevó a cabo la refactorización de búsqueda de elementos listados en un Service, de manera que quede desplazada en la lógica de negocio y sea reutilizable. Encargado a su vez de los endpoints relacionados con la entidad Comentario y de la entidad Post, y con los relacionados con la carga, descarga y borrado del pdf de un ejercicio.
 
 | Nº    | Commits      | Files      |
