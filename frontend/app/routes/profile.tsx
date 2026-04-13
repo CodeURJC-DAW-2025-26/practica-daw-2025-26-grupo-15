@@ -1,31 +1,57 @@
 const isOwnProfile = true;
 
 export function Profile() {
-  // TODO: Replace with actual data fetching/state
+  // ============================================================================
+  // TODO: PHASE 2 - REACT MIGRATION (STATE & DATA FETCHING)
+  // ============================================================================
+  // Currently, this component uses mock variables to simulate the data
+  // that was previously injected by the Spring Boot backend via Mustache (`{{user}}`).
+  // 
+  // Next steps for full migration:
+  // 1. Remove `mockUser` and other static constants.
+  // 2. Fetch the user profile data from the REST API using a standard React mechanism:
+  //    - e.g., `useEffect` with `fetch("/api/users/profile")`
+  //    - or React Router `loader` (if using Remix/React Router v6+)
+  //    - or a data fetching library like `react-query` or `SWR`.
+  // 3. Store the retrieved data in React state (`useState` or a store).
+  // 4. Handle CSRF properly. Instead of passing `token` in hidden `<form>` inputs,
+  //    you will likely use `fetch` and pass the CSRF token in the headers
+  //    (e.g., `X-CSRF-TOKEN`), changing `<form method="post">` tags into 
+  //    button `onClick` handlers that make the asynchronous API requests.
+  // ============================================================================
+  
   const mockUser: { id: number; name: string; photo: { id: string } | null } = {
     id: 1,
     name: "John Doe",
     photo: null,
   };
   const token = "mock-csrf-token";
+  // Mock indicators of User object existence (previously {{#hasBio}} in Mustache)
   const hasBio = true;
   const profileBio = "This is a mock bio.";
   const hasSpecialty = true;
   const profileSpecialty = "Mock Specialty";
+  
+  // Mock requests (previously looped over via {{#firstTreeRequests}} in Mustache)
+  // When retrieving data, this will be fetched from an endpoint e.g., `/api/users/${id}/requests` etc
   const hasPendingRequests = true;
   const pendingCount = 3;
   const firstTreeRequests = [
     { id: 1, name: "Alice", nameInitial: "A", photo: null },
     { id: 2, name: "Bob", nameInitial: "B", photo: { id: "mock-photo" } },
   ];
+  // Mock stats corresponding with the variables used in `{{followersNumber}}` / `{{followingNumber}}`
   const followersNumber = 100;
   const followingNumber = 50;
+
+  // Authorization checks and flags previously validated in Mustache (`{{#admin}}`, `{{#logged}}`, `{{^isOwnProfile}}`)
+  // Later this translates into reading the 'User Context' or Context API/Store from React.
   const admin = true;
   const logged = true;
   const isFollowing = false;
   const hasRequested = false;
   const showFollowButton = true;
-  const loggedUserId = 2;
+  const loggedUserId = 2; // Simulated 'loggedUserId'
 
   return (
     <>
@@ -44,6 +70,9 @@ export function Profile() {
             </a>
           </div>
 
+          {/* Logout form. In the future, rather than an HTML `<form>` submission resulting in a full page redirection, 
+              this will become an Async `fetch`/`axios` call terminating the session inside an `onSubmit` handler, 
+              updating the App's User Auth State directly without full-page reloads. */}
           <form action="/logout" method="post" className="brand-logout">
             <button type="submit" className="btn-logout">
               <i className="bi bi-box-arrow-right"></i> Log out

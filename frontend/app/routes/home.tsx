@@ -9,10 +9,8 @@ export default function Home() {
     <>
     <Profile>
     </Profile>
-    <>
       <Fyp/>
       <Footer/>
     </> 
-       </>
   );
 }
