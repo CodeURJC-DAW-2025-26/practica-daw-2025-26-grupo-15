@@ -2,7 +2,7 @@ import type { ImageDTO } from "./ImageDTO";
 
 
 
-export interface UserBasicInfoDTO {
+export default interface UserBasicInfoDTO {
     id: number;
     name: string;
     email: string;
