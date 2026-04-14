@@ -2,7 +2,7 @@ import type ExerciseBasicInfoDTO from "./ExerciseBasicInfoDTO";
 import type UserBasicInfoDTO from "./UserBasicInfoDTO";
 
 export default interface ListDTO {
-    id: number,
+    id: string,
     title: string;
     topic: string;
     description: string,

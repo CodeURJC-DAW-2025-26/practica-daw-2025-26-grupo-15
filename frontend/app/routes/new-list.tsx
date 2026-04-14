@@ -4,7 +4,7 @@ import ListForm from "~/components/list-form";
 import { addList } from "~/services/list-service";
 
 
-export function NewList() {
+export default function NewList() {
     const navigate = useNavigate();
 
     async function saveListAction(

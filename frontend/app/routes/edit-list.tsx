@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router";
 import { useActionState } from "react";
-import type { Route } from "./+types/book-edit";
+import type { Route } from "./+types/edit-list";
 import ListForm from "~/components/list-form";
 import {
-  getList,
+  getExerciseListById,
   updateList,
 } from "~/services/list-service";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const list = await Promise.all(getList(params.id!));
+  const list = await getExerciseListById(params.id!);
   return { list };
 }
 
