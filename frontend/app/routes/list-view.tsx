@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Link, useLoaderData, useNavigate } from 'react-router';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
+import { getExerciseListById } from '~/services/list-service';
+import type { Route } from './+types/list-view';
+
 
 // NOTA: Para que esto funcione, 'list' y 'user' deberían venir de:
 // 1. useLoaderData() si usas React Router Data APIs
@@ -8,25 +11,20 @@ import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 // 3. Un Store (Zustand/Redux)
 // 4. Un estado local (useState) para pruebas.
 
-export default function ListView() {
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+    return await getExerciseListById(Number(params.id!));
+}
+
+export default function ListView({ loaderData }: Route.ComponentProps) {
+
+    const list = loaderData;
+
     // --- DATOS PROVISIONALES ---
     const user = {
         photo: null, 
         nameInitial: "JD",
         name: "John Doe",
         id: "123"
-    };
-
-    const list = {
-        id: "list-001",
-        title: "Lista de Ejercicios React",
-        description: "Una descripción de prueba para la lista de ejercicios.",
-        owner: { id: "123", name: "John Doe" },
-        lastUpdate: "13/04/2026",
-        exercises: [
-            { id: "ex1", title: "Ejercicio 1", description: "Descripción corta", numSolutions: 5 },
-            { id: "ex2", title: "Ejercicio 2", description: "Otra descripción", numSolutions: 2 }
-        ]
     };
 
     const token = "fake-csrf-token"; //Placeholder para seguridad
@@ -78,7 +76,7 @@ export default function ListView() {
                                     <div>
                                         <h2 className="content-section__title mb-2">{list.title}</h2>
                                         <p className="content-section__meta text-muted mb-0">
-                                            Created by {list.owner.name} · Last update: {list.lastUpdate}
+                                            Created by {list.owner.name} · Last update: {list.lastUpdated}
                                         </p>
                                     </div>
 

@@ -4,6 +4,6 @@ export default [
 	layout("routes/home.tsx", [
 		index("routes/fyp.tsx"),
 		route("users/:id", "routes/profile.tsx"),
-
+		route("lists/:id", "routes/list-view.tsx"),
 	]),
 ] satisfies RouteConfig;
