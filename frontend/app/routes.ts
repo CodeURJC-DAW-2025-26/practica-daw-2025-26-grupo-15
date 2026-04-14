@@ -5,5 +5,7 @@ export default [
 		index("routes/fyp.tsx"),
 		route("users/:id", "routes/profile.tsx"),
 		route("lists/:id", "routes/list-view.tsx"),
+		route("lists/new", "routes/new-list.tsx"),
+		route("lists/edit/:id", "routes/edit-list.tsx"),
 	]),
 ] satisfies RouteConfig;

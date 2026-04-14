@@ -12,7 +12,7 @@ import type { Route } from './+types/list-view';
 // 4. Un estado local (useState) para pruebas.
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-    return await getExerciseListById(Number(params.id!));
+    return await getExerciseListById(params.id!);
 }
 
 export default function ListView({ loaderData }: Route.ComponentProps) {
