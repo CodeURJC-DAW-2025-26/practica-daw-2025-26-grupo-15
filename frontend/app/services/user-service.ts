@@ -1,4 +1,5 @@
-import type { UserPostDto } from "~/dtos/UserPostDto";
+import type { UserDTO } from "~/dtos/UserDTO";
+
 
 const API_URL = "/api/v1/users";
 const API_IMAGES_URL = "/api/v1/images";
@@ -15,7 +16,7 @@ export async function addUser(
   email: string,
   password: string,
   name: string,
-): Promise<UserPostDto> {
+): Promise<UserDTO> {
 
   const response = await fetch(`${API_URL}/`, {
     method: "POST",

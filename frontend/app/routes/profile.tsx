@@ -1,23 +1,40 @@
 import { getUser } from "~/services/user-service";
 import type { Route } from "./+types/profile";
 import type { UserBasicInfoDTO } from "~/dtos/UserBasicInfoDTO";
+import { useUserStore } from "~/stores/user-store";
+import { reqIsLogged } from "~/services/login-service";
+
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  return await getUser(Number(params.id!));
+  let user 
+  if (params.id == "me"){
+    user = await reqIsLogged();
+  }
+  else{
+    user =  await getUser(Number(params.id!));
+  }
+  user.isAdmin = user.roles?.some( (role:string) => role === "ADMIN") ?? false;
+  user.isOwnProfile = (params.id === "me" || Number(params.id) === user.id);
+  
+  return user;
+
 }
 
 export default function Profile({ loaderData }: Route.ComponentProps) {
-  
-  //Preguntar mañana
-  const user = loaderData;
-  const isOwnProfile = true;
-  const firstTreeRequests = user.requestReceived?.slice(0, 3) ?? [];
+
+  let { user } = useUserStore();
+
+  {/* Logica necesaria a comntrolar:
+    -Saber si es mi perfil
+    -Saber si es admin
+    -Saber si estoy logeado o no y si estoy viendo mi propio perfil o no */}
 
 
-  // Authorization checks and flags previously validated in Mustache (`{{#admin}}`, `{{#logged}}`, `{{^isOwnProfile}}`)
-  // Later this translates into reading the 'User Context' or Context API/Store from React.
-  const admin = true;
-  const logged = true;
+
+  const userLoaderData = loaderData;
+  const isOwnProfile = userLoaderData.isOwnProfile;
+  const firstTreeRequests = userLoaderData.requestReceived?.slice(0, 3) ?? [];
+  const logged = user != null;
   const isFollowing = false;
   const hasRequested = false;
   const showFollowButton = true;
@@ -44,9 +61,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
             </a>
           </div>
 
-          {/* Logout form. In the future, rather than an HTML `<form>` submission resulting in a full page redirection, 
-              this will become an Async `fetch`/`axios` call terminating the session inside an `onSubmit` handler, 
-              updating the App's User Auth State directly without full-page reloads. */}
+          
           <form action="/logout" method="post" className="brand-logout">
             <button type="submit" className="btn-logout">
               <i className="bi bi-box-arrow-right"></i> Log out
@@ -60,9 +75,9 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
               <aside className="sidebar col-12 col-lg-3">
                 <div className="profile-sidebar-header">
                   <div className="profile-avatar-preview">
-                    {user.photo ? (
+                    {userLoaderData.photo ? (
                       <img
-                        src={`/api/v1/images/${user.photo.id}/media`}
+                        src={`/api/v1/images/${userLoaderData.photo.id}/media`}
                         alt="Profile photo"
                         className="avatar-image-cover"
                       />
@@ -72,12 +87,12 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                   </div>
                 </div>
 
-                <div className="pill">{user.name}</div>
+                <div className="pill">{userLoaderData.name}</div>
                 <div className="pill">
-                  {user.bio ? user.bio : "No bio yet."}
+                  {userLoaderData.bio ? userLoaderData.bio : "No bio yet."}
                 </div>
                 <div className="pill">
-                  {user.specialty ? user.specialty : "No specialty yet."}
+                  {userLoaderData.specialty ? userLoaderData.specialty : "No specialty yet."}
                 </div>
 
                 {isOwnProfile && (
@@ -87,9 +102,9 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                         <i className="bi bi-person-plus-fill"></i> Follow
                         Requests
                       </span>
-                      {user.pendingFollowRequests && (
+                      {userLoaderData.pendingFollowRequests && (
                         <span className="sidebar-requests-badge">
-                          {user.pendingFollowRequests}
+                          {userLoaderData.pendingFollowRequests}
                         </span>
                       )}
                     </div>
@@ -175,16 +190,16 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
               <div className="content col-12 col-lg-9">
                 <div className="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                   <div className="profile-title-block">
-                    <h2 className="section-title">{user.name}'s profile</h2>
+                    <h2 className="section-title">{userLoaderData.name}'s profile</h2>
 
                     <div className="profile-actions d-flex align-items-center flex-nowrap gap-3">
                       <div className="followers-cta">
                         <a
                           className="followers-cta-link"
-                          href={`/followers-following/followers?userId=${user.id}`}
+                          href={`/followers-following/followers?userId=${userLoaderData.id}`}
                         >
                           <span className="followers-cta-value">
-                            {user.followers?.length}
+                            {userLoaderData.followers?.length}
                           </span>
                           <span className="followers-cta-label">Followers</span>
                         </a>
@@ -193,10 +208,10 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
 
                         <a
                           className="followers-cta-link"
-                          href={`/followers-following/following?userId=${user.id}`}
+                          href={`/followers-following/following?userId=${userLoaderData.id}`}
                         >
                           <span className="followers-cta-value">
-                            {user.following?.length}
+                            {userLoaderData.following?.length}
                           </span>
                           <span className="followers-cta-label">Following</span>
                         </a>
@@ -210,7 +225,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                           <span>Create list</span>
                         </a>
                       )}
-                      {isOwnProfile && admin && (
+                      {isOwnProfile && userLoaderData.isAdmin && (
                         <a className="btn admin-panel-btn" href="/admin">
                           <i className="bi bi-shield-lock"></i>
                           Admin panel
@@ -221,9 +236,9 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                   {isOwnProfile ? (
                     <div className="dropdown">
                       <div className="avatar avatar--img">
-                        {user.photo ? (
+                        {userLoaderData.photo ? (
                           <img
-                            src={`/api/v1/images/${user.photo.id}/media`}
+                            src={`/api/v1/images/${userLoaderData.photo.id}/media`}
                             alt="Profile photo"
                           />
                         ) : (
@@ -251,12 +266,12 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                             <input
                               type="hidden"
                               name="requesterId"
-                              value={user.id}
+                              value={userLoaderData.id}
                             />
                             <input
                               type="hidden"
                               name="targetId"
-                              value={user.id}
+                              value={userLoaderData .id}
                             />
 
                             <button
@@ -292,7 +307,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                             </button>
                           </form>
                         ) : null}
-                        {admin && (
+                        {userLoaderData.isAdmin && (
                           <button
                             className="btn btn-delete-profile-admin"
                             type="button"
@@ -311,7 +326,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                 <div
                   id="feedStream"
                   className="feed-stream"
-                  data-profile-id={user.id}
+                  data-profile-id={userLoaderData.id}
                   data-petition="l"
                 >
                   <div id="feedEmpty" className="feed-empty visually-hidden">
@@ -397,7 +412,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                 </button>
                 <form
                   method="post"
-                  action={`/delete-profile/${user.id}`}
+                  action={`/delete-profile/${userLoaderData.id}`}
                   className="d-inline"
                 >
                   <button type="submit" className="btn btn-danger-action">
@@ -410,7 +425,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
         </div>
       )}
 
-      {!isOwnProfile && admin && (
+      {!isOwnProfile && userLoaderData.isAdmin && (
         <div
           className="modal fade"
           id="deleteProfileModalAdmin"
@@ -434,7 +449,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
               <div className="modal-body">
                 <p className="mb-0">
                   Are you sure you want to delete{" "}
-                  <strong>{user.name}</strong>'s profile?
+                  <strong>{userLoaderData.name}</strong>'s profile?
                 </p>
                 <p className="text-muted mt-2 mb-0">
                   This action cannot be undone.
@@ -450,7 +465,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                 </button>
                 <form
                   method="post"
-                  action={`/delete-profile/${user.id}`}
+                  action={`/delete-profile/${userLoaderData.id}`}
                   className="d-inline"
                 >
                   <button type="submit" className="btn btn-danger-action">
