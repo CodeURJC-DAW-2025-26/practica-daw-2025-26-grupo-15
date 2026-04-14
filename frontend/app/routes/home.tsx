@@ -1,11 +1,12 @@
 import { Footer } from "../components/footer";
-import type { Route } from "./+types/home";
-import "../app.css";
+import "../app.css"
+import { Outlet } from "react-router";
 
 export default function Home() {
   return (
-    <Footer>
-
-    </Footer>
+    <>
+      <Outlet />
+      <Footer/>
+    </> 
   );
 }
