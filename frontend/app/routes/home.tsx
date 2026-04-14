@@ -1,13 +1,11 @@
 import { Footer } from "../components/footer";
-import type { Route } from "./+types/home";
-import "../app.css";
-import { Profile } from "./profile";
-import Fyp from "./fyp";
-import { AdminPanel } from "./admin-panel";
+import "../app.css"
+import { Outlet } from "react-router";
 
 export default function Home() {
   return (
     <>
+      <Outlet />
       <Footer/>
     </> 
   );

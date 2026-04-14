@@ -1,48 +1,18 @@
-const isOwnProfile = true;
+import { getUser } from "~/services/user-service";
+import type { Route } from "./+types/profile";
+import type { UserBasicInfoDTO } from "~/dtos/UserBasicInfoDTO";
 
-export function Profile() {
-  // ============================================================================
-  // TODO: PHASE 2 - REACT MIGRATION (STATE & DATA FETCHING)
-  // ============================================================================
-  // Currently, this component uses mock variables to simulate the data
-  // that was previously injected by the Spring Boot backend via Mustache (`{{user}}`).
-  // 
-  // Next steps for full migration:
-  // 1. Remove `mockUser` and other static constants.
-  // 2. Fetch the user profile data from the REST API using a standard React mechanism:
-  //    - e.g., `useEffect` with `fetch("/api/users/profile")`
-  //    - or React Router `loader` (if using Remix/React Router v6+)
-  //    - or a data fetching library like `react-query` or `SWR`.
-  // 3. Store the retrieved data in React state (`useState` or a store).
-  // 4. Handle CSRF properly. Instead of passing `token` in hidden `<form>` inputs,
-  //    you will likely use `fetch` and pass the CSRF token in the headers
-  //    (e.g., `X-CSRF-TOKEN`), changing `<form method="post">` tags into 
-  //    button `onClick` handlers that make the asynchronous API requests.
-  // ============================================================================
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  return await getUser(Number(params.id!));
+}
+
+export default function Profile({ loaderData }: Route.ComponentProps) {
   
-  const mockUser: { id: number; name: string; photo: { id: string } | null } = {
-    id: 1,
-    name: "John Doe",
-    photo: null,
-  };
-  const token = "mock-csrf-token";
-  // Mock indicators of User object existence (previously {{#hasBio}} in Mustache)
-  const hasBio = true;
-  const profileBio = "This is a mock bio.";
-  const hasSpecialty = true;
-  const profileSpecialty = "Mock Specialty";
-  
-  // Mock requests (previously looped over via {{#firstTreeRequests}} in Mustache)
-  // When retrieving data, this will be fetched from an endpoint e.g., `/api/users/${id}/requests` etc
-  const hasPendingRequests = true;
-  const pendingCount = 3;
-  const firstTreeRequests = [
-    { id: 1, name: "Alice", nameInitial: "A", photo: null },
-    { id: 2, name: "Bob", nameInitial: "B", photo: { id: "mock-photo" } },
-  ];
-  // Mock stats corresponding with the variables used in `{{followersNumber}}` / `{{followingNumber}}`
-  const followersNumber = 100;
-  const followingNumber = 50;
+  //Preguntar mañana
+  const user = loaderData;
+  const isOwnProfile = true;
+  const firstTreeRequests = user.requestReceived?.slice(0, 3) ?? [];
+
 
   // Authorization checks and flags previously validated in Mustache (`{{#admin}}`, `{{#logged}}`, `{{^isOwnProfile}}`)
   // Later this translates into reading the 'User Context' or Context API/Store from React.
@@ -51,7 +21,11 @@ export function Profile() {
   const isFollowing = false;
   const hasRequested = false;
   const showFollowButton = true;
-  const loggedUserId = 2; // Simulated 'loggedUserId'
+  
+
+  {
+    /*Parte ya importante */
+  }
 
   return (
     <>
@@ -77,7 +51,6 @@ export function Profile() {
             <button type="submit" className="btn-logout">
               <i className="bi bi-box-arrow-right"></i> Log out
             </button>
-            <input type="hidden" name="_csrf" value={token} />
           </form>
         </div>
 
@@ -87,9 +60,9 @@ export function Profile() {
               <aside className="sidebar col-12 col-lg-3">
                 <div className="profile-sidebar-header">
                   <div className="profile-avatar-preview">
-                    {mockUser.photo ? (
+                    {user.photo ? (
                       <img
-                        src={`/images/${mockUser.photo.id}`}
+                        src={`/api/v1/images/${user.photo.id}/media`}
                         alt="Profile photo"
                         className="avatar-image-cover"
                       />
@@ -99,12 +72,12 @@ export function Profile() {
                   </div>
                 </div>
 
-                <div className="pill">{mockUser.name}</div>
+                <div className="pill">{user.name}</div>
                 <div className="pill">
-                  {hasBio ? profileBio : "No bio yet."}
+                  {user.bio ? user.bio : "No bio yet."}
                 </div>
                 <div className="pill">
-                  {hasSpecialty ? profileSpecialty : "No specialty yet."}
+                  {user.specialty ? user.specialty : "No specialty yet."}
                 </div>
 
                 {isOwnProfile && (
@@ -114,26 +87,26 @@ export function Profile() {
                         <i className="bi bi-person-plus-fill"></i> Follow
                         Requests
                       </span>
-                      {hasPendingRequests && (
+                      {user.pendingFollowRequests && (
                         <span className="sidebar-requests-badge">
-                          {pendingCount}
+                          {user.pendingFollowRequests}
                         </span>
                       )}
                     </div>
 
                     <div className="list">
-                      {firstTreeRequests && firstTreeRequests.length > 0 ? (
-                        firstTreeRequests.map((req) => (
+                      {firstTreeRequests.length > 0 ? (
+                        firstTreeRequests.map((req: UserBasicInfoDTO) => (
                           <div className="list-item" key={req.id}>
                             <div className="req-identity">
                               <div className="req-avatar">
                                 {req.photo ? (
                                   <img
-                                    src={`/images/${req.photo.id}`}
+                                    src={`/api/v1/images/${req.photo.id}/media`}
                                     alt={req.name}
                                   />
                                 ) : (
-                                  <span>{req.nameInitial}</span>
+                                  <span>{req.name.charAt(0)}</span>
                                 )}
                               </div>
                               <span className="req-name">{req.name}</span>
@@ -143,11 +116,6 @@ export function Profile() {
                                 action={`/acceptRequest/${req.id}`}
                                 method="post"
                               >
-                                <input
-                                  type="hidden"
-                                  name="_csrf"
-                                  value={token}
-                                />
                                 <input
                                   type="hidden"
                                   name="srcPage"
@@ -166,11 +134,6 @@ export function Profile() {
                                 action={`/declineRequest/${req.id}`}
                                 method="post"
                               >
-                                <input
-                                  type="hidden"
-                                  name="_csrf"
-                                  value={token}
-                                />
                                 <input
                                   type="hidden"
                                   name="srcPage"
@@ -212,16 +175,16 @@ export function Profile() {
               <div className="content col-12 col-lg-9">
                 <div className="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                   <div className="profile-title-block">
-                    <h2 className="section-title">{mockUser.name}'s profile</h2>
+                    <h2 className="section-title">{user.name}'s profile</h2>
 
                     <div className="profile-actions d-flex align-items-center flex-nowrap gap-3">
                       <div className="followers-cta">
                         <a
                           className="followers-cta-link"
-                          href={`/followers-following/followers?userId=${mockUser.id}`}
+                          href={`/followers-following/followers?userId=${user.id}`}
                         >
                           <span className="followers-cta-value">
-                            {followersNumber}
+                            {user.followers?.length}
                           </span>
                           <span className="followers-cta-label">Followers</span>
                         </a>
@@ -230,10 +193,10 @@ export function Profile() {
 
                         <a
                           className="followers-cta-link"
-                          href={`/followers-following/following?userId=${mockUser.id}`}
+                          href={`/followers-following/following?userId=${user.id}`}
                         >
                           <span className="followers-cta-value">
-                            {followingNumber}
+                            {user.following?.length}
                           </span>
                           <span className="followers-cta-label">Following</span>
                         </a>
@@ -258,9 +221,9 @@ export function Profile() {
                   {isOwnProfile ? (
                     <div className="dropdown">
                       <div className="avatar avatar--img">
-                        {mockUser.photo ? (
+                        {user.photo ? (
                           <img
-                            src={`/images/${mockUser.photo.id}`}
+                            src={`/api/v1/images/${user.photo.id}/media`}
                             alt="Profile photo"
                           />
                         ) : (
@@ -288,14 +251,14 @@ export function Profile() {
                             <input
                               type="hidden"
                               name="requesterId"
-                              value={loggedUserId}
+                              value={user.id}
                             />
                             <input
                               type="hidden"
                               name="targetId"
-                              value={mockUser.id}
+                              value={user.id}
                             />
-                            <input type="hidden" name="_csrf" value={token} />
+
                             <button
                               className="btn followers-action btn-danger-action"
                               type="submit"
@@ -316,14 +279,14 @@ export function Profile() {
                             <input
                               type="hidden"
                               name="requesterId"
-                              value={loggedUserId}
+                              value={user.id}
                             />
                             <input
                               type="hidden"
                               name="targetId"
-                              value={mockUser.id}
+                              value={user.id}
                             />
-                            <input type="hidden" name="_csrf" value={token} />
+
                             <button className="btn secondary" type="submit">
                               Follow
                             </button>
@@ -348,7 +311,7 @@ export function Profile() {
                 <div
                   id="feedStream"
                   className="feed-stream"
-                  data-profile-id={mockUser.id}
+                  data-profile-id={user.id}
                   data-petition="l"
                 >
                   <div id="feedEmpty" className="feed-empty visually-hidden">
@@ -434,10 +397,9 @@ export function Profile() {
                 </button>
                 <form
                   method="post"
-                  action={`/delete-profile/${mockUser.id}`}
+                  action={`/delete-profile/${user.id}`}
                   className="d-inline"
                 >
-                  <input type="hidden" name="_csrf" value={token} />
                   <button type="submit" className="btn btn-danger-action">
                     Delete profile
                   </button>
@@ -472,7 +434,7 @@ export function Profile() {
               <div className="modal-body">
                 <p className="mb-0">
                   Are you sure you want to delete{" "}
-                  <strong>{mockUser.name}</strong>'s profile?
+                  <strong>{user.name}</strong>'s profile?
                 </p>
                 <p className="text-muted mt-2 mb-0">
                   This action cannot be undone.
@@ -488,10 +450,9 @@ export function Profile() {
                 </button>
                 <form
                   method="post"
-                  action={`/delete-profile/${mockUser.id}`}
+                  action={`/delete-profile/${user.id}`}
                   className="d-inline"
                 >
-                  <input type="hidden" name="_csrf" value={token} />
                   <button type="submit" className="btn btn-danger-action">
                     Delete profile
                   </button>

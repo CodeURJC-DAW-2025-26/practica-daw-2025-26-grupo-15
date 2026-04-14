@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import type { Route } from "./+types/home";
 
 type UserBasicInfo = {
@@ -100,7 +101,11 @@ export default function Fyp() {
                             
                             {item.suggestion.photoId ? (
                               <span className="sidebar-search-results__avatar avatar--img">
-                                <img alt="Profile picture" className="avatar-image-cover" src={`/images/${item.suggestion.photoId}`} />
+                                { /* TODO: enable when backend serves images */ }
+                                <img
+                                  alt="Profile picture"
+                                  className="avatar-image-cover"
+                                />
                               </span>
                             ) : (
                               <span className="sidebar-search-results__avatar">
@@ -151,13 +156,18 @@ export default function Fyp() {
                   {isLogged && (
                     <div className="profile-image d-flex align-items-center gap-2">
                       <p className="p greeting mt-3">Welcome {currentUser.name}!</p>
-                      <a href="/profile">
+                      <Link to="users/1">
                         {currentUser.photoId ? (
-                          <div className="avatar avatar--img"><img src={`/images/${currentUser.photoId}`} alt="Profile picture" /></div>
+                          <div className="avatar avatar--img">
+                            { /* TODO: enable when backend serves images AÑadir el src*/ }
+                            <img
+                              alt="Profile picture"
+                            />
+                          </div>
                         ) : (
                           <div className="avatar">{currentUser.nameInitial}</div>
                         )}
-                      </a>
+                      </Link>
                     </div>
                   )}
 
@@ -185,4 +195,3 @@ export default function Fyp() {
     </>
   );
 }
-
