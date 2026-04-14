@@ -1,6 +1,7 @@
 import { useActionState } from "react";
 import { useNavigate } from "react-router";
 import ListForm from "~/components/list-form";
+import { addList } from "~/services/list-service";
 
 
 export function NewList() {
@@ -18,16 +19,16 @@ export function NewList() {
         const description = formData.get("description") as string;
 
         try {
-        const newBook = await addList(title, topic,description);
+        const newList = await addList(title, topic,description);
 
 
-        navigate(`/book/${newBook.id}`);
+        navigate(`/lists/${newList.id}`);
         return { success: true, error: null };
         } catch (error) {
             console.error(error);
             return {
                 success: false,
-                error: "Failed to save book. Please try again.",
+                error: "Failed to save list. Please try again.",
             };
         }
     }
