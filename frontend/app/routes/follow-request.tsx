@@ -2,22 +2,27 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import { Footer } from '../components/footer';
+import { getFollowRequests } from '~/services/user-service';
+import type { Route } from './+types/follow-request';
 
-export default function FollowRequest() {
+export async function clientLoader(){
+    return await getFollowRequests();
+}
+
+export default function FollowRequest({ loaderData }: Route.ComponentProps) {
+
+    const followRequests = loaderData;
+
     // --- DATOS PROVISIONALES  ---
     const token = "fake-csrf-token";
     const user = {
         name: "Usuario de Prueba",
         photo: { id: "profile-pic.jpg" } 
     };
-    const pendingCount = 2;
+
+    const pendingCount = followRequests ? followRequests.length : 0;
     const followersNumber = 120;
     const followingNumber = 85;
-
-    const followRequests = [
-        { id: "req-1", name: "Ana Gómez", photo: null },
-        { id: "req-2", name: "Carlos Ruiz", photo: { id: "carlos-pic.jpg" } }
-    ];
 
     return (
         <>

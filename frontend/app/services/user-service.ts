@@ -1,3 +1,4 @@
+import type UserBasicInfoDTO from "~/dtos/UserBasicInfoDTO";
 import type { UserDTO } from "~/dtos/UserDTO";
 
 
@@ -30,4 +31,12 @@ export async function addUser(
     throw new Error("Failed to add user");
   }
   return await response.json();
+}
+
+export async function getFollowRequests(): Promise<UserBasicInfoDTO[]> {
+  const res = await fetch(`${API_URL}/me/follow-requests/`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch follow requests");
+  }
+  return await res.json();
 }

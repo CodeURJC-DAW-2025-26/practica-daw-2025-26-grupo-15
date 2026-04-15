@@ -1,25 +1,31 @@
+import { getUser } from "~/services/user-service";
 import { Footer } from "../components/footer";
 import { Link } from "react-router"; // O 'react-router-dom' según tu versión
+import type { Route } from "./+types/followers-following";
 
-export default function FollowingFollowers() {
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+    const url = new URL(request.url);
+    const userId = url.searchParams.get("userId");
+
+    if (!userId) {
+        throw new Error("No se proporcionó un ID de usuario");
+    }
+
+    return await getUser(Number(userId));
+}
+
+
+export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
     // --- DATOS PROVISIONALES (Simulan el backend) ---
     const followersPage = true; // Cambia a 'false' para ver la vista de "Following"
     const isOwnProfile = true;  // Cambia a 'false' para ver la vista de otro usuario
     const token = "fake-csrf-token";
-    const loggedUserId = "me123";
 
-    const user = {
-        id: "user456",
-        name: "Dev Master"
-    };
+    const user = loaderData;
 
-    const userList = [
-        { id: "1", name: "Alice", nameInitial: "A", photo: null },
-        { id: "2", name: "Bob", nameInitial: "B", photo: { id: "avatar2.jpg" } }
-    ];
-
-    const numFollowers = 10;
-    const numFollowing = 5;
+    const numFollowers = loaderData.followers.length;
+    const numFollowing = loaderData.following.length;
 
     return (
         <>
@@ -58,8 +64,8 @@ export default function FollowingFollowers() {
                                     <div className="col-md-8 col-12 followers-card mx-0 mt-5">
                                         <h3>{followersPage ? "Followers" : "Following"}</h3>
                                         <div className="followers-list">
-                                            {userList && userList.length > 0 ? (
-                                                userList.map((item) => (
+                                            {user && user.followers.length > 0 ? (
+                                                user.followers.map((item: typeof user) => (
                                                     <div key={item.id} className="followers-item">
                                                         <div className="followers-left">
                                                             <div className="followers-avatar avatar--img">
@@ -83,7 +89,7 @@ export default function FollowingFollowers() {
                                                                     </form>
                                                                 ) : (
                                                                     <form method="post" action="/unfollow">
-                                                                        <input type="hidden" name="requesterId" value={loggedUserId} />
+                                                                        <input type="hidden" name="requesterId" value={user.id} />
                                                                         <input type="hidden" name="targetId" value={item.id} />
                                                                         <input type="hidden" name="_csrf" value={token} />
                                                                         <button className="btn followers-action btn-danger-action" type="submit">Unfollow</button>
