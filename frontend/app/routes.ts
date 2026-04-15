@@ -7,5 +7,6 @@ export default [
 		route("lists/:id", "routes/list-view.tsx"),
 		route("lists/new", "routes/new-list.tsx"),
 		route("lists/edit/:id", "routes/edit-list.tsx"),
+		route("lists/:listId/exercises/new", "routes/new-exercise.tsx")
 	]),
 ] satisfies RouteConfig;

@@ -1,4 +1,4 @@
-import type { ImageDTO } from "./ImageDTO";
+import type ImageDTO from "./ImageDTO";
 
 export interface UserDTO{
     id: number;

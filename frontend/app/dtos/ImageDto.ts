@@ -1,3 +1,3 @@
-export interface ImageDTO {
+export default interface ImageDTO {
     id: number | null;
 }

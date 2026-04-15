@@ -1,6 +1,6 @@
 import { getUser } from "~/services/user-service";
 import type { Route } from "./+types/profile";
-import type { UserBasicInfoDTO } from "~/dtos/UserBasicInfoDTO";
+import type UserBasicInfoDTO  from "~/dtos/UserBasicInfoDTO";
 import { useUserStore } from "~/stores/user-store";
 import { reqIsLogged } from "~/services/login-service";
 
