@@ -44,3 +44,5 @@ application-local.properties
 package-lock.json
 pnpm-lock.yaml
 backend/api-docs/
+.agents
+skills-lock.json

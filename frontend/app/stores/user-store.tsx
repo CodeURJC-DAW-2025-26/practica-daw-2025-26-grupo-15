@@ -32,11 +32,11 @@ export const useUserStore = create<UserState>((set, get) => ({
     }
   },
 
-  loginUser: async (username: string, password: string) => {
+  loginUser: async (email: string, password: string) => {
     set({ user: null, loginError: null });
 
     try {
-      await logIn(username, password);
+      await logIn(email, password);
       await get().loadLoggedUser();
     } catch (error) {
       console.log(error);
