@@ -156,7 +156,7 @@ export default function Fyp() {
                   {isLogged && (
                     <div className="profile-image d-flex align-items-center gap-2">
                       <p className="p greeting mt-3">Welcome {currentUser.name}!</p>
-                      <Link to="users/1">
+                      <Link to="users/me">
                         {currentUser.photoId ? (
                           <div className="avatar avatar--img">
                             { /* TODO: enable when backend serves images AÑadir el src*/ }
