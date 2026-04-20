@@ -71,7 +71,7 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
                                     <div>
                                         <h2 className="content-section__title mb-2">{list.title}</h2>
                                         <p className="content-section__meta text-muted mb-0">
-                                            Created by {list.owner.name} · Last update: 
+                                            Created by {list.owner.name} · Last update: {list.lastUpdated.toDateString()}
                                         </p>
                                     </div>
 

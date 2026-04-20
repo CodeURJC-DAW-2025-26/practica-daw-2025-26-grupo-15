@@ -43,7 +43,7 @@ export async function uploadExercisePDF(exerciseId: number, file: File): Promise
     formData.append("pdfFile", file);
     
     const response = await fetch(`/api/v1/exercises/${exerciseId}/pdf`, {
-        method: "POST",
+        method: "PUT",
         body: formData
     })
 
