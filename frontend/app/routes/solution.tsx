@@ -1,39 +1,25 @@
+import { getSolution } from '~/services/solution-service';
+import type { Route } from './+types/solution';
+import { useUserStore } from '~/stores/user-store';
+import { findCommentsBySolutionId } from '~/services/solution-service';
 
-// Provisional constants to replace Mustache variables
-// These represent data that would come from the backend/server-side rendering
-const logged = true; // Boolean indicating if user is logged in
-const user = { photo: { id: 123 }, nameInitial: 'A' }; // User object with photo and initial
-const solution = { // Solution object with all properties
-  id: 1,
-  name: "Sample Solution Name",
-  owner: { name: "Solution Owner" },
-  exercise: { title: "Exercise Title", id: 2 },
-  lastUpdate: "2023-01-01",
-  description: "This is the solution description.",
-  solImage: { id: 456 },
-  numComments: 5
-};
-const canDeleteSolution = true; // Boolean for delete permission
-const token = "sample-csrf-token"; // CSRF token for forms
-const deletableComments = [ // Array of comments that can be deleted
-  {
-    id: 10,
-    owner: { photo: { id: 789 }, nameInitial: 'B', name: "Commenter Name" },
-    lastUpdate: "2023-01-02",
-    text: "This is a sample comment text."
-  }
-];
-const readonlyComments = [ // Array of comments that are read-only
-  {
-    id: 11,
-    owner: { photo: { id: 790 }, nameInitial: 'C', name: "Another Commenter" },
-    lastUpdate: "2023-01-03",
-    text: "Another comment."
-  }
-];
-const hasComments = true; // Boolean indicating if there are any comments
 
-export function Solution() {
+export async function clientLoader({ params } : Route.ClientLoaderArgs) {
+    const solution = await getSolution(params.id!);
+    const comments = await findCommentsBySolutionId(params.id!);
+    return { solution, comments };
+}
+
+export default function Solution({ loaderData }: Route.ComponentProps) {
+    const { solution, comments } = loaderData;
+    let { user } = useUserStore();
+    const logged = user !== null; 
+    const userOwner = solution.owner;
+    const canDeleteSolution = logged && user === userOwner; 
+    const hasComments = comments.length > 0;
+    const token = "sample-csrf-token"; // CSRF token for forms
+  
+
     return (
         <>
         <main className="page">
@@ -47,7 +33,7 @@ export function Solution() {
       <div className="profile-image d-flex align-items-center gap-2">
         <a href="/profile">
           <div className="avatar avatar--img">
-            {user.photo ? <img src={`/images/${user.photo.id}`} alt="Profile photo" /> : <span>{user.nameInitial}</span>}
+            {user.photo.id ? <img src={`/images/${user.photo.id}`} alt="Profile photo" /> : <span>{user.name.charAt(0)}</span>}
           </div>
         </a>
       </div>
@@ -146,10 +132,10 @@ export function Solution() {
           </section>
 
           <section className="content-section">
-            <h3 className="content-section__subtitle mb-4">Comments ({solution.numComments})</h3>
+            <h3 className="content-section__subtitle mb-4">Comments ({hasComments ? solution.numComments : 0})</h3>
             <div className="comment-list mb-4">
               {/* Deletable comments: comments that the user can delete */}
-              {deletableComments.map(comment => (
+              {comments.map(comment => (
               <div key={comment.id} className="comment-item">
                 <div className="comment-item__header d-flex justify-content-between align-items-center">
                   <div className="d-flex align-items-center gap-2">
@@ -159,7 +145,7 @@ export function Solution() {
                         className="avatar-image-cover" />
                     </div>
                     ) : (
-                    <div className="avatar-sm">{comment.owner.nameInitial}</div>
+                    <div className="avatar-sm">{comment.owner.name.charAt(0)}</div>
                     )}
                     <div>
                       <strong className="comment-item__author">{comment.owner.name}</strong>
@@ -177,7 +163,7 @@ export function Solution() {
               ))}
 
               {/* Delete comment modal for each deletable comment */}
-              {deletableComments.map(comment => (
+              {comments.map(comment => (
               <div key={`modal-${comment.id}`} className="modal fade" id={`deleteCommentModal${comment.id}`} tabIndex={-1} aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                   <div className="modal-content modal-content-themed">
@@ -197,29 +183,6 @@ export function Solution() {
                     </div>
                   </div>
                 </div>
-              </div>
-              ))}
-
-              {/* Read-only comments: comments that cannot be deleted */}
-              {readonlyComments.map(comment => (
-              <div key={comment.id} className="comment-item">
-                <div className="comment-item__header d-flex justify-content-between align-items-center">
-                  <div className="d-flex align-items-center gap-2">
-                    {comment.owner.photo ? (
-                    <div className="avatar-sm avatar--img">
-                      <img src={`/images/${comment.owner.photo.id}`} alt="avatar"
-                        className="avatar-image-cover" />
-                    </div>
-                    ) : (
-                    <div className="avatar-sm">{comment.owner.nameInitial}</div>
-                    )}
-                    <div>
-                      <strong className="comment-item__author">{comment.owner.name}</strong>
-                      <span className="comment-item__date">{comment.lastUpdate}</span>
-                    </div>
-                  </div>
-                </div>
-                <p className="comment-item__text mt-2">{comment.text}</p>
               </div>
               ))}
 
