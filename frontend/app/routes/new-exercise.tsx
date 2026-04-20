@@ -28,7 +28,7 @@ export default function NewExercise(){
     try {
       const newExercise = await addExercise(exname, exdesc, listId!);
 
-      if (pdfFile) {
+      if (pdfFile && pdfFile.size > 0 && pdfFile.name !== "") {
         await uploadExercisePDF(newExercise.id, pdfFile);
       }
 
@@ -55,7 +55,6 @@ export default function NewExercise(){
 
           <ExerciseForm 
             actionState={[state, formAction, isPending]}
-            listId={Number(listId)}
           />
 
         </main>
