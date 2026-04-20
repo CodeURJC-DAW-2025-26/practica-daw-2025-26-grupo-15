@@ -1,43 +1,42 @@
 
-
+import type { Route } from "./+types/exercise";
 import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router';
+import type ListDTO from "~/dtos/ListDTO";
+import type { ExerciseDTO } from "~/dtos/ExerciseDTO";
+import type { SolutionBasicInfoDTO } from "~/dtos/SolutionBasicInfoDTO";
+import { getExercise } from '~/services/exercise-service';
+import { getExerciseListById } from "~/services/list-service";
+import { useUserStore } from "~/stores/user-store";
+import SolutionCard from "~/components/solution-card";
 
-// Provisional constants to replace Mustache variables
-// These represent data that would come from the backend/server-side rendering
-const logged = true; // Boolean indicating if user is logged in
-const user = { photo: { id: 123 }, nameInitial: 'A' }; // User object with photo and initial
-const exercise = { // Exercise object with all properties
-    id: 1,
-    title: "Sample Exercise Title",
-    description: "This is the exercise description.",
-    pdfImage: true // Boolean indicating if PDF exists
-};
-const list = { // List object containing the exercise
-    id: 2,
-    title: "Sample List Title",
-    owner: { name: "List Owner" }
-};
-const token = "sample-csrf-token"; // CSRF token for forms
-const deletableSolutions = [ // Array of solutions that can be deleted
-    {
-        id: 10,
-        lastUpdate: "2023-01-02",
-        owner: { photo: { id: 456 }, nameInitial: 'B', name: "Solution Owner" },
-        numComments: 3
-    }
-];
-const readonlySolutions = [ // Array of solutions that are read-only
-    {
-        id: 11,
-        lastUpdate: "2023-01-03",
-        owner: { photo: { id: 457 }, nameInitial: 'C', name: "Another Owner" },
-        numComments: 1
-    }
-];
-const hasSolutions = true; // Boolean indicating if there are any solutions
 
-export function Exercise() {
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  let exercise: ExerciseDTO = await getExercise(params.id!); 
+  let list: ListDTO = await getExerciseListById(exercise.exerciseList.id.toString()!);
+  return { exercise, list };
+
+}
+
+export default function Exercise({ loaderData }: Route.ComponentProps) {
+
+    const { exercise, list } = loaderData;
+    const { user } = useUserStore();
+    const userId = user?.id ?? null;
+    const logged = userId !== null;
+
+    const hasSolutions = exercise.solutions.length > 0;
+    const readonlySolutions = !hasSolutions
+        ? []
+        : logged
+        ? exercise.solutions.filter((solution: SolutionBasicInfoDTO) => solution.owner.id !== userId)
+        : exercise.solutions;
+
+    const showDeletableSolutions = hasSolutions && readonlySolutions.length < exercise.solutions.length;
+    const deletableSolutions = showDeletableSolutions
+        ? exercise.solutions.filter((solution: SolutionBasicInfoDTO) => solution.owner.id === userId)
+        : [];
+                        
     return (
         <>
             <main className="page">
@@ -51,7 +50,7 @@ export function Exercise() {
                         <div className="profile-image d-flex align-items-center gap-2">
                             <Link to="/profile">
                                 <div className="avatar avatar--img">
-                                    {user.photo ? <img src={`/images/${user.photo.id}`} alt="Profile photo" /> : <span>{user.nameInitial}</span>}
+                                    {user?.photo ? <img src={`/images/${user.photo.id}/media`} alt="Profile photo" /> : <span>{user?.name.charAt(0).toLocaleUpperCase() ?? ""}</span>}
                                 </div>
                             </Link>
                         </div>
@@ -86,8 +85,8 @@ export function Exercise() {
                                             <p className="detail-block__value">{exercise.description}</p>
                                         </div>
                                     </Col>
-                                    {/* PDF link: only shown if logged in and PDF exists */}
-                                    {logged && exercise.pdfImage && (
+                                    {/* PDF link: only shown if logged in and PDF exists 
+                                    {logged && false && exercise.pdfImage && (
                                         <Col xs={12}>
                                             <div className="detail-block">
                                                 <h4 className="detail-block__label">PDF statement</h4>
@@ -100,6 +99,7 @@ export function Exercise() {
                                             </div>
                                         </Col>
                                     )}
+                                    */}
                                 </Row>
                             </section>
 
@@ -107,88 +107,13 @@ export function Exercise() {
                                 <h3 className="content-section__subtitle mb-4">Solutions</h3>
                                 <Row className="g-4 mb-4">
                                     {/* Deletable solutions: solutions that the user can delete */}
-                                    {deletableSolutions.map((solution, index) => (
-                                        <Col key={solution.id} xs={12} md={6}>
-                                            <div className="solution-card position-relative">
-                                                <div className="solution-card__header d-flex justify-content-between align-items-start gap-2">
-                                                    <div>
-                                                        <span className="solution-card__badge">Solution {index + 1}</span>
-                                                        <span className="solution-card__date">{solution.lastUpdate}</span>
-                                                    </div>
-
-                                                    <button type="button" className="btn-icon position-relative z-3" data-bs-toggle="modal" data-bs-target={`#deleteSolutionModal${solution.id}`}>
-                                                        <i className="bi bi-trash"></i>
-                                                    </button>
-                                                </div>
-
-                                                <div className="solution-card__author">
-                                                    {solution.owner.photo ? (
-                                                        <div className="avatar-sm avatar--img"><img src={`/images/${solution.owner.photo.id}`} alt="avatar" className="avatar-image-cover" /></div>
-                                                    ) : (
-                                                        <div className="avatar-sm">{solution.owner.nameInitial}</div>
-                                                    )}
-                                                    <span>{solution.owner.name}</span>
-                                                </div>
-
-                                                <div className="solution-card__footer">
-                                                    <span className="solution-card__comments">{solution.numComments} comments</span>
-                                                </div>
-
-                                                <Link to={`/solution/${solution.id}`} className="stretched-link"></Link>
-                                            </div>
-
-                                            {/* Delete solution modal */}
-                                            <div className="modal fade" id={`deleteSolutionModal${solution.id}`} tabIndex={-1} aria-hidden="true">
-                                                <div className="modal-dialog modal-dialog-centered">
-                                                    <div className="modal-content modal-content-themed">
-                                                        <div className="modal-header border-0">
-                                                            <h5 className="modal-title">Confirm deletion</h5>
-                                                            <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                                                        </div>
-                                                        <div className="modal-body">
-                                                            <p className="mb-0">Are you sure you want to delete this solution?</p>
-                                                            <p className="text-muted mt-2 mb-0">This action cannot be undone.</p>
-                                                        </div>
-                                                        <div className="modal-footer border-0">
-                                                            <button type="button" className="btn secondary" data-bs-dismiss="modal">Cancel</button>
-                                                            <form method="post" action={`/exercise/${exercise.id}/solution/${solution.id}/delete`} className="d-inline">
-                                                                <input type="hidden" name="_csrf" value={token} />
-                                                                <button type="submit" className="btn btn-danger-action">Delete solution</button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Col>
+                                    {showDeletableSolutions && deletableSolutions.map((solution: SolutionBasicInfoDTO, index: number) => (
+                                        <SolutionCard key={solution.id} solution={solution} index={index} deletable={true} />
                                     ))}
 
                                     {/* Read-only solutions: solutions that cannot be deleted */}
-                                    {readonlySolutions.map((solution, index) => (
-                                        <Col key={solution.id} xs={12} md={6}>
-                                            <div className="solution-card position-relative">
-                                                <div className="solution-card__header d-flex justify-content-between align-items-start gap-2">
-                                                    <div>
-                                                        <span className="solution-card__badge">Solution {deletableSolutions.length + index + 1}</span>
-                                                        <span className="solution-card__date">{solution.lastUpdate}</span>
-                                                    </div>
-                                                </div>
-
-                                                <div className="solution-card__author">
-                                                    {solution.owner.photo ? (
-                                                        <div className="avatar-sm avatar--img"><img src={`/images/${solution.owner.photo.id}`} alt="avatar" className="avatar-image-cover" /></div>
-                                                    ) : (
-                                                        <div className="avatar-sm">{solution.owner.nameInitial}</div>
-                                                    )}
-                                                    <span>{solution.owner.name}</span>
-                                                </div>
-
-                                                <div className="solution-card__footer">
-                                                    <span className="solution-card__comments">{solution.numComments} comments</span>
-                                                </div>
-
-                                                <Link to={`/solution/${solution.id}`} className="stretched-link"></Link>
-                                            </div>
-                                        </Col>
+                                    {hasSolutions &&readonlySolutions.map((solution: SolutionBasicInfoDTO, index: number) => (
+                                        <SolutionCard key={solution.id} solution={solution} index={index} deletable={false} />
                                     ))}
 
                                     {/* No solutions message if there are no solutions */}
@@ -214,7 +139,7 @@ export function Exercise() {
                                 )}
 
                                 <div className="text-center mt-5">
-                                    <Link className="btn ghost" to={`/list-view/${list.id}`}>Back to {list.title}</Link>
+                                    <Link className="btn ghost" to={`/lists/${list.id}`}>Back to {list.title}</Link>
                                 </div>
                             </section>
                         </Col>

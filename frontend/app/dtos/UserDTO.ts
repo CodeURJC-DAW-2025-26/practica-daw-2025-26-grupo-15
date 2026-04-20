@@ -1,5 +1,5 @@
 
-import type { ImageDTO } from "./ImageDTO";
+import type ImageDTO from "./ImageDto";
 import type UserBasicInfoDTO from "./UserBasicInfoDTO";
 
 export interface UserDTO{
