@@ -42,7 +42,8 @@ export async function addList(
   });
 
   if (!response.ok) {
-    throw new Error("Error adding book");
+    console.error("Failed to add list:", await response.text());
+    throw new Error("Error adding list");
   }
 
   return await response.json();
@@ -61,7 +62,8 @@ export async function updateList(
   });
 
   if (!response.ok) {
-    throw new Error("Error updating book");
+    console.error("Failed to update list:", await response.text());
+    throw new Error("Error updating list");
   }
 
   return await response.json();

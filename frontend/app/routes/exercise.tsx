@@ -1,5 +1,8 @@
 
 
+import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router';
+
 // Provisional constants to replace Mustache variables
 // These represent data that would come from the backend/server-side rendering
 const logged = true; // Boolean indicating if user is logged in
@@ -40,26 +43,26 @@ export function Exercise() {
             <main className="page">
                 <div className="d-flex flex align-items-center justify-content-between">
                     <div className="brand">
-                        <a href="/" className="brand-mark-link"><img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" /></a>
-                        <a href="/"><span className="brand-title">DSGram</span></a>
+                        <Link to="/" className="brand-mark-link"><img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" /></Link>
+                        <Link to="/"><span className="brand-title">DSGram</span></Link>
                     </div>
                     {/* Header section: shows user profile if logged in, otherwise login button */}
                     {logged ? (
                         <div className="profile-image d-flex align-items-center gap-2">
-                            <a href="/profile">
+                            <Link to="/profile">
                                 <div className="avatar avatar--img">
                                     {user.photo ? <img src={`/images/${user.photo.id}`} alt="Profile photo" /> : <span>{user.nameInitial}</span>}
                                 </div>
-                            </a>
+                            </Link>
                         </div>
                     ) : (
                         <a className="btn ghost" href="/login">Log in</a>
                     )}
                 </div>
 
-                <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-12 col-lg-10">
+                <Container>
+                    <Row className="justify-content-center">
+                        <Col xs={12} lg={10}>
                             <section className="content-section mb-4">
                                 <div className="content-section__header">
                                     <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
@@ -70,22 +73,22 @@ export function Exercise() {
                                     </div>
                                 </div>
 
-                                <div className="row g-4 mt-2">
-                                    <div className="col-12">
+                                <Row className="g-4 mt-2">
+                                    <Col xs={12}>
                                         <div className="detail-block">
                                             <h4 className="detail-block__label">Name</h4>
                                             <p className="detail-block__value">{exercise.title}</p>
                                         </div>
-                                    </div>
-                                    <div className="col-12">
+                                    </Col>
+                                    <Col xs={12}>
                                         <div className="detail-block">
                                             <h4 className="detail-block__label">Description</h4>
                                             <p className="detail-block__value">{exercise.description}</p>
                                         </div>
-                                    </div>
+                                    </Col>
                                     {/* PDF link: only shown if logged in and PDF exists */}
                                     {logged && exercise.pdfImage && (
-                                        <div className="col-12">
+                                        <Col xs={12}>
                                             <div className="detail-block">
                                                 <h4 className="detail-block__label">PDF statement</h4>
                                                 <a href={`/exercise/${exercise.id}/pdf`} className="detail-block__link">
@@ -95,17 +98,17 @@ export function Exercise() {
                                                     document.pdf
                                                 </a>
                                             </div>
-                                        </div>
+                                        </Col>
                                     )}
-                                </div>
+                                </Row>
                             </section>
 
                             <section className="content-section">
                                 <h3 className="content-section__subtitle mb-4">Solutions</h3>
-                                <div className="row g-4 mb-4">
+                                <Row className="g-4 mb-4">
                                     {/* Deletable solutions: solutions that the user can delete */}
                                     {deletableSolutions.map((solution, index) => (
-                                        <div key={solution.id} className="col-12 col-md-6">
+                                        <Col key={solution.id} xs={12} md={6}>
                                             <div className="solution-card position-relative">
                                                 <div className="solution-card__header d-flex justify-content-between align-items-start gap-2">
                                                     <div>
@@ -131,7 +134,7 @@ export function Exercise() {
                                                     <span className="solution-card__comments">{solution.numComments} comments</span>
                                                 </div>
 
-                                                <a href={`/solution/${solution.id}`} className="stretched-link"></a>
+                                                <Link to={`/solution/${solution.id}`} className="stretched-link"></Link>
                                             </div>
 
                                             {/* Delete solution modal */}
@@ -156,12 +159,12 @@ export function Exercise() {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Col>
                                     ))}
 
                                     {/* Read-only solutions: solutions that cannot be deleted */}
                                     {readonlySolutions.map((solution, index) => (
-                                        <div key={solution.id} className="col-12 col-md-6">
+                                        <Col key={solution.id} xs={12} md={6}>
                                             <div className="solution-card position-relative">
                                                 <div className="solution-card__header d-flex justify-content-between align-items-start gap-2">
                                                     <div>
@@ -183,25 +186,27 @@ export function Exercise() {
                                                     <span className="solution-card__comments">{solution.numComments} comments</span>
                                                 </div>
 
-                                                <a href={`/solution/${solution.id}`} className="stretched-link"></a>
+                                                <Link to={`/solution/${solution.id}`} className="stretched-link"></Link>
                                             </div>
-                                        </div>
+                                        </Col>
                                     ))}
 
                                     {/* No solutions message if there are no solutions */}
                                     {!hasSolutions && (
-                                        <div className="col-12 text-center">
+                                        <Col xs={12} className="text-center">
                                             <p className="text-muted">No solutions for this exercise yet. Click the + button to add one!</p>
-                                        </div>
+                                        </Col>
                                     )}
-                                </div>
+                                </Row>
                                 {/* Add solution button: only if logged in */}
                                 {logged ? (
-                                    <div className="row g-3 justify-content-center">
-                                        <a className="btn plus-btn rounded-circle col-12 col-sm-auto" href={`/add-solution/${exercise.id}`}>
-                                            <i className="bi bi-plus"></i>
-                                        </a>
-                                    </div>
+                                    <Row className="g-3 justify-content-center">
+                                        <Col xs={12} sm="auto">
+                                            <Link className="btn plus-btn rounded-circle" to={`/add-solution/${exercise.id}`}>
+                                                <i className="bi bi-plus"></i>
+                                            </Link>
+                                        </Col>
+                                    </Row>
                                 ) : (
                                     <div className="text-center">
                                         <p className="text-muted mb-0">Log in to add, edit or delete content.</p>
@@ -209,12 +214,12 @@ export function Exercise() {
                                 )}
 
                                 <div className="text-center mt-5">
-                                    <a className="btn ghost" href={`/list-view/${list.id}`}>Back to {list.title}</a>
+                                    <Link className="btn ghost" to={`/list-view/${list.id}`}>Back to {list.title}</Link>
                                 </div>
                             </section>
-                        </div>
-                    </div>
-                </div>
+                        </Col>
+                    </Row>
+                </Container>
             </main>
         </>
     );
