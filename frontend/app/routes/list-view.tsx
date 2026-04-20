@@ -3,6 +3,7 @@ import { Link, useLoaderData, useNavigate } from 'react-router';
 import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import { getExerciseListById } from '~/services/list-service';
 import type { Route } from './+types/list-view';
+import { useUserStore } from '~/stores/user-store';
 
 
 // NOTA: Para que esto funcione, 'list' y 'user' deberían venir de:
@@ -18,22 +19,16 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 export default function ListView({ loaderData }: Route.ComponentProps) {
 
     const list = loaderData;
-
-    // --- DATOS PROVISIONALES ---
-    const user = {
-        photo: null, 
-        nameInitial: "JD",
-        name: "John Doe",
-        id: "123"
-    };
+    const userOwner = list.owner;
+    const { user } = useUserStore();
 
     const token = "fake-csrf-token"; //Placeholder para seguridad
 
     // --- LÓGICA DE ESTADO (Antes gestionada por el servidor/Mustache) ---
-    const logged = true; 
-    const isOwner = true;
-    const canDeleteList = true;
-    const canDeleteExercises = true;
+    const logged = user !== null; 
+    const isOwner = userOwner === user;
+    const canDeleteList = isOwner;
+    const canDeleteExercises = isOwner; 
 
     return (
         <main className="page">
@@ -53,10 +48,10 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
                         <Link to="/profile">
                             <div className="avatar avatar--img">
                                 {/* Lógica: Si hay foto, img. Si no, iniciales */}
-                                {user.photo ? (
-                                    <img src={`/images/${user.photo}`} alt="Profile" />
+                                {user.photo.id ? (
+                                    <img src={`/images/${user.photo.id}`} alt="Profile" />
                                 ) : (
-                                    <span className="p-2 border rounded-circle bg-light">{user.nameInitial}</span>
+                                    <span className="p-2 border rounded-circle bg-light">{user.name.charAt(0)}</span>
                                 )}
                             </div>
                         </Link>
@@ -76,7 +71,7 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
                                     <div>
                                         <h2 className="content-section__title mb-2">{list.title}</h2>
                                         <p className="content-section__meta text-muted mb-0">
-                                            Created by {list.owner.name} · Last update: {list.lastUpdated}
+                                            Created by {list.owner.name} · Last update: 
                                         </p>
                                     </div>
 
