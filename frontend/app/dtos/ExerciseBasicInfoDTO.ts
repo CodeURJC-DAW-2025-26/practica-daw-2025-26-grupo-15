@@ -1,4 +1,4 @@
-export default interface ListDTO {
+export default interface ExerciseBasicInfoDTO {
     id: string,
     title: string;
     description: string,

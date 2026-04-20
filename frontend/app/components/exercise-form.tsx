@@ -5,19 +5,21 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Stack from "react-bootstrap/esm/Stack";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import type { ExercisePostDTO } from "~/dtos/ExercisePostDTO";
 
 interface ExerciseFormProps {
-    exercise?: ExercisePostDTO
     actionState: [
         {success: boolean, error: string | null} | null,
         (formData: FormData) => void,
         boolean];
-    listId: number;
 }
 
-export default function ExerciseForm({exercise, actionState: [state, formAction, isPending], listId}: ExerciseFormProps) {
+
+
+export default function ExerciseForm({ actionState: [state, formAction, isPending]}: ExerciseFormProps) {
+
+    const { listId } = useParams();
 
     return (
         <Container>
@@ -25,7 +27,7 @@ export default function ExerciseForm({exercise, actionState: [state, formAction,
                 <Col as="section" xs={12} lg={8} className="hero-card hero-card--full-width hero-card--exercise">
                     <Form action={formAction} method="post" encType="multipart/form-data" className="form-block text-start">
                         
-                        <h2 className="text-center mb-5">{exercise ? "Edit exercise" : "New exercise page"}</h2>
+                        <h2 className="text-center mb-5">New exercise page</h2>
 
                         {state?.error && <Alert variant="danger">{state.error}</Alert>}
 
@@ -35,7 +37,6 @@ export default function ExerciseForm({exercise, actionState: [state, formAction,
                                 type="text"
                                 name="exname"
                                 placeholder="Name of the exercise"
-                                defaultValue={exercise ? exercise.title : ""}
                                 className="form-control-custom"
                                 required
                                 disabled={isPending}
@@ -49,7 +50,6 @@ export default function ExerciseForm({exercise, actionState: [state, formAction,
                                 as="textarea"
                                 name="exdesc"
                                 placeholder="Describe the exercise"
-                                defaultValue={exercise ? exercise.description : ""}
                                 className="form-control-custom"
                                 rows={5}
                                 required

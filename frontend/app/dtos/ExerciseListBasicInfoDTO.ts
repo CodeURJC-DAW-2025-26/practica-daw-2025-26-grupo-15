@@ -1,4 +1,4 @@
 export interface ExerciseListBasicInfoDTO {
-    id: number,
+    id: string | number,
     title: string
 }

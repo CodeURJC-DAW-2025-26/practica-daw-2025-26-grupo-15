@@ -19,11 +19,11 @@ export default function NewList() {
         const description = formData.get("description") as string;
 
         try {
-        const newList = await addList(title, topic,description);
+            const newList = await addList(title, topic,description);
 
 
-        navigate(`/lists/${newList.id}`);
-        return { success: true, error: null };
+            navigate(`/lists/${newList.id}`);
+            return { success: true, error: null };
         } catch (error) {
             console.error(error);
             return {

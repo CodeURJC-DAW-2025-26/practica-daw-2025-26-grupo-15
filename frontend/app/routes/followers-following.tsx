@@ -1,31 +1,33 @@
 import { getUser } from "~/services/user-service";
-import { Footer } from "../components/footer";
-import { Link } from "react-router"; // O 'react-router-dom' según tu versión
+import { Link } from "react-router"; 
 import type { Route } from "./+types/followers-following";
+import { useUserStore } from "~/stores/user-store";
 
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+export async function clientLoader({ request, params }: Route.ClientLoaderArgs) {
     const url = new URL(request.url);
     const userId = url.searchParams.get("userId");
 
-    if (!userId) {
-        throw new Error("No se proporcionó un ID de usuario");
-    }
+    const type = params.type; 
 
-    return await getUser(Number(userId));
+    if (!userId) throw new Error("No se proporcionó un ID de usuario");
+
+    const userToShow = await getUser(Number(userId));
+    
+    return { userToShow, type };
+
 }
 
 
 export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
-    // --- DATOS PROVISIONALES (Simulan el backend) ---
-    const followersPage = true; // Cambia a 'false' para ver la vista de "Following"
-    const isOwnProfile = true;  // Cambia a 'false' para ver la vista de otro usuario
+    let { user } = useUserStore();
+    const isOwnProfile = user && user.id === loaderData.userToShow.id;
+
+    const {userToShow, type} = loaderData;
+    const followersPage = type === "followers";
+    const listToShow = followersPage ? userToShow.followers : userToShow.following;
+
     const token = "fake-csrf-token";
-
-    const user = loaderData;
-
-    const numFollowers = loaderData.followers.length;
-    const numFollowing = loaderData.following.length;
 
     return (
         <>
@@ -51,12 +53,12 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
                                         </h2>
                                         <p className="muted">
                                             {followersPage 
-                                                ? (isOwnProfile ? "Users that follow you" : `Users that follow ${user.name}`)
-                                                : (isOwnProfile ? "Users you are following" : `Users that ${user.name} is following`)
+                                                ? (isOwnProfile ? "Users that follow you" : `Users that follow ${userToShow.name}`)
+                                                : (isOwnProfile ? "Users you are following" : `Users that ${userToShow.name} is following`)
                                             }
                                         </p>
                                     </div>
-                                    <Link className="btn ghost" to={`/profile/${user.id}`}>Back</Link>
+                                    <Link className="btn ghost" to={`/profile/${userToShow.id}`}>Back</Link>
                                 </div>
 
                                 <div className="row align-items-start justify-content-between">
@@ -64,8 +66,8 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
                                     <div className="col-md-8 col-12 followers-card mx-0 mt-5">
                                         <h3>{followersPage ? "Followers" : "Following"}</h3>
                                         <div className="followers-list">
-                                            {user && user.followers.length > 0 ? (
-                                                user.followers.map((item: typeof user) => (
+                                            {userToShow && userToShow.followers.length > 0 ? (
+                                                listToShow.map((item: typeof userToShow) => (
                                                     <div key={item.id} className="followers-item">
                                                         <div className="followers-left">
                                                             <div className="followers-avatar avatar--img">
@@ -115,8 +117,8 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
                                     <div className="col-md-4 col-12 chart-container mx-0 mt-5">
                                         <canvas 
                                             id="comparisonChart" 
-                                            data-num-followers={numFollowers} 
-                                            data-num-following={numFollowing}
+                                            data-num-followers={userToShow.followers.length} 
+                                            data-num-following={userToShow.following.length}
                                         ></canvas>
                                     </div>
                                 </div>
@@ -125,7 +127,6 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
                     </div>
                 </section>
             </main>
-            <Footer />
         </>
     );
 }
