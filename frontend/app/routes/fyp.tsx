@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/home";
+import { useUserStore } from "~/stores/user-store";
 
 type UserBasicInfo = {
   id: number;
@@ -23,8 +24,10 @@ function getContactText(contact: UserBasicInfo[]) {
 }
 
 export default function Fyp() {
+
+  let {user} = useUserStore();
   // Variables mockeadas por ahora
-  const isLogged = true;
+  const isLogged = user != null;
   const currentUser = {
     name: "John Doe",
     nameInitial: "J",
@@ -156,7 +159,7 @@ export default function Fyp() {
                   {isLogged && (
                     <div className="profile-image d-flex align-items-center gap-2">
                       <p className="p greeting mt-3">Welcome {currentUser.name}!</p>
-                      <Link to="users/me">
+                      <Link to={`users/${user!.id}`}>
                         {currentUser.photoId ? (
                           <div className="avatar avatar--img">
                             { /* TODO: enable when backend serves images AÑadir el src*/ }

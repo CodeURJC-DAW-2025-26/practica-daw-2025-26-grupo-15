@@ -8,8 +8,10 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import "./app.css";
-import "./sign-in.css";
+import "./sign-in.css"; 
+
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
