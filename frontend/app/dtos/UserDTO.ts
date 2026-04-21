@@ -6,8 +6,6 @@ export interface UserDTO {
   id: number;
   name: string;
   email: string;
-    bio: string;
-    specialty: string;
   bio: string;
   specialty: string;
   roles: string[];
