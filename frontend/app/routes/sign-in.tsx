@@ -1,9 +1,10 @@
 import { useActionState, useState } from "react";
-import { Col, Container, Form, Modal, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router";
 import { useUserStore } from "~/stores/user-store";
 
 export default function SigIn() {
+  
   const [isErrorDialogOpen, setErrorDialog] = useState(false);
 
   const { loginUser, loginError } = useUserStore();
@@ -106,9 +107,9 @@ export default function SigIn() {
                       />
                     </div>
 
-                    <button type="submit" className="button-submit">
+                    <Button type="submit" className="button-submit">
                       Log In
-                    </button>
+                    </Button>
 
                     <div className="separator">
                       <hr />

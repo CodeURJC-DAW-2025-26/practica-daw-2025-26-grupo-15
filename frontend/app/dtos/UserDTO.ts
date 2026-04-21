@@ -1,16 +1,20 @@
-
-import type { ImageDTO } from "./ImageDTO";
+import type ExerciseListBasicInfoDTO from "./ExerciseListBasicInfoDTO";
+import type ImageDTO from "./ImageDto";
 import type UserBasicInfoDTO from "./UserBasicInfoDTO";
 
-export interface UserDTO{
-    id: number;
-    name: string;
-    email: string;
+export interface UserDTO {
+  id: number;
+  name: string;
+  email: string;
     bio: string;
     specialty: string;
-    photo: ImageDTO | null;
-    followers: UserBasicInfoDTO[];
-    following: UserBasicInfoDTO[];
-
-    
+  bio: string;
+  specialty: string;
+  roles: string[];
+  exerciseLists: ExerciseListBasicInfoDTO[];
+  followers: UserBasicInfoDTO[];
+  following: UserBasicInfoDTO[];
+  requestedFriends: UserBasicInfoDTO[];
+  requestReceived: UserBasicInfoDTO[];
+  photo: ImageDTO;
 }

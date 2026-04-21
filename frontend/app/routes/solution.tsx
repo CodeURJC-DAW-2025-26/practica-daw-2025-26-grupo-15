@@ -1,39 +1,57 @@
+import { addComment, getSolution } from '~/services/solution-service';
+import type { Route } from './+types/solution';
+import { useUserStore } from '~/stores/user-store';
+import { findCommentsBySolutionId } from '~/services/solution-service';
+import { Form, Link, useActionData, useNavigation, useRevalidator } from 'react-router';
+import { useActionState } from 'react';
+import CommentForm from '~/components/comment-form';
+import { useNavigate } from "react-router";
 
-// Provisional constants to replace Mustache variables
-// These represent data that would come from the backend/server-side rendering
-const logged = true; // Boolean indicating if user is logged in
-const user = { photo: { id: 123 }, nameInitial: 'A' }; // User object with photo and initial
-const solution = { // Solution object with all properties
-  id: 1,
-  name: "Sample Solution Name",
-  owner: { name: "Solution Owner" },
-  exercise: { title: "Exercise Title", id: 2 },
-  lastUpdate: "2023-01-01",
-  description: "This is the solution description.",
-  solImage: { id: 456 },
-  numComments: 5
-};
-const canDeleteSolution = true; // Boolean for delete permission
-const token = "sample-csrf-token"; // CSRF token for forms
-const deletableComments = [ // Array of comments that can be deleted
-  {
-    id: 10,
-    owner: { photo: { id: 789 }, nameInitial: 'B', name: "Commenter Name" },
-    lastUpdate: "2023-01-02",
-    text: "This is a sample comment text."
-  }
-];
-const readonlyComments = [ // Array of comments that are read-only
-  {
-    id: 11,
-    owner: { photo: { id: 790 }, nameInitial: 'C', name: "Another Commenter" },
-    lastUpdate: "2023-01-03",
-    text: "Another comment."
-  }
-];
-const hasComments = true; // Boolean indicating if there are any comments
 
-export function Solution() {
+export async function clientLoader({ params } : Route.ClientLoaderArgs) {
+    const solution = await getSolution(params.id!);
+    const comments = await findCommentsBySolutionId(params.id!);
+    return { solution, comments };
+}
+
+
+
+export default function Solution({ loaderData }: Route.ComponentProps) {
+    const { solution, comments } = loaderData;
+    let { user } = useUserStore();
+    const navigate = useNavigate();
+    const revalidator = useRevalidator();
+    
+    const logged = user !== null; 
+    const userOwner = solution.owner;
+    const canDeleteSolution = logged && user === userOwner; 
+    const hasComments = comments.length > 0;
+    const token = "sample-csrf-token"; // CSRF token for forms
+  
+    async function saveCommentAction(
+      prevState: {
+        success: boolean;
+        error: string | null;
+        } | null,
+        formData: FormData,
+    )
+    {
+        const text = formData.get("text") as string;
+
+        try {
+            await addComment(solution.id, text);
+            revalidator.revalidate();
+            return { success: true, error: null };
+        } catch (error) {
+            console.error(error);
+            return {
+                success: false,
+                error: "Failed to add comment. Please try again.",
+            };
+        }
+    }
+    const [state, formAction, isPending] = useActionState(saveCommentAction, null);
+
     return (
         <>
         <main className="page">
@@ -47,7 +65,7 @@ export function Solution() {
       <div className="profile-image d-flex align-items-center gap-2">
         <a href="/profile">
           <div className="avatar avatar--img">
-            {user.photo ? <img src={`/images/${user.photo.id}`} alt="Profile photo" /> : <span>{user.nameInitial}</span>}
+            {user.photo.id ? <img src={`/images/${user.photo.id}`} alt="Profile photo" /> : <span>{user.name.charAt(0)}</span>}
           </div>
         </a>
       </div>
@@ -146,10 +164,10 @@ export function Solution() {
           </section>
 
           <section className="content-section">
-            <h3 className="content-section__subtitle mb-4">Comments ({solution.numComments})</h3>
+            <h3 className="content-section__subtitle mb-4">Comments ({hasComments ? solution.numComments : 0})</h3>
             <div className="comment-list mb-4">
               {/* Deletable comments: comments that the user can delete */}
-              {deletableComments.map(comment => (
+              {comments.map(comment => (
               <div key={comment.id} className="comment-item">
                 <div className="comment-item__header d-flex justify-content-between align-items-center">
                   <div className="d-flex align-items-center gap-2">
@@ -159,7 +177,7 @@ export function Solution() {
                         className="avatar-image-cover" />
                     </div>
                     ) : (
-                    <div className="avatar-sm">{comment.owner.nameInitial}</div>
+                    <div className="avatar-sm">{comment.owner.name.charAt(0)}</div>
                     )}
                     <div>
                       <strong className="comment-item__author">{comment.owner.name}</strong>
@@ -177,7 +195,7 @@ export function Solution() {
               ))}
 
               {/* Delete comment modal for each deletable comment */}
-              {deletableComments.map(comment => (
+              {comments.map(comment => (
               <div key={`modal-${comment.id}`} className="modal fade" id={`deleteCommentModal${comment.id}`} tabIndex={-1} aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                   <div className="modal-content modal-content-themed">
@@ -200,29 +218,6 @@ export function Solution() {
               </div>
               ))}
 
-              {/* Read-only comments: comments that cannot be deleted */}
-              {readonlyComments.map(comment => (
-              <div key={comment.id} className="comment-item">
-                <div className="comment-item__header d-flex justify-content-between align-items-center">
-                  <div className="d-flex align-items-center gap-2">
-                    {comment.owner.photo ? (
-                    <div className="avatar-sm avatar--img">
-                      <img src={`/images/${comment.owner.photo.id}`} alt="avatar"
-                        className="avatar-image-cover" />
-                    </div>
-                    ) : (
-                    <div className="avatar-sm">{comment.owner.nameInitial}</div>
-                    )}
-                    <div>
-                      <strong className="comment-item__author">{comment.owner.name}</strong>
-                      <span className="comment-item__date">{comment.lastUpdate}</span>
-                    </div>
-                  </div>
-                </div>
-                <p className="comment-item__text mt-2">{comment.text}</p>
-              </div>
-              ))}
-
               {/* No comments message if there are no comments */}
               {!hasComments && (
               <p className="text-muted">No comments yet. Be the first to help!</p>
@@ -230,28 +225,20 @@ export function Solution() {
             </div>
 
             {/* Add comment form: only if logged in */}
-            {logged ? (
-            <form className="add-comment-form" action={`/solution/${solution.id}/comment`} method="post">
-              <div className="row g-3 align-items-end">
-                <div className="col-12 col-md-9">
-                  <label htmlFor="new-comment" className="form-label">Add your comment</label>
-                  <input id="new-comment" name="text" className="form-control" type="text"
-                    placeholder="Share your thoughts..." required />
-                </div>
-                <div className="col-12 col-md-3">
-                  <button className="btn w-100" type="submit">Comment</button>
-                </div>
+            {logged ? ( 
+              <CommentForm
+                    actionState={[state, formAction, isPending]}
+                    onCancel={() => navigate(`/solution/${solution.id}`)}
+                />
+            ) : 
+            (
+              <div className="text-center">
+                <p className="mb-3">Log in to add a comment.</p>
               </div>
-              <input type="hidden" name="_csrf" value={token} />
-            </form>
-            ) : (
-            <div className="text-center">
-              <p className="text-muted mb-0">Log in to comment, export PDF or manage this solution.</p>
-            </div>
             )}
 
             <div className="text-center mt-5">
-              <a className="btn ghost" href={`/exercise/${solution.exercise.id}`}>Back to Exercise</a>
+              <Link className="btn ghost" to={`/exercise/${solution.exercise.id}`}>Back to Exercise</Link>
             </div>
           </section>
         </div>

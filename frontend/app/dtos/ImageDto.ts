@@ -1,3 +1,3 @@
 export default interface ImageDTO {
-    id: number | null;
+  id: number | null;
 }

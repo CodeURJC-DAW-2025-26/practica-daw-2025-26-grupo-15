@@ -71,3 +71,55 @@ export async function updateProfilePhoto(photoFile: File, userId: number): Promi
   }
   return await res.json();
 }
+
+export async function sendFollowRequest(targetId:string) {
+  const res = await fetch(`${API_URL}/${targetId}/follow-requests/`,
+    {
+      method: "POST",
+      headers: {
+      "Content-Type": "application/json"
+    },
+    });
+
+  if(!res.ok){
+    throw new Error("Failed to send the follow requests");
+  }
+  return await res.json();
+}
+
+  export async function acceptFollowRequest(targetId:string){
+    const res = await fetch(`${API_URL}/me/follow-requests/${targetId}`,
+      {
+        method: "POST",
+        headers: {"Content-Type" : "application/json" }
+      });
+
+      if(!res.ok){
+        throw new Error("Failed to accept the follow request")
+      }
+
+  }
+  export async function declineFollowRequest(targetId:string) {
+    const res = await fetch(`${API_URL}/me/follow-requests/${targetId}`,
+      {
+        method:"DELETE",
+        headers:{"Content-Type" : "application/json"}
+      });
+
+      if(!res.ok){
+        throw new Error("Failed to decline the follow request")
+      }
+  }
+  export async function unFollowUser(targetId:string) {
+    const res = await fetch(`${API_URL}/me/follows/${targetId}`,
+      {
+        method:"DELETE",
+        headers:{"Content-Type" : "application/json"}
+      });
+      if(!res.ok){
+        throw new Error("Failed to decline the follow request")
+      }
+  }
+  
+
+
