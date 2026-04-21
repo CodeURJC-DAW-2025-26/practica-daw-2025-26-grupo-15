@@ -1,4 +1,9 @@
+import { Link } from "react-router";
+import { useUserStore } from "~/stores/user-store";
+
 export function Footer(){
+    const {user} = useUserStore();
+    const logged = user !== null;
     return (
         <>
         <footer className="site-footer py-4 mt-0">
@@ -12,8 +17,10 @@ export function Footer(){
                 </div>
                 <div className="col-12 col-md-4">
                 <ul className="nav justify-content-center gap-3 list-unstyled d-flex mb-0">
-                    <li><a className="footer-link">Home</a></li>
-                    <li><a className="footer-link">Profile</a></li>
+                    <li><Link to="/" className="footer-link">Home</Link></li>
+                    {logged && (
+                        <li><Link to={`/users/${user.id}`} className="footer-link">Profile</Link></li>
+                    )}
                 </ul>
                 </div>
                 <div className="col-12 col-md-4 text-center text-md-end">
