@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import type ListDTO from "~/dtos/ListDTO";
 import type { ExerciseDTO } from "~/dtos/ExerciseDTO";
 import type { SolutionBasicInfoDTO } from "~/dtos/SolutionBasicInfoDTO";
-import { getExercise } from '~/services/exercise-service';
+import { getExercise, getExercisePdf } from '~/services/exercise-service';
 import { getExerciseListById } from "~/services/list-service";
 import { useUserStore } from "~/stores/user-store";
 import SolutionCard from "~/components/solution-card";
@@ -36,6 +36,26 @@ export default function Exercise({ loaderData }: Route.ComponentProps) {
     const deletableSolutions = showDeletableSolutions
         ? exercise.solutions.filter((solution: SolutionBasicInfoDTO) => solution.owner.id === userId)
         : [];
+
+    async function downloadPdf() {
+        try {
+            const blob = await getExercisePdf(exercise.id);
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const safeTitle = exercise.title.replace(/[^\w\d-]/g, "_");
+            a.download = `exercise-${safeTitle}-${exercise.id}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error downloading PDF:", error);
+            alert("Sorry, there was an error downloading the PDF. Please try again later.");
+        }    
+    }
+
+   
                         
     return (
         <>
@@ -85,12 +105,12 @@ export default function Exercise({ loaderData }: Route.ComponentProps) {
                                             <p className="detail-block__value">{exercise.description}</p>
                                         </div>
                                     </Col>
-                                    {/* PDF link: only shown if logged in and PDF exists 
-                                    {logged && false && exercise.pdfImage && (
+                                     
+                                    {logged && exercise.hasPdf && (
                                         <Col xs={12}>
                                             <div className="detail-block">
                                                 <h4 className="detail-block__label">PDF statement</h4>
-                                                <a href={`/exercise/${exercise.id}/pdf`} className="detail-block__link">
+                                                <a onClick={(e) => { e.preventDefault(); downloadPdf();}} className="detail-block__link">
                                                     <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                                         <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
                                                     </svg>
@@ -99,7 +119,7 @@ export default function Exercise({ loaderData }: Route.ComponentProps) {
                                             </div>
                                         </Col>
                                     )}
-                                    */}
+                                    
                                 </Row>
                             </section>
 

@@ -141,7 +141,7 @@ public class ExerciseService {
         }
 
         exercise.setPdfImage(null);
-
+        exercise.setHasPdf(false);
         return exerciseRepo.save(exercise);
     }
 
@@ -151,6 +151,7 @@ public class ExerciseService {
         try {
             byte[] bytes = pdf.getBytes();
             ex.setPdfImage(new SerialBlob(bytes)); 
+            ex.setHasPdf(true);
         } catch (Exception e) { 
             throw new RuntimeException("Error processing uploaded PDF");
         }

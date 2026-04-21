@@ -21,6 +21,7 @@ public class Exercise {
     private String title;
     private String description;
     private int numSolutions;
+    private boolean hasPdf;
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")
@@ -59,6 +60,14 @@ public class Exercise {
 
     public String getTitle() {
         return title;
+    }
+
+    public boolean isHasPdf() {
+        return hasPdf;
+    }
+
+    public void setHasPdf(boolean hasPdf) {
+        this.hasPdf = hasPdf;
     }
 
     public String getDescription() {
