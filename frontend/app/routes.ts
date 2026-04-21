@@ -4,8 +4,7 @@ export default [
 	layout("routes/home.tsx", [
 		index("routes/fyp.tsx"),
 		route("login","routes/sign-in.tsx"),
-		route("users/:id", "routes/profile.tsx", { id: "user-profile-by-id" }),
-		route("users/me", "routes/profile.tsx", { id: "user-profile-me" }),
+		route("users/:id", "routes/profile.tsx"),
 		route("lists/:id", "routes/list-view.tsx"),
 		route("lists/new", "routes/new-list.tsx"),
 		route("lists/edit/:id", "routes/edit-list.tsx"),
@@ -13,6 +12,7 @@ export default [
 		route("followers-following/:type", "routes/followers-following.tsx"),
 		route("lists/:listId/exercises/new", "routes/new-exercise.tsx"),
 		route("solutions/:id", "routes/solution.tsx"),
-		route("exercise/:id", "routes/exercise.tsx")
+		route("exercise/:id", "routes/exercise.tsx"),
+		route("users/:userId/edit", "routes/edit-profile.tsx"),
 	]),
 ] satisfies RouteConfig;

@@ -5,7 +5,7 @@ import { useUserStore } from "~/stores/user-store";
 
 export default function Home() {
   
-  let { loadLoggedUser } = useUserStore();
+  let {user, loadLoggedUser } = useUserStore();
 
   useEffect(() => {
     loadLoggedUser();

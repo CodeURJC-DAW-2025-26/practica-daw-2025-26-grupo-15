@@ -33,7 +33,7 @@ export default function SolutionCard({ solution, index, deletable }: { solution:
                     <span className="solution-card__comments">{solution.numComments} comments</span>
                 </div>
 
-                <Link to={`/solution/${solution.id}`} className="stretched-link"></Link>
+                <Link to={`/solutions/${solution.id}`} className="stretched-link"></Link>
             </div>
             
             {/* Delete solution modal 

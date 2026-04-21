@@ -119,14 +119,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<!-- Change if error with used port-->
-					<jmxPort>8000</jmxPort>
-					<jvmArguments>-Dserver.port=8081 -Dserver.ssl.enabled=false</jvmArguments>
-				</configuration>
 				<executions>
 					<execution>
 						<id>pre-integration-test</id>
+						<configuration>
+							<!-- Dedicated port for integration-test API docs generation -->
+							<jmxPort>8000</jmxPort>
+							<jvmArguments>-Dserver.port=8081 -Dserver.ssl.enabled=false</jvmArguments>
+						</configuration>
 						<goals>
 							<goal>start</goal>
 						</goals>

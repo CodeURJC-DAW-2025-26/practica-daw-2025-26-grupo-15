@@ -148,7 +148,7 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
                             )}
 
                             <div className="text-center mt-4">
-                                <Link className="btn btn-link text-decoration-none" to={`/profile/${list.owner.id}`}>
+                                <Link className="btn btn-link text-decoration-none" to={`/users/${list.owner.id}`}>
                                     Back to {list.owner.name}'s profile
                                 </Link>
                             </div>

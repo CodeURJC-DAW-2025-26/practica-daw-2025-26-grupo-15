@@ -4,6 +4,7 @@ import { Container, Row, Col, Modal, Button } from 'react-bootstrap';
 import { Footer } from '../components/footer';
 import { getFollowRequests } from '~/services/user-service';
 import type { Route } from './+types/follow-request';
+import { useUserStore } from '~/stores/user-store';
 
 export async function clientLoader(){
     return await getFollowRequests();
@@ -12,17 +13,12 @@ export async function clientLoader(){
 export default function FollowRequest({ loaderData }: Route.ComponentProps) {
 
     const followRequests = loaderData;
-
-    // --- DATOS PROVISIONALES  ---
     const token = "fake-csrf-token";
-    const user = {
-        name: "Usuario de Prueba",
-        photo: { id: "profile-pic.jpg" } 
-    };
+    const {user} = useUserStore();
 
     const pendingCount = followRequests ? followRequests.length : 0;
-    const followersNumber = 120;
-    const followingNumber = 85;
+    const followersNumber = user?.followers.length;
+    const followingNumber = user?.following.length;
 
     return (
         <>
@@ -53,15 +49,15 @@ export default function FollowRequest({ loaderData }: Route.ComponentProps) {
                                 <div className="fr-identity-avatar">
                                     {/* Funcionalidad Mustache: Condicional {{#user.photo}} y {{^user.photo}} */}
                                     {/* En React: Verificamos si existe user.photo. Si sí, la mostramos. Si no, icono por defecto. */}
-                                    {user.photo ? (
-                                        <img src={`/images/${user.photo}`} alt="Profile photo" />
+                                    {user?.photo.id ? (
+                                        <img src={`/images/${user.photo.id}`} alt="Profile photo" />
                                     ) : (
                                         <i className="bi bi-person-circle"></i>
                                     )}
                                 </div>
                                 <div className="fr-identity-info">
                                     {/* Funcionalidad Mustache: Inyectar texto simple {{user.name}} */}
-                                    <p className="fr-username">{user.name}</p>
+                                    <p className="fr-username">{user?.name}</p>
                                     <p className="fr-handle">Your follow requests</p>
                                 </div>
                                 <div className="fr-stats">
@@ -75,7 +71,7 @@ export default function FollowRequest({ loaderData }: Route.ComponentProps) {
                                 <h2 className="fr-section-title">
                                     <i className="bi bi-bell-fill"></i> Pending requests
                                 </h2>
-                                <Link className="fr-back-btn" to="/profile">
+                                <Link className="fr-back-btn" to={`/users/${user?.id}`}>
                                     <i className="bi bi-arrow-left-short"></i> Back to profile
                                 </Link>
                             </div>
@@ -127,7 +123,6 @@ export default function FollowRequest({ loaderData }: Route.ComponentProps) {
                         </div>
                     </div>
                 </main>
-                <Footer />
             </div>
         </>
     );

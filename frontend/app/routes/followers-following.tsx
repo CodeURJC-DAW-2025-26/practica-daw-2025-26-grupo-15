@@ -80,7 +80,7 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
                                                             <span>{item.name}</span>
                                                         </div>
                                                         <div className="d-flex gap-2">
-                                                            <Link className="btn secondary followers-action p-0" to={`/profile/${item.id}`}>View</Link>
+                                                            <Link className="btn secondary followers-action p-0" to={`/users/${item.id}`}>View</Link>
                                                             
                                                             {isOwnProfile && (
                                                                 followersPage ? (
