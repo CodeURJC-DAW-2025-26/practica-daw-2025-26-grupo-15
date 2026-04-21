@@ -1,7 +1,11 @@
-import { getSolution } from '~/services/solution-service';
+import { addComment, getSolution } from '~/services/solution-service';
 import type { Route } from './+types/solution';
 import { useUserStore } from '~/stores/user-store';
 import { findCommentsBySolutionId } from '~/services/solution-service';
+import { Form, Link, useActionData, useNavigation, useRevalidator } from 'react-router';
+import { useActionState } from 'react';
+import CommentForm from '~/components/comment-form';
+import { useNavigate } from "react-router";
 
 
 export async function clientLoader({ params } : Route.ClientLoaderArgs) {
@@ -10,15 +14,43 @@ export async function clientLoader({ params } : Route.ClientLoaderArgs) {
     return { solution, comments };
 }
 
+
+
 export default function Solution({ loaderData }: Route.ComponentProps) {
     const { solution, comments } = loaderData;
     let { user } = useUserStore();
+    const navigate = useNavigate();
+    const revalidator = useRevalidator();
+    
     const logged = user !== null; 
     const userOwner = solution.owner;
     const canDeleteSolution = logged && user === userOwner; 
     const hasComments = comments.length > 0;
     const token = "sample-csrf-token"; // CSRF token for forms
   
+    async function saveCommentAction(
+      prevState: {
+        success: boolean;
+        error: string | null;
+        } | null,
+        formData: FormData,
+    )
+    {
+        const text = formData.get("text") as string;
+
+        try {
+            await addComment(solution.id, text);
+            revalidator.revalidate();
+            return { success: true, error: null };
+        } catch (error) {
+            console.error(error);
+            return {
+                success: false,
+                error: "Failed to add comment. Please try again.",
+            };
+        }
+    }
+    const [state, formAction, isPending] = useActionState(saveCommentAction, null);
 
     return (
         <>
@@ -193,28 +225,20 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
             </div>
 
             {/* Add comment form: only if logged in */}
-            {logged ? (
-            <form className="add-comment-form" action={`/solution/${solution.id}/comment`} method="post">
-              <div className="row g-3 align-items-end">
-                <div className="col-12 col-md-9">
-                  <label htmlFor="new-comment" className="form-label">Add your comment</label>
-                  <input id="new-comment" name="text" className="form-control" type="text"
-                    placeholder="Share your thoughts..." required />
-                </div>
-                <div className="col-12 col-md-3">
-                  <button className="btn w-100" type="submit">Comment</button>
-                </div>
+            {logged ? ( 
+              <CommentForm
+                    actionState={[state, formAction, isPending]}
+                    onCancel={() => navigate(`/solution/${solution.id}`)}
+                />
+            ) : 
+            (
+              <div className="text-center">
+                <p className="mb-3">Log in to add a comment.</p>
               </div>
-              <input type="hidden" name="_csrf" value={token} />
-            </form>
-            ) : (
-            <div className="text-center">
-              <p className="text-muted mb-0">Log in to comment, export PDF or manage this solution.</p>
-            </div>
             )}
 
             <div className="text-center mt-5">
-              <a className="btn ghost" href={`/exercise/${solution.exercise.id}`}>Back to Exercise</a>
+              <Link className="btn ghost" to={`/exercise/${solution.exercise.id}`}>Back to Exercise</Link>
             </div>
           </section>
         </div>

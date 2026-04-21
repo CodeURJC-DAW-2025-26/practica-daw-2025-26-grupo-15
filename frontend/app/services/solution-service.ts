@@ -18,3 +18,16 @@ export async function findCommentsBySolutionId(id: string): Promise<CommentDTO[]
     }
     return await res.json();
 }
+
+export async function addComment(solutionId: number, text: string) {
+    const res = await fetch(`${API_URL}/${solutionId}/comment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json",},
+        body: JSON.stringify({ text }),
+    });
+    
+    if (!res.ok) {
+        throw new Error("Failed to add comment");
+    }
+    return await res.json();
+}
