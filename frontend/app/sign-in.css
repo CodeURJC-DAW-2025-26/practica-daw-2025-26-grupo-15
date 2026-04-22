@@ -91,6 +91,20 @@ body {
   border-radius: var(--radius-sm);
   border: 1px solid rgba(47, 38, 64, 0.2);
   background: #fafafe;
+  transition: border-color 0.15s ease;
+}
+
+.inputForm--ok {
+  border-color: rgba(20, 130, 82, 0.55);
+}
+
+.inputForm--error {
+  border-color: rgba(186, 45, 69, 0.6);
+}
+
+.inputForm--checking {
+  border-color: #f59e0b;
+  background: #fff7e6;
 }
 
 .inputForm svg {
@@ -122,6 +136,30 @@ body {
 .button-submit:hover {
   transform: translateY(-2px);
   box-shadow: 0 18px 30px rgba(47, 38, 64, 0.25);
+}
+
+.input-feedback {
+  margin: -8px 0 0;
+  min-height: 16px;
+  font-size: 12px;
+  line-height: 1.25;
+  text-align: left;
+}
+
+.input-feedback--neutral {
+  color: transparent;
+}
+
+.input-feedback--ok {
+  color: #1d7b53;
+}
+
+.input-feedback--error {
+  color: #b7344d;
+}
+
+.input-feedback--checking {
+  color: #b45309;
 }
 
 .p {

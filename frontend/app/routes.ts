@@ -4,7 +4,9 @@ export default [
 	layout("routes/home.tsx", [
 		index("routes/fyp.tsx"),
 		route("login","routes/sign-in.tsx"),
+		route("register","routes/sign-up.tsx"),
 		route("users/:id", "routes/profile.tsx"),
+		route("admin", "routes/admin-panel.tsx"),
 		route("lists/:id", "routes/list-view.tsx"),
 		route("lists/new", "routes/new-list.tsx"),
 		route("lists/edit/:id", "routes/edit-list.tsx"),
