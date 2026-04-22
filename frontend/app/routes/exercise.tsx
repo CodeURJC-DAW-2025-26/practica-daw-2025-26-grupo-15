@@ -147,7 +147,7 @@ export default function Exercise({ loaderData }: Route.ComponentProps) {
                                 {logged ? (
                                     <Row className="g-3 justify-content-center">
                                         <Col xs={12} sm="auto">
-                                            <Link className="btn plus-btn rounded-circle" to={`/add-solution/${exercise.id}`}>
+                                            <Link className="btn plus-btn rounded-circle" to={`/exercises/${exercise.id}/solutions/new`}>
                                                 <i className="bi bi-plus"></i>
                                             </Link>
                                         </Col>
