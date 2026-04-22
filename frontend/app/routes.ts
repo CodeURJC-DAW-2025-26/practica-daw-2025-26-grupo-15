@@ -14,6 +14,8 @@ export default [
 		route("followers-following/:type", "routes/followers-following.tsx"),
 		route("lists/:listId/exercises/new", "routes/new-exercise.tsx"),
 		route("solutions/:id", "routes/solution.tsx"),
-		route("exercise/:id", "routes/exercise.tsx")
+		route("exercise/:id", "routes/exercise.tsx"),
+		route("users/:userId/edit", "routes/edit-profile.tsx"),
+		route("exercises/:exerciseId/solutions/new", "routes/new-solution.tsx"),
 	]),
 ] satisfies RouteConfig;

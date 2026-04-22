@@ -148,7 +148,7 @@ public class ExerciseRestController {
                                                 HttpServletRequest request) {
         try {
             User user = userService.getUser(request.getUserPrincipal().getName());
-
+            
             Exercise updated = exerciseService.uploadPdf(id, user, pdfFile);
 
             URI location = fromCurrentContextPath().path("/api/v1/exercises/{id}").buildAndExpand(updated.getId()).toUri();

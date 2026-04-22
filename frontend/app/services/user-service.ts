@@ -1,6 +1,7 @@
 import type UserBasicInfoDTO from "~/dtos/UserBasicInfoDTO";
 import type { UserDTO } from "~/dtos/UserDTO";
 import type { PageInfoUserDTO } from "~/dtos/PageInfoUserDTO";
+import type UserEditDTO from "~/dtos/UserEditDTO";
 
 
 const API_URL = "/api/v1/users";
@@ -39,6 +40,36 @@ export async function getFollowRequests(): Promise<UserBasicInfoDTO[]> {
   const res = await fetch(`${API_URL}/me/follow-requests/`);
   if (!res.ok) {
     throw new Error("Failed to fetch follow requests");
+  }
+  return await res.json();
+}
+
+export async function updateProfile(user: UserEditDTO, userId: number) {
+  const res = await fetch(`${API_URL}/${userId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(user)
+  });
+
+  if (!res.ok){
+    throw new Error("Failed to update profile");
+  }
+  return await res.json();
+}
+
+export async function updateProfilePhoto(photoFile: File, userId: number): Promise<void> {
+  const formData = new FormData();
+    formData.append("imageFile", photoFile);
+  
+  const res = await fetch(`${API_URL}/${userId}/images`, {
+    method: "POST",
+    body: formData
+  });
+
+  if (!res.ok){
+    throw new Error("Failed to update profile photo");
   }
   return await res.json();
 }
@@ -136,7 +167,18 @@ export async function isUsernameAvailableBySearch(
     }
 
     pageNumber += 1;
+      }
   }
+
+  export async function removeFollower(toRemoveId:string){
+      const res = await fetch(`${API_URL}/me/followers/${toRemoveId}`,
+        {
+          method:"DELETE",
+          headers:{"Content-Type" : "application/json"}
+        });
+        if(!res.ok){
+          throw new Error("Failed to remove follower")
+    }
 }
   
 
