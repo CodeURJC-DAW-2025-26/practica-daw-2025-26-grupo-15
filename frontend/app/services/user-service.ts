@@ -120,6 +120,17 @@ export async function sendFollowRequest(targetId:string) {
         throw new Error("Failed to decline the follow request")
       }
   }
+
+  export async function removeFollower(toRemoveId:string){
+      const res = await fetch(`${API_URL}/me/followers/${toRemoveId}`,
+        {
+          method:"DELETE",
+          headers:{"Content-Type" : "application/json"}
+        });
+        if(!res.ok){
+          throw new Error("Failed to remove follower")
+        }
+  }
   
 
 
