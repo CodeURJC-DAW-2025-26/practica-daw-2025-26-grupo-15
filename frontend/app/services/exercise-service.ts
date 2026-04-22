@@ -52,3 +52,19 @@ export async function uploadExercisePDF(exerciseId: number, file: File): Promise
     }
 
 }
+
+export async function getExercisePdf(exerciseId: number): Promise<Blob> {
+    try {
+        const response = await fetch(`${API_URL}/${exerciseId}/pdf`, {
+            method: "GET"
+        });
+        if (!response.ok) {
+            throw new Error(`Error downloading pdf file: ${response.status}`);
+        }
+
+        return await response.blob();;
+    } catch (error) {
+        console.error("Error fetching PDF:", error);
+        throw new Error("Error downloading pdf file");
+    }
+}

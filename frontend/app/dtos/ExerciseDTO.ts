@@ -10,5 +10,5 @@ export interface ExerciseDTO {
     owner: UserBasicInfoDTO,
     exerciseList: ExerciseListBasicInfoDTO,
     solutions: SolutionBasicInfoDTO[],
-
+    hasPdf: boolean
 }
