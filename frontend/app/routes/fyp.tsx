@@ -28,11 +28,6 @@ export default function Fyp() {
   let {user} = useUserStore();
   // Variables mockeadas por ahora
   const isLogged = user != null;
-  const currentUser = {
-    name: "John Doe",
-    nameInitial: "J",
-    photoId: null as number | null,
-  };
 
   const suggestions: FollowingSuggestion[] = [
     {
@@ -158,9 +153,9 @@ export default function Fyp() {
                   
                   {isLogged && (
                     <div className="profile-image d-flex align-items-center gap-2">
-                      <p className="p greeting mt-3">Welcome {currentUser.name}!</p>
+                      <p className="p greeting mt-3">Welcome {user.name}!</p>
                       <Link to={`users/${user!.id}`}>
-                        {currentUser.photoId ? (
+                        {user.photo.id ? (
                           <div className="avatar avatar--img">
                             { /* TODO: enable when backend serves images AÑadir el src*/ }
                             <img
@@ -168,7 +163,7 @@ export default function Fyp() {
                             />
                           </div>
                         ) : (
-                          <div className="avatar">{currentUser.nameInitial}</div>
+                          <div className="avatar">{user.name.charAt(0)}</div>
                         )}
                       </Link>
                     </div>

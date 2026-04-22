@@ -68,3 +68,12 @@ export async function getExercisePdf(exerciseId: number): Promise<Blob> {
         throw new Error("Error downloading pdf file");
     }
 }
+
+export async function deleteExercise(exerciseId: string): Promise<void> {
+    const response = await fetch(`${API_URL}/${exerciseId}`, {
+        method: "DELETE"
+    });
+    if (!response.ok) {
+        throw new Error("Error deleting exercise");
+    }
+}
