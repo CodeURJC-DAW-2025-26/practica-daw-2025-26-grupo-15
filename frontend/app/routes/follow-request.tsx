@@ -39,7 +39,6 @@ export default function FollowRequest({ loaderData }: Route.ComponentProps) {
                             <button type="submit" className="btn-logout">
                                 <i className="bi bi-box-arrow-right"></i> Log out
                             </button>
-                            <input type="hidden" name="_csrf" value={token} />
                         </form>
                     </div>
 
@@ -50,7 +49,7 @@ export default function FollowRequest({ loaderData }: Route.ComponentProps) {
                                     {/* Funcionalidad Mustache: Condicional {{#user.photo}} y {{^user.photo}} */}
                                     {/* En React: Verificamos si existe user.photo. Si sí, la mostramos. Si no, icono por defecto. */}
                                     {user?.photo.id ? (
-                                        <img src={`/images/${user.photo.id}`} alt="Profile photo" />
+                                        <img src={`/api/v1/images/${user.photo.id}/media`} alt="Profile photo" />
                                     ) : (
                                         <i className="bi bi-person-circle"></i>
                                     )}
@@ -85,7 +84,7 @@ export default function FollowRequest({ loaderData }: Route.ComponentProps) {
                                             <div className="fr-card-avatar">
                                                 {/* Funcionalidad Mustache: Condicional de foto dentro del bucle */}
                                                 {req.photo ? (
-                                                    <img src={`/images/${req.photo.id}`} alt="Profile photo" />
+                                                    <img src={`/api/v1/images/${req.photo.id}/media`} alt="Profile photo" />
                                                 ) : (
                                                     <i className="bi bi-person-fill"></i>
                                                 )}

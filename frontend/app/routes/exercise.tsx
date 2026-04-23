@@ -70,7 +70,7 @@ export default function Exercise({ loaderData }: Route.ComponentProps) {
                         <div className="profile-image d-flex align-items-center gap-2">
                             <Link to="/profile">
                                 <div className="avatar avatar--img">
-                                    {user?.photo ? <img src={`/images/${user.photo.id}/media`} alt="Profile photo" /> : <span>{user?.name.charAt(0).toLocaleUpperCase() ?? ""}</span>}
+                                    {user?.photo ? <img src={`/api/v1/images/${user.photo.id}/media`} alt="Profile photo" /> : <span>{user?.name.charAt(0).toLocaleUpperCase() ?? ""}</span>}
                                 </div>
                             </Link>
                         </div>
