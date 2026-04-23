@@ -5,8 +5,10 @@ import { reqIsLogged } from "~/services/login-service";
 import { Link, useNavigate } from "react-router";
 import type { UserDTO } from "~/dtos/UserDTO";
 import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
-import { useActionState, useState } from "react";
+import { useActionState, useCallback, useState } from "react";
 import { InlineActionError } from "~/components/inline-action-error";
+import FeedStream from "~/components/feed-stream";
+import { getExerciseListsFromUser, getListsForUserProfile } from "~/services/list-service";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   let userLogged = null;
@@ -431,13 +433,8 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                       </Button>
                     )}
                   </div>
-                  <div id="feedStream" className="feed-stream" data-profile-id={`${userProfile.id}`} data-petition="l">
-                      <div id="feedEmpty" className="feed-empty visually-hidden">
-                        <svg viewBox="0 0 24 24" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true">
-                        </svg>
-                      </div>
-                  </div>
+                  <FeedStream itemsType="list" itemsSearch={useCallback(getListsForUserProfile, [userProfile])}/>
+                  
                 </Col>
               </Row>
             </Container>

@@ -1,6 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useUserStore } from "~/stores/user-store";
+import FeedStream from "~/components/feed-stream";
+import { getFeedForUser } from "~/services/post-service";
+import { useCallback } from "react";
+
+type UserBasicInfo = {
+  id: number;
+  name: string;
+  email: string;
+};
+
+type FollowingSuggestion = {
+  suggestion: UserBasicInfo & { photoId?: number };
+  contact: UserBasicInfo[];
+  commonCount: number;
+};
 import { getFollowingSuggestions } from "~/services/user-service";
 import type UserBasicInfoDTO from "~/dtos/UserBasicInfoDTO";
 import type FollowingSuggestionDTO from "~/dtos/FollowingSuggestionDTO";
@@ -161,20 +176,7 @@ export default function Fyp() {
 
                 </div>
                 {/* Lists feed */}
-                <div id="feedStream" className="feed-stream mt-0" data-petition="p">
-                  <div id="feedEmpty" className="feed-empty visually-hidden">
-                    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
-                      <path d="M8 12h8M12 8v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                    <p className="feed-empty__title">Nothing here yet</p>
-                    <p className="feed-empty__sub">Follow users to see their activity in your feed.</p>
-                  </div>
-                  <div id="feedSentinel"></div>
-                  <div id="loadingSpinner" className="row mx-0 justify-content-center visually-hidden mb-5">
-                    <div className="spinner"></div>
-                  </div>
-                </div>
+                <FeedStream itemsType="post" itemsSearch={useCallback(getFeedForUser, [user])}/>
               </div>
             </div>
           </div>
