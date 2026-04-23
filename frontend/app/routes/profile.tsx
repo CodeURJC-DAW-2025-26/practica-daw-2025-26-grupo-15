@@ -347,7 +347,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                           )}
                         </div>
                         <div className="dropdown-content">
-                          <Link to="/edit-profile">Edit profile</Link>
+                          <Link to={`/users/${userProfile.id}/edit`}>Edit profile</Link>
                           <div className="divider"></div>
                           <Button
                             className="dropdown-action-danger"

@@ -28,7 +28,7 @@ export default function EditProfile() {
             await updateProfilePhoto(photoFile, user!.id);
           }
 
-          navigate(`/profile/${user!.id}`);
+          navigate(`/users/${user!.id}`);
           return { success: true, error: null };
 
         } catch (error) {
