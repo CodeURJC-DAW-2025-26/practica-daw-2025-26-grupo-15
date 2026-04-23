@@ -92,7 +92,7 @@ export default function Fyp() {
                   <div id="searchResults" className="sidebar-search-results__list" role="list"></div>
                 </div>
 
-                {logged ? (
+                {isLogged ? (
                   <div className="sidebar-section">
                     <h3 className="sidebar-section__title">Suggested for you</h3>
                     <div className="list suggestions-container">
@@ -176,7 +176,7 @@ export default function Fyp() {
 
                 </div>
                 {/* Lists feed */}
-                <FeedStream itemsType="post" itemsSearch={useCallback(getFeedForUser, [])}/>
+                <FeedStream itemsType="post" itemsSearch={useCallback(getFeedForUser, [user])}/>
               </div>
             </div>
           </div>
