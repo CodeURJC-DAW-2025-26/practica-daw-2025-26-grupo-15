@@ -131,7 +131,7 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
                                                     
                                                     {isOwner && (
                                                         <div className="d-flex position-relative z-3">
-                                                            <Link to={`/edit-exercise/${exercise.id}`} className="btn-icon btn-icon-edit mx-1">
+                                                            <Link to={`/exercises/${exercise.id}/edit`} className="btn-icon btn-icon-edit mx-1">
                                                                 <i className="bi bi-pencil icon-static"></i>
                                                                 <img src="/assets/pencilanimated.gif" alt="Edit" className="icon-gif" />
                                                             </Link>

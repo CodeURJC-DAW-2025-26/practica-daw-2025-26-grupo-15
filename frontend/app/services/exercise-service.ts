@@ -77,3 +77,17 @@ export async function deleteExercise(exerciseId: number): Promise<void> {
         throw new Error("Error deleting exercise");
     }
 }
+
+export async function updateExercise(exerciseId: string, title: string, description: string): Promise<void> {
+    const response = await fetch(`${API_URL}/${exerciseId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            title: title,
+            description: description
+        }),
+    });
+    if (!response.ok) {
+        throw new Error("Error updating exercise");
+    } 
+}

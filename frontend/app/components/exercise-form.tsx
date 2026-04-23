@@ -6,30 +6,37 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Stack from "react-bootstrap/esm/Stack";
 import { Link, useParams } from "react-router";
-import type { ExercisePostDTO } from "~/dtos/ExercisePostDTO";
+import type { ExerciseDTO } from "~/dtos/ExerciseDTO";
+import { useNavigate } from "react-router";
+
 
 interface ExerciseFormProps {
+    exercise?: Partial<ExerciseDTO>,
     actionState: [
         {success: boolean, error: string | null} | null,
         (formData: FormData) => void,
-        boolean];
+        boolean
+    ];
+    onCancel?: () => void;
 }
 
-
-
-export default function ExerciseForm({ actionState: [state, formAction, isPending]}: ExerciseFormProps) {
-
-    const { listId } = useParams();
+export default function ExerciseForm({exercise, actionState: [state, formAction, isPending], onCancel}: ExerciseFormProps) {
+    const isEditing = !!exercise?.id;
 
     return (
         <Container>
             <Row className="justify-content-center">
                 <Col as="section" xs={12} lg={8} className="hero-card hero-card--full-width hero-card--exercise">
-                    <Form action={formAction} method="post" encType="multipart/form-data" className="form-block text-start">
-                        
-                        <h2 className="text-center mb-5">New exercise page</h2>
+                
+                    <Form action={formAction} className="form-block text-start">
+                    
+                        <h2 className="text-center mb-5">
+                            {isEditing ? "Edit exercise" : "New exercise page"}
+                        </h2>
 
                         {state?.error && <Alert variant="danger">{state.error}</Alert>}
+
+                        {isEditing && <input type="hidden" name="id" value={exercise.id} />}
 
                         <Form.Group className="mb-4 w-100" controlId="exname">
                             <Form.Label>Name</Form.Label>
@@ -40,6 +47,7 @@ export default function ExerciseForm({ actionState: [state, formAction, isPendin
                                 className="form-control-custom"
                                 required
                                 disabled={isPending}
+                                defaultValue={isEditing ? exercise.title : ""} 
                             />
                             <Form.Text className="text-danger mt-1" id="nameError" />
                         </Form.Group>
@@ -54,12 +62,15 @@ export default function ExerciseForm({ actionState: [state, formAction, isPendin
                                 rows={5}
                                 required
                                 disabled={isPending}
+                                defaultValue={isEditing ? exercise.description : ""} // 2. Rellenamos datos
                             />
                             <Form.Text className="text-danger mt-1" id="descError" />
                         </Form.Group>
 
                         <Form.Group className="mb-5 w-100" controlId="pdfFile">
-                            <Form.Label>Upload statement</Form.Label>
+                            <Form.Label>
+                                {isEditing ? "Update statement (optional)" : "Upload statement"}
+                            </Form.Label>
                             <Form.Control
                                 type="file"
                                 name="pdfFile"
@@ -67,11 +78,16 @@ export default function ExerciseForm({ actionState: [state, formAction, isPendin
                                 accept="application/pdf"
                                 disabled={isPending}
                             />
+                            {isEditing && (
+                                <Form.Text className="text-muted mt-1">
+                                    Leave empty to keep the current PDF file.
+                                </Form.Text>
+                            )}
                         </Form.Group>
 
                         <Stack direction="horizontal" gap={3} className="justify-content-end w-100 mt-4">
                             <Link
-                                to={`/lists/${listId}`}
+                                to={`/lists/${exercise?.exerciseList!.id}`}
                                 className="btn ghost"
                             >
                                 Back
@@ -81,7 +97,8 @@ export default function ExerciseForm({ actionState: [state, formAction, isPendin
                                 bsPrefix="btn"
                                 disabled={isPending}
                             >
-                                {isPending ? "Saving..." : "Save exercise"}
+                        
+                                {isPending ? "Saving..." : (isEditing ? "Update exercise" : "Save exercise")}
                             </Button>
                         </Stack>
                     </Form>     
@@ -90,4 +107,3 @@ export default function ExerciseForm({ actionState: [state, formAction, isPendin
         </Container>
     );
 }
-
