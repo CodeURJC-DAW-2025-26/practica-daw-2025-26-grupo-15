@@ -1,21 +1,12 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import type { Route } from "./+types/home";
 import { useUserStore } from "~/stores/user-store";
-
-type UserBasicInfo = {
-  id: number;
-  name: string;
-  email: string;
-};
-
-type FollowingSuggestion = {
-  suggestion: UserBasicInfo & { photoId?: number };
-  contact: UserBasicInfo[];
-  commonCount: number;
-};
+import { getFollowingSuggestions } from "~/services/user-service";
+import type UserBasicInfoDTO from "~/dtos/UserBasicInfoDTO";
+import type FollowingSuggestionDTO from "~/dtos/FollowingSuggestionDTO";
 
 // Función helper equivalente a las condiciones de Mustache
-function getContactText(contact: UserBasicInfo[]) {
+function getContactText(contact: UserBasicInfoDTO[]) {
   if (contact.length >= 3) return `Followed by ${contact.length} contacts`;
   if (contact.length >= 1) {
     return `Followed by ${contact[0].name}${contact[1] ? ` and ${contact[1].name}` : ""}`;
@@ -23,35 +14,33 @@ function getContactText(contact: UserBasicInfo[]) {
   return "Suggested for you";
 }
 
-export default function Fyp() {
 
-  let {user} = useUserStore();
-  // Variables mockeadas por ahora
+export default function Fyp() {
+  const API_IMAGES_URL = "/api/v1/images";
+  
+  const { user } = useUserStore();
   const isLogged = user != null;
 
-  const suggestions: FollowingSuggestion[] = [
-    {
-      suggestion: { id: 1, name: "Alice", email: "alice@example.com", photoId: 10 },
-      contact: [
-        { id: 2, name: "Bob", email: "bob@example.com" },
-        { id: 3, name: "Charlie", email: "charlie@example.com" },
-        { id: 4, name: "Dave", email: "dave@example.com" },
-      ],
-      commonCount: 3,
-    },
-    {
-      suggestion: { id: 5, name: "Eve", email: "eve@example.com" },
-      contact: [
-        { id: 2, name: "Bob", email: "bob@example.com" },
-      ],
-      commonCount: 1,
-    },
-    {
-      suggestion: { id: 6, name: "Frank", email: "frank@example.com" },
-      contact: [],
-      commonCount: 0,
-    },
-  ];
+  const [suggestions, setSuggestions] = useState<FollowingSuggestionDTO[]>([]);
+
+  useEffect(() => {
+    if (!isLogged) {
+      setSuggestions([]);
+      return;
+    }
+
+    const fetchSuggestions = async () => {
+      try {
+        const data = await getFollowingSuggestions();
+        setSuggestions(data ?? []);
+      } catch (error) {
+        console.error("Failed to fetch suggestions:", error);
+        setSuggestions([]);
+      }
+    };
+
+    fetchSuggestions();
+  }, [isLogged]); 
 
   return (
     <>
@@ -97,10 +86,11 @@ export default function Fyp() {
                         <div key={item.suggestion.id} className="list-item sidebar-search-results__item d-flex align-items-center justify-content-between w-100">
                           <div className="d-flex align-items-center flex-grow-1 min-w-0">
                             
-                            {item.suggestion.photoId ? (
+                            {item.suggestion.photo ? (
                               <span className="sidebar-search-results__avatar avatar--img">
                                 { /* TODO: enable when backend serves images */ }
                                 <img
+                                  src={`${API_IMAGES_URL}/${item.suggestion.photo.id}/media`}
                                   alt="Profile picture"
                                   className="avatar-image-cover"
                                 />
@@ -155,10 +145,10 @@ export default function Fyp() {
                     <div className="profile-image d-flex align-items-center gap-2">
                       <p className="p greeting mt-3">Welcome {user.name}!</p>
                       <Link to={`users/${user!.id}`}>
-                        {user.photo.id ? (
+                        {user.photo?.id ? (
                           <div className="avatar avatar--img">
-                            { /* TODO: enable when backend serves images AÑadir el src*/ }
                             <img
+                              src={`${API_IMAGES_URL}/${user.photo.id}/media`}
                               alt="Profile picture"
                             />
                           </div>
