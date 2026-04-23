@@ -40,6 +40,42 @@
 
   --feed-offset: 120px;
 }
+.page-spinner-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.28));
+    backdrop-filter: blur(2px);
+}
+
+.dot-spinner {
+    width: 1em;
+    height: 1em;
+    font-size: 20px;
+    border-radius: 50%;
+    animation: dot-spinner-rotate 1500ms linear infinite;
+    box-shadow:
+        rgba(13, 110, 253, 0.95) 1.5em 0 0 0,
+        rgba(13, 110, 253, 0.9) 1.1em 1.1em 0 0,
+        rgba(13, 110, 253, 0.85) 0 1.5em 0 0,
+        rgba(13, 110, 253, 0.8) -1.1em 1.1em 0 0,
+        rgba(13, 110, 253, 0.75) -1.5em 0 0 0,
+        rgba(13, 110, 253, 0.7) -1.1em -1.1em 0 0,
+        rgba(13, 110, 253, 0.65) 0 -1.5em 0 0,
+        rgba(13, 110, 253, 0.6) 1.1em -1.1em 0 0;
+}
+
+@keyframes dot-spinner-rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 * {
   box-sizing: border-box;
@@ -1994,7 +2030,9 @@ a.fr-stat-chip:hover {
 /* Full-viewport two-column wrapper */
 .adm-wrap {
   display: flex;
-  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 /* ── Sidebar ─────────────────────────────────────────────── */
@@ -2201,11 +2239,12 @@ a.fr-stat-chip:hover {
 .adm-main {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   padding: 36px 44px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 /* Page header */
@@ -2281,6 +2320,17 @@ a.fr-stat-chip:hover {
   align-items: center;
   gap: 12px;
 }
+.adm-load-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 20px 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(220, 53, 69, 0.08);
+  color: #b02a37;
+  font-size: 13px;
+}
 .adm-search-wrap {
   position: relative;
   display: flex;
@@ -2316,10 +2366,24 @@ a.fr-stat-chip:hover {
 .table-scroll{
   max-height: 70vh;   /* adjust desired height */
   overflow-y: auto;
+  min-height: 0;
 }
 
 .feed-sentinel{
   height: 1px;        /* ensures an element exists for observer intersection */
+}
+
+.adm-loading-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0 20px;
+}
+
+.adm-loading-wrap .spinner-border {
+  width: 1.6rem;
+  height: 1.6rem;
+  color: var(--sky);
 }
 
 

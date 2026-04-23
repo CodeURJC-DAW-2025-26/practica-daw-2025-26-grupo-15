@@ -1,4 +1,4 @@
-import type { ExerciseListBasicInfoDTO } from "./ExerciseListBasicInfoDTO";
+import type  ExerciseListBasicInfoDTO  from "./ExerciseListBasicInfoDTO";
 import type { SolutionBasicInfoDTO } from "./SolutionBasicInfoDTO";
 import type UserBasicInfoDTO from "./UserBasicInfoDTO";
 

@@ -1,4 +1,4 @@
-import { acceptFollowRequest, declineFollowRequest, getUser, sendFollowRequest, unFollowUser } from "~/services/user-service";
+import { acceptFollowRequest, declineFollowRequest, deleteProfile, getUser, sendFollowRequest, unFollowUser } from "~/services/user-service";
 import type { Route } from "./+types/profile";
 import { useUserStore } from "~/stores/user-store";
 import { reqIsLogged } from "~/services/login-service";
@@ -130,6 +130,26 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
 
   }
 
+  const [{ errorDelete }, deleteUserProfileAction, isPendingDeleteUserProfile] =
+    useActionState(deleteUserProfile, { errorDelete: null });
+
+  async function deleteUserProfile(
+    _prevState: { errorDelete: string | null },
+    formData: FormData,
+  ) {
+    const targetId = formData.get("targetId") as string;
+
+    try {
+      await deleteProfile(targetId);
+      if (isOwnProfile) {
+        useUserStore.setState({ user: null, loginError: null });
+      }
+      navigate("/", { replace: true });
+      return { errorDelete: null };
+    } catch (_error) {
+      return { errorDelete: "Failed to delete profile" };
+    }
+  }
 
   return (
     <>
@@ -445,47 +465,19 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
 
           <Modal
             show={showDeleteModal}
-            onHide={handleCloseDeleteModal}
+            onHide={() => {
+              if (!isPendingDeleteUserProfile) {
+                handleCloseDeleteModal();
+              }
+            }}
             centered
             backdrop="static"
             contentClassName="adm-modal modal-content-themed"
           >
-            <Modal.Header closeButton className="border-0 pb-0">
-              <Modal.Title className="adm-modal-title">
-                <i className="bi bi-exclamation-triangle-fill text-danger me-2"></i>
-                Delete your profile?
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <p className="adm-modal-body">
-                This action permanently removes your profile, your lists, and
-                your exercises. You will be logged out immediately.
-              </p>
-            </Modal.Body>
-            <Modal.Footer className="border-0 pt-0">
-              <Button
-                className="adm-modal-cancel"
-                onClick={handleCloseDeleteModal}
-              >
-                Cancel
-              </Button>
-              <Button
-                className="adm-modal-confirm"
-                onClick={handleCloseDeleteModal}
-              >
-                Delete profile
-              </Button>
-            </Modal.Footer>
-          </Modal>
-
-          <Modal
-            show={showDeleteModal}
-            onHide={handleCloseDeleteModal}
-            centered
-            backdrop="static"
-            contentClassName="adm-modal modal-content-themed"
-          >
-            <Modal.Header closeButton className="border-0 pb-0">
+            <Modal.Header
+              closeButton={!isPendingDeleteUserProfile}
+              className="border-0 pb-0"
+            >
               <Modal.Title className="adm-modal-title">
                 <i
                   className={`bi ${isAdminDeleteModal ? "bi-shield-exclamation" : "bi-exclamation-triangle-fill"} text-danger me-2`}
@@ -501,14 +493,27 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                   ? "You are deleting this account as administrator. This action is permanent and cannot be undone."
                   : "This action permanently removes your profile, your lists, and your exercises. You will be logged out immediately."}
               </p>
+              <InlineActionError message={errorDelete} />
             </Modal.Body>
             <Modal.Footer className="border-0 pt-0">
-              <Button className="adm-modal-cancel" onClick={handleCloseDeleteModal}>
+              <Button
+                className="adm-modal-cancel"
+                onClick={handleCloseDeleteModal}
+                disabled={isPendingDeleteUserProfile}
+              >
                 Cancel
               </Button>
-              <Button className="adm-modal-confirm" onClick={handleCloseDeleteModal}>
-                Delete profile
-              </Button>
+              <Form action={deleteUserProfileAction}>
+                <Form.Control type="hidden" name="targetId" value={userProfile.id} />
+                <Button
+                  type="submit"
+                  className="adm-modal-confirm"
+                  disabled={isPendingDeleteUserProfile}
+                >
+                  {isPendingDeleteUserProfile ? "Deleting profile..." : "Delete profile"}
+                </Button>
+              </Form>
+              
             </Modal.Footer>
           </Modal>
         </main>

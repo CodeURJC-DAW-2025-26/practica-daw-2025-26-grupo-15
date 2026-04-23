@@ -179,6 +179,17 @@ export async function isUsernameAvailableBySearch(
         if(!res.ok){
           throw new Error("Failed to remove follower")
     }
+  }
+
+    export async function deleteProfile(targetId:string){
+      const res = await fetch(`${API_URL}/${targetId}`,
+        {
+          method:"DELETE",
+          headers:{"Content-Type" : "application/json"}
+        });
+        if(!res.ok){
+          throw new Error("Failed to delete profile")
+    }
 }
   
 
