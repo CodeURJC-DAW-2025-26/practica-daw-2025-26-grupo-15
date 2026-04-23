@@ -9,3 +9,12 @@ export async function getCommentsById(id: string): Promise<CommentDTO[]> {
     }
     return await res.json();
 }
+
+export async function deleteComment(commentId: string): Promise<void> {
+    const response = await fetch(`${API_URL}/${commentId}`, {
+        method: "DELETE"
+    });
+    if (!response.ok) {
+        throw new Error("Error deleting comment");
+    }   
+}

@@ -57,3 +57,12 @@ export async function uploadSolutionImage(solutionId: number, imageFile: File): 
         throw new Error("Failed to upload solution image");
     }
 }
+
+export async function deleteSolution(solutionId: number): Promise<void> {
+    const res = await fetch(`${API_URL}/${solutionId}`, {
+        method: "DELETE",
+    });
+    if (!res.ok) {
+        throw new Error("Failed to delete solution");
+    }
+}

@@ -400,7 +400,7 @@ export default function SignUp() {
                 <p className="p">
                   Already have an account?
                   <span>
-                    <Link to="/login">Log In</Link>
+                    <Link to="/login"> Log In</Link>
                   </span>
                 </p>
               </Form>

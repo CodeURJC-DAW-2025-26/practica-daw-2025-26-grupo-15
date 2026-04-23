@@ -75,7 +75,7 @@ export default function EditProfileForm({user, actionState: [state, formAction, 
           </div>
 
           <div className="splitprof d-flex gap-3 mt-5">
-            <Link className="btn secondary" to="/profile">Cancel</Link>
+            <Link className="btn secondary" to={`/users/${user.id}`}>Cancel</Link>
             <Button
               type="submit"
               bsPrefix="btn"

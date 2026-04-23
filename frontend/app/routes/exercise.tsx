@@ -68,9 +68,9 @@ export default function Exercise({ loaderData }: Route.ComponentProps) {
                     {/* Header section: shows user profile if logged in, otherwise login button */}
                     {logged ? (
                         <div className="profile-image d-flex align-items-center gap-2">
-                            <Link to="/profile">
+                            <Link to={`/users/${user?.id}`} className="d-flex align-items-center gap-2">
                                 <div className="avatar avatar--img">
-                                    {user?.photo ? <img src={`/images/${user.photo.id}/media`} alt="Profile photo" /> : <span>{user?.name.charAt(0).toLocaleUpperCase() ?? ""}</span>}
+                                    {user?.photo ? <img src={`/api/v1/images/${user.photo.id}/media`} alt="Profile photo" /> : <span>{user?.name.charAt(0).toLocaleUpperCase() ?? ""}</span>}
                                 </div>
                             </Link>
                         </div>

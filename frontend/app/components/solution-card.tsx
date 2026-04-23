@@ -22,7 +22,7 @@ export default function SolutionCard({ solution, index, deletable }: { solution:
 
                 <div className="solution-card__author">
                     {solution.owner.photo ? (
-                        <div className="avatar-sm avatar--img"><img src={`/images/${solution.owner.photo.id}`} alt="avatar" className="avatar-image-cover" /></div>
+                        <div className="avatar-sm avatar--img"><img src={`/api/v1/images/${solution.owner.photo.id}/media`} alt="avatar" className="avatar-image-cover" /></div>
                     ) : (
                         <div className="avatar-sm">{solution.owner.name.charAt(0).toLocaleUpperCase()}</div>
                     )}

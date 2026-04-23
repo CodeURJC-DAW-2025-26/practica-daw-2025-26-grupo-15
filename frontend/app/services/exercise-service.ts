@@ -15,16 +15,6 @@ export async function getExercise(id: string): Promise<ExerciseDTO> {
   return await res.json();
 }
 
-export async function deleteExercise(id: number): Promise<void> {
-  const response = await fetch(`${API_URL}/${id}`, {
-    method: "DELETE",
-  });
-
-  if (!response.ok) {
-    throw new Error("Error deleting exercise");
-  }
-}
-
 export async function addExercise(
   title: string,
   description: string,
@@ -76,5 +66,14 @@ export async function getExercisePdf(exerciseId: number): Promise<Blob> {
     } catch (error) {
         console.error("Error fetching PDF:", error);
         throw new Error("Error downloading pdf file");
+    }
+}
+
+export async function deleteExercise(exerciseId: string): Promise<void> {
+    const response = await fetch(`${API_URL}/${exerciseId}`, {
+        method: "DELETE"
+    });
+    if (!response.ok) {
+        throw new Error("Error deleting exercise");
     }
 }

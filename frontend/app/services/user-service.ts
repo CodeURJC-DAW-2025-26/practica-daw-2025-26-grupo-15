@@ -2,6 +2,7 @@ import type UserBasicInfoDTO from "~/dtos/UserBasicInfoDTO";
 import type { UserDTO } from "~/dtos/UserDTO";
 import type { PageInfoUserDTO } from "~/dtos/PageInfoUserDTO";
 import type UserEditDTO from "~/dtos/UserEditDTO";
+import type FollowingSuggestionDTO from "~/dtos/FollowingSuggestionDTO";
 
 
 const API_URL = "/api/v1/users";
@@ -190,6 +191,14 @@ export async function isUsernameAvailableBySearch(
         if(!res.ok){
           throw new Error("Failed to delete profile")
     }
+}
+
+export async function getFollowingSuggestions(): Promise<FollowingSuggestionDTO[]> {
+  const res = await fetch(`${API_URL}/me/following-suggestions/`);
+  if(!res.ok){
+    throw new Error("Failed to fetch following suggestions")
+  }
+  return await res.json();
 }
   
 
