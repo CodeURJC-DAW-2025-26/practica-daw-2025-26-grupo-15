@@ -80,7 +80,7 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
                         <Link to="/profile">
                             <div className="avatar avatar--img">
                                 {user?.photo?.id ? (
-                                    <img src={`/images/${user.photo.id}`} alt="Profile" />
+                                    <img src={`/api/v1/images/${user.photo.id}/media`} alt="Profile" />
                                 ) : (
                                     <span>{user.name.charAt(0)}</span>
                                 )}

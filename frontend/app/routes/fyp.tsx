@@ -101,6 +101,7 @@ export default function Fyp() {
                               <span className="sidebar-search-results__avatar avatar--img">
                                 { /* TODO: enable when backend serves images */ }
                                 <img
+                                  src={`/api/v1/images/${item.suggestion.photoId}/media`}
                                   alt="Profile picture"
                                   className="avatar-image-cover"
                                 />
@@ -159,6 +160,7 @@ export default function Fyp() {
                           <div className="avatar avatar--img">
                             { /* TODO: enable when backend serves images AÑadir el src*/ }
                             <img
+                              src={`/api/v1/images/${user.photo.id}/media`}
                               alt="Profile picture"
                             />
                           </div>

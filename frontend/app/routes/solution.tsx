@@ -84,7 +84,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                         <Link to="/profile">
                             <div className="avatar avatar--img">
                                 {user.photo?.id ? (
-                                    <img src={`/images/${user.photo.id}`} alt="Profile" />
+                                    <img src={`/api/v1/images/${user.photo.id}/media`} alt="Profile" />
                                 ) : (
                                     <span>{user.name.charAt(0)}</span>
                                 )}
@@ -144,7 +144,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                                     {logged ? (
                                         <div className="solution-viewer text-center p-2 bg-dark rounded overflow-hidden">
                                             <Image 
-                                                src={`/images/${solution.solImage.id}`} 
+                                                src={`/api/v1/images/${solution.solImage.id}/media`} 
                                                 fluid 
                                                 className="rounded shadow-sm solution-image" 
                                             />
@@ -176,7 +176,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                                             <div className="d-flex align-items-center gap-2">
                                                 <div className={`avatar-sm ${comment.owner.photo ? 'avatar--img' : ''}`}>
                                                     {comment.owner.photo ? (
-                                                        <img src={`/images/${comment.owner.photo.id}`} alt="avatar" />
+                                                        <img src={`/api/v1/images/${comment.owner.photo.id}/media`} alt="avatar" />
                                                     ) : (
                                                         <span>{comment.owner.name.charAt(0)}</span>
                                                     )}
