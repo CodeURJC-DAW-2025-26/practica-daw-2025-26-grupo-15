@@ -322,7 +322,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                         {isOwnProfile && (
                           <Link
                             className="btn plus-btn-labeled d-flex align-items-center gap-2"
-                            to="/new-list"
+                            to="/lists/new"
                           >
                             <i className="bi bi-plus-lg"></i>
                             <span>Create list</span>

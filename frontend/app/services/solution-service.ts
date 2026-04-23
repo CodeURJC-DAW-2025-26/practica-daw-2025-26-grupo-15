@@ -31,3 +31,38 @@ export async function addComment(solutionId: number, text: string) {
     }
     return await res.json();
 }
+
+export async function addSolution(exerciseId: string, name: string, description: string): Promise<SolutionDTO> {
+    const res = await fetch(`/api/v1/exercises/${exerciseId}/solutions/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, description }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed to add solution");
+    }
+    return await res.json();
+}
+
+export async function uploadSolutionImage(solutionId: number, imageFile: File): Promise<void> {
+    const formData = new FormData();
+    formData.append("imageFile", imageFile);
+
+    const res = await fetch(`${API_URL}/${solutionId}/images`, {
+        method: "POST",
+        body: formData,
+    });
+
+    if (!res.ok) {
+        throw new Error("Failed to upload solution image");
+    }
+}
+
+export async function deleteSolution(solutionId: number): Promise<void> {
+    const res = await fetch(`${API_URL}/${solutionId}`, {
+        method: "DELETE",
+    });
+    if (!res.ok) {
+        throw new Error("Failed to delete solution");
+    }
+}

@@ -115,7 +115,7 @@ public class UserRestController {
             return ResponseEntity.created(location).body(userDTO);
         }
 
-        catch(IllegalArgumentException e){
+        catch(RuntimeException e){
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(Map.of("error", e.getMessage()));
         }
         

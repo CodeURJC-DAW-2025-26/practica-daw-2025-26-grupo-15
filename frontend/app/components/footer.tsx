@@ -11,7 +11,7 @@ export function Footer(){
             <div className="row align-items-center gy-3">
                 <div className="col-12 col-md-4">
                 <div className="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
-                    <a className="brand-mark-link"><img alt="DSGram logo" className="brand-mark" /></a>
+                    <a className="brand-mark-link"><img src={"/assets/DSGram_LOGO.png"} alt="DSGram logo" className="brand-mark" /></a>
                     <span className="fw-bold text-white">DSGram</span>
                 </div>
                 </div>

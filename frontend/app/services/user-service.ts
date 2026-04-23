@@ -1,10 +1,12 @@
 import type UserBasicInfoDTO from "~/dtos/UserBasicInfoDTO";
 import type { UserDTO } from "~/dtos/UserDTO";
+import type { PageInfoUserDTO } from "~/dtos/PageInfoUserDTO";
 import type UserEditDTO from "~/dtos/UserEditDTO";
+import type FollowingSuggestionDTO from "~/dtos/FollowingSuggestionDTO";
 
 
 const API_URL = "/api/v1/users";
-const API_IMAGES_URL = "/api/v1/images";
+
 
 export async function getUser(id: number) {
   const res = await fetch(`${API_URL}/${id}`);
@@ -14,10 +16,10 @@ export async function getUser(id: number) {
   return await res.json();
 }
 
-export async function addUser(
-  email: string,
-  password: string,
+export async function registerUser(
   name: string,
+  email: string,
+  password: string
 ): Promise<UserDTO> {
 
   const response = await fetch(`${API_URL}/`, {
@@ -29,7 +31,8 @@ export async function addUser(
   });
 
   if (!response.ok) {
-    throw new Error("Failed to add user");
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to register user. Please try again.");
   }
   return await response.json();
 }
@@ -120,6 +123,72 @@ export async function sendFollowRequest(targetId:string) {
         throw new Error("Failed to decline the follow request")
       }
   }
+
+export async function checkByName(
+  name: string,
+  page = 0,
+  size = 20,
+  signal?: AbortSignal,
+): Promise<PageInfoUserDTO> {
+  const res = await fetch(
+    `${API_URL}/?nameFilter=${encodeURIComponent(name)}&page=${page}&size=${size}`,
+    { signal },
+  );
+  if (!res.ok) {
+    throw new Error("Failed to check the name");
+  }
+  return await res.json();
+}
+
+export async function isUsernameAvailableBySearch(
+  name: string,
+  signal?: AbortSignal,
+): Promise<boolean> {
+  const normalizedName = name.trim().toLowerCase();
+  if (!normalizedName) {
+    return false;
+  }
+
+  let pageNumber = 0;
+  const pageSize = 20;
+
+  while (true) {
+    const page = await checkByName(normalizedName, pageNumber, pageSize, signal);
+
+    const exactMatch = page.content.some(
+      (user) => user.name.trim().toLowerCase() === normalizedName,
+    );
+
+    if (exactMatch) {
+      return false;
+    }
+
+    if (page.page.number + 1 >= page.page.totalPages) {
+      return true;
+    }
+
+    pageNumber += 1;
+      }
+  }
+
+  export async function removeFollower(toRemoveId:string){
+      const res = await fetch(`${API_URL}/me/followers/${toRemoveId}`,
+        {
+          method:"DELETE",
+          headers:{"Content-Type" : "application/json"}
+        });
+        if(!res.ok){
+          throw new Error("Failed to remove follower")
+    }
+}
+
+export async function getFollowingSuggestions(): Promise<FollowingSuggestionDTO[]> {
+  const res = await fetch(`${API_URL}/me/following-suggestions/`);
+  if(!res.ok){
+    throw new Error("Failed to fetch following suggestions")
+  }
+  return await res.json();
+}
   
 
 

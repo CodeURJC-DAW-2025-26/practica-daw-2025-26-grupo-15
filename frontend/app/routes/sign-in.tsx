@@ -39,7 +39,6 @@ export default function SigIn() {
 
   return (
     <>
-      <body>
         <main className="body-login">
           <Container>
             <Row className="align-items-center justify-content-around g-4 main-container">
@@ -167,7 +166,6 @@ export default function SigIn() {
             </Modal.Footer>
           </Modal>
         </main>
-      </body>
     </>
   );
 }

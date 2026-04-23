@@ -70,7 +70,7 @@ export default function Exercise({ loaderData }: Route.ComponentProps) {
                         <div className="profile-image d-flex align-items-center gap-2">
                             <Link to="/profile">
                                 <div className="avatar avatar--img">
-                                    {user?.photo ? <img src={`/images/${user.photo.id}/media`} alt="Profile photo" /> : <span>{user?.name.charAt(0).toLocaleUpperCase() ?? ""}</span>}
+                                    {user?.photo ? <img src={`/api/v1/images/${user.photo.id}/media`} alt="Profile photo" /> : <span>{user?.name.charAt(0).toLocaleUpperCase() ?? ""}</span>}
                                 </div>
                             </Link>
                         </div>
@@ -147,7 +147,7 @@ export default function Exercise({ loaderData }: Route.ComponentProps) {
                                 {logged ? (
                                     <Row className="g-3 justify-content-center">
                                         <Col xs={12} sm="auto">
-                                            <Link className="btn plus-btn rounded-circle" to={`/add-solution/${exercise.id}`}>
+                                            <Link className="btn plus-btn rounded-circle" to={`/exercises/${exercise.id}/solutions/new`}>
                                                 <i className="bi bi-plus"></i>
                                             </Link>
                                         </Col>
