@@ -1,6 +1,9 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/home";
 import { useUserStore } from "~/stores/user-store";
+import FeedStream from "~/components/feed-stream";
+import { getFeedForUser } from "~/services/post-service";
+import { useCallback } from "react";
 
 type UserBasicInfo = {
   id: number;
@@ -27,7 +30,7 @@ export default function Fyp() {
 
   let {user} = useUserStore();
   // Variables mockeadas por ahora
-  const isLogged = user != null;
+  const logged = user != null;
   const currentUser = {
     name: "John Doe",
     nameInitial: "J",
@@ -93,7 +96,7 @@ export default function Fyp() {
                   <div id="searchResults" className="sidebar-search-results__list" role="list"></div>
                 </div>
 
-                {isLogged ? (
+                {logged ? (
                   <div className="sidebar-section">
                     <h3 className="sidebar-section__title">Suggested for you</h3>
                     <div className="list suggestions-container">
@@ -156,7 +159,7 @@ export default function Fyp() {
                     <p className="muted">Recent changes of your interest</p>
                   </div>
                   
-                  {isLogged && (
+                  {logged && (
                     <div className="profile-image d-flex align-items-center gap-2">
                       <p className="p greeting mt-3">Welcome {currentUser.name}!</p>
                       <Link to={`users/${user!.id}`}>
@@ -176,20 +179,7 @@ export default function Fyp() {
 
                 </div>
                 {/* Lists feed */}
-                <div id="feedStream" className="feed-stream mt-0" data-petition="p">
-                  <div id="feedEmpty" className="feed-empty visually-hidden">
-                    <svg viewBox="0 0 24 24" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
-                      <path d="M8 12h8M12 8v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                    <p className="feed-empty__title">Nothing here yet</p>
-                    <p className="feed-empty__sub">Follow users to see their activity in your feed.</p>
-                  </div>
-                  <div id="feedSentinel"></div>
-                  <div id="loadingSpinner" className="row mx-0 justify-content-center visually-hidden mb-5">
-                    <div className="spinner"></div>
-                  </div>
-                </div>
+                <FeedStream itemsType="post" itemsSearch={useCallback(getFeedForUser, [])}/>
               </div>
             </div>
           </div>
