@@ -69,7 +69,7 @@ export async function getExercisePdf(exerciseId: number): Promise<Blob> {
     }
 }
 
-export async function deleteExercise(exerciseId: string): Promise<void> {
+export async function deleteExercise(exerciseId: number): Promise<void> {
     const response = await fetch(`${API_URL}/${exerciseId}`, {
         method: "DELETE"
     });
