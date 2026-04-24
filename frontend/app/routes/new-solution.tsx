@@ -5,7 +5,12 @@ import { addList } from "~/services/list-service";
 import { useParams } from "react-router";
 import { addSolution, uploadSolutionImage } from "~/services/solution-service";
 import { useUserStore } from "~/stores/user-store";
+import { requireUser } from "~/services/route-guards-service";
 
+
+export async function clientLoader() {
+    await requireUser();
+}
 
 export default function NewSolution() {
 

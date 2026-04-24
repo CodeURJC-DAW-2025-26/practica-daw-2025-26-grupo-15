@@ -9,16 +9,14 @@ import { useActionState, useCallback, useState } from "react";
 import { InlineActionError } from "~/components/inline-action-error";
 import FeedStream from "~/components/feed-stream";
 import { getExerciseListsFromUser, getListsForUserProfile } from "~/services/list-service";
+import { optionalUser } from "~/services/route-guards-service";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  let userLogged = null;
-  try {
-    userLogged = await reqIsLogged();
-  } catch (error) {}
 
+  let userLogged = await optionalUser();
   const userVisited: UserDTO = await getUser(Number(params.id));
   let isOwnProfile = userLogged && userVisited.id === userLogged.id;
-  let isAdmin = userLogged && userLogged.roles.some((rol) => rol === "ADMIN");
+  let isAdmin = userLogged && userLogged.roles.includes("ADMIN");
 
   return { userLogged, userVisited, isOwnProfile, isAdmin };
 }

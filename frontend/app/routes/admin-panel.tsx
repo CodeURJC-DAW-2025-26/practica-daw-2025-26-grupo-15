@@ -10,6 +10,7 @@ import { reqIsLogged } from "~/services/login-service";
 import { deleteProfile } from "~/services/user-service";
 import { useUserStore } from "~/stores/user-store";
 import type { Route } from "./+types/admin-panel";
+import { requireRole } from "~/services/route-guards-service";
 
 const API_IMAGES_URL = "/api/v1/images";
 const DEFAULT_PAGE_SIZE = 15;
@@ -66,14 +67,7 @@ const OPTION_COPY: Record<
 };
 
 export async function clientLoader() {
-  const user = await reqIsLogged();
-  if (!user) {
-    throw redirect("/login");
-  }
-  if (!user.roles.some((rol) => rol === "ADMIN")) {
-    throw redirect("/");
-  }
-  return user;
+  return await requireRole("ADMIN");
 }
 
 export default function AdminPanel({ loaderData }: Route.ComponentProps) {

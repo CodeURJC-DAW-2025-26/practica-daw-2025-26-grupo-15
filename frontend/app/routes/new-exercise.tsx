@@ -3,7 +3,14 @@ import type { Route } from "./+types/home";
 import ExerciseForm from "~/components/exercise-form";
 import { useNavigate, useParams } from "react-router";
 import { addExercise, uploadExercisePDF } from "~/services/exercise-service";
+import { requireUser } from "~/services/route-guards-service";
 
+export async function clientLoader({params}:Route.ClientLoaderArgs) {
+  let user = await requireUser();
+  if(!user.exerciseLists.some(l => Number(l.id) === Number(params.listId ))){
+    throw new Error("This listID doesnt belong to your user");
+  }
+}
 export default function NewExercise(){
 
     let {listId} = useParams();

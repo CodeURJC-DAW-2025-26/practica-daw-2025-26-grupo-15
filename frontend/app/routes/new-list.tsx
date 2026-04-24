@@ -2,7 +2,11 @@ import { useActionState } from "react";
 import { useNavigate } from "react-router";
 import ListForm from "~/components/list-form";
 import { addList } from "~/services/list-service";
+import { requireUser } from "~/services/route-guards-service";
 
+export async function clientLoader() {
+    await requireUser();
+}
 
 export default function NewList() {
     const navigate = useNavigate();

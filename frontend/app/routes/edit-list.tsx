@@ -6,9 +6,15 @@ import {
   getExerciseListById,
   updateList,
 } from "~/services/list-service";
+import { requireUser } from "~/services/route-guards-service";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  let user = await requireUser();
   const list = await getExerciseListById(params.id!);
+  if (!user.exerciseLists.some(l => l.id === list.id)){
+    throw Error("You dont have access to this list ")
+  }
+
   return { list };
 }
 
