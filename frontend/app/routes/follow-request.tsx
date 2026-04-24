@@ -5,8 +5,10 @@ import { Footer } from '../components/footer';
 import { getFollowRequests } from '~/services/user-service';
 import type { Route } from './+types/follow-request';
 import { useUserStore } from '~/stores/user-store';
+import { requireUser } from '~/services/route-guards-service';
 
 export async function clientLoader(){
+    await requireUser();
     return await getFollowRequests();
 }
 

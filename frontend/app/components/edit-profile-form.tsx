@@ -41,7 +41,12 @@ export default function EditProfileForm({user, actionState: [state, formAction, 
                   <span>{user.name.charAt(0).toUpperCase()}</span>
                 )}
               </div>
-              <Form.Label htmlFor={photoInputId} className="btn secondary mt-3 cursor-pointer">Upload photo</Form.Label>
+              <Form.Label
+                htmlFor={photoInputId}
+                className="btn secondary mt-3 cursor-pointer edit-profile-upload-btn"
+              >
+                Upload photo
+              </Form.Label>
               <Form.Control id={photoInputId} name="photoFile" type="file" accept="image/*" className="visually-hidden" disabled={isPending}/>
               <Form.Text className="text-danger mt-1" id="photoError" />
             </Form.Group>
@@ -79,8 +84,9 @@ export default function EditProfileForm({user, actionState: [state, formAction, 
             <Button
               type="submit"
               bsPrefix="btn"
+              className="ghost"
               disabled={isPending}>
-              {isPending ? "Saving..." : "Save profile"}
+              {isPending ? "Saving..." : "Save"}
             </Button>
           </div>
 

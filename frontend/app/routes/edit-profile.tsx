@@ -1,8 +1,17 @@
 import { useActionState } from "react";
 import { useNavigate, useParams } from "react-router";
 import EditProfileForm from "~/components/edit-profile-form";
+import { requireUser } from "~/services/route-guards-service";
 import { updateProfile, updateProfilePhoto } from "~/services/user-service";
 import { useUserStore } from "~/stores/user-store";
+import type { Route } from "./+types/edit-profile";
+
+export async function clientLoader({params}:Route.ClientLoaderArgs){
+  let user = await requireUser();
+  if(user.id !== Number(params.userId)){
+    throw Error("You dont have access to edit this profile");
+  }
+}
 
 export default function EditProfile() {
     const { user } = useUserStore();
