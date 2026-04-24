@@ -51,7 +51,7 @@ export default function ListCard({
                 <header className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
                     <div>
                         <h3>
-                            <Link to={`/list-view/${list.id}`} className="list-name">
+                            <Link to={`/lists/${list.id}`} className="list-name">
                                 {list.title}
                             </Link>
                         </h3>
@@ -61,7 +61,7 @@ export default function ListCard({
                     {isOwnProfile && (
                         <div className="card-actions d-flex flex-column align-items-end g-1">
                             <button className="btn-icon btn-icon-edit" type="button">
-                                <Link to={`/edit-list/${list.id}`}>
+                                <Link to={`/lists/edit/${list.id}`}>
                                     <i className="bi bi-pencil icon-static"></i>
                                     <img
                                         src="/assets/pencilanimated.gif"

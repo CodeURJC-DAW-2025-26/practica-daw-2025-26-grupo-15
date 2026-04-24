@@ -17,6 +17,7 @@ export default [
 		route("exercise/:id", "routes/exercise.tsx"),
 		route("users/:userId/edit", "routes/edit-profile.tsx"),
 		route("exercises/:exerciseId/solutions/new", "routes/new-solution.tsx"),
+		route("exercises/:id/edit", "routes/edit-exercise.tsx"),
 		route("*","routes/not-found.tsx")
 	]),
 ] satisfies RouteConfig;
