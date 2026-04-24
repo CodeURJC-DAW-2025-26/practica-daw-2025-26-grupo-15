@@ -9,9 +9,10 @@ import ListCard from "./list-card";
 interface FeedStreamProps {
     itemsType: "post" | "list";
     itemsSearch: (page: number, user: UserDTO | null) => Promise<{ hasMore: boolean; items: (PostDTO | ListDTO)[] }>;
+    currentUser?: UserDTO | null;
 }
 
-export default function FeedStream({ itemsType, itemsSearch }: FeedStreamProps) {
+export default function FeedStream({ itemsType, itemsSearch, currentUser }: FeedStreamProps) {
     const [items, setItems] = useState<(PostDTO | ListDTO)[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -21,13 +22,14 @@ export default function FeedStream({ itemsType, itemsSearch }: FeedStreamProps) 
     const pageRef = useRef(0); // ← single source of truth for page
 
     const { user } = useUserStore();
+    const activeUser = currentUser ?? user;
 
     // Subsequent page fetches (page 1+)
     const fetchPage = useCallback(async () => {
         setLoading(true);
         setHasError(false);
         try {
-            const response = await itemsSearch(pageRef.current, user);
+            const response = await itemsSearch(pageRef.current, activeUser);
             setHasMore(response.hasMore);
             setItems(prev => [...prev, ...response.items]);
             pageRef.current += 1; // ← increment directly, no state involved
@@ -37,7 +39,7 @@ export default function FeedStream({ itemsType, itemsSearch }: FeedStreamProps) 
         } finally {
             setLoading(false);
         }
-    }, [itemsSearch, user]);
+    }, [itemsSearch, activeUser]);
 
     const fetchPageRef = useRef(fetchPage);
     useEffect(() => { fetchPageRef.current = fetchPage; }, [fetchPage]);
@@ -54,7 +56,7 @@ export default function FeedStream({ itemsType, itemsSearch }: FeedStreamProps) 
         const doFetch = async () => {
             setLoading(true);
             try {
-                const response = await itemsSearch(0, user);
+                const response = await itemsSearch(0, activeUser);
                 if (cancelled) return;
                 setHasMore(response.hasMore);
                 setItems(response.items);
@@ -71,7 +73,7 @@ export default function FeedStream({ itemsType, itemsSearch }: FeedStreamProps) 
         doFetch();
         return () => { cancelled = true; };
 
-    }, [itemsType, user]); // itemsSearch deliberately excluded
+    }, [itemsType, activeUser]); // itemsSearch deliberately excluded
 
     // Observer — re-runs when loading flips to false, re-observing sentinel
     useEffect(() => {
@@ -141,9 +143,9 @@ export default function FeedStream({ itemsType, itemsSearch }: FeedStreamProps) 
                             <ListCard
                                 key={list.id || index}
                                 list={list}
-                                isOwnProfile={list.owner?.id === user?.id}
-                                canDeleteLists={list.owner?.id === user?.id}
-                                currentUser={user}
+                                isOwnProfile={list.owner?.id === activeUser?.id}
+                                canDeleteLists={list.owner?.id === activeUser?.id}
+                                currentUser={activeUser}
                                 onListDeleted={(listId) => {
                                     setItems(prev => prev.filter(l => (l as ListDTO).id !== listId));
                                 }}

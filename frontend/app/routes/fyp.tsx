@@ -1,68 +1,40 @@
-import { useEffect, useState, useRef } from "react";
-import { Link } from "react-router";
-import { useUserStore } from "~/stores/user-store";
-import FeedStream from "~/components/feed-stream";
-import { getFeedForUser } from "~/services/post-service";
 import { useCallback } from "react";
+import { Link } from "react-router";
+import FeedStream from "~/components/feed-stream";
+import type FollowingSuggestionDTO from "~/dtos/FollowingSuggestionDTO";
+import { getFeedForUser } from "~/services/post-service";
 import { getFollowingSuggestions } from "~/services/user-service";
 import type UserBasicInfoDTO from "~/dtos/UserBasicInfoDTO";
-import type FollowingSuggestionDTO from "~/dtos/FollowingSuggestionDTO";
+import { optionalUser } from "~/services/route-guards-service";
+import type { Route } from "./+types/fyp";
 
-function getContactText(contact: UserBasicInfoDTO[]) {
-  if (contact.length >= 3) return `Followed by ${contact.length} contacts`;
-  if (contact.length >= 1) {
-    return `Followed by ${contact[0].name}${contact[1] ? ` and ${contact[1].name}` : ""}`;
+export async function clientLoader() {
+  const user = await optionalUser();
+  let suggestions: FollowingSuggestionDTO[] = [];
+
+  if (user) {
+    try {
+      suggestions = await getFollowingSuggestions();
+    } catch (error) {
+      throw Error("Failed to fetch suggestions:");
+    }
   }
-  return "Suggested for you";
+
+  return { user, suggestions };
 }
 
-export default function Fyp() {
+export default function Fyp({ loaderData }: Route.ComponentProps) {
+  function getContactText(contact: UserBasicInfoDTO[]) {
+    if (contact.length >= 3) return `Followed by ${contact.length} contacts`;
+    if (contact.length >= 1) {
+      return `Followed by ${contact[0].name}${contact[1] ? ` and ${contact[1].name}` : ""}`;
+    }
+    return "Suggested for you";
+  }
+
   const API_IMAGES_URL = "/api/v1/images";
-  
-  const { user } = useUserStore();
+  const { user, suggestions } = loaderData;
   const isLogged = user != null;
-  const userIdRef = useRef(user?.id);
-
-  const [suggestions, setSuggestions] = useState<FollowingSuggestionDTO[]>([]);
-  const [suggestionsLoaded, setSuggestionsLoaded] = useState(false);
-
-  useEffect(() => {
-    const currentUserId = user?.id;
-    
-    if (!currentUserId) {
-      setSuggestions([]);
-      setSuggestionsLoaded(true);
-      return;
-    }
-
-    if (currentUserId === userIdRef.current && suggestionsLoaded) {
-      return;
-    }
-
-    userIdRef.current = currentUserId;
-    setSuggestionsLoaded(false);
-
-    const fetchSuggestions = async () => {
-      try {
-        const data = await getFollowingSuggestions();
-        if (userIdRef.current === currentUserId) {
-          setSuggestions(data ?? []);
-          setSuggestionsLoaded(true);
-        }
-      } catch (error) {
-        console.error("Failed to fetch suggestions:", error);
-        if (userIdRef.current === currentUserId) {
-          setSuggestions([]);
-          setSuggestionsLoaded(true);
-        }
-      }
-    };
-
-    fetchSuggestions();
-
-    return () => {
-    };
-  }, [user?.id]);
 
   return (
     <>
@@ -135,7 +107,7 @@ export default function Fyp() {
                             View profile
                           </a>
                         </div>
-                      ))}
+                        ))}
 
                     </div>
                   </div>
@@ -182,8 +154,11 @@ export default function Fyp() {
                   )}
 
                 </div>
-                {/* Lists feed */}
-                <FeedStream itemsType="post" itemsSearch={useCallback(getFeedForUser, [user])}/>
+                <FeedStream
+                  itemsType="post"
+                  itemsSearch={useCallback(getFeedForUser, [])}
+                  currentUser={user}
+                />
               </div>
             </div>
           </div>
