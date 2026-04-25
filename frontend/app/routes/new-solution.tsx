@@ -1,34 +1,27 @@
 import { useActionState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
+import { Container, Row, Col, Image, Button, Stack } from "react-bootstrap";
 import SolutionForm from "~/components/solution-form";
-import { addList } from "~/services/list-service";
-import { useParams } from "react-router";
 import { addSolution, uploadSolutionImage } from "~/services/solution-service";
 import { useUserStore } from "~/stores/user-store";
 import { requireUser } from "~/services/route-guards-service";
-
 
 export async function clientLoader() {
     await requireUser();
 }
 
 export default function NewSolution() {
-
     const { exerciseId } = useParams();
     const { user } = useUserStore();
     const logged = user !== null;
+    const navigate = useNavigate();
 
     if (!exerciseId) {
         throw new Error("Error adding solution, must need exerciseId in URL params");
     }
 
-    const navigate = useNavigate();
-
     async function saveSolutionAction(
-        prevState: {
-            success: boolean;
-            error: string | null;
-        } | null,
+        prevState: { success: boolean; error: string | null } | null,
         formData: FormData,
     ) {
         const name = formData.get("name") as string;
@@ -37,6 +30,8 @@ export default function NewSolution() {
 
         try {
             const newSolution = await addSolution(exerciseId!, name, description);
+            
+            // Verificamos si hay imagen para subir
             if (imageFile && imageFile.size > 0) {
                 await uploadSolutionImage(newSolution.id, imageFile);
             }
@@ -52,36 +47,62 @@ export default function NewSolution() {
         }
     }
 
-
     const [state, formAction, isPending] = useActionState(saveSolutionAction, null);
 
     return (
-        <>
-         <main className="page">
-            <div className="d-flex flex align-items-center justify-content-between">
-                <div className="brand">
-                    <Link to="/" className="brand-mark-link"><img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" /></Link>
-                    <Link to="/"><span className="brand-title">DSGram</span></Link>
-                </div>
-                {/* Header section: shows user profile if logged in, otherwise login button */}
-                {logged ? (
-                    <div className="profile-image d-flex align-items-center gap-2">
+        <Container as="main" className="py-4">
+            {/* Header Section */}
+            <Row className="align-items-center mb-5">
+                <Col>
+                    <Stack direction="horizontal" gap={2} className="brand">
+                        <Link to="/" className="brand-mark-link">
+                            <Image 
+                                src="/assets/DSGram_LOGO.png" 
+                                alt="DSGram logo" 
+                                width={40}
+                                height={40}
+                            />
+                        </Link>
+                        <Link to="/" className="text-decoration-none">
+                            <span className="brand-title fs-4 fw-bold text-dark">DSGram</span>
+                        </Link>
+                    </Stack>
+                </Col>
+
+                <Col xs="auto">
+                    {logged ? (
                         <Link to="/profile">
-                            <div className="avatar avatar--img">
-                                {user?.photo ? <img src={`/images/${user.photo.id}/media`} alt="Profile photo" /> : <span>{user?.name.charAt(0).toLocaleUpperCase() ?? ""}</span>}
+                            <div className="avatar avatar--img overflow-hidden rounded-circle" style={{ width: '40px', height: '40px' }}>
+                                {user?.photo ? (
+                                    <Image 
+                                        src={`/api/v1/images/${user.photo.id}/media`} 
+                                        alt="Profile photo" 
+                                        fluid 
+                                    />
+                                ) : (
+                                    <div className="bg-primary text-white d-flex align-items-center justify-content-center h-100">
+                                        {user?.name.charAt(0).toUpperCase()}
+                                    </div>
+                                )}
                             </div>
                         </Link>
-                    </div>
-                ) : (
-                    <a className="btn ghost" href="/login">Log in</a>
-                )}
-            </div>
+                    ) : (
+                        <Button variant="outline-secondary" href="/login">
+                            Log in
+                        </Button>
+                    )}
+                </Col>
+            </Row>
 
-            <SolutionForm
-                actionState={[state, formAction, isPending]}
-                onCancel={() => navigate("/")}
-            />
-        </main>
-        </>
+            {/* Form Section */}
+            <Row className="justify-content-center">
+                <Col xs={12} md={10} lg={8}>
+                    <SolutionForm
+                        actionState={[state, formAction, isPending]}
+                        onCancel={() => navigate("/")}
+                    />
+                </Col>
+            </Row>
+        </Container>
     );
 }

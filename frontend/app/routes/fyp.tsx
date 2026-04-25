@@ -103,7 +103,7 @@ export default function Fyp({ loaderData }: Route.ComponentProps) {
                             </div>
                           </div>
 
-                          <a href={`/profile/${item.suggestion.id}`} className="suggestion-follow-btn text-decoration-none text-center ms-2 text-nowrap">
+                          <a href={`/users/${item.suggestion.id}`} className="suggestion-follow-btn text-decoration-none text-center ms-2 text-nowrap">
                             View profile
                           </a>
                         </div>

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useActionState } from "react";
 import type { Route } from "./+types/edit-exercise";
 import ExerciseForm from "~/components/exercise-form";
@@ -40,8 +40,10 @@ export default function EditExercise({ loaderData }: Route.ComponentProps) {
   return (
     <main className="page">
           <div className="brand">
-            <a href="/" className="brand-mark-link"><img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" /></a>
-            <a href="/"><span className="brand-title">DSGram</span></a>
+            <Link to="/" className="brand-mark-link">
+              <img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" />
+            </Link>
+            <Link to="/"><span className="brand-title">DSGram</span></Link>
           </div>
 
     <ExerciseForm

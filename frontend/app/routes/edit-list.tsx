@@ -34,7 +34,7 @@ export default function EditList({ loaderData }: Route.ComponentProps) {
     try {
       await updateList(id, title, topic, description);
 
-      navigate(`/list/${list.id}`);
+      navigate(`/lists/${list.id}`);
       return { success: true, error: null };
     } catch (error) {
       console.error(error);

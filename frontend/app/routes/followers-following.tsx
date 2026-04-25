@@ -1,18 +1,14 @@
 import { getUser, removeFollower, unFollowUser } from "~/services/user-service";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Container, Row, Col } from "react-bootstrap";
 import type { Route } from "./+types/followers-following";
 import { useUserStore } from "~/stores/user-store";
 import { InlineActionError } from "~/components/inline-action-error";
 import { Link, useNavigate } from "react-router";
 import { useActionState, useEffect, useRef } from "react";
 
-
 export async function clientLoader({ request, params }: Route.ClientLoaderArgs) {
     const url = new URL(request.url);
     const userId = url.searchParams.get("userId");
-
-    
-
     const type = params.type; 
 
     if (!userId) throw new Error("No userId provided");
@@ -20,9 +16,7 @@ export async function clientLoader({ request, params }: Route.ClientLoaderArgs) 
     const userToShow = await getUser(Number(userId));
     
     return { userToShow, type };
-
 }
-
 
 export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
     let { user } = useUserStore();
@@ -108,7 +102,6 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
         };
     }, [userToShow.followers.length, userToShow.following.length]);
 
-
     async function unFollowAction(_prevState:{errorUnfollow:string | null}, formData: FormData){
         const targetId = formData.get("targetId") as string;
         try{
@@ -118,8 +111,7 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
         }catch(error){
           return {errorUnfollow:"Failed to unfollow user"}
         }
-    
-      }
+    }
 
     const[{errorUnfollow},formUnfollowAction,isPendingUnfollow] = useActionState(unFollowAction,{errorUnfollow:null});
     
@@ -135,7 +127,6 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
     }
     const [{errorRemoveFollower}, formRemoveFollowerAction, isPendingRemoveFollower] = useActionState(removeFollowerAction, {errorRemoveFollower:null});
 
-
     return (
         <>
             <main className="page page--feed">
@@ -149,9 +140,9 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
                 </div>
 
                 <section className="app-shell feed">
-                    <div className="container">
-                        <div className="row">
-                            <div className="content col-12 mx-0 g-0">
+                    <Container>
+                        <Row>
+                            <Col xs={12} className="content mx-0 g-0">
                                 {/* BARRA SUPERIOR: Títulos dinámicos */}
                                 <div className="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0 mt-3">
                                     <div>
@@ -168,9 +159,9 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
                                     <Link className="btn ghost" to={`/users/${userToShow.id}`}>Back</Link>
                                 </div>
 
-                                <div className="row align-items-start justify-content-between">
+                                <Row className="align-items-start justify-content-between">
                                     {/* COLUMNA IZQUIERDA: Lista de usuarios */}
-                                    <div className="col-md-8 col-12 followers-card mx-0 mt-5">
+                                    <Col xs={12} md={8} className="followers-card mx-0 mt-5">
                                         <h3>{followersPage ? "Followers" : "Following"}</h3>
                                         <div className="followers-list">
                                             {userToShow && listToShow.length > 0 ? (
@@ -219,22 +210,21 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
                                                 </p>
                                             )}
                                         </div>
-                                    </div>
+                                    </Col>
 
                                     {/* COLUMNA DERECHA: Gráfico (Canvas) */}
-                                    {/* TODO: El gráfico se mostrará más adelante    */}
-                                    <div className="col-md-4 col-12 chart-container mx-0 mt-5">
+                                    <Col xs={12} md={4} className="chart-container mx-0 mt-5">
                                         <canvas 
                                             ref={chartCanvasRef}
                                             id="comparisonChart" 
                                             data-num-followers={userToShow.followers.length} 
                                             data-num-following={userToShow.following.length}
                                         ></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Container>
                 </section>
             </main>
         </>

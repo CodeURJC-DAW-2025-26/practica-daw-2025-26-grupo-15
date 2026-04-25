@@ -1,27 +1,27 @@
 import { useActionState } from "react";
 import type { Route } from "./+types/home";
 import ExerciseForm from "~/components/exercise-form";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { addExercise, uploadExercisePDF } from "~/services/exercise-service";
 import { requireUser } from "~/services/route-guards-service";
 
-export async function clientLoader({params}:Route.ClientLoaderArgs) {
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   let user = await requireUser();
-  if(!user.exerciseLists.some(l => Number(l.id) === Number(params.listId ))){
+  if (!user.exerciseLists.some(l => Number(l.id) === Number(params.listId))) {
     throw new Error("This listID doesnt belong to your user");
   }
 }
-export default function NewExercise(){
+export default function NewExercise() {
 
-    let {listId} = useParams();
+  let { listId } = useParams();
 
-    if (!listId){
-        throw new Error("Error adding exercise, must need listId in URL params");
-    }
+  if (!listId) {
+    throw new Error("Error adding exercise, must need listId in URL params");
+  }
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    async function saveExerciseAction(
+  async function saveExerciseAction(
     prevState: {
       success: boolean;
       error: string | null;
@@ -51,20 +51,24 @@ export default function NewExercise(){
   }
 
 
-    const [state, formAction, isPending] = useActionState(saveExerciseAction, null);
+  const [state, formAction, isPending] = useActionState(saveExerciseAction, null);
 
-    return(
-        <main className="page">
-          <div className="brand">
-            <a href="/" className="brand-mark-link"><img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" /></a>
-            <a href="/"><span className="brand-title">DSGram</span></a>
-          </div>
+  return (
+    <main className="page">
+      <div className="brand">
+        <Link to="/" className="brand-mark-link">
+          <img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" />
+        </Link>
+        <Link to="/" className="text-decoration-none">
+          <span className="brand-title fs-4 fw-bold text-dark">DSGram</span>
+        </Link>
+      </div>
 
-          <ExerciseForm 
-            actionState={[state, formAction, isPending]}
-          />
+      <ExerciseForm
+        actionState={[state, formAction, isPending]}
+      />
 
-        </main>
-  
-    )
+    </main>
+
+  )
 }

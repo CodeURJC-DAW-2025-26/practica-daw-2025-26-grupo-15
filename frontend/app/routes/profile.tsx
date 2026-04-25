@@ -25,7 +25,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
   const API_IMAGES_URL = "/api/v1/images";
   const navigate = useNavigate();
 
-  let {logoutUser} = useUserStore();
+  let { logoutUser } = useUserStore();
 
 
   const isUserLogged = loaderData.userLogged != null;
@@ -37,7 +37,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
     isUserLogged &&
     userProfile.followers.some((user) => user.id === userLogged!.id);
 
-  async function logoutUserAction(){
+  async function logoutUserAction() {
     await logoutUser();
     navigate("/", { replace: true });
   }
@@ -65,46 +65,46 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
     setShowDeleteModal(true);
   }
 
-  const[{errorRequest},formRequestFollowAction,isPendingRequest] = useActionState(sendActionFollowRequest,{errorRequest:null});
-  
-  async function sendActionFollowRequest(_prevState:{errorRequest:string | null}, formData:FormData){
+  const [{ errorRequest }, formRequestFollowAction, isPendingRequest] = useActionState(sendActionFollowRequest, { errorRequest: null });
+
+  async function sendActionFollowRequest(_prevState: { errorRequest: string | null }, formData: FormData) {
     const targetId = formData.get("targetId") as string;
 
-    try{
-    await sendFollowRequest(targetId);
-    navigate(".",{ replace: true })
-    return {errorRequest:null};
-    }catch(error){
-      return {errorRequest:"Failed to send follow request"}
+    try {
+      await sendFollowRequest(targetId);
+      navigate(".", { replace: true })
+      return { errorRequest: null };
+    } catch (error) {
+      return { errorRequest: "Failed to send follow request" }
     }
   }
 
-  const[{errorAccept},formAcceptRequestAction,isPendingAccept] = useActionState(acceptFollowRequestAction,{errorAccept:null})
+  const [{ errorAccept }, formAcceptRequestAction, isPendingAccept] = useActionState(acceptFollowRequestAction, { errorAccept: null })
 
-  async function acceptFollowRequestAction(_prevState:{errorAccept:string | null}, formData:FormData){
+  async function acceptFollowRequestAction(_prevState: { errorAccept: string | null }, formData: FormData) {
     setLastRequestAction("accept");
     const targetId = formData.get("targetId") as string;
-    try{
-        await acceptFollowRequest(targetId)
-        navigate(".",{ replace: true })
-        return {errorAccept:null};
-    }catch(error){
-        return {errorAccept:"Failed to accept follow request"}
+    try {
+      await acceptFollowRequest(targetId)
+      navigate(".", { replace: true })
+      return { errorAccept: null };
+    } catch (error) {
+      return { errorAccept: "Failed to accept follow request" }
     }
-  
+
   }
 
-  const[{errorDecline},formDeclineRequestAction,isPendingDecline] = useActionState(declineRequestAction,{errorDecline:null})
+  const [{ errorDecline }, formDeclineRequestAction, isPendingDecline] = useActionState(declineRequestAction, { errorDecline: null })
 
-  async function declineRequestAction(_prevState:{errorDecline:string | null}, formData: FormData){
+  async function declineRequestAction(_prevState: { errorDecline: string | null }, formData: FormData) {
     setLastRequestAction("decline");
     const targetId = formData.get("targetId") as string;
-    try{
+    try {
       await declineFollowRequest(targetId);
-      navigate(".",{ replace: true });
-      return {errorDecline:null};
-    }catch(error){
-      return {errorDecline:"Failed to decline follow request"}
+      navigate(".", { replace: true });
+      return { errorDecline: null };
+    } catch (error) {
+      return { errorDecline: "Failed to decline follow request" }
     }
 
   }
@@ -116,16 +116,16 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
         ? errorDecline
         : null;
 
-  
-  const[{errorUnfollow},formUnFollowAction,isPendingUnfollow] = useActionState(unFollowAction,{errorUnfollow:null});
-  async function unFollowAction(_prevState:{errorUnfollow:string | null}, formData: FormData){
+
+  const [{ errorUnfollow }, formUnFollowAction, isPendingUnfollow] = useActionState(unFollowAction, { errorUnfollow: null });
+  async function unFollowAction(_prevState: { errorUnfollow: string | null }, formData: FormData) {
     const targetId = formData.get("targetId") as string;
-    try{
+    try {
       await unFollowUser(targetId);
-      navigate(".",{ replace: true });
-      return {errorUnfollow:null};
-    }catch(error){
-      return {errorUnfollow:"Failed to unfollow user"}
+      navigate(".", { replace: true });
+      return { errorUnfollow: null };
+    } catch (error) {
+      return { errorUnfollow: "Failed to unfollow user" }
     }
 
   }
@@ -153,365 +153,368 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-        <main className="page page--feed">
-          <div className="brand brand--full">
-            <div className="brand-left">
-              <Link to="/" className="brand-mark-link">
-                <img
-                  src="/assets/DSGram_LOGO.png"
-                  alt="DSGram logo"
-                  className="brand-mark"
-                />
-              </Link>
-              <Link to="/">
-                <span className="brand-title">DSGram</span>
-              </Link>
-            </div>
-            {isOwnProfile && (
-              <>
-                <Form action={formLogoutAction} className="brand-logout">
-                  <Button type="submit" className="btn-logout" disabled={isPending}>
-                    <i className="bi bi-box-arrow-right"></i> Log out
-                  </Button>
-                </Form>
-              </>
-            )}
+      <main className="page page--feed">
+        <div className="brand brand--full">
+          <div className="brand-left">
+            <Link to="/" className="brand-mark-link">
+              <img
+                src="/assets/DSGram_LOGO.png"
+                alt="DSGram logo"
+                className="brand-mark"
+              />
+            </Link>
+            <Link to="/">
+              <span className="brand-title">DSGram</span>
+            </Link>
           </div>
+          {isOwnProfile && (
+            <>
+              <Form action={formLogoutAction} className="brand-logout">
+                <Button type="submit" className="btn-logout" disabled={isPending}>
+                  <i className="bi bi-box-arrow-right"></i> Log out
+                </Button>
+              </Form>
+            </>
+          )}
+        </div>
 
-          <section className="app-shell feed">
-            <Container fluid className="px-0">
-              <Row className="g-0">
-                <Col as="aside" xs={12} lg={3} className="sidebar">
-                  <div className="profile-sidebar-header">
-                    <div className="profile-avatar-preview">
-                      {userProfile.photo.id && (
-                        <img
-                          src={`${API_IMAGES_URL}/${userProfile.photo.id}/media`}
-                          alt="Profile photo"
-                          className="avatar-image-cover"
-                        ></img>
-                      )}
-                      {!userProfile.photo.id && (
-                        <i className="bi bi-person-circle"></i>
-                      )}
-                    </div>
+        <section className="app-shell feed">
+          <Container fluid className="px-0">
+            <Row className="g-0">
+              <Col as="aside" xs={12} lg={3} className="sidebar">
+                <div className="profile-sidebar-header">
+                  <div className="profile-avatar-preview">
+                    {userProfile.photo.id && (
+                      <img
+                        src={`${API_IMAGES_URL}/${userProfile.photo.id}/media`}
+                        alt="Profile photo"
+                        className="avatar-image-cover"
+                      ></img>
+                    )}
+                    {!userProfile.photo.id && (
+                      <i className="bi bi-person-circle"></i>
+                    )}
                   </div>
+                </div>
 
-                  <div className="pill">{userProfile.name}</div>
-                  <div className="pill">{userProfile.bio ?? "No bio yet."}</div>
-                  <div className="pill">
-                    {userProfile.name ?? "No specialty yet."}
-                  </div>
+                <div className="pill">{userProfile.name}</div>
+                <div className="pill">{userProfile.bio ?? "No bio yet."}</div>
+                <div className="pill">
+                  {userProfile.name ?? "No specialty yet."}
+                </div>
 
-                  {isOwnProfile && (
-                    <>
-                      <div className="sidebar-requests-section">
-                        <div className="sidebar-requests-header">
-                          <span className="sidebar-requests-title">
-                            <i className="bi bi-person-plus-fill"></i> Follow
-                            Requests
+                {isOwnProfile && (
+                  <>
+                    <div className="sidebar-requests-section">
+                      <div className="sidebar-requests-header">
+                        <span className="sidebar-requests-title">
+                          <i className="bi bi-person-plus-fill"></i> Follow
+                          Requests
+                        </span>
+                        {userProfile.requestReceived.length > 0 && (
+                          <span className="sidebar-requests-badge">
+                            {userProfile.requestReceived.length}
                           </span>
-                          {userProfile.requestReceived.length > 0 && (
-                            <span className="sidebar-requests-badge">
-                              {userProfile.requestReceived.length}
-                            </span>
-                          )}
-                        </div>
-                        <div className="list">
-                          {userProfile.requestReceived.length > 0 ? (
-                            userProfile.requestReceived
-                              .slice(0, 3)
-                              .map((request) => (
-                                <div className="list-item" key={request.id}>
-                                  <div className="req-identity">
-                                    <div className="req-avatar">
-                                      {request.photo && (
-                                        <img
-                                          src={`${API_IMAGES_URL}/${request.photo.id}/media`}
-                                        ></img>
-                                      )}
-                                      {!request.photo && (
-                                        <span>{request.name[0]}</span>
-                                      )}
-                                    </div>
-                                    <span className="req-name">{request.name}</span>
+                        )}
+                      </div>
+                      <div className="list">
+                        {userProfile.requestReceived.length > 0 ? (
+                          userProfile.requestReceived
+                            .slice(0, 3)
+                            .map((request) => (
+                              <div className="list-item" key={request.id}>
+                                <div className="req-identity">
+                                  <div className="req-avatar">
+                                    {request.photo && (
+                                      <img
+                                        src={`${API_IMAGES_URL}/${request.photo.id}/media`}
+                                      ></img>
+                                    )}
+                                    {!request.photo && (
+                                      <span>{request.name[0]}</span>
+                                    )}
                                   </div>
-                                  <div className="actions">
-                                    <Form action={formAcceptRequestAction}>
-                                      <Form.Control
+                                  <span className="req-name">{request.name}</span>
+                                </div>
+                                <div className="actions">
+                                  <Form action={formAcceptRequestAction}>
+                                    <Form.Control
                                       type="hidden"
                                       name="targetId"
                                       value={request.id}>
-                                      </Form.Control>
-                                      <span
-                                        className="tag tag-accept"
-                                        title="Accept"
-                                      >
+                                    </Form.Control>
+                                    <span
+                                      className="tag tag-accept"
+                                      title="Accept"
+                                    >
 
-                                        <Button
-                                          type="submit"
-                                          variant="link"
-                                          className="p-0"
-                                          disabled={isPendingAccept}
-                                        >
-                                          <i className="bi bi-check-lg"></i>
-                                        </Button>
-                                      </span>
-                                    </Form>
-                                    <Form action={formDeclineRequestAction}>
-                                      <Form.Control
-                                        type="hidden"
-                                        name="targetId"
-                                        value={request.id}
-                                      />
-                                      <span
-                                        className="tag tag-decline"
-                                        title="Decline"
+                                      <Button
+                                        type="submit"
+                                        variant="link"
+                                        className="p-0"
+                                        disabled={isPendingAccept}
                                       >
-                                        <Button
-                                          type="submit"
-                                          variant="link"
-                                          className="p-0"
-                                          disabled={isPendingDecline}
-                                        >
-                                          <i className="bi bi-x-lg"></i>
-                                        </Button>
-                                      </span>
-                                    </Form>
-                                  </div>
+                                        <i className="bi bi-check-lg"></i>
+                                      </Button>
+                                    </span>
+                                  </Form>
+                                  <Form action={formDeclineRequestAction}>
+                                    <Form.Control
+                                      type="hidden"
+                                      name="targetId"
+                                      value={request.id}
+                                    />
+                                    <span
+                                      className="tag tag-decline"
+                                      title="Decline"
+                                    >
+                                      <Button
+                                        type="submit"
+                                        variant="link"
+                                        className="p-0"
+                                        disabled={isPendingDecline}
+                                      >
+                                        <i className="bi bi-x-lg"></i>
+                                      </Button>
+                                    </span>
+                                  </Form>
                                 </div>
-                              ))
-                          ) : (
-                            <p className="sidebar-requests-empty">
-                              No pending requests.
-                            </p>
-                          )}
-                        </div>
-                        <div className="action-error-stack">
-                          <InlineActionError message={requestActionError} />
-                        </div>
+                              </div>
+                            ))
+                        ) : (
+                          <p className="sidebar-requests-empty">
+                            No pending requests.
+                          </p>
+                        )}
+                      </div>
+                      <div className="action-error-stack">
+                        <InlineActionError message={requestActionError} />
+                      </div>
+                      <Link
+                        to="/follow-requests"
+                        className="btn secondary sidebar-requests-see-all"
+                      >
+                        <i className="bi bi-arrow-right-short"></i> See all
+                        requests
+                      </Link>
+                    </div>
+                  </>
+                )}
+              </Col>
+              <Col xs={12} lg={9} className="content">
+                <div className="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                  <div className="profile-title-block">
+                    <h2 className="section-title">
+                      {userProfile.name}'s profile
+                    </h2>
+
+                    <div className="profile-actions d-flex align-items-center flex-nowrap gap-3">
+                      <div className="followers-cta">
                         <Link
-                          to="/follow-requests"
-                          className="btn secondary sidebar-requests-see-all"
+                          className="followers-cta-link"
+                          to={`/followers-following/followers?userId=${userProfile.id}`}
                         >
-                          <i className="bi bi-arrow-right-short"></i> See all
-                          requests
+                          <span className="followers-cta-value">
+                            {userProfile.followers.length}
+                          </span>
+                          <span className="followers-cta-label">
+                            Followers
+                          </span>
+                        </Link>
+
+                        <div className="followers-cta-divider"></div>
+
+                        <Link
+                          className="followers-cta-link"
+                          to={`/followers-following/following?userId=${userProfile.id}`}
+                        >
+                          <span className="followers-cta-value">
+                            {userProfile.following.length}
+                          </span>
+                          <span className="followers-cta-label">
+                            Following
+                          </span>
                         </Link>
                       </div>
-                    </>
-                  )}
-                </Col>
-                <Col xs={12} lg={9} className="content">
-                  <div className="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
-                    <div className="profile-title-block">
-                      <h2 className="section-title">
-                        {userProfile.name}'s profile
-                      </h2>
 
-                      <div className="profile-actions d-flex align-items-center flex-nowrap gap-3">
-                        <div className="followers-cta">
-                          <Link
-                            className="followers-cta-link"
-                            to={`/followers-following/followers?userId=${userProfile.id}`}
-                          >
-                            <span className="followers-cta-value">
-                              {userProfile.followers.length}
-                            </span>
-                            <span className="followers-cta-label">
-                              Followers
-                            </span>
-                          </Link>
-
-                          <div className="followers-cta-divider"></div>
-
-                          <Link
-                            className="followers-cta-link"
-                            to={`/followers-following/following?userId=${userProfile.id}`}
-                          >
-                            <span className="followers-cta-value">
-                              {userProfile.following.length}
-                            </span>
-                            <span className="followers-cta-label">
-                              Following
-                            </span>
-                          </Link>
-                        </div>
-
-                        {isOwnProfile && (
-                          <Link
-                            className="btn plus-btn-labeled d-flex align-items-center gap-2"
-                            to="/lists/new"
-                          >
-                            <i className="bi bi-plus-lg"></i>
-                            <span>Create list</span>
-                          </Link>
+                      {isOwnProfile && (
+                        <Link
+                          className="btn plus-btn-labeled d-flex align-items-center gap-2"
+                          to="/lists/new"
+                        >
+                          <i className="bi bi-plus-lg"></i>
+                          <span>Create list</span>
+                        </Link>
+                      )}
+                      {isOwnProfile && isAdmin && (
+                        <Link className="btn admin-panel-btn" to="/admin">
+                          <i className="bi bi-shield-lock"></i> Admin panel
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                  {isOwnProfile && (
+                    <div className="dropdown">
+                      <div className="avatar avatar--img">
+                        {userProfile.photo && (
+                          <img
+                            src={`${API_IMAGES_URL}/${userProfile.photo.id}/media`}
+                            alt="Profile photo"
+                          />
                         )}
-                        {isOwnProfile && isAdmin && (
-                          <Link className="btn admin-panel-btn" to="/admin">
-                            <i className="bi bi-shield-lock"></i> Admin panel
-                          </Link>
+                        {!userProfile.photo && (
+                          <i className="bi bi-person-circle"></i>
                         )}
+                      </div>
+                      <div className="dropdown-content">
+                        <Link to={`/users/${userProfile.id}/edit`}>Edit profile</Link>
+                        <div className="divider"></div>
+                        <Button
+                          className="dropdown-action-danger"
+                          onClick={handleShowDeleteModal}
+
+                        >
+                          Delete profile
+                        </Button>
                       </div>
                     </div>
-                    {isOwnProfile && (
-                      <div className="dropdown">
-                        <div className="avatar avatar--img">
-                          {userProfile.photo && (
-                            <img
-                              src={`${API_IMAGES_URL}/${userProfile.photo.id}/media`}
-                              alt="Profile photo"
-                            />
-                          )}
-                          {!userProfile.photo && (
-                            <i className="bi bi-person-circle"></i>
-                          )}
-                        </div>
-                        <div className="dropdown-content">
-                          <Link to={`/users/${userProfile.id}/edit`}>Edit profile</Link>
-                          <div className="divider"></div>
-                          <Button
-                            className="dropdown-action-danger"
-                            onClick={handleShowDeleteModal}
-
-                          >
-                            Delete profile
-                          </Button>
-                        </div>
-                      </div>
+                  )}
+                  {!isOwnProfile && isUserLogged && isFollowing && (
+                    <div className="profile-action-with-feedback">
+                      <Form action={formUnFollowAction}>
+                        <Form.Control
+                          type="hidden"
+                          name="requesterId"
+                          disabled={isPendingUnfollow}
+                          value={userLogged!.id}
+                        />
+                        <Form.Control
+                          type="hidden"
+                          name="targetId"
+                          disabled={isPendingUnfollow}
+                          value={userProfile!.id}
+                        />
+                        <Button
+                          className="btn followers-action btn-danger-action"
+                          type="submit"
+                          disabled={isPendingUnfollow}
+                        >
+                          Unfollow
+                        </Button>
+                      </Form>
+                      <InlineActionError message={errorUnfollow} />
+                    </div>
+                  )}
+                  {!isOwnProfile &&
+                    isUserLogged &&
+                    !isFollowing &&
+                    userLogged!.requestedFriends.some(
+                      (p) => p.id === userProfile.id,
+                    ) && (
+                      <Button className="btn secondary" disabled>
+                        Requested
+                      </Button>
                     )}
-                    {!isOwnProfile && isUserLogged && isFollowing && (
+                  {!isOwnProfile &&
+                    isUserLogged &&
+                    !isFollowing &&
+                    !userLogged!.requestedFriends.some(
+                      (p) => p.id === userProfile.id,
+                    ) && (
                       <div className="profile-action-with-feedback">
-                        <Form action={formUnFollowAction}>
+                        <Form action={formRequestFollowAction}>
                           <Form.Control
                             type="hidden"
                             name="requesterId"
-                            disabled={isPendingUnfollow}
                             value={userLogged!.id}
+                            disabled={isPendingRequest}
                           />
                           <Form.Control
                             type="hidden"
                             name="targetId"
-                            disabled={isPendingUnfollow}
                             value={userProfile!.id}
+                            disabled={isPendingRequest}
                           />
-                          <Button
-                            className="btn followers-action btn-danger-action"
-                            type="submit"
-                            disabled={isPendingUnfollow}
-                          >
-                            Unfollow
+                          <Button className="btn secondary" type="submit">
+                            Follow
                           </Button>
                         </Form>
-                        <InlineActionError message={errorUnfollow} />
+                        <InlineActionError message={errorRequest} />
                       </div>
                     )}
-                    {!isOwnProfile &&
-                      isUserLogged &&
-                      !isFollowing &&
-                      userLogged!.requestedFriends.some(
-                        (p) => p.id === userProfile.id,
-                      ) && (
-                        <Button className="btn secondary" disabled>
-                          Requested
-                        </Button>
-                      )}
-                    {!isOwnProfile &&
-                      isUserLogged &&
-                      !isFollowing &&
-                      !userLogged!.requestedFriends.some(
-                        (p) => p.id === userProfile.id,
-                      ) && (
-                        <div className="profile-action-with-feedback">
-                          <Form action={formRequestFollowAction}>
-                            <Form.Control
-                              type="hidden"
-                              name="requesterId"
-                              value={userLogged!.id}
-                              disabled={isPendingRequest}
-                            />
-                            <Form.Control
-                              type="hidden"
-                              name="targetId"
-                              value={userProfile!.id}
-                              disabled={isPendingRequest}
-                            />
-                            <Button className="btn secondary" type="submit">
-                              Follow
-                            </Button>
-                          </Form>
-                          <InlineActionError message={errorRequest} />
-                        </div>
-                      )}
-                    {isAdmin && !isOwnProfile && (
-                      <Button
-                        className="btn btn-delete-profile-admin"
-                        onClick={handleShowAdminDeleteModal}
-                      >
-                        Delete profile
-                      </Button>
-                    )}
-                  </div>
-                  <FeedStream itemsType="list" itemsSearch={useCallback(getListsForUserProfile, [userProfile])}/>
-                  
-                </Col>
-              </Row>
-            </Container>
-          </section>
+                  {isAdmin && !isOwnProfile && (
+                    <Button
+                      className="btn btn-delete-profile-admin"
+                      onClick={handleShowAdminDeleteModal}
+                    >
+                      Delete profile
+                    </Button>
+                  )}
+                </div>
+                <FeedStream itemsType="list" itemsSearch={useCallback(
+                  (page: number) => getListsForUserProfile(page, userProfile),
+                  [userProfile.id]
+                )} />
 
-          <Modal
-            show={showDeleteModal}
-            onHide={() => {
-              if (!isPendingDeleteUserProfile) {
-                handleCloseDeleteModal();
-              }
-            }}
-            centered
-            backdrop="static"
-            contentClassName="adm-modal modal-content-themed"
+              </Col>
+            </Row>
+          </Container>
+        </section>
+
+        <Modal
+          show={showDeleteModal}
+          onHide={() => {
+            if (!isPendingDeleteUserProfile) {
+              handleCloseDeleteModal();
+            }
+          }}
+          centered
+          backdrop="static"
+          contentClassName="adm-modal modal-content-themed"
+        >
+          <Modal.Header
+            closeButton={!isPendingDeleteUserProfile}
+            className="border-0 pb-0"
           >
-            <Modal.Header
-              closeButton={!isPendingDeleteUserProfile}
-              className="border-0 pb-0"
+            <Modal.Title className="adm-modal-title">
+              <i
+                className={`bi ${isAdminDeleteModal ? "bi-shield-exclamation" : "bi-exclamation-triangle-fill"} text-danger me-2`}
+              ></i>
+              {isAdminDeleteModal
+                ? `Delete ${userProfile.name}'s profile?`
+                : "Delete your profile?"}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p className="adm-modal-body">
+              {isAdminDeleteModal
+                ? "You are deleting this account as administrator. This action is permanent and cannot be undone."
+                : "This action permanently removes your profile, your lists, and your exercises. You will be logged out immediately."}
+            </p>
+            <InlineActionError message={errorDelete} />
+          </Modal.Body>
+          <Modal.Footer className="border-0 pt-0">
+            <Button
+              className="adm-modal-cancel"
+              onClick={handleCloseDeleteModal}
+              disabled={isPendingDeleteUserProfile}
             >
-              <Modal.Title className="adm-modal-title">
-                <i
-                  className={`bi ${isAdminDeleteModal ? "bi-shield-exclamation" : "bi-exclamation-triangle-fill"} text-danger me-2`}
-                ></i>
-                {isAdminDeleteModal
-                  ? `Delete ${userProfile.name}'s profile?`
-                  : "Delete your profile?"}
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <p className="adm-modal-body">
-                {isAdminDeleteModal
-                  ? "You are deleting this account as administrator. This action is permanent and cannot be undone."
-                  : "This action permanently removes your profile, your lists, and your exercises. You will be logged out immediately."}
-              </p>
-              <InlineActionError message={errorDelete} />
-            </Modal.Body>
-            <Modal.Footer className="border-0 pt-0">
+              Cancel
+            </Button>
+            <Form action={deleteUserProfileAction}>
+              <Form.Control type="hidden" name="targetId" value={userProfile.id} />
               <Button
-                className="adm-modal-cancel"
-                onClick={handleCloseDeleteModal}
+                type="submit"
+                className="adm-modal-confirm"
                 disabled={isPendingDeleteUserProfile}
               >
-                Cancel
+                {isPendingDeleteUserProfile ? "Deleting profile..." : "Delete profile"}
               </Button>
-              <Form action={deleteUserProfileAction}>
-                <Form.Control type="hidden" name="targetId" value={userProfile.id} />
-                <Button
-                  type="submit"
-                  className="adm-modal-confirm"
-                  disabled={isPendingDeleteUserProfile}
-                >
-                  {isPendingDeleteUserProfile ? "Deleting profile..." : "Delete profile"}
-                </Button>
-              </Form>
-              
-            </Modal.Footer>
-          </Modal>
-        </main>
+            </Form>
+
+          </Modal.Footer>
+        </Modal>
+      </main>
     </>
   );
 }
