@@ -1,12 +1,13 @@
-import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import type { SolutionDTO } from "~/dtos/SolutionDTO";
+import { InlineActionError } from "./inline-action-error";
 
 interface SolutionFormProps {
     solution?: Partial<SolutionDTO>,
     actionState: [
         { success: boolean; error: string | null } | null,
-        (formData: FormData) => void,
-        boolean,
+        (formData: FormData) => void,                      
+        boolean,                                           
     ];
     onCancel: () => void;
 }
@@ -17,17 +18,20 @@ export default function SolutionForm({
     onCancel,
 }: SolutionFormProps) {
 
+    const errorSolution = state?.error || null;
+
     return (
         <Container>
             <Row className="justify-content-center">
-                {/* Usamos Col as="section" para mantener tu etiqueta section pero con la rejilla de Bootstrap */}
                 <Col xs={12} lg={8} as="section" className="hero-card hero-card--full-width hero-card--exercise">
                 
                     <Form action={formAction} className="form-block text-start">
                         <div className="text-center mb-5">
                             <h2>Add solution</h2>
                         </div>
-
+                        <div className="action-error-stack mb-3">
+                            <InlineActionError message={errorSolution} />
+                        </div>
                         <Form.Group className="mb-4 w-100" controlId="solName">
                             <Form.Label className="form-label">Solution Title</Form.Label>
                             <Form.Control
@@ -76,13 +80,8 @@ export default function SolutionForm({
                             </div>
                         </Form.Group>
 
-                        {/* Mostrar el mensaje de error si algo falla en la subida */}
-                        {state?.error && (
-                            <Alert variant="danger" className="py-2 mb-4">
-                                {state.error}
-                            </Alert>
-                        )}
-
+                        
+                        
                         <div className="d-flex justify-content-end gap-3 w-100 mt-4">
                             <Button 
                                 variant="link" 
