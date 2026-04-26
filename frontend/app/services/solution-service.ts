@@ -66,3 +66,21 @@ export async function deleteSolution(solutionId: number): Promise<void> {
         throw new Error("Failed to delete solution");
     }
 }
+
+export async function exportToPdf(solutionId: number): Promise<Blob> {
+     try {
+            const response = await fetch(`/api/v1/solutions/${solutionId}/pdfs/`, {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Failed to download PDF');
+            }   // Implementation for exporting solution to PDF
+            const blob = await response.blob();
+            return blob;
+        } catch (error) {
+            console.error('Error exporting solution to PDF:', error);
+            throw error;
+        }
+}

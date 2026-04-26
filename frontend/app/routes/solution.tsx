@@ -3,7 +3,8 @@ import {
     addComment, 
     getSolution, 
     findCommentsBySolutionId, 
-    deleteSolution, 
+    deleteSolution,
+    exportToPdf, 
 } from '~/services/solution-service';
 import { deleteComment } from '~/services/comment-service';
 import type { Route } from './+types/solution';
@@ -66,6 +67,25 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
     }
     const [state, formAction, isPending] = useActionState(saveCommentAction, null);
 
+    const handlePdfDownload = async (solutionId: number, solutionName: string) => {
+        try {
+            const pdfBlob = await exportToPdf(solutionId);
+            const url = window.URL.createObjectURL(pdfBlob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `solution-${solutionId}-${solutionName}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+
+            // Cleanup
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('PDF download failed:', error);
+        }
+    };
+
     return (
         <main className="page">
             {/* HEADER / NAVBAR */}
@@ -99,7 +119,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
             <Container>
                 <Row className="justify-content-center">
                     <Col xs={12} lg={10}>
-                        {/* SECCIÓN CABECERA DE LA SOLUCIÓN */}
+                        {/* SOLUTION HEADER */}
                         <section className="content-section mb-4">
                             <div className="content-section__header">
                                 <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
@@ -112,14 +132,13 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                                     </div>
 
                                     <div className="card-actions d-flex align-items-center gap-2">
-                                        <Button 
-                                            as="a" 
-                                            href={`/solution/${solution.id}/export/pdf`} 
+                                       
+                                         <Button
+                                            onClick={() => handlePdfDownload(solution.id, solution.name)}
                                             className="solution-export-btn"
                                         >
                                             <i className="bi bi-file-earmark-pdf me-1"></i> PDF
                                         </Button>
-                                        
                                         {canDeleteSolution && (
                                             <Button 
                                                 variant="link" 
@@ -138,7 +157,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                                 </div>
                             </div>
 
-                            {/* VISOR DE IMAGEN */}
+                            {/*SOLUTION IMAGE */}
                             {solution.solImage && (
                                 <div className="solution-content mt-4">
                                     {logged ? (
@@ -163,7 +182,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                             )}
                         </section>
 
-                        {/* SECCIÓN COMENTARIOS */}
+                        {/* COMMENTS SECTION */}
                         <section className="content-section">
                             <h3 className="content-section__subtitle mb-4">
                                 Comments ({hasComments ? comments.length : 0})
@@ -187,7 +206,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                                                 </div>
                                             </div>
 
-                                            {/* El dueño del comentario o de la solución puede borrarlo */}
+                                            {/* Comment owner */}
                                             {(logged && (user.id === comment.owner.id || canDeleteSolution)) && (
                                                 <Button 
                                                     variant="link" 
@@ -207,7 +226,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                                 )}
                             </div>
 
-                            {/* FORMULARIO COMENTARIO */}
+                            {/* COMMENT FORM */}
                             {logged ? (
                                 <CommentForm
                                     actionState={[state, formAction, isPending]}
@@ -229,7 +248,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                 </Row>
             </Container>
 
-            {/* MODAL BORRAR SOLUCIÓN */}
+            {/* DELETE SOLUTION MODAL */}
             <Modal show={showDeleteSolution} onHide={() => setShowDeleteSolution(false)} centered>
                 <div className="modal-content-themed">
                     <Modal.Header className="border-0">
@@ -247,7 +266,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                 </div>
             </Modal>
 
-            {/* MODAL BORRAR COMENTARIO */}
+            {/* DELETE COMMENT MODAL */}
             <Modal show={commentToDelete !== null} onHide={() => setCommentToDelete(null)} centered>
                 <div className="modal-content-themed">
                     <Modal.Header className="border-0">
