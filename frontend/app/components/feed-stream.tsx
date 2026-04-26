@@ -123,7 +123,7 @@ export default function FeedStream({ itemsType, itemsSearch, currentUser }: Feed
                     items.map((item, index) => {
                         const post = item as PostDTO;
                         return (
-                            <Link key={post.id || index} to={`/${post.contentLink}`} className="text-decoration-none text-reset">
+                            <Link key={post.id || index} to={`${post.contentLink}`} className="text-decoration-none text-reset">
                                 <article className="feed-card">
                                     <header className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0">
                                         <div>

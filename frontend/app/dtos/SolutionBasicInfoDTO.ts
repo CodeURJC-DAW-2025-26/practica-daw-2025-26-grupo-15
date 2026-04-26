@@ -5,5 +5,5 @@ export interface SolutionBasicInfoDTO {
     name: string,
     owner: UserBasicInfoDTO,
     numComments: number,
-    lastUpdate: Date
+    lastUpdate: string
 }

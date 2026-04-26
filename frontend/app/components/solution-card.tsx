@@ -1,6 +1,7 @@
 import { Col } from "react-bootstrap";
 import { Link } from "react-router";
 import type { SolutionBasicInfoDTO } from "~/dtos/SolutionBasicInfoDTO";
+import { formatDate } from "~/services/date-service";
 
 
 export default function SolutionCard({ solution, index, deletable }: { solution: SolutionBasicInfoDTO, index: number, deletable: boolean }) {
@@ -11,7 +12,7 @@ export default function SolutionCard({ solution, index, deletable }: { solution:
                 <div className="solution-card__header d-flex justify-content-between align-items-start gap-2">
                     <div>
                         <span className="solution-card__badge">Solution {index + 1}</span>
-                        <span className="solution-card__date">{/* {solution.lastUpdate.toLocaleDateString()} */}</span>
+                        <span className="solution-card__date">{formatDate(solution.lastUpdate)}</span>
                     </div>
                     {deletable && (
                         <button type="button" className="btn-icon position-relative z-3" data-bs-toggle="modal" data-bs-target={`#deleteSolutionModal${solution.id}`}>

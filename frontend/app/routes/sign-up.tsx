@@ -1,5 +1,5 @@
 import { useActionState, useEffect, useRef, useState, type ChangeEvent } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router";
 import { isUsernameAvailableBySearch, registerUser } from "~/services/user-service";
 import { InlineActionError } from "~/components/inline-action-error";
@@ -21,6 +21,7 @@ export default function SignUp() {
   const usernameCheckAbortRef = useRef<AbortController | null>(null);
   const [usernameInput, setUsernameInput] = useState("");
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
+  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
 
   const [nameFeedback, setNameFeedback] = useState<FeedbackState>({
     tone: "neutral",
@@ -138,11 +139,28 @@ export default function SignUp() {
       message: "Please review the username format.",
     });
   }
-  const [{ error: registerError }, formRegisterAction, isPending] =
-    useActionState(registerUserAction, { error: null });
+  const [
+    { error: registerError, success: registerSuccess, registeredName },
+    formRegisterAction,
+    isPending,
+  ] = useActionState(registerUserAction, {
+    error: null,
+    success: false,
+    registeredName: null,
+  });
+
+  useEffect(() => {
+    if (registerSuccess) {
+      setIsSuccessDialogOpen(true);
+    }
+  }, [registerSuccess]);
 
   async function registerUserAction(
-    _prevState: { error: string | null },
+    _prevState: {
+      error: string | null;
+      success: boolean;
+      registeredName: string | null;
+    },
     formData: FormData,
   ) {
     const name = formData.get("name") as string;
@@ -151,8 +169,7 @@ export default function SignUp() {
 
     try {
       await registerUser(name, email, password);
-      navigate("/login");
-      return { error: null };
+      return { error: null, success: true, registeredName: name };
       
     } catch (err: any ) {
       
@@ -165,8 +182,17 @@ export default function SignUp() {
       setPasswordFeedback((prev) =>
         prev.tone === "ok" ? { tone: "neutral", message: "" } : prev,
       );
-      return { error: err.message };
+      return { error: err.message, success: false, registeredName: null };
     }
+  }
+
+  function handleCloseSuccessDialog() {
+    setIsSuccessDialogOpen(false);
+  }
+
+  function handleGoToLogin() {
+    setIsSuccessDialogOpen(false);
+    navigate("/login");
   }
 
   function onEmailChange(event: ChangeEvent<HTMLInputElement>) {
@@ -408,6 +434,52 @@ export default function SignUp() {
           </Col>
         </Row>
       </Container>
+      <Modal
+        show={isSuccessDialogOpen}
+        onHide={handleCloseSuccessDialog}
+        centered
+        dialogClassName="register-success-modal-dialog"
+        contentClassName="register-success-modal-content"
+      >
+        <Modal.Header className="register-success-modal-header" closeButton>
+          <Modal.Title className="register-success-modal-title">
+            <span className="register-success-badge">Welcome</span>
+            Account created
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="register-success-modal-body">
+          <div className="register-success-orbit" aria-hidden="true">
+            <div className="register-success-core">
+              <i className="bi bi-stars"></i>
+            </div>
+          </div>
+          <p className="register-success-message">
+            {registeredName
+              ? `${registeredName}, your DSGram account is ready.`
+              : "Your DSGram account is ready."}
+          </p>
+          <p className="register-success-help">
+            You can sign in now and start building lists, following people, and
+            sharing solutions with the community.
+          </p>
+        </Modal.Body>
+        <Modal.Footer className="register-success-modal-footer">
+          <button
+            type="button"
+            className="register-success-secondary-btn"
+            onClick={handleCloseSuccessDialog}
+          >
+            Stay here
+          </button>
+          <button
+            type="button"
+            className="register-success-primary-btn"
+            onClick={handleGoToLogin}
+          >
+            Go to login
+          </button>
+        </Modal.Footer>
+      </Modal>
     </main>
   );
 }

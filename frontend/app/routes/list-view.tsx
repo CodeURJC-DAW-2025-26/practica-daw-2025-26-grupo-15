@@ -5,6 +5,7 @@ import { getExerciseListById, deleteList } from '~/services/list-service';
 import type { Route } from './+types/list-view';
 import { useUserStore } from '~/stores/user-store';
 import { deleteExercise } from '~/services/exercise-service';
+import { formatDate } from '~/services/date-service';
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     return await getExerciseListById(params.id!);
@@ -22,7 +23,6 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
     const [showDeleteList, setShowDeleteList] = useState(false);
     const [exerciseToDelete, setExerciseToDelete] = useState<any>(null);
 
-    //list functions
     function handleDeleteList() {
         setShowDeleteList(true);
     }
@@ -41,7 +41,7 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
         }
     };
 
-    //exercise functions
+
     function handleOpenDeleteExercise(exercise: any) {
         setExerciseToDelete(exercise);
     }
@@ -64,7 +64,6 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
 
     return (
         <main className="page">
-            {/* ... HEADER ... */}
             <div className="d-flex align-items-center justify-content-between p-3">
                 <div className="brand">
                     <Link to="/" className="brand-mark-link">
@@ -95,14 +94,14 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
             <Container>
                 <Row className="justify-content-center">
                     <Col xs={12} lg={10}>
-                        {/* SECCIÓN CABECERA */}
+
                         <section className="content-section mb-4">
                             <div className="content-section__header">
                                 <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
                                     <div>
                                         <h2 className="content-section__title mb-2">{list.title}</h2>
                                         <p className="content-section__meta text-muted mb-0">
-                                            Created by {list.owner.name}
+                                            Created by {list.owner.name} · Last update: {formatDate(list.lastUpdate)}
                                         </p>
                                     </div>
                                     
@@ -118,7 +117,6 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
                             </div>
                         </section>
 
-                        {/* SECCIÓN EJERCICIOS */}
                         <section className="content-section">
                             <h3 className="content-section__subtitle mb-4">Exercises</h3>
                             <div className="row g-4 mb-4">
@@ -197,7 +195,6 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
                 </div>
             </Modal>
 
-            {/* MODAL BORRAR EJERCICIO */}
             <Modal show={exerciseToDelete !== null} onHide={handleCloseDeleteExerciseModal} centered>
                 <div className="modal-content-themed">
                     <Modal.Header className="border-0">

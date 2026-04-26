@@ -5,7 +5,6 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Stack from "react-bootstrap/esm/Stack";
-import { Link, useParams } from "react-router";
 import type { ExerciseDTO } from "~/dtos/ExerciseDTO";
 import { useNavigate } from "react-router";
 import { InlineActionError } from "./inline-action-error";
@@ -18,7 +17,7 @@ interface ExerciseFormProps {
         (formData: FormData) => void,
         boolean
     ];
-    onCancel?: () => void;
+    onCancel: () => void;
 }
 
 export default function ExerciseForm({ exercise, actionState: [state, formAction, isPending], onCancel }: ExerciseFormProps) {
@@ -90,12 +89,13 @@ export default function ExerciseForm({ exercise, actionState: [state, formAction
                         </Form.Group>
 
                         <Stack direction="horizontal" gap={3} className="justify-content-end w-100 mt-4">
-                            <Link
-                                to={`/lists/${exercise?.exerciseList!.id}`}
+                            <Button
+                                type="button"
                                 className="btn ghost"
+                                onClick={onCancel}
                             >
                                 Back
-                            </Link>
+                            </Button>
                             <Button
                                 type="submit"
                                 bsPrefix="btn"
