@@ -102,7 +102,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
 
                 {logged ? (
                     <div className="profile-image d-flex align-items-center gap-2">
-                        <Link to="/profile">
+                        <Link to={`users/${user!.id}`}>
                             <div className="avatar avatar--img">
                                 {user.photo?.id ? (
                                     <img src={`/api/v1/images/${user.photo.id}/media`} alt="Profile" />

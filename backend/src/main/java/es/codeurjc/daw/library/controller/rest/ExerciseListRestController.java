@@ -91,6 +91,8 @@ public class ExerciseListRestController {
             boolean isAdmin = request.isUserInRole("ADMIN");
             ExerciseList list = exerciseListService.findById(id);
             exerciseListService.deleteList(list, user, isAdmin);
+            postService.searchPostByLink("/lists/" + id).ifPresent(post -> postService.deletePost(post.getId(), user, isAdmin));
+
             return ResponseEntity.ok(exerciseListMapper.toDTO(list));
         } catch(SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", e.getMessage()));
@@ -117,6 +119,8 @@ public class ExerciseListRestController {
             User user = userService.getUser(request.getUserPrincipal().getName());
             Exercise exercise = exerciseMapper.toEntity(exercisePostDTO);
             Exercise savedExercise = exerciseService.createExercise(exercise, user, null, id);
+            postService.createPost(new Post(user, savedExercise.getTitle(), "/exercise/" + savedExercise.getId(), "New exercise "));
+
             URI location = fromCurrentContextPath().path("/api/v1/exercises/{id}").buildAndExpand(savedExercise.getId()).toUri();
             return ResponseEntity.created(location).body(exerciseMapper.toDTO(savedExercise));
         } catch (SecurityException e) {

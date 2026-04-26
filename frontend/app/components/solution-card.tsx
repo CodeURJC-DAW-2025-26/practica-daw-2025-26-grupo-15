@@ -1,11 +1,36 @@
-import { Col } from "react-bootstrap";
-import { Link } from "react-router";
+import { useState } from "react";
+import { Button, Col, Modal } from "react-bootstrap";
+import { Link, useNavigate } from "react-router";
 import type { SolutionBasicInfoDTO } from "~/dtos/SolutionBasicInfoDTO";
 import { formatDate } from "~/services/date-service";
+import { deleteSolution } from "~/services/solution-service";
 
 
 export default function SolutionCard({ solution, index, deletable }: { solution: SolutionBasicInfoDTO, index: number, deletable: boolean }) {
+    const navigate = useNavigate();
 
+
+    const [solutionToDelete, setSolutionToDelete] = useState<SolutionBasicInfoDTO | null>(null);
+
+    function handleOpenDeleteSolution(solution: SolutionBasicInfoDTO) {
+        setSolutionToDelete(solution);
+    }
+
+    function handleCloseDeleteSolutionModal() {
+        setSolutionToDelete(null);
+    }
+
+    async function handleConfirmDeleteSolution() {
+        if (!solutionToDelete) return;
+
+        try {
+            await deleteSolution(solutionToDelete.id);
+            setSolutionToDelete(null);
+            navigate(".");
+        } catch (error) {
+            alert("Failed to delete the solution. Please try again later.");
+        }
+    }
     return (
         <Col key={solution.id} xs={12} md={6}>
             <div className="solution-card position-relative">
@@ -15,7 +40,15 @@ export default function SolutionCard({ solution, index, deletable }: { solution:
                         <span className="solution-card__date">{formatDate(solution.lastUpdate)}</span>
                     </div>
                     {deletable && (
-                        <button type="button" className="btn-icon position-relative z-3" data-bs-toggle="modal" data-bs-target={`#deleteSolutionModal${solution.id}`}>
+                        <button
+                            type="button"
+                            className="btn-icon position-relative z-3"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleOpenDeleteSolution(solution);
+                            }}
+                        >
                             <i className="bi bi-trash"></i>
                         </button>
                     )}
@@ -36,32 +69,43 @@ export default function SolutionCard({ solution, index, deletable }: { solution:
 
                 <Link to={`/solutions/${solution.id}`} className="stretched-link"></Link>
             </div>
-            
-            {/* Delete solution modal 
-            TODO: Implement the delete solution modal form*/}
 
             {deletable && (
-                <div className="modal fade" id={`deleteSolutionModal${solution.id}`} tabIndex={-1} aria-hidden="true">
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content modal-content-themed">
-                            <div className="modal-header border-0">
-                                <h5 className="modal-title">Confirm deletion</h5>
-                                <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div className="modal-body">
-                                <p className="mb-0">Are you sure you want to delete this solution?</p>
-                                <p className="text-muted mt-2 mb-0">This action cannot be undone.</p>
-                            </div>
-                            <div className="modal-footer border-0">
-                                <button type="button" className="btn secondary" data-bs-dismiss="modal">Cancel</button>
-                                
-                                <form method="delete" action={`/solution/${solution.id}`} className="d-inline">
-                                    <button type="submit" className="btn btn-danger-action">Delete solution</button>
-                                </form>
-                            </div>
-                        </div>
+                <Modal show={solutionToDelete !== null} onHide={handleCloseDeleteSolutionModal} centered>
+                    <div className="modal-content-themed">
+                        <Modal.Header className="border-0">
+                            <Modal.Title className="h5">Confirm deletion</Modal.Title>
+                            <button
+                                type="button"
+                                className="btn-close btn-close-white"
+                                onClick={handleCloseDeleteSolutionModal}
+                            />
+                        </Modal.Header>
+
+                        <Modal.Body>
+                            <p className="mb-0">Are you sure you want to delete solution <span className="fw-bold">"{solutionToDelete?.name}"</span>?</p>
+                            <p className="text-muted mt-2 mb-0">This action cannot be undone.</p>
+                        </Modal.Body>
+
+                        <Modal.Footer className="border-0">
+                            <button
+                                type="button"
+                                className="btn secondary"
+                                onClick={handleCloseDeleteSolutionModal}
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="button"
+                                className="btn btn-danger-action"
+                                onClick={handleConfirmDeleteSolution}
+                            >
+                                Delete solution
+                            </button>
+                        </Modal.Footer>
                     </div>
-                </div>
+                </Modal>
             )}
         </Col>
     );
