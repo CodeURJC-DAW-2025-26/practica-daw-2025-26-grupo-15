@@ -115,7 +115,7 @@ export default function UserSearchbar({ activeUser }: { activeUser: UserDTO | nu
         </div>
         <div id="searchResults" className="sidebar-search-results__list" role="list" onScroll={handleScroll}>
           {state.users.map((user: UserDTO) => (
-            <Link key={user.id} className="sidebar-search-results__item" to={`profile/${user.id}`} role="listitem">
+            <Link key={user.id} className="sidebar-search-results__item" to={`users/${user.id}`} role="listitem">
               <span className="sidebar-search-results__avatar avatar--img">
                 <img src={`api/v1/images/${user.photo?.id}/media`} alt={`${user.name}'s profile picture`} className="avatar-image-cover" />
               </span>

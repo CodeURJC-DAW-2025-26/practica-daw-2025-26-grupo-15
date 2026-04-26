@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import es.codeurjc.daw.library.service.ExerciseListService;
 import es.codeurjc.daw.library.service.ExerciseService;
+import es.codeurjc.daw.library.service.PostService;
 import es.codeurjc.daw.library.service.SearchService;
 import es.codeurjc.daw.library.dto.ExerciseListMapper;
 import es.codeurjc.daw.library.dto.ExerciseMapper;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.model.Exercise;
 import es.codeurjc.daw.library.model.ExerciseList;
+import es.codeurjc.daw.library.model.Post;
 import es.codeurjc.daw.library.dto.ExerciseListDTO;
 import es.codeurjc.daw.library.dto.ExerciseListPostDTO;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,6 +58,9 @@ public class ExerciseListRestController {
     private ExerciseMapper exerciseMapper;
 
     @Autowired
+    private PostService postService;
+
+    @Autowired
     ExerciseService exerciseService;
 
     @GetMapping("/{id}")
@@ -71,6 +76,7 @@ public class ExerciseListRestController {
             User owner = userService.findByEmail(email).orElseThrow();
             ExerciseList savedEntity = exerciseListService.createList(exerciseList, owner);
             ExerciseListDTO createdDTO = exerciseListMapper.toDTO(savedEntity);
+            postService.createPost(new Post(owner, savedEntity.getTitle(), "/lists/" + savedEntity.getId(), "New list"));
             URI location = fromCurrentRequest().path("/{id}").buildAndExpand(createdDTO.id()).toUri();
             return ResponseEntity.created(location).body(createdDTO);
         }catch(IllegalArgumentException e){
@@ -85,6 +91,8 @@ public class ExerciseListRestController {
             boolean isAdmin = request.isUserInRole("ADMIN");
             ExerciseList list = exerciseListService.findById(id);
             exerciseListService.deleteList(list, user, isAdmin);
+            postService.searchPostByLink("/lists/" + id).ifPresent(post -> postService.deletePost(post.getId(), user, isAdmin));
+
             return ResponseEntity.ok(exerciseListMapper.toDTO(list));
         } catch(SecurityException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", e.getMessage()));
@@ -111,6 +119,8 @@ public class ExerciseListRestController {
             User user = userService.getUser(request.getUserPrincipal().getName());
             Exercise exercise = exerciseMapper.toEntity(exercisePostDTO);
             Exercise savedExercise = exerciseService.createExercise(exercise, user, null, id);
+            postService.createPost(new Post(user, savedExercise.getTitle(), "/exercise/" + savedExercise.getId(), "New exercise "));
+
             URI location = fromCurrentContextPath().path("/api/v1/exercises/{id}").buildAndExpand(savedExercise.getId()).toUri();
             return ResponseEntity.created(location).body(exerciseMapper.toDTO(savedExercise));
         } catch (SecurityException e) {

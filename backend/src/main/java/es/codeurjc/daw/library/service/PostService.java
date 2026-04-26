@@ -2,6 +2,7 @@ package es.codeurjc.daw.library.service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,4 +61,8 @@ public class PostService {
         return postRepo.findById(postId).orElseThrow();
     }
 
+
+    public Optional<Post> searchPostByLink(String link) {
+        return postRepo.findByContentLink(link);
+    }
 }

@@ -6,33 +6,38 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Stack from "react-bootstrap/esm/Stack";
 import type { ExerciseDTO } from "~/dtos/ExerciseDTO";
+import { useNavigate } from "react-router";
+import { InlineActionError } from "./inline-action-error";
 
 
 interface ExerciseFormProps {
     exercise?: Partial<ExerciseDTO>,
     actionState: [
-        {success: boolean, error: string | null} | null,
+        { success: boolean, error: string | null } | null,
         (formData: FormData) => void,
         boolean
     ];
     onCancel: () => void;
 }
 
-export default function ExerciseForm({exercise, actionState: [state, formAction, isPending], onCancel}: ExerciseFormProps) {
+export default function ExerciseForm({ exercise, actionState: [state, formAction, isPending], onCancel }: ExerciseFormProps) {
     const isEditing = !!exercise?.id;
+    const errorExercise = state?.error || null;
 
     return (
         <Container>
             <Row className="justify-content-center">
                 <Col as="section" xs={12} lg={8} className="hero-card hero-card--full-width hero-card--exercise">
-                
+
                     <Form action={formAction} className="form-block text-start">
-                    
+
                         <h2 className="text-center mb-5">
                             {isEditing ? "Edit exercise" : "New exercise page"}
                         </h2>
 
-                        {state?.error && <Alert variant="danger">{state.error}</Alert>}
+                        <div className="action-error-stack mb-3">
+                            <InlineActionError message={errorExercise} />
+                        </div>
 
                         {isEditing && <input type="hidden" name="id" value={exercise.id} />}
 
@@ -45,7 +50,7 @@ export default function ExerciseForm({exercise, actionState: [state, formAction,
                                 className="form-control-custom"
                                 required
                                 disabled={isPending}
-                                defaultValue={isEditing ? exercise.title : ""} 
+                                defaultValue={isEditing ? exercise.title : ""}
                             />
                             <Form.Text className="text-danger mt-1" id="nameError" />
                         </Form.Group>
@@ -96,11 +101,11 @@ export default function ExerciseForm({exercise, actionState: [state, formAction,
                                 bsPrefix="btn"
                                 disabled={isPending}
                             >
-                        
+
                                 {isPending ? "Saving..." : (isEditing ? "Update exercise" : "Save exercise")}
                             </Button>
                         </Stack>
-                    </Form>     
+                    </Form>
                 </Col>
             </Row>
         </Container>

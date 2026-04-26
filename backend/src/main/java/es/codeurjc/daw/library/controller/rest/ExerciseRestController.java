@@ -23,6 +23,7 @@ import es.codeurjc.daw.library.dto.ExercisePutDTO;
 import es.codeurjc.daw.library.dto.SolutionDTO;
 import es.codeurjc.daw.library.service.SearchService;
 import es.codeurjc.daw.library.model.Exercise;
+import es.codeurjc.daw.library.model.Post;
 import es.codeurjc.daw.library.model.Solution;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.dto.ExerciseDTO;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.daw.library.service.ExerciseService;
+import es.codeurjc.daw.library.service.PostService;
 import es.codeurjc.daw.library.service.UserService;
 import es.codeurjc.daw.library.dto.SolutionMapper;
 import es.codeurjc.daw.library.dto.SolutionPostDTO;
@@ -68,6 +70,9 @@ public class ExerciseRestController {
     @Autowired
     private SolutionService solutionService;
 
+    @Autowired
+    private PostService postService;
+
     @GetMapping("/{id}")
     public ExerciseDTO getExerciseById(@PathVariable Long id) {
         return exerciseMapper.toDTO(exerciseService.getExercise(id));
@@ -81,6 +86,8 @@ public class ExerciseRestController {
             boolean isAdmin = request.isUserInRole("ADMIN");
             Exercise deletedExercise = exerciseService.deleteExercise(id, user, isAdmin);
         
+            postService.searchPostByLink("/exercise/" + id).ifPresent(post -> postService.deletePost(post.getId(), user, isAdmin));
+
             return ResponseEntity.ok(exerciseMapper.toDTO(deletedExercise));
 
             } catch (IllegalArgumentException e){
@@ -211,6 +218,9 @@ public class ExerciseRestController {
             User owner = userService.getUser(principal.getName());
             Solution savedEntity = solutionService.createSolutionWithoutImage(id, entity, owner);
             SolutionDTO createdDTO = solutionMapper.toDTO(savedEntity);
+
+            postService.createPost(new Post(owner, savedEntity.getName(), "/solutions/" + savedEntity.getId(), "New solution "));
+
             URI location = fromCurrentRequest().path("/{id}").buildAndExpand(createdDTO.id()).toUri();
             return ResponseEntity.created(location).body(createdDTO);
         } catch (IllegalArgumentException e) {

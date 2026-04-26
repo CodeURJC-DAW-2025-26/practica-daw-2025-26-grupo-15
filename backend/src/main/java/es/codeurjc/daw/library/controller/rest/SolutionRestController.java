@@ -27,6 +27,7 @@ import es.codeurjc.daw.library.dto.CommentPostDTO;
 import es.codeurjc.daw.library.dto.SolutionDTO;
 import es.codeurjc.daw.library.dto.SolutionMapper;
 import es.codeurjc.daw.library.service.CommentService;
+import es.codeurjc.daw.library.service.PostService;
 import es.codeurjc.daw.library.service.SolutionPdfExportService;
 import es.codeurjc.daw.library.service.SolutionService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,6 +69,9 @@ public class SolutionRestController {
     @Autowired
     private SolutionPdfExportService solutionPdfExportService;
 
+    @Autowired
+    private PostService postService;
+
     @GetMapping("/{id}")
     public SolutionDTO getSolutionById(@PathVariable Long id) {
         return solutionMapper.toDTO(solutionService.findById(id));
@@ -96,6 +100,9 @@ public class SolutionRestController {
             boolean isAdmin = request.isUserInRole("ADMIN");
             User user = userService.getUser(principal.getName());
             Solution solution = solutionService.findById(id);
+
+            postService.searchPostByLink("/solutions/" + id).ifPresent(post -> postService.deletePost(post.getId(), user, isAdmin));
+
             solutionService.deleteSolution(id, user, isAdmin);
             return ResponseEntity.ok(solutionMapper.toDTO(solution));
         } catch (SecurityException e) {
