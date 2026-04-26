@@ -6,7 +6,7 @@ export default interface ListDTO {
     title: string;
     topic: string;
     description: string,
-    lastUpdated: Date,
+    lastUpdate: string,
     owner: UserBasicInfoDTO,
     exercises: ExerciseBasicInfoDTO[],
 }

@@ -49,7 +49,7 @@ export default function EditExercise({ loaderData }: Route.ComponentProps) {
     <ExerciseForm
       exercise={exercise}
       actionState={[state, formAction, isPending]}
-      onCancel={() => navigate(-1)}
+      onCancel={() => navigate(`/lists/${exercise.exerciseList.id}`)}
     />
     </main>
   );

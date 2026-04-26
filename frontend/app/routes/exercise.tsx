@@ -65,7 +65,6 @@ export default function Exercise({ loaderData }: Route.ComponentProps) {
                         <Link to="/" className="brand-mark-link"><img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" /></Link>
                         <Link to="/"><span className="brand-title">DSGram</span></Link>
                     </div>
-                    {/* Header section: shows user profile if logged in, otherwise login button */}
                     {logged ? (
                         <div className="profile-image d-flex align-items-center gap-2">
                             <Link to={`/users/${user?.id}`} className="d-flex align-items-center gap-2">
@@ -126,24 +125,24 @@ export default function Exercise({ loaderData }: Route.ComponentProps) {
                             <section className="content-section">
                                 <h3 className="content-section__subtitle mb-4">Solutions</h3>
                                 <Row className="g-4 mb-4">
-                                    {/* Deletable solutions: solutions that the user can delete */}
+                                    
                                     {showDeletableSolutions && deletableSolutions.map((solution: SolutionBasicInfoDTO, index: number) => (
                                         <SolutionCard key={solution.id} solution={solution} index={index} deletable={true} />
                                     ))}
 
-                                    {/* Read-only solutions: solutions that cannot be deleted */}
+                                   
                                     {hasSolutions &&readonlySolutions.map((solution: SolutionBasicInfoDTO, index: number) => (
                                         <SolutionCard key={solution.id} solution={solution} index={index} deletable={false} />
                                     ))}
 
-                                    {/* No solutions message if there are no solutions */}
+                                    
                                     {!hasSolutions && (
                                         <Col xs={12} className="text-center">
                                             <p className="text-muted">No solutions for this exercise yet. Click the + button to add one!</p>
                                         </Col>
                                     )}
                                 </Row>
-                                {/* Add solution button: only if logged in */}
+                                
                                 {logged ? (
                                     <Row className="g-3 justify-content-center">
                                         <Col xs={12} sm="auto">

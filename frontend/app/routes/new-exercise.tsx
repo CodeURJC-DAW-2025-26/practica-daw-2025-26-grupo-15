@@ -66,6 +66,7 @@ export default function NewExercise() {
 
       <ExerciseForm
         actionState={[state, formAction, isPending]}
+        onCancel={() => navigate(`/lists/${listId}`)}
       />
 
     </main>

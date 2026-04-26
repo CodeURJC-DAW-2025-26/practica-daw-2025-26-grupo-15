@@ -2,15 +2,18 @@ import { redirect } from "react-router";
 import { HttpError, reqIsLogged } from "./login-service";
 
 export async function requireUser() {
-    try{
-        return await reqIsLogged();
-
-    }catch(error){
-        if (error instanceof HttpError && error.status === 404) {
-            throw redirect("/login");
-        }
-        throw Error
+  try {
+    return await reqIsLogged();
+  } catch (error) {
+    if (
+      error instanceof HttpError &&
+      [401, 403, 404].includes(error.status)
+    ) {
+      throw redirect("/login");
     }
+
+    throw error;
+  }
 }
 
 export async function requireRole(role: string) {
@@ -27,7 +30,10 @@ export async function optionalUser() {
   try {
     return await reqIsLogged();
   } catch (error) {
-    if (error instanceof HttpError && error.status === 404) {
+    if (
+      error instanceof HttpError &&
+      [401, 403, 404].includes(error.status)
+    ) {
       return null;
     }
     throw error;

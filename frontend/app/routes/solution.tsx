@@ -13,6 +13,7 @@ import { Link, useRevalidator, useNavigate } from 'react-router';
 import { useActionState } from 'react';
 import { Container, Row, Col, Button, Modal, Image } from 'react-bootstrap';
 import CommentForm from '~/components/comment-form';
+import { formatDate } from '~/services/date-service';
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     const solution = await getSolution(params.id!);
@@ -119,7 +120,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
             <Container>
                 <Row className="justify-content-center">
                     <Col xs={12} lg={10}>
-                        {/* SOLUTION HEADER */}
+      
                         <section className="content-section mb-4">
                             <div className="content-section__header">
                                 <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
@@ -128,7 +129,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                                         <p className="content-section__meta text-muted mb-0">
                                             By {solution.owner.name} · For Exercise: {solution.exercise.title}
                                         </p>
-                                        <small className="text-secondary">Submitted: {solution.lastUpdate}</small>
+                                        <small className="text-secondary">Submitted: {formatDate(solution.lastUpdate)}</small>
                                     </div>
 
                                     <div className="card-actions d-flex align-items-center gap-2">
@@ -157,7 +158,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                                 </div>
                             </div>
 
-                            {/*SOLUTION IMAGE */}
+                   
                             {solution.solImage && (
                                 <div className="solution-content mt-4">
                                     {logged ? (
@@ -182,7 +183,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                             )}
                         </section>
 
-                        {/* COMMENTS SECTION */}
+        
                         <section className="content-section">
                             <h3 className="content-section__subtitle mb-4">
                                 Comments ({hasComments ? comments.length : 0})
@@ -226,7 +227,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                                 )}
                             </div>
 
-                            {/* COMMENT FORM */}
+                       
                             {logged ? (
                                 <CommentForm
                                     actionState={[state, formAction, isPending]}
@@ -248,12 +249,10 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                 </Row>
             </Container>
 
-            {/* DELETE SOLUTION MODAL */}
             <Modal show={showDeleteSolution} onHide={() => setShowDeleteSolution(false)} centered>
                 <div className="modal-content-themed">
                     <Modal.Header className="border-0">
                         <Modal.Title className="h5">Confirm Deletion</Modal.Title>
-                        <Button variant="white" onClick={() => setShowDeleteSolution(false)} />
                     </Modal.Header>
                     <Modal.Body>
                         <p>Are you sure you want to delete "<strong>{solution.name}</strong>"?</p>
@@ -266,12 +265,11 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                 </div>
             </Modal>
 
-            {/* DELETE COMMENT MODAL */}
+
             <Modal show={commentToDelete !== null} onHide={() => setCommentToDelete(null)} centered>
                 <div className="modal-content-themed">
                     <Modal.Header className="border-0">
                         <Modal.Title className="h5">Delete Comment</Modal.Title>
-                        <Button variant="white" onClick={() => setCommentToDelete(null)} />
                     </Modal.Header>
                     <Modal.Body>
                         <p>Are you sure you want to delete this comment?</p>

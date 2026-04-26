@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { Link } from "react-router";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import type ListDTO from "~/dtos/ListDTO";
 import type { UserDTO } from "~/dtos/UserDTO";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { deleteList } from "~/services/list-service";
+import { formatDate } from "~/services/date-service";
+import { InlineActionError } from "./inline-action-error";
 
 interface ListCardProps {
     list: ListDTO;
@@ -21,25 +24,27 @@ export default function ListCard({
     onListDeleted,
 }: ListCardProps) {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
+    const formattedLastUpdate = formatDate(list.lastUpdate);
 
-    const handleDeleteConfirm = async () => {
-        setIsDeleting(true);
+    const [{ errorDelete }, deleteListAction, isDeleting] = useActionState(
+        deleteListFormAction,
+        { errorDelete: null },
+    );
+
+    async function deleteListFormAction(
+        _prevState: { errorDelete: string | null },
+        _formData: FormData,
+    ) {
         try {
-            //TODO implement delete list method in service
-            const response = await fetch(`/api/v1/lists/${list.id}`, {
-                method: "DELETE",
-            });
-            if (response.ok) {
-                onListDeleted(list.id);
-                setShowDeleteModal(false);
-            }
-        } catch (error) {
-            console.error("Error deleting list:", error);
-        } finally {
-            setIsDeleting(false);
+            await deleteList(list.id);
+            onListDeleted(list.id);
+            setShowDeleteModal(false);
+            return { errorDelete: null };
         }
-    };
+        catch (_error) {
+            return { errorDelete: "Error deleting list" };
+        }
+    }
 
     const handleDeleteClick = () => {
         setShowDeleteModal(true);
@@ -55,12 +60,12 @@ export default function ListCard({
                                 {list.title}
                             </Link>
                         </h3>
-                        <p className="meta">Last update · {/*{list.lastUpdated}*/}</p>
+                        <p className="meta">Last update · {formattedLastUpdate}</p>
                     </div>
 
                     {isOwnProfile && (
                         <div className="card-actions d-flex flex-column align-items-end g-1">
-                            <button className="btn-icon btn-icon-edit" type="button">
+                            <Button className="btn-icon btn-icon-edit" type="button">
                                 <Link to={`/lists/edit/${list.id}`}>
                                     <i className="bi bi-pencil icon-static"></i>
                                     <img
@@ -69,27 +74,27 @@ export default function ListCard({
                                         className="icon-gif"
                                     />
                                 </Link>
-                            </button>
+                            </Button>
                             {canDeleteLists && (
-                                <button
+                                <Button
                                     type="button"
                                     className="btn-icon"
                                     onClick={handleDeleteClick}
                                 >
                                     <i className="bi bi-trash"></i>
-                                </button>
+                                </Button>
                             )}
                         </div>
                     )}
                     {!isOwnProfile && canDeleteLists && (
                         <div className="card-actions d-flex flex-column align-items-end g-1">
-                            <button
+                            <Button
                                 type="button"
                                 className="btn-icon"
                                 onClick={handleDeleteClick}
                             >
                                 <i className="bi bi-trash"></i>
-                            </button>
+                            </Button>
                         </div>
                     )}
                 </header>
@@ -113,6 +118,9 @@ export default function ListCard({
                     <p className="text-muted mt-2 mb-0">
                         This action cannot be undone.
                     </p>
+                    <div className="mt-3">
+                        <InlineActionError message={errorDelete} />
+                    </div>
                 </Modal.Body>
                 <Modal.Footer className="border-0">
                     <Button
@@ -121,13 +129,15 @@ export default function ListCard({
                     >
                         Cancel
                     </Button>
-                    <Button
-                        variant="danger"
-                        onClick={handleDeleteConfirm}
-                        disabled={isDeleting}
-                    >
-                        {isDeleting ? "Deleting..." : "Delete list"}
-                    </Button>
+                    <Form action={deleteListAction}>
+                        <Button
+                            variant="danger"
+                            type="submit"
+                            disabled={isDeleting}
+                        >
+                            {isDeleting ? "Deleting..." : "Delete list"}
+                        </Button>
+                    </Form>
                 </Modal.Footer>
             </Modal>
         </>
