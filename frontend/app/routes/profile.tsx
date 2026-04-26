@@ -10,6 +10,9 @@ import { InlineActionError } from "~/components/inline-action-error";
 import FeedStream from "~/components/feed-stream";
 import { getExerciseListsFromUser, getListsForUserProfile } from "~/services/list-service";
 import { optionalUser } from "~/services/route-guards-service";
+import ProfileSection from "~/components/profile-section";
+
+const API_IMAGES_URL = "/api/v1/images";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
@@ -22,7 +25,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 }
 
 export default function Profile({ loaderData }: Route.ComponentProps) {
-  const API_IMAGES_URL = "/api/v1/images";
+  
   const navigate = useNavigate();
 
   let { logoutUser } = useUserStore();
@@ -181,126 +184,13 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
         <section className="app-shell feed">
           <Container fluid className="px-0">
             <Row className="g-0">
-              <Col as="aside" xs={12} lg={3} className="sidebar">
-                <div className="profile-sidebar-header">
-                  <div className="profile-avatar-preview">
-                    {userProfile.photo.id && (
-                      <img
-                        src={`${API_IMAGES_URL}/${userProfile.photo.id}/media`}
-                        alt="Profile photo"
-                        className="avatar-image-cover"
-                      ></img>
-                    )}
-                    {!userProfile.photo.id && (
-                      <i className="bi bi-person-circle"></i>
-                    )}
-                  </div>
-                </div>
-
-                <div className="pill">{userProfile.name}</div>
-                <div className="pill">{userProfile.bio ?? "No bio yet."}</div>
-                <div className="pill">
-                  {userProfile.name ?? "No specialty yet."}
-                </div>
-
-                {isOwnProfile && (
-                  <>
-                    <div className="sidebar-requests-section">
-                      <div className="sidebar-requests-header">
-                        <span className="sidebar-requests-title">
-                          <i className="bi bi-person-plus-fill"></i> Follow
-                          Requests
-                        </span>
-                        {userProfile.requestReceived.length > 0 && (
-                          <span className="sidebar-requests-badge">
-                            {userProfile.requestReceived.length}
-                          </span>
-                        )}
-                      </div>
-                      <div className="list">
-                        {userProfile.requestReceived.length > 0 ? (
-                          userProfile.requestReceived
-                            .slice(0, 3)
-                            .map((request) => (
-                              <div className="list-item" key={request.id}>
-                                <div className="req-identity">
-                                  <div className="req-avatar">
-                                    {request.photo && (
-                                      <img
-                                        src={`${API_IMAGES_URL}/${request.photo.id}/media`}
-                                      ></img>
-                                    )}
-                                    {!request.photo && (
-                                      <span>{request.name[0]}</span>
-                                    )}
-                                  </div>
-                                  <span className="req-name">{request.name}</span>
-                                </div>
-                                <div className="actions">
-                                  <Form action={formAcceptRequestAction}>
-                                    <Form.Control
-                                      type="hidden"
-                                      name="targetId"
-                                      value={request.id}>
-                                    </Form.Control>
-                                    <span
-                                      className="tag tag-accept"
-                                      title="Accept"
-                                    >
-
-                                      <Button
-                                        type="submit"
-                                        variant="link"
-                                        className="p-0"
-                                        disabled={isPendingAccept}
-                                      >
-                                        <i className="bi bi-check-lg"></i>
-                                      </Button>
-                                    </span>
-                                  </Form>
-                                  <Form action={formDeclineRequestAction}>
-                                    <Form.Control
-                                      type="hidden"
-                                      name="targetId"
-                                      value={request.id}
-                                    />
-                                    <span
-                                      className="tag tag-decline"
-                                      title="Decline"
-                                    >
-                                      <Button
-                                        type="submit"
-                                        variant="link"
-                                        className="p-0"
-                                        disabled={isPendingDecline}
-                                      >
-                                        <i className="bi bi-x-lg"></i>
-                                      </Button>
-                                    </span>
-                                  </Form>
-                                </div>
-                              </div>
-                            ))
-                        ) : (
-                          <p className="sidebar-requests-empty">
-                            No pending requests.
-                          </p>
-                        )}
-                      </div>
-                      <div className="action-error-stack">
-                        <InlineActionError message={requestActionError} />
-                      </div>
-                      <Link
-                        to="/follow-requests"
-                        className="btn secondary sidebar-requests-see-all"
-                      >
-                        <i className="bi bi-arrow-right-short"></i> See all
-                        requests
-                      </Link>
-                    </div>
-                  </>
-                )}
-              </Col>
+              <ProfileSection
+                userProfile={userProfile}
+                isOwnProfile={isOwnProfile ?  true : false}
+                actionStateAccept={[{ errorAccept }, formAcceptRequestAction, isPendingAccept]}
+                actionStateDecline={[{ errorDecline }, formDeclineRequestAction, isPendingDecline]}
+                lastRequestAction={lastRequestAction}
+              />
               <Col xs={12} lg={9} className="content">
                 <div className="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                   <div className="profile-title-block">
