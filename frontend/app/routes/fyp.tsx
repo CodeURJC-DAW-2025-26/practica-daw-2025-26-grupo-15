@@ -138,7 +138,7 @@ export default function Fyp({ loaderData }: Route.ComponentProps) {
                 </div>
                 <FeedStream
                   itemsType="post"
-                  itemsSearch={useCallback(getFeedForUser, [])}
+                  itemsSearch={useCallback(getFeedForUser, [user])}
                   currentUser={user}
                 />
               </div>
