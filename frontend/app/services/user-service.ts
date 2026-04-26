@@ -16,6 +16,21 @@ export async function getUser(id: number) {
   return await res.json();
 }
 
+export async function getUsersByName(name: string, user: UserDTO | null, page: number): Promise<{data: UserDTO[], hasMore: boolean}> {
+  const res = await fetch(`${API_URL}/?page=${page}&size=5&excludedId=${user ? user.id : ''}&nameFilter=${encodeURIComponent(name)}`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch users");
+  }
+  const data = await res.json();
+  const itemsArray: UserDTO[] = Array.isArray(data) ? data : (data.content || data.data || []);
+  
+
+  return {
+      hasMore: data.page.number < data.page.totalPages,
+      data: itemsArray
+  };
+}
+
 export async function registerUser(
   name: string,
   email: string,

@@ -7,6 +7,7 @@ import { getFollowingSuggestions } from "~/services/user-service";
 import type UserBasicInfoDTO from "~/dtos/UserBasicInfoDTO";
 import { optionalUser } from "~/services/route-guards-service";
 import type { Route } from "./+types/fyp";
+import UserSearchbar from "~/components/user-searchbar";
 
 export async function clientLoader() {
   const user = await optionalUser();
@@ -50,26 +51,7 @@ export default function Fyp({ loaderData }: Route.ComponentProps) {
 
               <aside className="sidebar col-12 col-lg-3">
                 {/* Search Bar */}
-                <label className="visually-hidden" htmlFor="sidebarSearch">Search</label>
-                <div className="sidebar-search__wrap">
-                  <input id="sidebarSearch" name="searchName" className="sidebar-search__input" type="search" placeholder="Search for users to conect with…" aria-label="Search" />
-                  <button className="sidebar-search__btn" type="submit" >
-                    <span className="sidebar-search__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" >
-                        <path d="M10.5 18.5a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" strokeWidth="2" />
-                        <path d="M16.5 16.5 21 21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      </svg>
-                    </span>
-                  </button>
-                </div>
-
-                {/* Search results */}
-                <div id="searchContainer" className="sidebar-search-results visually-hidden" aria-label="Search results">
-                  <div className="sidebar-search-results__header">
-                    <span className="sidebar-search-results__title">Search results</span>
-                  </div>
-                  <div id="searchResults" className="sidebar-search-results__list" role="list"></div>
-                </div>
+                <UserSearchbar activeUser={user} />
 
                 {isLogged ? (
                   <div className="sidebar-section">
