@@ -632,7 +632,7 @@ Responsable de la integración del sistema de autenticación mediante JWT. Desar
 ## 🛠 **Práctica 3: Implementación de la web con arquitectura SPA**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](URL_del_video)**
+📹 **[Enlace al vídeo en YouTube](https://youtu.be/xMZ9GuBfBHI)**
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Preparación del Entorno de Desarrollo**
