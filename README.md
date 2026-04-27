@@ -656,8 +656,8 @@ Responsable de la integración del sistema de autenticación mediante JWT. Desar
 
 2. **Clonar el repositorio** (si no lo has hecho ya)
    ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
+   git clone https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15.git
+   cd practica-daw-2025-26-grupo-15
    ```
 
 3. **Navegar a la carpeta del proyecto React**
@@ -665,7 +665,81 @@ Responsable de la integración del sistema de autenticación mediante JWT. Desar
    cd frontend
    ```
 
-4. **AQUÍ LOS SIGUIENTES PASOS**
+4. **Instalar las dependencias del frontend**
+   
+   Una vez dentro de la carpeta `frontend`, instala las dependencias con `npm`, `yarn` o `pnpm`:
+   ```bash
+   npm install
+   yarn install
+   pnpm install
+   ```
+
+5. **Desplegar la base de datos MySQL**
+
+   Desde la raíz del repositorio, levanta la base de datos con Docker:
+   ```bash
+   bash start_db.sh
+   ```
+
+   Si ya tienes MySQL instalado en tu máquina, puedes usar una instancia local en lugar del contenedor. En ese caso, crea la base de datos manualmente y ajusta las variables del fichero `.env` para que apunten a tu servidor MySQL local.
+
+6. **Crear la build del frontend**
+
+   Dentro de `frontend`, genera la build de producción con `npm`, `yarn` o `pnpm`:
+   ```bash
+   npm run build
+   yarn build
+   pnpm build
+   ```
+
+7. **Copiar la build a `static` de Spring Boot**
+
+   Copia el contenido de `frontend/build/client/` a `backend/src/main/resources/static/new/` para que Spring Boot lo sirva como SPA.
+
+8. **Crear el archivo `.env` en la raíz del repositorio**
+
+   Es obligatorio crear un fichero llamado `.env` en la raíz del repositorio (junto a `start_db.sh`) con las siguientes variables de entorno:
+   
+   ```properties
+   DB_USERNAME=<usuario>
+   DB_PASSWORD=<contraseña>
+   DB_NAME=<nombre del esquema de BD>
+   DB_CONFIG=<Modo de inicialización de la BD>
+   KEYSTORE_PASSWORD=<contraseña del keystore>
+   KEYSTORE_SECRET=<secreto del keystore>
+   GOOGLE_CLIENT_ID=<client id de Google OAuth2>
+   GOOGLE_CLIENT_SECRET=<client secret de Google OAuth2>
+   GITHUB_CLIENT_ID=<client id de GitHub OAuth2>
+   GITHUB_CLIENT_SECRET=<client secret de GitHub OAuth2>
+   ```
+
+   > Los valores de `KEYSTORE_PASSWORD` y `KEYSTORE_SECRET` deben coincidir con los usados al generar el `keystore.jks` incluido en el proyecto. Los valores de Google y GitHub se obtienen registrando una aplicación OAuth2 en sus respectivas consolas de desarrollador.
+
+9. **Arrancar la aplicación Spring Boot**
+
+   Desde la raíz del repositorio, ejecuta el backend:
+   ```bash
+   mvn -f backend/pom.xml spring-boot:run
+   ```
+
+   Si la build del frontend ya está copiada en `backend/src/main/resources/static/new/`, la aplicación se podrá consultar en:
+   ```
+   https://localhost:8443/new
+   ```
+
+10. **Iniciar el frontend en modo desarrollo**
+
+   Vuelve a la carpeta `frontend` y ejecuta el servidor de desarrollo con `npm`, `yarn` o `pnpm`:
+   ```bash
+   npm run dev
+   yarn dev
+   pnpm dev
+   ```
+
+   En este modo la aplicación se abrirá en:
+   ```
+   http://localhost:5173
+   ```
 
 ### **Diagrama de Clases y Templates de la SPA**
 
