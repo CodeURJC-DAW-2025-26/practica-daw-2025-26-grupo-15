@@ -41,8 +41,8 @@ export default function Fyp({ loaderData }: Route.ComponentProps) {
     <>
       <main className="page page--feed">
         <div className="brand">
-          <a className="brand-mark-link" href="/"><img alt="DSGram logo" className="brand-mark" src="/assets/DSGram_LOGO.png" /></a>
-          <a href="/"><span className="brand-title">DSGram</span></a>
+          <Link className="brand-mark-link" to="/"><img alt="DSGram logo" className="brand-mark" src="/assets/DSGram_LOGO.png" /></Link>
+          <Link to="/"><span className="brand-title">DSGram</span></Link>
         </div>
 
         <section className="app-shell feed">
@@ -50,7 +50,6 @@ export default function Fyp({ loaderData }: Route.ComponentProps) {
             <div className="row g-0">
 
               <aside className="sidebar col-12 col-lg-3">
-                {/* Search Bar */}
                 <UserSearchbar activeUser={user} />
 
                 {isLogged ? (
@@ -64,7 +63,6 @@ export default function Fyp({ loaderData }: Route.ComponentProps) {
                             
                             {item.suggestion.photo ? (
                               <span className="sidebar-search-results__avatar avatar--img">
-                                { /* TODO: enable when backend serves images */ }
                                 <img
                                   src={`${API_IMAGES_URL}/${item.suggestion.photo.id}/media`}
                                   alt="Profile picture"
@@ -85,9 +83,9 @@ export default function Fyp({ loaderData }: Route.ComponentProps) {
                             </div>
                           </div>
 
-                          <a href={`/users/${item.suggestion.id}`} className="suggestion-follow-btn text-decoration-none text-center ms-2 text-nowrap">
+                          <Link to={`/users/${item.suggestion.id}`} className="suggestion-follow-btn text-decoration-none text-center ms-2 text-nowrap">
                             View profile
-                          </a>
+                          </Link>
                         </div>
                         ))}
 
@@ -103,13 +101,12 @@ export default function Fyp({ loaderData }: Route.ComponentProps) {
                     </div>
                     <p className="sidebar-cta__heading">Join DSGram</p>
                     <p className="sidebar-cta__sub">Follow users, share solutions and track your progress.</p>
-                    <a className="sidebar-cta__btn sidebar-cta__btn--primary" href="/login">Log in</a>
-                    <a className="sidebar-cta__btn sidebar-cta__btn--ghost" href="/register">Create account</a>
+                    <Link className="sidebar-cta__btn sidebar-cta__btn--primary" to="/login">Log in</Link>
+                    <Link className="sidebar-cta__btn sidebar-cta__btn--ghost" to="/register">Create account</Link>
                   </div>
                 )}
               </aside>
 
-              {/* Main content */}
               <div className="content col-12 col-lg-9">
                 <div className="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                   <div>

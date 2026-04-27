@@ -158,8 +158,6 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
                                     </div>
                                 )}
                             </div>
-                            
-                            {/* ... BOTÓN AÑADIR Y VOLVER ... */}
                             {isOwner && (
                                 <div className="row g-3 justify-content-center">
                                     <Link className="btn plus-btn rounded-circle col-12 col-sm-auto" to={`/lists/${list.id}/exercises/new`}>
@@ -178,7 +176,6 @@ export default function ListView({ loaderData }: Route.ComponentProps) {
                 </Row>
             </Container>
 
-            {/* MODAL BORRAR LISTA */}
             <Modal show={showDeleteList} onHide={handleCloseDeleteModal} centered>
                 <div className="modal-content-themed">
                     <Modal.Header className="border-0">

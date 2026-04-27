@@ -30,8 +30,7 @@ export default function NewSolution() {
 
         try {
             const newSolution = await addSolution(exerciseId!, name, description);
-            
-            // Verificamos si hay imagen para subir
+           
             if (imageFile && imageFile.size > 0) {
                 await uploadSolutionImage(newSolution.id, imageFile);
             }
@@ -87,14 +86,13 @@ export default function NewSolution() {
                             </div>
                         </Link>
                     ) : (
-                        <Button variant="outline-secondary" href="/login">
+                        <Button variant="outline-secondary" onClick={() => navigate("/login")}>
                             Log in
                         </Button>
                     )}
                 </Col>
             </Row>
 
-            {/* Form Section */}
             <Row className="justify-content-center">
                 <Col xs={12} md={10} lg={8}>
                     <SolutionForm

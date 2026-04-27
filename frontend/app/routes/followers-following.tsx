@@ -143,7 +143,6 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
                     <Container>
                         <Row>
                             <Col xs={12} className="content mx-0 g-0">
-                                {/* BARRA SUPERIOR: Títulos dinámicos */}
                                 <div className="topbar d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-0 mt-3">
                                     <div>
                                         <h2 className="section-title">
@@ -160,7 +159,6 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
                                 </div>
 
                                 <Row className="align-items-start justify-content-between">
-                                    {/* COLUMNA IZQUIERDA: Lista de usuarios */}
                                     <Col xs={12} md={8} className="followers-card mx-0 mt-5">
                                         <h3>{followersPage ? "Followers" : "Following"}</h3>
                                         <div className="followers-list">
@@ -211,8 +209,6 @@ export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
                                             )}
                                         </div>
                                     </Col>
-
-                                    {/* COLUMNA DERECHA: Gráfico (Canvas) */}
                                     <Col xs={12} md={4} className="chart-container mx-0 mt-5">
                                         <canvas 
                                             ref={chartCanvasRef}

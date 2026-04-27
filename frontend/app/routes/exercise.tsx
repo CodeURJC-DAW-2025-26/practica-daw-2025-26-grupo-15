@@ -74,7 +74,7 @@ export default function Exercise({ loaderData }: Route.ComponentProps) {
                             </Link>
                         </div>
                     ) : (
-                        <a className="btn ghost" href="/login">Log in</a>
+                        <Link className="btn ghost" to="/login">Log in</Link>
                     )}
                 </div>
 

@@ -1,0 +1,1 @@
+function i(e){if(!e)return null;if(/^\d+$/.test(e)){const n=new Date(Number(e));return Number.isFinite(n.getTime())?n:null}const t=new Date(e);return Number.isFinite(t.getTime())?t:null}function a(e,t="es-ES",n="Unknown"){const r=i(e);return r?new Intl.DateTimeFormat(t,{day:"2-digit",month:"2-digit",year:"numeric"}).format(r):n}export{a as f};

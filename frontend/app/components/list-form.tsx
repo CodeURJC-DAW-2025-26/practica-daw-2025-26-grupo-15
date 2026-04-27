@@ -1,6 +1,7 @@
 import { Form, Button, Container, Alert, Image } from "react-bootstrap";
 import type ListDTO from "~/dtos/ListDTO";
 import { InlineActionError } from "./inline-action-error";
+import { Link } from "react-router";
 
 
 interface ListFormProps {
@@ -23,8 +24,8 @@ export default function ListForm({
     return (
         <main className="page">
             <div className="brand">
-                <a href="/" className="brand-mark-link"><img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" /></a>
-                <a href="/"><span className="brand-title">DSGram</span></a>
+                <Link to="/" className="brand-mark-link"><img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" /></Link>
+                <Link to="/"><span className="brand-title">DSGram</span></Link>
             </div>
 
             <div className="container">

@@ -1,7 +1,4 @@
-import { useEffect } from "react";
 import { Link } from "react-router";
-// import "../assets/sign-in.css"; 
-
 export default function Error() {
   const errorMessage = "This is a custom error message for demonstration purposes.";
 

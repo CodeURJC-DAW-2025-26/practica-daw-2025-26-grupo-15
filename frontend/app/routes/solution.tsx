@@ -50,7 +50,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
         try {
             await deleteComment(commentToDelete.id);
             setCommentToDelete(null);
-            revalidator.revalidate(); // Refresca los comentarios
+            revalidator.revalidate(); 
         } catch (error) {
             alert("Failed to delete the comment.");
         }
@@ -79,7 +79,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
             document.body.appendChild(link);
             link.click();
 
-            // Cleanup
+            
             link.remove();
             window.URL.revokeObjectURL(url);
         } catch (error) {
@@ -89,7 +89,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
 
     return (
         <main className="page">
-            {/* HEADER / NAVBAR */}
+            
             <div className="d-flex align-items-center justify-content-between p-3">
                 <div className="brand">
                     <Link to="/" className="brand-mark-link">
@@ -207,7 +207,6 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                                                 </div>
                                             </div>
 
-                                            {/* Comment owner */}
                                             {(logged && (user.id === comment.owner.id || canDeleteSolution)) && (
                                                 <Button 
                                                     variant="link" 

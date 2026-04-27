@@ -20,7 +20,6 @@ export default function CommentForm({
     const errorComment = state?.error || null;
     return (
         <Form action={formAction} className="add-comment-form mt-4">
-            {/* Si estamos editando o necesitamos el ID */}
             {isEditing && <input type="hidden" name="id" value={comment?.id} />}
 
             <Row className="g-3 align-items-end">

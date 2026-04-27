@@ -1,0 +1,1 @@
+import{u as f,c as p}from"./index-DEawsTbk.js";import{a as c,p as m}from"./chunk-UVKPFVEO-BFkpq-N7.js";const x=c.forwardRef(({bsPrefix:r,fluid:s=!1,as:t="div",className:e,...o},n)=>{const a=f(r,"container"),i=typeof s=="string"?`-${s}`:"-fluid";return m.jsx(t,{ref:n,...o,className:p(e,s?`${a}${i}`:a)})});x.displayName="Container";export{x as C};
