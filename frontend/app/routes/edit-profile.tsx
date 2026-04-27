@@ -14,7 +14,7 @@ export async function clientLoader({params}:Route.ClientLoaderArgs){
 }
 
 export default function EditProfile() {
-    const { user } = useUserStore();
+  const user = useUserStore((state) => state.user);
     const { userId } = useParams();
     const navigate = useNavigate();
 

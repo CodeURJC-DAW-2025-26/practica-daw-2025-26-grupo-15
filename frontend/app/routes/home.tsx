@@ -7,13 +7,11 @@ import type { Route } from "./+types/home";
 
 export default function Home() {
   
-  let { user, loadLoggedUser } = useUserStore();
+  const loadLoggedUser = useUserStore((state) => state.loadLoggedUser);
 
   useEffect(() => {
-    if (!user) {
-      loadLoggedUser();
-    }
-  }, [user, loadLoggedUser]);
+    loadLoggedUser();
+  }, [loadLoggedUser]);
   
   const navigation = useNavigation();
   const isLoading = navigation.state === "loading";

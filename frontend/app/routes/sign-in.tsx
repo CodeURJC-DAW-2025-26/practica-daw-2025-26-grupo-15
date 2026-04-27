@@ -7,7 +7,8 @@ export default function SigIn() {
   
   const [isErrorDialogOpen, setErrorDialog] = useState(false);
 
-  const { loginUser, loginError } = useUserStore();
+  const loginUser = useUserStore((state) => state.loginUser);
+  const loginError = useUserStore((state) => state.loginError);
   
   const navigate = useNavigate();
 

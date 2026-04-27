@@ -72,7 +72,7 @@ export async function clientLoader() {
 
 export default function AdminPanel({ loaderData }: Route.ComponentProps) {
   const user = loaderData;
-  const { logoutUser } = useUserStore();
+  const logoutUser = useUserStore((state) => state.logoutUser);
   const navigate = useNavigate();
 
   const [currentOption, setCurrentOption] = useState<AdminOption>("u");

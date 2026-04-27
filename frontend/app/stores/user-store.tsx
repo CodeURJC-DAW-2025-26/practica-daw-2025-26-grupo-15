@@ -46,13 +46,15 @@ export const useUserStore = create<UserState>((set, get) => ({
   },
 
   logoutUser: async () => {
-    set({ user: null, loginError: null });
+    const currentUser = get().user;
+    set({ loginError: null });
 
     try {
       await logOut();
+      set({ user: null });
     } catch (error) {
       console.log(error);
-      set({ loginError: "Logout failed. Please try again." });
+      set({ user: currentUser, loginError: "Logout failed. Please try again." });
     }
   },
 }));

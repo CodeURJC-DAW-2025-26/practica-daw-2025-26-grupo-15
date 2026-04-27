@@ -14,7 +14,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 export default function ListView({ loaderData }: Route.ComponentProps) {
     const list = loaderData;
     const userOwner = list.owner;
-    const { user } = useUserStore();
+    const user = useUserStore((state) => state.user);
     const navigate = useNavigate();
 
     const logged = user !== null;

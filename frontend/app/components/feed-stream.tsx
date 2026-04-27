@@ -21,7 +21,7 @@ export default function FeedStream({ itemsType, itemsSearch, currentUser }: Feed
     const sentinelRef = useRef<HTMLDivElement | null>(null);
     const pageRef = useRef(0); // ← single source of truth for page
 
-    const { user } = useUserStore();
+    const user = useUserStore((state) => state.user);
     const activeUser = currentUser ?? user;
 
     // Subsequent page fetches (page 1+)

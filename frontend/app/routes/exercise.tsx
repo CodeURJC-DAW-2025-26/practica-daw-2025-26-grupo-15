@@ -21,7 +21,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 export default function Exercise({ loaderData }: Route.ComponentProps) {
 
     const { exercise, list } = loaderData;
-    const { user } = useUserStore();
+    const user = useUserStore((state) => state.user);
     const userId = user?.id ?? null;
     const logged = userId !== null;
 

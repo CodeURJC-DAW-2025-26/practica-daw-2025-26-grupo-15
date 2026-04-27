@@ -3,7 +3,7 @@ import { useUserStore } from "~/stores/user-store";
 import { Container, Row, Col, Nav } from "react-bootstrap";
 
 export function Footer() {
-    const { user } = useUserStore();
+    const user = useUserStore((state) => state.user);
     const logged = user !== null;
 
     return (

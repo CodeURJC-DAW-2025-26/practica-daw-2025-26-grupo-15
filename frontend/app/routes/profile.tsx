@@ -28,7 +28,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
   
   const navigate = useNavigate();
 
-  let { logoutUser } = useUserStore();
+  const logoutUser = useUserStore((state) => state.logoutUser);
 
 
   const isUserLogged = loaderData.userLogged != null;

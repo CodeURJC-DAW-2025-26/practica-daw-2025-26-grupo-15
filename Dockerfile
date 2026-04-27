@@ -1,3 +1,11 @@
+#------FRONTEND BUILD PART-------
+FROM node:22 AS frontend-builder
+WORKDIR /frontend
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+COPY frontend/ ./
+RUN npm run build
+
 #------PROJECT COMPILATION PART-------
 
 # Base image for the build container
@@ -10,6 +18,8 @@ COPY backend/pom.xml .
 RUN mvn dependency:go-offline
 # Copy the project code
 COPY backend .
+# Copy frontend build into backend static resources
+COPY --from=frontend-builder /frontend/build/client/ /backend/src/main/resources/static/new/
 # Compile the project and download libraries
 RUN mvn -B package -DskipTests
 

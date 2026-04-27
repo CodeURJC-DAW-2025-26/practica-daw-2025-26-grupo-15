@@ -12,7 +12,7 @@ export async function clientLoader() {
 
 export default function NewSolution() {
     const { exerciseId } = useParams();
-    const { user } = useUserStore();
+    const user = useUserStore((state) => state.user);
     const logged = user !== null;
     const navigate = useNavigate();
 

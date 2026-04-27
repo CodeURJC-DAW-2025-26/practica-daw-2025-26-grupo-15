@@ -19,7 +19,7 @@ export async function clientLoader({ request, params }: Route.ClientLoaderArgs) 
 }
 
 export default function FollowingFollowers({loaderData}: Route.ComponentProps) {
-    let { user } = useUserStore();
+    const user = useUserStore((state) => state.user);
     const isOwnProfile = user && user.id === loaderData.userToShow.id;
 
     const navigate = useNavigate();
