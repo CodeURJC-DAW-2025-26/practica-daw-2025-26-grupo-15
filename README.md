@@ -764,17 +764,17 @@ Por la simplicidad del diagrama no se han representado servicios como: route-gua
 
 ### **Participación de Miembros en la Práctica 3**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - Hugo Capa Mora**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Implementación y migración de componentes de la interfaz de usuario a React Bootstrap. Implementación, validación y pruebas de seguridad de los formularios de creación, edición y eliminación en entidades como Ejercicios, Soluciones y Comentarios, garantizando el control de acceso por dueño y la correcta visualización de errores. Integración del sistema de sugerencias de seguimiento y gestión del estado global del usuario autenticado mediante Zustand (user-store) y su conexión con la API REST.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implement solution page with solution service, comment service, solutionDTO and commentDTO; update routes and security configuration](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/381445d3d63808fec4e638299271d0f71d3413f6)  | [solution.tsx](frontend/app/routes/solution.tsx)   |
+|2| [feat: implement delete functionality for solutions and comments, enhance user experience with modals for deletion confirmation](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/3f258526fb89b6e16c151bb1d73df7d119b31d94)  | [list-view.tsx](frontend/app/routes/list-view.tsx)   |
+|3| [feat: implement exercise editing functionality, including form updates and new routes](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/2838f20e9a7ef99bf3ba4160bb0a298fc986719c)  | [edit-exercise.tsx](frontend/app/services/exercise-service.ts)   |
+|4| [feat: implement fetching of following suggestions](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/f079b23cde16216f7d033f3ab1cb8144de461421)  | [user-service.ts](frontend/app/services/user-service.ts)   |
+|5| [feat: add new solution form with image and routing for exercise solutions](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/a2ef212308a7bac0d01245b1cd3d15922a2ab2ca)  | [new-solution.tsx](frontend/app/routes/new-solution.tsx)   |
 
 ---
 
