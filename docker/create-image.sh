@@ -8,6 +8,8 @@ fi
 
 USERNAME="$1"
 TAG="${2:-latest}"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 if [ -z "$USERNAME" ] || [ -z "$TAG" ]; then
 	echo "Use: $0 <DockerHub_username> [tag]"
@@ -15,4 +17,4 @@ if [ -z "$USERNAME" ] || [ -z "$TAG" ]; then
 	exit 1
 fi
 
-docker build -t "$USERNAME/dsgram-app:$TAG" .
+docker build -f "$SCRIPT_DIR/Dockerfile" -t "$USERNAME/dsgram-app:$TAG" "$REPO_ROOT"
