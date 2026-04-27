@@ -704,23 +704,23 @@ Por la simplicidad del diagrama no se han representado servicios como: route-gua
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
+#### **Alumno 2 - Isidoro Pérez Rivera**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Implementación de los componentes de formulario de creación y edición de ejercicios y perfil, así como sus páginas principales en React. Implementación de todos los métodos del servicio y dtos necesarios para su correcto funcionamiento. Implementación y refactorización de la vista y lógica de la página de follower-following, junto con las gráficas. Implementación de la página Fyp en React y control del estilo y visualización de imágenes de las páginas.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Exercise form component creation, exercise service implementation, dtos updated and api config](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/742ac60a8893d23fd8e1aae48386df2553a8d5d9)  | [exercise-form.tsx](frontend/app/components/exercise-form.tsx)   |
+|2| [Add user profile editing functionality; create EditProfileForm component and related services](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/8512a4d52c5d4f5c333071ec63e0f8fc009fe2e8)  | [edit-profile-form.tsx](frontend/app/components/edit-profile-form.tsx)   |
+|3| [Add unfollow and remove follower functionality with error handling, graphic charts and images fixed](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/8274b6d2d8196f64b4cde2d43acf378375257c08)  | [followers-following.tsx](frontend/app/routes/followers-following.tsx)   |
+|4| [Fyp implementation and style fixed](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/045caf4d90d332c69bb32cd661d3eca0b28c5612)  | [fyp.tsx](frontend/app/routes/fyp.tsx)   |
+|5| [Update image source paths to use new API endpoint for all pages](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/d58eef948f1326885f41c85a4cbe8f6415295b37)  | [footer.tsx](frontend/app/components/footer.tsx)   |
 
 ---
 
 #### **Alumno 3 - Jaime Torroba Martínez**
 
-Implementación de los formularios de creación y edición de lista, junto con los métodod del servicio, dtos y componentes necesarios. Implementación del scroll infinito en la página fyp y profile para el stream de listas y posts, creando un componente para poder ser reutilizado. Implementación de la búsqueda de usuarios junto con el respectivo scroll infinito. Implementación de la página de detalle de la entidad ejercicio. Implementación de la exportación de una solución a pdf.
+Implementación de los formularios de creación y edición de lista, junto con los métodos del servicio, dtos y componentes necesarios. Implementación del scroll infinito en la página fyp y profile para el stream de listas y posts, creando un componente para poder ser reutilizado. Implementación de la búsqueda de usuarios junto con el respectivo scroll infinito. Implementación de la página de detalle de la entidad ejercicio. Implementación de la exportación de una solución a pdf.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
