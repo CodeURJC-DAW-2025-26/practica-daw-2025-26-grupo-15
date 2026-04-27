@@ -1,0 +1,241 @@
+:root {
+  --ink: #46365f;
+  --ink-strong: #2f2640;
+  --sky: #8e9ce0;
+  --powder: #b8cdf2;
+  --mint: #b6f2e1;
+  --white: #ffffff;
+  --text-muted: rgba(47, 38, 64, 0.65);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --shadow-soft: 0 16px 30px rgba(47, 38, 64, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Quicksand", system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+}
+
+.body-login,
+.body-register {
+  background:
+    linear-gradient(150deg, rgba(16, 14, 24, 0.78), rgba(38, 32, 52, 0.65)),
+    url("images/background.jpeg") center/cover no-repeat fixed;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(18px, 4vw, 48px);
+}
+
+.main-container {
+  width: 100%;
+}
+
+.text-container {
+  color: var(--white);
+  display: grid;
+  gap: 10px;
+}
+
+.text-container h1 {
+  margin: 0;
+  font-size: clamp(32px, 5vw, 44px);
+}
+
+.text-container h2 {
+  margin: 0;
+  font-size: clamp(18px, 2.6vw, 22px);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.card-container {
+  background: var(--white);
+  padding: clamp(22px, 4vw, 36px);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  text-align: left;
+  display: block;
+  width: 100%;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.inputForm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(47, 38, 64, 0.2);
+  background: #fafafe;
+}
+
+.inputForm svg {
+  fill: var(--ink);
+}
+
+.input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 15px;
+  background: transparent;
+  font-family: inherit;
+  color: var(--ink-strong);
+}
+
+.button-submit {
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--mint);
+  color: var(--ink-strong);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-soft);
+}
+
+.button-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px rgba(47, 38, 64, 0.25);
+}
+
+.p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.p a {
+  color: var(--ink-strong);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.p a:hover {
+  text-decoration: underline;
+}
+.separator {
+  display: flex;
+  align-items: center;
+  margin: 20px 0 15px 0;
+}
+
+.separator hr {
+  flex: 1;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+.separator span {
+  padding: 0 10px;
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.oauth-providers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  text-decoration: none;
+  border: 2px solid;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.oauth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.oauth-btn:active {
+  transform: translateY(0);
+}
+
+.oauth-btn.google {
+  background-color: #fff;
+  color: #333;
+  border-color: #e0e0e0;
+}
+
+.oauth-btn.github {
+  background-color: #24292e;
+  color: #fff;
+  border-color: #24292e;
+}
+
+@media (max-width: 576px) {
+  .oauth-providers {
+    grid-template-columns: 1fr;
+  }
+}
+
+.display-flex {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center; /* center on mobile */
+}
+
+@media (min-width: 992px) {
+  .display-flex {
+    justify-content: flex-start; /* left-align on desktop */
+  }
+}
+
+.sign-in-logo {
+  width: auto;
+  height: 1em; /* same height as h1 */
+  font-size: inherit;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.sign-in-special-logo{
+  width: 7em;
+  height: 7em; /* same height as h1 */
+  font-size: inherit;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-left: 1em;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}

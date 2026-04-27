@@ -21,7 +21,7 @@ export default function FeedStream({ itemsType, itemsSearch, currentUser }: Feed
     const sentinelRef = useRef<HTMLDivElement | null>(null);
     const pageRef = useRef(0); // ← single source of truth for page
 
-    const { user } = useUserStore();
+    const user = useUserStore((state) => state.user);
     const activeUser = currentUser ?? user;
 
     // Subsequent page fetches (page 1+)
@@ -32,7 +32,8 @@ export default function FeedStream({ itemsType, itemsSearch, currentUser }: Feed
             const response = await itemsSearch(pageRef.current, activeUser);
             setHasMore(response.hasMore);
             setItems(prev => [...prev, ...response.items]);
-            pageRef.current += 1; // ← increment directly, no state involved
+            pageRef.current += 1; 
+            await sleep(2500);  
         } catch {
             setHasError(true);
             setHasMore(false);
@@ -44,7 +45,9 @@ export default function FeedStream({ itemsType, itemsSearch, currentUser }: Feed
     const fetchPageRef = useRef(fetchPage);
     useEffect(() => { fetchPageRef.current = fetchPage; }, [fetchPage]);
 
-    // Reset + first page fetch when feed type or user changes
+    const sleep = (ms: number) =>
+        new Promise<void>((resolve) => window.setTimeout(resolve, ms));
+
     useEffect(() => {
         let cancelled = false;
 
@@ -60,7 +63,8 @@ export default function FeedStream({ itemsType, itemsSearch, currentUser }: Feed
                 if (cancelled) return;
                 setHasMore(response.hasMore);
                 setItems(response.items);
-                pageRef.current = 1; // ← set ref directly, no setPage()
+                pageRef.current = 1;
+                await sleep(2500);  
             } catch {
                 if (cancelled) return;
                 setHasError(true);
@@ -73,9 +77,8 @@ export default function FeedStream({ itemsType, itemsSearch, currentUser }: Feed
         doFetch();
         return () => { cancelled = true; };
 
-    }, [itemsType, activeUser]); // itemsSearch deliberately excluded
+    }, [itemsType, activeUser]); 
 
-    // Observer — re-runs when loading flips to false, re-observing sentinel
     useEffect(() => {
         if (!hasMore || hasError || loading) return;
 
@@ -105,15 +108,15 @@ export default function FeedStream({ itemsType, itemsSearch, currentUser }: Feed
                         <path d="M8 12h8M12 8v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                     <p className="feed-empty__title">Nothing here yet</p>
-                    <p className="feed-empty__sub">Sigue a usuarios para ver su actividad en tu feed.</p>
+                    <p className="feed-empty__sub">Follow users to see their activity in your feed.</p>
                 </div>
             )}
 
             {hasError && (
                 <div className="alert alert-danger mx-3 mt-3 text-center">
-                    Hubo un problema de conexión al cargar el feed.
+                    There was a problem loading the feed.
                     <button className="btn btn-link" onClick={() => fetchPageRef.current()}>
-                        Intentar de nuevo
+                        Try again
                     </button>
                 </div>
             )}
@@ -161,7 +164,7 @@ export default function FeedStream({ itemsType, itemsSearch, currentUser }: Feed
 
             {loading && (
                 <div id="loadingSpinner" className="row mx-0 justify-content-center mb-5">
-                    <div className="spinner">Cargando...</div>
+                    <div className="spinner">Loading...</div>
                 </div>
             )}
         </div>

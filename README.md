@@ -717,15 +717,15 @@ Diagrama mostrando los componentes React, hooks personalizados, servicios y sus 
 
 ---
 
-#### **Alumno 4 - [Nombre Completo]**
+#### **Alumno 4 - Pablo Ruiz Uroz**
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
+|1| [sign-up.tsx, enhance user registration,add username availability check, update error handling in user service, and improve sign-in styles.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/8af3792ff7cde22f0ef6e046a11a9490ced04328)  | [sign-up.tsx](frontend/app/routes/sign-up.tsx)   |
+|2| [profile.tsx complete logic, implement follow request functionality in user-service, add inline action error component](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/ba3e5ee6c5d4b7a0dad3c886cf990d304904cc29)  | [profile.tsx](frontend/app/routes/profile.tsx)   |
+|3| [Admin-Panel.tsx, enhance admin panel with loading spinner, add delete profile functionality, and improve error handling](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/f317a5aab63609f76017387b92e789a6964e8541)  | [admin-panel.tsx](frontend/app/routes/admin-panel.tsx)   |
+|4| [Add sign-in functionality and related styles, implement sign-in route and component with error handling.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/ab3a7f619606e5a2a363ca48ae742090a09ab6e7#diff-51fbb9526e6034d9da671d76533ce386ab068016bc5ebbb9424686d3c92bfcf3)  | [sign-in.tsx](frontend/app/routes/sign-in.tsx)   |
 |5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
 

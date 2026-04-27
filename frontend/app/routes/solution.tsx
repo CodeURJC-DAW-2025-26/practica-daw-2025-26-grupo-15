@@ -23,7 +23,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
 export default function Solution({ loaderData }: Route.ComponentProps) {
     const { solution, comments } = loaderData;
-    const { user } = useUserStore();
+    const user = useUserStore((state) => state.user);
     const navigate = useNavigate();
     const revalidator = useRevalidator();
 
@@ -50,7 +50,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
         try {
             await deleteComment(commentToDelete.id);
             setCommentToDelete(null);
-            revalidator.revalidate(); // Refresca los comentarios
+            revalidator.revalidate(); 
         } catch (error) {
             alert("Failed to delete the comment.");
         }
@@ -79,7 +79,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
             document.body.appendChild(link);
             link.click();
 
-            // Cleanup
+            
             link.remove();
             window.URL.revokeObjectURL(url);
         } catch (error) {
@@ -89,7 +89,7 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
 
     return (
         <main className="page">
-            {/* HEADER / NAVBAR */}
+            
             <div className="d-flex align-items-center justify-content-between p-3">
                 <div className="brand">
                     <Link to="/" className="brand-mark-link">
@@ -102,12 +102,12 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
 
                 {logged ? (
                     <div className="profile-image d-flex align-items-center gap-2">
-                        <Link to={`users/${user!.id}`}>
+                        <Link to={`/users/${user!.id}`}>
                             <div className="avatar avatar--img">
-                                {user.photo?.id ? (
-                                    <img src={`/api/v1/images/${user.photo.id}/media`} alt="Profile" />
+                                {user!.photo?.id ? (
+                                    <img src={`/api/v1/images/${user!.photo.id}/media`} alt="Profile" />
                                 ) : (
-                                    <span>{user.name.charAt(0)}</span>
+                                    <span>{user!.name.charAt(0)}</span>
                                 )}
                             </div>
                         </Link>
@@ -203,12 +203,11 @@ export default function Solution({ loaderData }: Route.ComponentProps) {
                                                 </div>
                                                 <div>
                                                     <strong className="comment-item__author">{comment.owner.name}</strong>
-                                                    <span className="comment-item__date ms-2">{comment.lastUpdate}</span>
+                                                    <span className="comment-item__date ms-2">{formatDate(comment.lastUpdate)}</span>
                                                 </div>
                                             </div>
 
-                                            {/* Comment owner */}
-                                            {(logged && (user.id === comment.owner.id || canDeleteSolution)) && (
+                                            {(logged && (user?.id === comment.owner.id || canDeleteSolution)) && (
                                                 <Button 
                                                     variant="link" 
                                                     className="btn-icon"

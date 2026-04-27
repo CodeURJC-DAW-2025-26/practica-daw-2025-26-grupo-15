@@ -19,7 +19,7 @@ export async function clientLoader() {
 }
 
 export default function FollowRequest({ loaderData }: Route.ComponentProps) {
-  const {logoutUser} = useUserStore()
+  const logoutUser = useUserStore((state) => state.logoutUser);
   const { currentUser, followRequests } = loaderData;
   const navigate = useNavigate();
   const pendingCount = followRequests.length;

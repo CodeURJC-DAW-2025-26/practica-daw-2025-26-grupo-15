@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { Link, redirect, useNavigate } from "react-router";
 import type { ExerciseDTO } from "~/dtos/ExerciseDTO";
 import type ListDTO from "~/dtos/ListDTO";
@@ -72,7 +72,7 @@ export async function clientLoader() {
 
 export default function AdminPanel({ loaderData }: Route.ComponentProps) {
   const user = loaderData;
-  const { logoutUser } = useUserStore();
+  const logoutUser = useUserStore((state) => state.logoutUser);
   const navigate = useNavigate();
 
   const [currentOption, setCurrentOption] = useState<AdminOption>("u");
@@ -421,30 +421,30 @@ export default function AdminPanel({ loaderData }: Route.ComponentProps) {
 
           <div className="adm-sidebar-label">Admin Panel</div>
           <nav className="adm-nav">
-            <button
+            <Button
               type="button"
               onClick={() => setAdminOption("u")}
               className={`adm-nav-item ${currentOption === "u" ? "adm-nav-item--active" : ""}`}
             >
               <i className="bi bi-people-fill"></i>
               <span>Users</span>
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={() => setAdminOption("l")}
               className={`adm-nav-item ${currentOption === "l" ? "adm-nav-item--active" : ""}`}
             >
               <i className="bi bi-collection-fill"></i>
               <span>Lists</span>
-            </button>
-            <button
+            </Button>
+            <Button   
               type="button"
               onClick={() => setAdminOption("e")}
               className={`adm-nav-item ${currentOption === "e" ? "adm-nav-item--active" : ""}`}
             >
               <i className="bi bi-journal-code"></i>
               <span>Exercises</span>
-            </button>
+            </Button>
           </nav>
 
           <div className="adm-sidebar-bottom">
@@ -469,7 +469,7 @@ export default function AdminPanel({ loaderData }: Route.ComponentProps) {
                 <i className="bi bi-person"></i>
                 Profile
               </Link>
-              <button
+              <Button
                 type="button"
                 onClick={handleLogout}
                 disabled={isLoggingOut}
@@ -477,7 +477,7 @@ export default function AdminPanel({ loaderData }: Route.ComponentProps) {
               >
                 <i className="bi bi-box-arrow-right"></i>
                 {isLoggingOut ? "Logging out..." : "Log Out"}
-              </button>
+              </Button>
             </div>
             <Link to="/" className="adm-exit-btn">
               <i className="bi bi-arrow-left-short"></i> Back to DSGram
@@ -573,14 +573,15 @@ export default function AdminPanel({ loaderData }: Route.ComponentProps) {
                             {row.value.following?.length ?? 0}
                           </td>
                           <td>
-                            <button
+                            <Button
                               className="adm-delete-btn"
+                              variant="danger"
                               type="button"
                               onClick={() => openDeleteModal(row)}
                               title={`Delete ${row.value.name}`}
                             >
                               <i className="bi bi-trash3"></i>
-                            </button>
+                            </Button>
                           </td>
                         </tr>
                       );
@@ -608,14 +609,15 @@ export default function AdminPanel({ loaderData }: Route.ComponentProps) {
                             {row.value.owner?.name ?? "-"}
                           </td>
                           <td>
-                            <button
+                            <Button
                               className="adm-delete-btn"
+                              variant="danger"
                               type="button"
                               onClick={() => openDeleteModal(row)}
                               title={`Delete ${row.value.title}`}
                             >
                               <i className="bi bi-trash3"></i>
-                            </button>
+                            </Button>
                           </td>
                         </tr>
                       );
@@ -644,14 +646,15 @@ export default function AdminPanel({ loaderData }: Route.ComponentProps) {
                           {row.value.owner?.name ?? "-"}
                         </td>
                         <td>
-                          <button
+                          <Button
                             className="adm-delete-btn"
+                            variant="danger"
                             type="button"
                             onClick={() => openDeleteModal(row)}
                             title={`Delete ${row.value.title}`}
                           >
                             <i className="bi bi-trash3"></i>
-                          </button>
+                          </Button>
                         </td>
                       </tr>
                     );
@@ -696,20 +699,20 @@ export default function AdminPanel({ loaderData }: Route.ComponentProps) {
             <p className="adm-modal-body">{deleteModalText.body}</p>
           </Modal.Body>
           <Modal.Footer className="border-0 pt-1">
-            <button
+            <Button
               className="adm-modal-cancel"
               onClick={closeDeleteModal}
               disabled={isDeleting}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               className="adm-modal-confirm"
               onClick={confirmDelete}
               disabled={isDeleting}
             >
               {isDeleting ? "Deleting..." : "Delete"}
-            </button>
+            </Button>
           </Modal.Footer>
         </div>
       </Modal>

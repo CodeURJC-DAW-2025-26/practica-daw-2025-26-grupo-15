@@ -1,25 +1,37 @@
 import { acceptFollowRequest, declineFollowRequest, deleteProfile, getUser, sendFollowRequest, unFollowUser } from "~/services/user-service";
 import type { Route } from "./+types/profile";
 import { useUserStore } from "~/stores/user-store";
-import { reqIsLogged } from "~/services/login-service";
 import { Link, useNavigate } from "react-router";
 import type { UserDTO } from "~/dtos/UserDTO";
 import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import { useActionState, useCallback, useState } from "react";
 import { InlineActionError } from "~/components/inline-action-error";
 import FeedStream from "~/components/feed-stream";
-import { getExerciseListsFromUser, getListsForUserProfile } from "~/services/list-service";
+import { getListsForUserProfile } from "~/services/list-service";
 import { optionalUser } from "~/services/route-guards-service";
 import ProfileSection from "~/components/profile-section";
 
 const API_IMAGES_URL = "/api/v1/images";
 
+function normalizeUser(user: UserDTO): UserDTO {
+  return {
+    ...user,
+    roles: user.roles ?? [],
+    exerciseLists: user.exerciseLists ?? [],
+    followers: user.followers ?? [],
+    following: user.following ?? [],
+    requestedFriends: user.requestedFriends ?? [],
+    requestReceived: user.requestReceived ?? [],
+  };
+}
+
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
-  let userLogged = await optionalUser();
-  const userVisited: UserDTO = await getUser(Number(params.id));
-  let isOwnProfile = userLogged && userVisited.id === userLogged.id;
-  let isAdmin = userLogged && userLogged.roles.includes("ADMIN");
+  const rawUserLogged = await optionalUser();
+  const userLogged = rawUserLogged ? normalizeUser(rawUserLogged) : null;
+  const userVisited = normalizeUser(await getUser(Number(params.id)));
+  const isOwnProfile = Boolean(userLogged && userVisited.id === userLogged.id);
+  const isAdmin = Boolean(userLogged?.roles?.includes("ADMIN"));
 
   return { userLogged, userVisited, isOwnProfile, isAdmin };
 }
@@ -28,7 +40,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
   
   const navigate = useNavigate();
 
-  let { logoutUser } = useUserStore();
+  const logoutUser = useUserStore((state) => state.logoutUser);
 
 
   const isUserLogged = loaderData.userLogged != null;
@@ -36,9 +48,15 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
   const isOwnProfile = loaderData.isOwnProfile;
   const userProfile = loaderData.userVisited;
   const isAdmin = loaderData.isAdmin;
+  const profileFollowers = userProfile.followers ?? [];
+  const profileFollowing = userProfile.following ?? [];
+  const loggedRequestedFriends = userLogged?.requestedFriends ?? [];
   const isFollowing =
-    isUserLogged &&
-    userProfile.followers.some((user) => user.id === userLogged!.id);
+    Boolean(userLogged) &&
+    profileFollowers.some((user) => user.id === userLogged!.id);
+  const hasRequestedThisProfile = loggedRequestedFriends.some(
+    (p) => p.id === userProfile.id,
+  );
 
   async function logoutUserAction() {
     await logoutUser();
@@ -111,14 +129,6 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
     }
 
   }
-
-  const requestActionError =
-    lastRequestAction === "accept"
-      ? errorAccept
-      : lastRequestAction === "decline"
-        ? errorDecline
-        : null;
-
 
   const [{ errorUnfollow }, formUnFollowAction, isPendingUnfollow] = useActionState(unFollowAction, { errorUnfollow: null });
   async function unFollowAction(_prevState: { errorUnfollow: string | null }, formData: FormData) {
@@ -205,7 +215,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                           to={`/followers-following/followers?userId=${userProfile.id}`}
                         >
                           <span className="followers-cta-value">
-                            {userProfile.followers.length}
+                            {profileFollowers.length}
                           </span>
                           <span className="followers-cta-label">
                             Followers
@@ -219,7 +229,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                           to={`/followers-following/following?userId=${userProfile.id}`}
                         >
                           <span className="followers-cta-value">
-                            {userProfile.following.length}
+                            {profileFollowing.length}
                           </span>
                           <span className="followers-cta-label">
                             Following
@@ -246,13 +256,13 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                   {isOwnProfile && (
                     <div className="dropdown">
                       <div className="avatar avatar--img">
-                        {userProfile.photo && (
+                        {userProfile.photo?.id && (
                           <img
                             src={`${API_IMAGES_URL}/${userProfile.photo.id}/media`}
                             alt="Profile photo"
                           />
                         )}
-                        {!userProfile.photo && (
+                        {!userProfile.photo?.id && (
                           <i className="bi bi-person-circle"></i>
                         )}
                       </div>
@@ -298,9 +308,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                   {!isOwnProfile &&
                     isUserLogged &&
                     !isFollowing &&
-                    userLogged!.requestedFriends.some(
-                      (p) => p.id === userProfile.id,
-                    ) && (
+                    hasRequestedThisProfile && (
                       <Button className="btn secondary" disabled>
                         Requested
                       </Button>
@@ -308,9 +316,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                   {!isOwnProfile &&
                     isUserLogged &&
                     !isFollowing &&
-                    !userLogged!.requestedFriends.some(
-                      (p) => p.id === userProfile.id,
-                    ) && (
+                    !hasRequestedThisProfile && (
                       <div className="profile-action-with-feedback">
                         <Form action={formRequestFollowAction}>
                           <Form.Control

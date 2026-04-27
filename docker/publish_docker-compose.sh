@@ -8,6 +8,7 @@ fi
 
 USERNAME="$1"
 TAG="${2:-latest}"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 if [ -z "$USERNAME" ] || [ -z "$TAG" ]; then
 	echo "Use: $0 <DockerHub_username> [tag]"
@@ -15,4 +16,4 @@ if [ -z "$USERNAME" ] || [ -z "$TAG" ]; then
 	exit 1
 fi
 
-docker compose publish "$USERNAME/dsgram-app-compose:$TAG"
+docker compose -f "$SCRIPT_DIR/docker-compose.yml" publish "$USERNAME/dsgram-app-compose:$TAG"

@@ -65,7 +65,7 @@ export default function ExerciseForm({ exercise, actionState: [state, formAction
                                 rows={5}
                                 required
                                 disabled={isPending}
-                                defaultValue={isEditing ? exercise.description : ""} // 2. Rellenamos datos
+                                defaultValue={isEditing ? exercise.description : ""} 
                             />
                             <Form.Text className="text-danger mt-1" id="descError" />
                         </Form.Group>

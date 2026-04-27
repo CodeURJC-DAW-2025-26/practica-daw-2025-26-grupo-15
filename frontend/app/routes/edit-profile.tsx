@@ -1,5 +1,5 @@
 import { useActionState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import EditProfileForm from "~/components/edit-profile-form";
 import { requireUser } from "~/services/route-guards-service";
 import { updateProfile, updateProfilePhoto } from "~/services/user-service";
@@ -14,7 +14,7 @@ export async function clientLoader({params}:Route.ClientLoaderArgs){
 }
 
 export default function EditProfile() {
-    const { user } = useUserStore();
+  const user = useUserStore((state) => state.user);
     const { userId } = useParams();
     const navigate = useNavigate();
 
@@ -57,8 +57,8 @@ export default function EditProfile() {
     return (
         <main className="page">
           <div className="brand">
-            <a href="/" className="brand-mark-link"><img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" /></a>
-            <a href="/"><span className="brand-title">DSGram</span></a>
+            <Link to="/" className="brand-mark-link"><img src="/assets/DSGram_LOGO.png" alt="DSGram logo" className="brand-mark" /></Link>
+            <Link to="/"><span className="brand-title">DSGram</span></Link>
           </div>
 
         {user && user.id === Number(userId) && (
