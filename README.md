@@ -734,7 +734,8 @@ Implementación de los formularios de creación y edición de lista, junto con l
 
 #### **Alumno 4 - Pablo Ruiz Uroz**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Implementación de la lógica y migración a React de las páginas de perfil, administración, sign-in y sign-up. Creación de feedback de campos en el registro de usuarios, implementación del sistema de login y del UserStore con Zustand. Validación de usuarios mediante Loaders, creación de spinners globales y gestión de páginas de error (tanto por fallos del sistema como por rutas no encontradas). Creación de un componente para visualizar errores capturados en los servicios tras peticiones API REST. Desarrollo del Dockerfile para la fase de construcción, compilación de la aplicación y configuración del backend en Spring Boot para servir la SPA desde sus recursos estáticos.
+
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
@@ -742,5 +743,5 @@ Implementación de los formularios de creación y edición de lista, junto con l
 |2| [profile.tsx complete logic, implement follow request functionality in user-service, add inline action error component](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/ba3e5ee6c5d4b7a0dad3c886cf990d304904cc29)  | [profile.tsx](frontend/app/routes/profile.tsx)   |
 |3| [Admin-Panel.tsx, enhance admin panel with loading spinner, add delete profile functionality, and improve error handling](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/f317a5aab63609f76017387b92e789a6964e8541)  | [admin-panel.tsx](frontend/app/routes/admin-panel.tsx)   |
 |4| [Add sign-in functionality and related styles, implement sign-in route and component with error handling.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/ab3a7f619606e5a2a363ca48ae742090a09ab6e7#diff-51fbb9526e6034d9da671d76533ce386ab068016bc5ebbb9424686d3c92bfcf3)  | [sign-in.tsx](frontend/app/routes/sign-in.tsx)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|5| [Implement error handling and user role checks, add not found and error boundary screens](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/75a863d05c7d89b6e2dc74cbb85799886b0524e0#diff-0b85853a0e82753ae8383d321d2f5c2d7de6511a05277eff042aebc73da325d7)  | [error-boundary-screen.tsx](frontend/app/components/error-boundary-screen.tsx)   |
 
