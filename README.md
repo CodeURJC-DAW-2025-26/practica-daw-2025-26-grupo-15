@@ -671,7 +671,7 @@ Responsable de la integración del sistema de autenticación mediante JWT. Desar
 
 Diagrama mostrando los componentes React, hooks personalizados, servicios y sus relaciones:
 
-![Diagrama de Componentes React](images/spa-classes-diagram.png)
+![Diagrama de Componentes React](images/spa-classes-diagram.svg)
 
 ### **Participación de Miembros en la Práctica 3**
 
