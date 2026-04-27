@@ -673,6 +673,21 @@ Diagrama mostrando los componentes React, hooks personalizados, servicios y sus 
 
 ![Diagrama de Componentes React](images/spa-classes-diagram.svg)
 
+### Leyenda del diagrama
+
+- **Rutas** (cajas grises): endpoints de la aplicación.
+- **Componentes principales de una ruta** (cajas moradas): componentes React.
+- **Componentes auxiliares** (cajas amarillas): componentes React.
+- **Stores** (cajas rojas): estado global de la aplicación.
+- **Services** (cajas azules): servicios que consume la aplicación (comunicación con la API).
+- **Flechas sólidas moradas**: navegación entre componentes.
+- **Flechas sólida roja**: componente usa store.
+- **Flechas sólida negra**: componente usa componente auxiliar.
+- **Flechas sólida azul**: componente o store usa service.
+
+Por la simplicidad del diagrama no se han representado servicios como: route-guards-service (usado por todos o casi todos los componentes) o date-service (usado por componentes que muestran fechas como contenido para parsearlas para funcionar correctamente en React). O componentes como: inline-action-error (usado por todos los componentes que muestran información sobre errores en línea en pantalla) o error-boundary-screen (mostrada cuando ocurre un problema de respuesta con el servidor).
+
+
 ### **Participación de Miembros en la Práctica 3**
 
 #### **Alumno 1 - [Nombre Completo]**
@@ -703,17 +718,17 @@ Diagrama mostrando los componentes React, hooks personalizados, servicios y sus 
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - Jaime Torroba Martínez**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Implementación de los formularios de creación y edición de lista, junto con los métodod del servicio, dtos y componentes necesarios. Implementación del scroll infinito en la página fyp y profile para el stream de listas y posts, creando un componente para poder ser reutilizado. Implementación de la búsqueda de usuarios junto con el respectivo scroll infinito. Implementación de la página de detalle de la entidad ejercicio. Implementación de la exportación de una solución a pdf.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Add Feed Stream component for infinite scroll in both main page for Posts and Profile page for Lists.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/833387a2b3cd2b85b971c445fe43b54e83f08b43)  | [feed-stream.tsx](frontend/app/components/feed-stream.tsx)   |
+|2| [Implement exercise page with deletable and readonly solutions.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/70692cd1f47ecd3b042edfe9cc6666363a1cb8c8)  | [exercise.tsx](frontend/app/routes/exercise.tsxL_archivo_2)   |
+|3| [Add search users functionality.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/b592074822d6df8514fb7fb9202b4008aca2f068)  | [user-searchbar.tsx](frontend/app/components/user-searchbar.tsx)   |
+|4| [Add edit list page and config routes to new pages](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/113a18238d3931d7f01948db573f27ce81fbf144)  | [edit-list.tsx](frontend/app/routes/edit-list.tsx)   |
+|5| [Add exercise detail page mock version. Add list-form component and new-list page](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-15/commit/58331094f1fbe1013bdcb73c2e4e51b6fe523985)  | [list-form.tsx](frontend/app/components/list-form.tsx)   |
 
 ---
 
