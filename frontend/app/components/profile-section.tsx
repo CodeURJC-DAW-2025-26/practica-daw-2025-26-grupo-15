@@ -2,7 +2,6 @@ import { Button, Col, Form } from "react-bootstrap";
 import { InlineActionError } from "./inline-action-error";
 import type { UserDTO } from "~/dtos/UserDTO";
 import { Link } from "react-router";
-import { useState } from "react";
 
 const API_IMAGES_URL = "/api/v1/images";
 
@@ -22,19 +21,20 @@ export default function ProfileSection({ userProfile, isOwnProfile, actionStateA
       : lastRequestAction === "decline"
         ? errorDecline
         : null;
+    const requestReceived = userProfile.requestReceived ?? [];
     return (
     <>
     <Col as="aside" xs={12} lg={3} className="sidebar">
                 <div className="profile-sidebar-header">
                   <div className="profile-avatar-preview">
-                    {userProfile.photo.id && (
+                    {userProfile.photo?.id && (
                       <img
                         src={`${API_IMAGES_URL}/${userProfile.photo.id}/media`}
                         alt="Profile photo"
                         className="avatar-image-cover"
                       ></img>
                     )}
-                    {!userProfile.photo.id && (
+                    {!userProfile.photo?.id && (
                       <i className="bi bi-person-circle"></i>
                     )}
                   </div>
@@ -43,7 +43,7 @@ export default function ProfileSection({ userProfile, isOwnProfile, actionStateA
                 <div className="pill">{userProfile.name}</div>
                 <div className="pill">{userProfile.bio ?? "No bio yet."}</div>
                 <div className="pill">
-                  {userProfile.name ?? "No specialty yet."}
+                  {userProfile.specialty ?? "No specialty yet."}
                 </div>
 
                 {isOwnProfile && (
@@ -54,26 +54,26 @@ export default function ProfileSection({ userProfile, isOwnProfile, actionStateA
                           <i className="bi bi-person-plus-fill"></i> Follow
                           Requests
                         </span>
-                        {userProfile.requestReceived.length > 0 && (
+                        {requestReceived.length > 0 && (
                           <span className="sidebar-requests-badge">
-                            {userProfile.requestReceived.length}
+                            {requestReceived.length}
                           </span>
                         )}
                       </div>
                       <div className="list">
-                        {userProfile.requestReceived.length > 0 ? (
-                          userProfile.requestReceived
+                        {requestReceived.length > 0 ? (
+                          requestReceived
                             .slice(0, 3)
                             .map((request) => (
                               <div className="list-item" key={request.id}>
                                 <div className="req-identity">
                                   <div className="req-avatar">
-                                    {request.photo && (
+                                    {request.photo?.id && (
                                       <img
                                         src={`${API_IMAGES_URL}/${request.photo.id}/media`}
                                       ></img>
                                     )}
-                                    {!request.photo && (
+                                    {!request.photo?.id && (
                                       <span>{request.name[0]}</span>
                                     )}
                                   </div>
